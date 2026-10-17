@@ -83,8 +83,21 @@ def main(argv):
     # left by an earlier edit.  A first check refused new text older than the old text, which also refused new
     # text written first on purpose and passed a stale file touched; on 17 October 2026 a touch was used to pass
     # it.  The new text's content is what tells: text this tool has already applied is left from an earlier edit.
+    # Each input is read once: a pipe (bash's <(...)) gives its content only to its first reader, and on 17 October
+    # 2026 the later reads of the new text came back empty and the passage was replaced by nothing.
     try:
-        digest = hashlib.sha1(Path(argv[3]).read_bytes()).hexdigest()
+        new_bytes = Path(argv[3]).read_bytes()
+    except OSError:
+        new_bytes = None
+    new_text = None if new_bytes is None else new_bytes.decode()
+    if new_text is not None and not new_text.strip():
+        print(f'replace_text: {argv[3]} is empty: write the new text, or delete the passage with the Edit tool',
+              file=sys.stderr)
+        return 1
+    try:
+        if new_bytes is None:
+            raise OSError
+        digest = hashlib.sha1(new_bytes).hexdigest()
         if digest in applied_digests():
             print(f'replace_text: {argv[3]} holds text this tool has already applied in an earlier replacement: '
                   'it is probably left from an earlier edit (a failed write?); write the new text again',
@@ -95,7 +108,8 @@ def main(argv):
     # 16 October 2026: a byte cut from a file written without a trailing newline left "</p" at the end of the new
     # text, and the notebook took an unclosed tag.
     try:
-        new_text = Path(argv[3]).read_text()
+        if new_text is None:
+            raise OSError
         cut = re.search(r'</?(?:p|li|ul|ol|strong|em|h[1-6]|div|span|code|section|article|table|tr|td)\b[^<>]*$',
                         new_text)
         if cut:
@@ -105,7 +119,8 @@ def main(argv):
     except OSError:
         pass
     try:
-        updated, line = replace(path.read_text(), Path(argv[2]).read_text(), Path(argv[3]).read_text(),
+        updated, line = replace(path.read_text(), Path(argv[2]).read_text(),
+                                new_text if new_text is not None else Path(argv[3]).read_text(),
                                 prose=path.suffix in ('.md', '.txt', '.html', ''))
     except (ValueError, OSError) as error:
         print(f'replace_text: {path}: {error}', file=sys.stderr)

@@ -71,6 +71,7 @@ import re
 from pathlib import Path
 import subprocess
 import sys
+import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import branch_extension
@@ -901,7 +902,7 @@ CHECKS_OFF = 'tools/hooks/checks_off'
 # The checks a branch can turn off, by name: this hook's own, then those of the branch's own module.
 # 'review' is no check of a stop: it turns off the stand-in review (tools/stand_in_review.py).
 CHECK_NAMES = (('promise', 'mistake', 'workaround', 'missing tool', 'reviewer meta', 'meta home', 'gap', 'judge',
-                'review')
+                'review', 'open cycle')
                + tuple(branch_extension.ask('STOP_CHECK_NAMES', ())))
 
 
@@ -1242,6 +1243,83 @@ def emit_block(decision):
     print(json.dumps(decision))
 
 
+# A reply that ends announcing work while a research cycle's clock runs: on 17 October 2026 a Spin turn opened a
+# cycle, read one entry and ended "Next step. Write the boundary matching ...", and the user had to ask "Why
+# stop". PROMPTS.md's Spin says "do not return to the user"; the work announced is the work to do.
+# "Next step" counts as a heading only: "Prepared meanwhile: the claim spec, the commit message, and the next step"
+# names a prepared artefact, and a replay over one session's 212 texts found 13 such (research/provenance/
+# framework/open-cycle-replay-20261017.txt); a reply saying what it prepared passes, as for idle_block.
+ANNOUNCE = re.compile(r"(?:^|\n)[\s*>-]*next (?:step|attempt)\b[\s*]*[.:]|\bnext comes\b"
+                      r"|\bcontinues? with (?:cycle|the next)\b"
+                      r"|\bI(?:'m| am) (?:reading|writing|starting|opening|drafting|checking|running)\b[^.!?\n]*\bnext\b"
+                      r"|\bI(?:'ll| will) (?:now )?(?:read|write|start|open|draft|check|run|continue|try)\b", re.I)
+WORK_PHASES = {'mathematics', 'reading', 'coding', 'formalization'}
+
+
+def open_cycles(logs, now=None, window_s=6 * 3600):
+    """The timing sessions under `logs` with no stop event whose last phase is a work phase and whose journal
+    changed within `window_s`: a research cycle under way."""
+    now = time.time() if now is None else now
+    found = []
+    for journal in sorted(Path(logs).glob('*.jsonl')):
+        try:
+            if now - journal.stat().st_mtime > window_s:
+                continue
+            events = [json.loads(line) for line in journal.read_text().splitlines() if line.strip()]
+        except (OSError, ValueError):
+            continue
+        if not events or events[0].get('event') != 'start' or any(e.get('event') == 'stop' for e in events):
+            continue
+        phases = [e for e in events if e.get('event') == 'phase']
+        if phases and phases[-1].get('category') in WORK_PHASES:
+            found.append((journal.stem, phases[-1]['category']))
+    return found
+
+
+def open_cycle_block(reply, logs):
+    """The block for a final reply that announces work anywhere while a research cycle's clock runs in a work
+    phase, or None. The whole reply is read: the reply that prompted the check had its "Next step." in the
+    paragraph before a last line on the commit."""
+    found = ANNOUNCE.search(reply)
+    if not found or PREPARED.search(reply):
+        return None
+    cycles = open_cycles(logs)
+    if not cycles:
+        return None
+    name, phase = cycles[0]
+    return {'decision': 'block', 'reason': (
+        f'The research cycle {name} is open in its {phase} phase, and the reply ends announcing work: '
+        f'"{found.group(0)}". Do that work now instead of returning to the user (PROMPTS.md, Spin: "do not '
+        'return to the user"); a turn ends when the cycle is committed or the user asked a question to answer.')}
+
+
+def replay_open_cycle(paths):
+    """Each past text of more than 200 characters in the transcripts at `paths` whose last paragraph the open-cycle
+    check would refuse were a cycle's clock running, with the count. The clock is not replayed: what was open
+    then is not recorded in the transcript, so this counts the words' reach, an upper bound on its refusals."""
+    texts, refused = 0, []
+    for name in paths:
+        for line in open(name, errors='replace'):
+            if '"assistant"' not in line or '"text"' not in line:
+                continue
+            try:
+                entry = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if entry.get('type') != 'assistant':
+                continue
+            for part in (entry.get('message') or {}).get('content') or []:
+                if isinstance(part, dict) and part.get('type') == 'text' and len(part.get('text', '')) > 200:
+                    texts += 1
+                    paragraphs = [p for p in re.split(r'\n\s*\n', part['text'].strip()) if p.strip()]
+                    found = ANNOUNCE.search(part['text'])
+                    if found and not PREPARED.search(part['text']):
+                        refused.append(part['text'][max(found.start() - 40, 0):found.end() + 100].replace('\n', ' '))
+    for text in refused:
+        print(f'- {text}')
+    print(f'{texts} texts read; {len(refused)} end announcing work.')
+
+
 def main(argv):
     if os.environ.get(INSIDE_JUDGE):
         return 0
@@ -1251,6 +1329,12 @@ def main(argv):
     if global_entry and project and Path(project).resolve() == ROOT:
         return 0
     data = json.load(sys.stdin)
+    # Checked also when an earlier block is active: the stop that leaked on 17 October 2026 was the second one.
+    if not global_entry and 'open cycle' not in checks_off(ROOT):
+        blocked = open_cycle_block(data.get('last_assistant_message') or '', ROOT / 'research' / 'logs')
+        if blocked:
+            emit_block(blocked)
+            return 0
     if data.get('stop_hook_active'):
         return 0
     blocked = None if global_entry else branch_block(ROOT)
@@ -1326,6 +1410,9 @@ if __name__ == '__main__':
         sys.exit(0)
     if sys.argv[1:2] == ['--replay-figures']:
         replay_figures(sys.argv[2:])
+        sys.exit(0)
+    if sys.argv[1:2] == ['--replay-open-cycle']:
+        replay_open_cycle(sys.argv[2:])
         sys.exit(0)
     if sys.argv[1:2] == ['--replay-deferred']:
         replay_deferred(sys.argv[2:])

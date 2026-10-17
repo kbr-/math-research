@@ -519,7 +519,7 @@ class UncheckedClaimTest(HookFixture):
 
     def test_each_check_can_be_named_and_only_the_reader_opens_the_file(self):
         shared = ('promise', 'mistake', 'workaround', 'missing tool', 'reviewer meta', 'meta home', 'gap', 'judge',
-                  'review')
+                  'review', 'open cycle')
         self.assertEqual(hook.CHECK_NAMES, shared + tuple(hook.branch_extension.ask('STOP_CHECK_NAMES', ())))
         self.off(*hook.CHECK_NAMES)
         self.assertEqual(hook.checks_off(self.root), frozenset(hook.CHECK_NAMES))
@@ -739,6 +739,35 @@ class RefusalBlockTest(unittest.TestCase):
         f.close()
         self.addCleanup(os.unlink, f.name)
         self.assertIsNone(hook.refusal_block(f.name, 'The hook prints its source.'))
+
+
+class OpenCycleTest(unittest.TestCase):
+    """17 October 2026: a Spin turn opened a cycle and ended announcing its next step; the user asked "Why stop"."""
+
+    def journal(self, logs, *events):
+        (logs / 'cycle.jsonl').write_text(''.join(json.dumps(e) + '\n' for e in events))
+
+    def test_an_announcement_while_a_cycle_runs_is_refused_and_otherwise_passes(self):
+        parked = ('Cycle um-cycles is open.\n\n- **Next step.** Write the boundary matching that position-aware '
+                  'leftovers allow.')
+        announcements = (parked, "I'm reading the per-level counts entry's construction next, to see its leftovers.",
+                         'The Spin continues with cycle um-cycles.', "I'll continue the cycle.")
+        with tempfile.TemporaryDirectory() as tmp:
+            logs = Path(tmp)
+            self.journal(logs, {'event': 'start'}, {'event': 'phase', 'category': 'mathematics'})
+            for said in announcements:
+                self.assertIsNotNone(hook.open_cycle_block(said, logs), said)
+            # The prompting reply had its heading before a last line on the commit; a prepared next step passes.
+            self.assertIsNotNone(hook.open_cycle_block(parked + '\n\nNothing new is committed since d4b3a9326.', logs))
+            self.assertIsNone(hook.open_cycle_block('Prepared meanwhile: the spec, the message and the next step.',
+                                                    logs))
+            self.assertIsNone(hook.open_cycle_block('The Proposed next step names the repair.', logs))
+            # The same words pass with no work phase open: preparation, or a stopped clock.
+            self.journal(logs, {'event': 'start'}, {'event': 'phase', 'category': 'preparation'})
+            self.assertIsNone(hook.open_cycle_block(parked, logs))
+            self.journal(logs, {'event': 'start'}, {'event': 'phase', 'category': 'mathematics'}, {'event': 'stop'})
+            for said in announcements:
+                self.assertIsNone(hook.open_cycle_block(said, logs), said)
 
 
 if __name__ == '__main__':

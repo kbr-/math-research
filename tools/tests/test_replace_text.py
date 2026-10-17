@@ -5,6 +5,7 @@ import shutil
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import replace_text  # noqa: E402
@@ -108,6 +109,36 @@ class ReplaceTextTest(unittest.TestCase):
             replace_text.replace('x step, y\n', 'step,', 'one\ntwo')
         with self.assertRaisesRegex(ValueError, 'empty'):
             replace_text.replace(PLAN, ' \n', 'x')
+
+    def test_new_text_from_a_pipe_is_read_once_and_an_empty_one_is_refused(self):
+        # 17 October 2026: given <(...), the tool read the new text three times; the pipe gave it only to the first
+        # read, and the passage was replaced by nothing.
+        tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, tmp)
+        (tmp / 'plan.md').write_text(PLAN)
+        (tmp / 'old').write_text('- **Next question?**\nAnswer.\n')
+        (tmp / 'empty').write_text('')
+        read, real = [], Path.read_bytes
+        def once(path):
+            if str(path).endswith('new'):
+                read.append(path)
+                if len(read) > 1:
+                    return b''
+                return b'- **Next question?** Piped.\n'
+            return real(path)
+        err = io.StringIO()
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(err), \
+                mock.patch.object(Path, 'read_bytes', once), mock.patch.object(Path, 'read_text',
+                                                                                lambda p: once(p).decode()):
+            self.assertEqual(replace_text.main(['replace_text.py', str(tmp / 'plan.md'), str(tmp / 'old'),
+                                                str(tmp / 'new')]), 0)
+        self.assertIn('Piped.', (tmp / 'plan.md').read_text())
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(err):
+            (tmp / 'plan.md').write_text(PLAN)
+            self.assertEqual(replace_text.main(['replace_text.py', str(tmp / 'plan.md'), str(tmp / 'old'),
+                                                str(tmp / 'empty')]), 1)
+        self.assertEqual((tmp / 'plan.md').read_text(), PLAN)
+        self.assertIn('is empty', err.getvalue())
 
     def test_command_line_writes_only_on_success(self):
         tmp = Path(tempfile.mkdtemp())

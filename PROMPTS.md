@@ -255,6 +255,10 @@ So perform the following, in a loop:
   every listed bounded part and the included restart guide, and load other sources only as needed
   without rereading the bundle." -- following the usual prompt.
 - After compaction, reread the "Spin" prompt from `PROMPTS.md` and continue the active assignment.
+- A step named in a reply is a step to take in that turn: a report is written at a committed
+  checkpoint and goes on to the next cycle's first action, never in place of it (17 October 2026: a
+  turn opened a cycle, wrote its next step and stopped, and the user asked "Why stop";
+  tools/hooks/stop_checks.py now refuses such a stop while a cycle's clock runs in a work phase).
 - Do not return to the user. Think for as long as you like and work for as long as you like (until I
   explicitly interrupt you), just make sure to update the notebook `git commit` on visible research
   checkpoints. But **do not return to the user** -- I will not be present to reprompt you. A
