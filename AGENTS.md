@@ -314,7 +314,10 @@ AGENTS.md"):
   retry that passes because the check remembers the text, a rerun until a timing passes, or a rule
   left written after it let the same thing through is another route: the refusal is a finding about
   the tool or the work, fixed or queued with its cause (17 October 2026: all three in one framework
-  turn).
+  turn). Before a second attempt at a refused step, write in the reply the line of the refusal that
+  names its rule and what in the input broke it; an input changed until a gate passes, without that
+  line, is the same route (17 October 2026: a launcher's five-word line rule and a qualifier gate
+  were each answered by edits before their cause was read).
 - A property of a family (nested, disjoint, packed, few per point) enters a proof only after it is
   checked on the family's extreme members: boundaries that coincide, many members through one point.
 - A sentence that gives a decision its reason (dropping, choosing, calling a case decided) names its
