@@ -651501,7 +651501,7 @@
       "reviews": {
         "mathematical_status": {
           "state": "reviewed",
-          "revision": "a8c05efbe62d022f44c110af00931343cd5a8abf",
+          "revision": "1850ba7f5ac383e3cb59fa32e0996fe8ba873dc8",
           "date": "2026-10-17",
           "reviewer": "Claude Code with sole fresh-context medium reviewer",
           "note": "Status checked against the entry and its verification gate.",
@@ -651518,7 +651518,7 @@
         },
         "formalization": {
           "state": "reviewed",
-          "revision": "a8c05efbe62d022f44c110af00931343cd5a8abf",
+          "revision": "1850ba7f5ac383e3cb59fa32e0996fe8ba873dc8",
           "date": "2026-10-17",
           "reviewer": "Claude Code with sole fresh-context medium reviewer",
           "note": "No Lean artifact.",
@@ -651535,7 +651535,7 @@
         },
         "topics": {
           "state": "reviewed",
-          "revision": "a8c05efbe62d022f44c110af00931343cd5a8abf",
+          "revision": "1850ba7f5ac383e3cb59fa32e0996fe8ba873dc8",
           "date": "2026-10-17",
           "reviewer": "Claude Code with sole fresh-context medium reviewer",
           "note": "Topics checked against the entry.",
@@ -651552,7 +651552,7 @@
         },
         "significance": {
           "state": "reviewed",
-          "revision": "a8c05efbe62d022f44c110af00931343cd5a8abf",
+          "revision": "1850ba7f5ac383e3cb59fa32e0996fe8ba873dc8",
           "date": "2026-10-17",
           "reviewer": "Claude Code with sole fresh-context medium reviewer",
           "note": "Significance assessed at this checkpoint.",
@@ -651569,13 +651569,13 @@
         },
         "relationships": {
           "state": "reviewed",
-          "revision": "a8c05efbe62d022f44c110af00931343cd5a8abf",
+          "revision": "1850ba7f5ac383e3cb59fa32e0996fe8ba873dc8",
           "date": "2026-10-17",
           "reviewer": "Claude Code with sole fresh-context medium reviewer",
-          "note": "New claim; relationships recorded. Per-level count matchings: new relationship with thm:per-level-count-matchings. Two-graph chain duality: new relationship with lem:two-graph-chain-duality.",
+          "note": "New claim; relationships recorded. Per-level count matchings: new relationship with thm:per-level-count-matchings. Two-graph chain duality: new relationship with lem:two-graph-chain-duality. Local completion fails to glue deficient levels: new relationship with thm:local-completion-dichotomy.",
           "next_action": null,
           "claim_sha256": "aa6e9a7b82dabce390313a71d98d777b0a73210a264ea7d08dd10b3ed88f2269",
-          "value_sha256": "32f8e759d78418133adcddba445f795a601b093bd34e9ab58b16ec2fc2c2c6e3",
+          "value_sha256": "0f029e32b358653f967afa2587ab8b8e93d168025e6b9288b97fa30a649a30fb",
           "evidence": [
             {
               "target": "branches/ultimate-matching/notebook.html#entry-2026-10-16-adaptive-circulation-test",
@@ -670959,6 +670959,121 @@
             {
               "target": "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-kernels-every-field",
               "sha256": "844ee063833dcd267aa84bbfeecf6bd4be7f380a48f51292d5be9570840bafbe",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "thm:local-completion-dichotomy",
+      "summary": "For nested bipartite graphs G_k0 <= ... <= G_K on X, Y, |X| = |Y| = n, G_K complete, deficiencies m_k, weights w_k >= 0 with finite partial sums W_j, Gamma the least layered cost sum_{k<K} w_k |P - G_k| of a perfect matching and S = sum w_k m_k; at a level k with a maximum matching M_k of G_k and leftover U_k: completion with constant C asks a matching in G_{k+1} inside U_k of size >= m_k - C m_{k+1}; cover asks one matching of G_{k+1} covering U_k. (a) Completion with C < 1 forces m_{k+1} = 0 (at every level: every level above k_0 perfect, Gamma = S); at C = 1, M_k plus that matching is maximum in G_{k+1}; extension by augmenting paths always holds. (b) For C > 1, a family with last deficient level k*, j >= k*+2 and M >= max_{k <= j-2} (m_k - C m_{k+1})/(C-1): adding M disjoint pairs whose edges enter at level j makes every level complete with constant C, with Gamma' = Gamma + M W_{j-1} and S' = S + M W_{j-1}. (c) On the line, X = {1..n}, Y = X + h, h = floor(sqrt n), M = ceil(h/(C-1)) pairs of length d = ceil(e h) at spacing Delta = 2(n + h + d), levels |x - y| <= e^(k-1) from any k_0 <= 1 (or all integers), weights e^k: every level complete with constant C > 1, Gamma >= nh + Md - n - M, S <= (e^2(h^2 + Md) + eh)/(e-1), so Gamma/S >= (1 + o(1)) sqrt n (e-1)(C-1)/(e^2(C-1+e)). (d) Forced-path families (t >= 4 levels) with completion at C = 1 at every level and Gamma/S = (L+1+e)/(1+e) for weights e^k once t >= 2 + ln(L+1+e). (e) Forced-path families with the cover reading at every level and Gamma/S = L+1 for weights e^k once t >= 2 + ln(L+1). These readings ask for some maximum matching. (f) Asked for every maximum matching, completion with C = 1 at every level gives Gamma = S for every nonnegative weights; the families of (b), (c), (e) satisfy the universal forms of their readings, that of (d) does not.",
+      "assessment": "Working proof: (a) by the size of a matching of G_{k+1}; (b) by deficiencies adding over components, vacuity of the levels up to j - 2 by the choice of M, a perfect base matching with the pairs at level j - 1, and an exchange bound for matchings with cross edges; (c) by the case analysis on the radius and lem:per-level-gluing-fails's deficiencies, edge cost c(d) >= d and displacement sum; (d), (e) by the unique perfect matching of a path, the levels above repeated so that leaving it costs at least W_{t-1}; (d) is the reviewer's construction, checked by hand and by enumeration at L = 2, 3.",
+      "record": "[Local completion fails to glue deficient levels](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-local-completion-masking)",
+      "mathematical_status": "working_proof",
+      "formalization": {
+        "status": "not_started",
+        "scope": "Informal proof or computation; no Lean verification.",
+        "references": [
+          "branches/ultimate-matching/notebook.html#entry-2026-10-17-local-completion-masking"
+        ],
+        "artifacts": []
+      },
+      "topics": [
+        "random-matchings"
+      ],
+      "significance": {
+        "category": "route_specific",
+        "rationale": "Decides which local-completion forms of per-level Hall certificates glue: asked for some maximum matching, completion with C < 1 holds only where every level above the lowest is perfect, and completion with C > 1, with C = 1, the cover reading and the augmenting reading each hold on families whose gluing ratio is unbounded; asked for every maximum matching, completion with C = 1 glues at constant 1. Not covered: whether the goal's random samples satisfy the universal form, line realizations of (d) and (e) with geometric thresholds, and whether the goal's random samples have two consecutive deficient level graphs.",
+        "novelty": "not_claimed",
+        "publication_status": "not_applicable",
+        "references": [
+          "branches/ultimate-matching/notebook.html#entry-2026-10-17-local-completion-masking"
+        ],
+        "next_action": "Decide whether random samples satisfy the universal form of completion with C = 1 at the level graphs: on the line at unit density isolated open four-point gadgets break it (outlined in the Poisson model; de-Poissonization not done); at the goal's box levels the chance of isolation is not estimated."
+      },
+      "reviews": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "revision": "1850ba7f5ac383e3cb59fa32e0996fe8ba873dc8",
+          "date": "2026-10-17",
+          "reviewer": "Claude Code with sole fresh-context medium reviewer",
+          "note": "Status checked against the entry and its verification gate.",
+          "next_action": null,
+          "claim_sha256": "e5169d4eeba24b96e96e79f2b083e63361a1eb5f8b9fbbf1c666c7084b8c0694",
+          "value_sha256": "758341548df3c608ddb89413e84e3bc8a6fa42d9577d3737bd5ec501464f7285",
+          "evidence": [
+            {
+              "target": "branches/ultimate-matching/notebook.html#entry-2026-10-17-local-completion-masking",
+              "sha256": "41f55082436a79c39b6caef50263505307e1ba603db11e6fdfcf0fd291ef66f2",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "formalization": {
+          "state": "reviewed",
+          "revision": "1850ba7f5ac383e3cb59fa32e0996fe8ba873dc8",
+          "date": "2026-10-17",
+          "reviewer": "Claude Code with sole fresh-context medium reviewer",
+          "note": "No Lean artifact.",
+          "next_action": null,
+          "claim_sha256": "e5169d4eeba24b96e96e79f2b083e63361a1eb5f8b9fbbf1c666c7084b8c0694",
+          "value_sha256": "92efdfd6938396d2c75f70867c0b38326102e455f696f3b8119958545ad8504c",
+          "evidence": [
+            {
+              "target": "branches/ultimate-matching/notebook.html#entry-2026-10-17-local-completion-masking",
+              "sha256": "41f55082436a79c39b6caef50263505307e1ba603db11e6fdfcf0fd291ef66f2",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "topics": {
+          "state": "reviewed",
+          "revision": "1850ba7f5ac383e3cb59fa32e0996fe8ba873dc8",
+          "date": "2026-10-17",
+          "reviewer": "Claude Code with sole fresh-context medium reviewer",
+          "note": "Topics checked against the entry.",
+          "next_action": null,
+          "claim_sha256": "e5169d4eeba24b96e96e79f2b083e63361a1eb5f8b9fbbf1c666c7084b8c0694",
+          "value_sha256": "d88d729f316b646f26147d2027fd84a84a34976bad5fcee6bead24aaafa0f850",
+          "evidence": [
+            {
+              "target": "branches/ultimate-matching/notebook.html#entry-2026-10-17-local-completion-masking",
+              "sha256": "41f55082436a79c39b6caef50263505307e1ba603db11e6fdfcf0fd291ef66f2",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "significance": {
+          "state": "reviewed",
+          "revision": "1850ba7f5ac383e3cb59fa32e0996fe8ba873dc8",
+          "date": "2026-10-17",
+          "reviewer": "Claude Code with sole fresh-context medium reviewer",
+          "note": "Significance assessed at this checkpoint.",
+          "next_action": null,
+          "claim_sha256": "e5169d4eeba24b96e96e79f2b083e63361a1eb5f8b9fbbf1c666c7084b8c0694",
+          "value_sha256": "e398e75046c5e7160d5631684abb7094d33ebfb85ee1ab2ef7ab5b4c8a342827",
+          "evidence": [
+            {
+              "target": "branches/ultimate-matching/notebook.html#entry-2026-10-17-local-completion-masking",
+              "sha256": "41f55082436a79c39b6caef50263505307e1ba603db11e6fdfcf0fd291ef66f2",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "relationships": {
+          "state": "reviewed",
+          "revision": "1850ba7f5ac383e3cb59fa32e0996fe8ba873dc8",
+          "date": "2026-10-17",
+          "reviewer": "Claude Code with sole fresh-context medium reviewer",
+          "note": "New claim; relationships recorded.",
+          "next_action": null,
+          "claim_sha256": "e5169d4eeba24b96e96e79f2b083e63361a1eb5f8b9fbbf1c666c7084b8c0694",
+          "value_sha256": "2fa8d176c59dc7b77e9b4247524204da814dcc926a8bd35d6b47c6276e6ec331",
+          "evidence": [
+            {
+              "target": "branches/ultimate-matching/notebook.html#entry-2026-10-17-local-completion-masking",
+              "sha256": "41f55082436a79c39b6caef50263505307e1ba603db11e6fdfcf0fd291ef66f2",
               "normalization": "notebook-article-v1"
             }
           ]
@@ -1022451,6 +1022566,31 @@
         "date": "2026-10-17",
         "reviewer": "Claude Code with sole fresh-context medium reviewer",
         "note": "The transfer behind the corollary; it gives no kernel values, neither more general nor a special case."
+      }
+    },
+    {
+      "id": "thm:local-completion-dichotomy::depends_on::lem:per-level-gluing-fails",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "thm:local-completion-dichotomy",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:per-level-gluing-fails",
+        "locator": null
+      },
+      "scope": "Part (c) pads its shift instance and uses its deficiency formula, edge cost bound and displacement sum.",
+      "evidence": [
+        "branches/ultimate-matching/notebook.html#entry-2026-10-17-local-completion-masking"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "1850ba7f5ac383e3cb59fa32e0996fe8ba873dc8",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Part (c) pads its shift instance and uses its deficiency formula, edge cost bound and displacement sum."
       }
     }
   ],

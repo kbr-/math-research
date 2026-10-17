@@ -1,0 +1,35 @@
+Review of entry-2026-10-17-local-completion-masking (thm:local-completion-dichotomy, first drafted as
+thm:local-completion-masking), ultimate-matching, 17 October 2026: one medium reviewer, given the draft, the
+spec, witness.txt and the registered statements of lem:per-level-gluing-fails (with its record proof),
+lem:two-graph-chain-duality, cor:short-chains-per-level, thm:bounded-length-chains,
+thm:per-level-count-matchings. Condensed in its own terms.
+
+First pass. Verdict: pass with corrections. Checked and correct: (a), the forcing for C < 1 and maximality at
+C = 1; (b), deficiencies, completion (levels up to j - 2 vacuous, the genuine completion at j - 1) and the
+cost identity with its exchange argument; (c), the case split over every radius, the distances, the bound on
+S, the asymptotic constant (about 0.0625 sqrt n at C = 2, matching 62.63 at n = 10^6); the Nonvacuity
+witness (d = 2719 >= eh = 2718.3); the C = 1 example (deficiencies 2, 1, 0; minimum 3e + e^2; ratio
+(3+e)/(2+e)).
+Required: in (b), weights for new levels K..K'-1 when j > K; the weakest form of M is
+max_{k <= j-2} (m_k - C m_{k+1})/(C-1); in (c)'s hypotheses add C > 1 and M >= h/(C-1); "Gamma/S grows as"
+overstates, only lower bounds are proved; the shift does not violate C = 1 completion at levels k <= -1 where
+m_k = m_{k+1} = h, say "where its deficiency drops"; title and status overstate for C < 1, which glues at
+constant 1 where it holds; whether C < 1 fails on random samples needs two consecutive deficient levels there,
+not argued; per-part scopes in the General statement; a missing reading: the leftover covered by a matching of
+G_{k+1} with partners anywhere, not decided by the draft; the spec drops (c)'s k_0 and Delta and carries the
+overstatement; unused: n >= 4 in (c), w_k > 0 in (b).
+Suggestions (unverified): C = 1 refuted by X = {x_1..x_L, u}, Y = {y_1..y_L, v}, G_1 = A = {x_i y_i},
+G_2 = A + {v x_1} + {y_i x_{i+1}}, G_3 = G_2 + {u y_L} repeated, G_t complete: completion with C = 1 at every
+level (C = 1 constrains nothing where m_k = m_{k+1}), the perfect matching inside G_3 forced, cost
+w_1(L+1) + w_2 against S = w_1 + w_2; abstract, not on the line with geometric thresholds; conditions binding
+at levels of equal deficiency, such as the edge-set chain itself.
+Process audit: the title is stronger than the body; "Working proof, reviewed" was written before the review;
+the named next attempt was not tried on its smallest instance, which a four-level family decides; one reading
+unlisted; the Bearing's counterfactual unchecked on random samples; the Architecture test left Not decided
+(queue head); its two record searches (nested maximum matchings, Mendelsohn-Dulmage; gluing counterexample
+with equal deficiencies) found nothing beyond lem:per-level-gluing-fails and lem:two-graph-chain-duality.
+Strength count 4.
+
+Second pass. Verdict: pass with corrections. Applied correctly: weights on the new levels in (b); the weakest M; C > 1 and M >= h/(C-1) in (c) with the lower-bound wording; n >= 1; per-part scopes. Parts (d) (t >= 2 + ln(L+1+e); ratio 1.807 at L = 3 matches families.txt) and (e) (unique perfect matching of the path, A the only maximum matching of G_1, t >= 2 + ln(L+1), ratios 3 and 4) correct. The shift sentence still wrong for the cover reading: it holds at the last deficient level, failing only where er < h. The closure does not stand: a missed reading, every maximum matching of G_k extending to a maximum matching of G_{k+1} (C = 1 for every M_k), glues at constant 1 (proof: chain any maximum matching upward; P cap G_k contains M_k, so Gamma = S); (b), (c), (e) satisfy the universal forms of their readings, (d) fails it at level 2. Restatement too strong: the chain is sufficient for gluing, not equivalent. Title, status line, Stakes, Not examined, spec rationale and next_action to be rewritten; New mathematics to note that (e) has a single deficient level. Suggestion (unverified): test the universal C = 1 reading on random one-dimensional samples. Process audit: the readings were varied in their constant, not their quantifier; 'equivalent' drawn from one direction. Strength count 4.
+
+Third pass (part (f), the Continuing follow-up, the gadget). Verdict: pass with corrections. (f) correct, including k_0 = -infinity and the membership checks for (b), (c), (e), (d). Smallest case correct against gadget.txt; add the step that other components' leftover matchings are at most their own drops. Flaws: the integer gadget has probability zero (edges of length exactly 1); use an open configuration such as X = {0, 1.6}, Y = {0.8, 3.5}; binomial samples are not independent over windows, so label the Poisson model and de-Poissonization as not done; say whether the goal's levels reach unit-density scale; the box-level N^(-c) has no derivation and isolation is only sufficient, so write unestimated. Title 'Only universal local completion glues levels' contradicts (a); retitle. Process audit: title drafted from the new part (f); outline written from the integer picture. Strength count 2.

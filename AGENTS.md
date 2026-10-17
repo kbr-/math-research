@@ -473,7 +473,9 @@ AGENTS.md"):
 - Before a follow-up is Developed or Closed, write the item's question in each reading its words
   allow, each with its attempt: what the entry's own definition covers is not the item (17 October
   2026: a corollary covered the reading the draft had defined, and two other readings of the item
-  were listed as covered without an attempt).
+  were listed as covered without an attempt). The readings vary each quantifier the words leave open
+  (some or every choice, one or all levels), not only each constant (17 October 2026: readings
+  varied in their constant only missed the universal one, the only one that glued).
 - Before calling a question decided, write the class its words range over (all forms, all closures,
   all errors, every value of a parameter it bounds by an inequality) beside the class the argument
   covers; it is decided only where the two agree (17 October 2026: a bound stated as an inequality

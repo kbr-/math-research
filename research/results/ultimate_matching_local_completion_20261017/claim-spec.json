@@ -1,0 +1,34 @@
+{
+ "source": {
+  "record": "[Local completion fails to glue deficient levels](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-local-completion-masking)",
+  "label": "Local completion fails to glue deficient levels",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-17-local-completion-masking"
+  ]
+ },
+ "date": "2026-10-17",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "claims": [
+  {
+   "id": "thm:local-completion-dichotomy",
+   "summary": "For nested bipartite graphs G_k0 <= ... <= G_K on X, Y, |X| = |Y| = n, G_K complete, deficiencies m_k, weights w_k >= 0 with finite partial sums W_j, Gamma the least layered cost sum_{k<K} w_k |P - G_k| of a perfect matching and S = sum w_k m_k; at a level k with a maximum matching M_k of G_k and leftover U_k: completion with constant C asks a matching in G_{k+1} inside U_k of size >= m_k - C m_{k+1}; cover asks one matching of G_{k+1} covering U_k. (a) Completion with C < 1 forces m_{k+1} = 0 (at every level: every level above k_0 perfect, Gamma = S); at C = 1, M_k plus that matching is maximum in G_{k+1}; extension by augmenting paths always holds. (b) For C > 1, a family with last deficient level k*, j >= k*+2 and M >= max_{k <= j-2} (m_k - C m_{k+1})/(C-1): adding M disjoint pairs whose edges enter at level j makes every level complete with constant C, with Gamma' = Gamma + M W_{j-1} and S' = S + M W_{j-1}. (c) On the line, X = {1..n}, Y = X + h, h = floor(sqrt n), M = ceil(h/(C-1)) pairs of length d = ceil(e h) at spacing Delta = 2(n + h + d), levels |x - y| <= e^(k-1) from any k_0 <= 1 (or all integers), weights e^k: every level complete with constant C > 1, Gamma >= nh + Md - n - M, S <= (e^2(h^2 + Md) + eh)/(e-1), so Gamma/S >= (1 + o(1)) sqrt n (e-1)(C-1)/(e^2(C-1+e)). (d) Forced-path families (t >= 4 levels) with completion at C = 1 at every level and Gamma/S = (L+1+e)/(1+e) for weights e^k once t >= 2 + ln(L+1+e). (e) Forced-path families with the cover reading at every level and Gamma/S = L+1 for weights e^k once t >= 2 + ln(L+1). These readings ask for some maximum matching. (f) Asked for every maximum matching, completion with C = 1 at every level gives Gamma = S for every nonnegative weights; the families of (b), (c), (e) satisfy the universal forms of their readings, that of (d) does not.",
+   "assessment": "Working proof: (a) by the size of a matching of G_{k+1}; (b) by deficiencies adding over components, vacuity of the levels up to j - 2 by the choice of M, a perfect base matching with the pairs at level j - 1, and an exchange bound for matchings with cross edges; (c) by the case analysis on the radius and lem:per-level-gluing-fails's deficiencies, edge cost c(d) >= d and displacement sum; (d), (e) by the unique perfect matching of a path, the levels above repeated so that leaving it costs at least W_{t-1}; (d) is the reviewer's construction, checked by hand and by enumeration at L = 2, 3.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Decides which local-completion forms of per-level Hall certificates glue: asked for some maximum matching, completion with C < 1 holds only where every level above the lowest is perfect, and completion with C > 1, with C = 1, the cover reading and the augmenting reading each hold on families whose gluing ratio is unbounded; asked for every maximum matching, completion with C = 1 glues at constant 1. Not covered: whether the goal's random samples satisfy the universal form, line realizations of (d) and (e) with geometric thresholds, and whether the goal's random samples have two consecutive deficient level graphs.",
+   "next_action": "Decide whether random samples satisfy the universal form of completion with C = 1 at the level graphs: on the line at unit density isolated open four-point gadgets break it (outlined in the Poisson model; de-Poissonization not done); at the goal's box levels the chance of isolation is not estimated.",
+   "novelty": "not_claimed"
+  }
+ ],
+ "relationships": [
+  [
+   "thm:local-completion-dichotomy",
+   "depends_on",
+   "lem:per-level-gluing-fails",
+   "Part (c) pads its shift instance and uses its deficiency formula, edge cost bound and displacement sum."
+  ]
+ ]
+}
