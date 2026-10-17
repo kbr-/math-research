@@ -1,0 +1,75 @@
+Reviewer record: the axiom repetition syzygy entry, 17 October 2026.
+One fresh-context medium-reviewer; its reports follow verbatim.
+
+=== Report 1: the first draft ===
+
+**Verdict: pass with corrections.** The mathematics in steps (1) to (5) holds. The title, commit subject and Bearing say more than the corollary gives, and the Plainest bound stops one application short of deciding the Bearing.
+
+**Correctness**
+- **Step (1).** The step is correct. It can also be checked without the envelope lemma. Since \(A_t(x,0)=0\) and the free algebra is a domain, \(Q(x,0)=0\). Since \(P^tQ(x,G)=P^{t+1}\), \(Q(x,G)=P\). Then \(H(x,G)=1-P\) by telescoping, so \(C_\Lambda(x,G)=1\).
+  - Undischarged hypothesis: lem:matched-jet-envelope requires "\(U\) has no common Boolean zero". Add that the used inputs of a refutation are unsatisfiable by soundness.
+- **Steps (1) and (2), unstated condition.** Same generators and placeholders: \(\pi^{\rm in}\) must use the same input order as \(P\) and \(\widehat\pi\), the same literal order (so the same \(R_i\)), and the same placeholder labels. The remainder lemma's text gives all three; the corollary should state them.
+- **Step (2).** Correct. The prefixes of \(\Lambda\) hold only translations, and \(R_i\) and the absorption terms each carry one placeholder (the simulation theorem's lemma excerpt).
+- **Step (4).** The step is valid syntactically, not only as a polynomial identity, provided the compiler writes each prefix as an ordered product gate. Then removing its leading factors (tag factors \(1-0\), the original inputs and \(t\) rounds' worth of \(P\)) is a deletion of children. Say this in the step.
+  - The size of \(H\) is wrong but harmless. Each prefix has up to \(m\) factors, so \(|H|=O(m\sum_k|F_k|+\sum_i|R_i|)\), not \(O(\sum_i(i+|F_i|))\).
+- **Step (5), "exactly when".** This needs tolerance of both \(+P^tD\) and \(-P^tD\). Over \(\mathbb F_2\) these are the same; say so. Also fix the constant in \(O((S+t+1)^{48})\): the property must tolerate every zero-certificate of size at most \(c(S+t+1)^{48}\) for one stated \(c\).
+- **Plainest bound, missed application (main finding).** Any two certificates of \(G\) differ by a zero-certificate of size at most the sum of their sizes. Applied to \(C_{\widehat\pi}\) and \(C_{\pi^{\rm in}}\) directly, this already gives the last sentence's consequence, without lem:remainder-identity: a tolerant property holds of \(C_{\widehat\pi}\) iff it holds of the matched image \(C_{\pi^{\rm in}}\) itself. Also \(C_{\widehat\pi}\) is itself a matched image, of a refutation of size \(O((S+t+1)^4)\).
+- **What the corollary adds over that.** Only the factor: the difference lies in \(P^t\mathcal Z\), not just \(\mathcal Z\). That factor is lem:matched-jet-envelope (c), applied to the two envelope members \(C_{\widehat\pi}\) and \(A_t+P^t(C_{\pi^{\rm in}}-H)\). The second is a certificate, with value \(1-P^{t+1}+P^t\cdot P=1\) at \(G\), and it differs from \(A_t\) by an element of \(P^t K\langle x,Y\rangle\). So the new content is the size bound on \(D\) only. The explicit form is already in lem:remainder-identity's registered statement ("With logical axioms, \(C_\Lambda-C_{\pi^{\rm in}}\) is an explicit sum ..."). The Record comparison and Baseline must say all this.
+- **Bearing.** A property tolerant of every zero-certificate of size at most \(2s\) takes one value on all certificates of size at most \(s\), not only on matched images. So "nothing beyond the matched images" is true but empty: such a property cannot separate matched images from arbitrary small certificates. It can give a lower bound only by failing on every polynomial-size certificate, which is the full IPS lower bound. State this. Then reconsider `data-bearing="some"`; on this argument it gives nothing at the goal's parameters.
+- **Title (false as written).** The remainder is \(Q=C_\Lambda-H\), so \(Q-C_{\pi^{\rm in}}=D-H\), which is not a zero-certificate (\(H(x,G)=1-P\)). It must say "the remainder plus \(H\)", or "differs from the matched image minus \(H\)". This repeats the "minus \(H\)" correction made in the remainder identity review.
+- **Commit subject.** "transformed images reduce to matched images up to small zero-certificates" is trivially true by the bare difference and is not what the corollary proves. It also uses the "reduce to" form that CLAUDE.md forbids for one-sided statements. Rewrite it from the corrected statement.
+- **Unused hypotheses.** Depth \(d\) (ledger) is unused. The characteristic enters only through lem:matched-jet-envelope (\(K\) of characteristic two). The corollary's own steps (1) to (5) hold over any field where the compiler is defined, apart from the sign in (5).
+- **Smallest case (sub-idea).** Checked.
+  - \(k=1\): \(1/(z^2+z)=1/z+1/(z+1)\) over \(\mathbb F_2\), and the telescoping identity is right. The result is \(\Sigma\Pi\Sigma\), depth 3. Size is \(O(\sum_a q_a^2)\) counted in factor occurrences; times \(O(v)\) if the affine forms are written out.
+  - Fixed \(k\): grouping by the first \(k\) indices gives \(\binom{q_a}{k}\) terms of size \(O(q_a)\). Bezout multipliers \(\alpha,\beta\) of degree below \(k\) are correct, but they raise the depth above 3. Say so.
+  - "Superpolynomial when \(k\) grows" is this decomposition's count, not the quotient's. Word it so.
+  - lem:coefficient-fed-division does not give the fixed-\(k\) form, since it needs the complete coefficient list, middle orders included. lem:quotient-restriction-data does not either: it disclaims an "original-variable quotient circuit". Write this now; it closes the "to be read" item.
+- **Nonvacuity.** It is acceptable, but "\(D\) is the two repetition terms ..." on or_cut is an application of the lemma, not a computation. The fixture's \(\bigvee()\to\) contributes zero; mention it.
+
+**Record searches.** I searched "zero-certificate difference two certificates transformed image matched image syzygy" and "quotient affine products power z^2+z elementary symmetric coefficient interpolation extension". Neither found a registered claim stating the corollary.
+- lem:certificate-cube-erasure and cor:certificate-jet-erasure (\(D_t=G_tH+P^tC\) for any certificate \(C\)) are the general-certificate form of the same normalization; cite them in the Record comparison.
+- thm:affine-component-ranks (sums of affine products) and prop:linear-quotient-assembly-gap bear on the sub-idea.
+
+## Suggestions (unverified)
+
+- **Open point, restatement.** For tolerant properties, the jet-erasure direction is a full restatement, by the constancy argument above. A property that could still matter must be intolerant: exact membership in the compiled-image class, a coefficient or formula-structure pattern, or the one-sided factor \(P^t\) as such. Only then would exact membership of \(C_\Lambda\) matter. I found no such property bearing on lower bounds.
+- **Growing \(k\), possible obstruction (unverified).** The truncations of \(\prod_j(u_j+c_jz)\) are elementary-symmetric-type polynomials. Over \(\mathbb F_2\) on the cube, \(e_{2^r}\) gives bit \(r\) of the Hamming weight (Lucas), a threshold when \(2^r>n/2\). By Razborov–Smolensky that bit has no polynomial-size constant-depth \(\mathbb F_2\) formula.
+  - A three-product dividend whose quotient restricts to such a function would show the telescoping count cannot be avoided in general.
+  - I did not construct one. \(f\)'s values on \(z\in\{0,1\}\) say nothing about \(q\), so the encoding must go through \(q\) directly.
+  - Evaluation and interpolation over an extension \(E\) (Ben-Or) gives constant depth for any \(k\), but with \(E\)-constants. lem:quotient-restriction-data already notes that no binary fixed-depth version is supplied.
+
+**Process audit**
+- **Title.** Drafted before review and false without "plus/minus \(H\)": the same defect the previous review corrected.
+- **Commit subject.** Stronger than the corollary and in the forbidden "reduce to" form.
+- **Plainest bound.** Applied to \(C_\Lambda\) against \(C_{\pi^{\rm in}}\) but not to \(C_{\widehat\pi}\) against \(C_{\pi^{\rm in}}\), which decides the Bearing outright. Neither the Bearing nor the commit message notes that a tolerant property is constant on all small certificates.
+- **Record comparison.** "New is only the combination" leaves out that the explicit form is in lem:remainder-identity's registered statement and that the \(P^t\mathcal Z\) form is lem:matched-jet-envelope (c).
+- **Follow-up.** The draft leaves "to be read for the fixed-\(k\) form" open, but the excerpts supplied already decide it (no).
+- **Prevention claims.** The Process assessment's "queued" prevention and the medium-reviewer edit are reported as made; I saw no output of either.
+- **Count.** "Four right objections" in the Review paragraph is given without its source file.
+
+Strength count: 4 (title, commit subject, Bearing "nothing beyond the matched images", New mathematics wording).
+
+Files: /home/kbr/.claude/jobs/d56a25e2/tmp/entry_axiom_syzygy.html, /home/kbr/.claude/jobs/d56a25e2/tmp/commit_axiom.txt, /home/kbr/dev/math-auxiliary/research/results/axiom_repetition_syzygy_20261017/claim-spec.json
+
+=== Report 2: the corrected draft ===
+
+**Verdict on corrections: pass with corrections.** Most corrections are right: the order, literal and label hypotheses; the discharge in step (1) and the direct argument; the size of \(H\); the bare display; the citations in the Record comparison; and the Smallest-case wording. Seven points remain.
+
+**Required changes**
+- **Plainest bound, the constancy sentence.** It asks for tolerance of zero-certificates "of size at most \(2s\)" but then says two certificates differ by one "of size at most \(2s+1\)". Make the two agree by requiring tolerance up to \(2s+1\).
+- **Bearing, Follow-up and spec: the quantifier.** "Tolerant of adding polynomial-size zero-certificates takes one value on all certificates of polynomial size" holds only if the property is tolerant at every polynomial budget. A property tolerant up to a fixed budget \(b\) is constant only on certificates of size at most \((b-1)/2\). Write "tolerant of every zero-certificate of polynomial size", or state the budget relation. The spec summary repeats the sentence; fix it there too.
+- **Spec rationale drops a qualifier.** "the item's jet-erasure direction is a restatement of the full IPS lower bound" must keep "for properties tolerant of small zero-certificates" (or the item's syzygy-surviving properties).
+- **Step (4) names the wrong children.** The tags, the original inputs and the \(t\) rounds together give \(P^{t+1}\), not \(P^t\). The children to delete are the tag factors, the original inputs and the first \(t-1\) rounds. The last round stays, and it matches \(\Lambda\)'s input block and the input-reference terms (\(U=P^t\prod_{l<k}(1-F_l)\)).
+- **Bearing gives a reason the rules refuse.** "The cycle was spent on it because the review's Decision set the atomic-axiom question" is the reason AGENTS.md forbids ("that a review ... asked for the work is not a reason"). Keep only what the cycle could have given and what it found.
+- **Relayed suggestion lost its qualifier.** I said the threshold argument applies for \(2^r>n/2\). The relay says every bit \(r\) of the Hamming weight lacks small constant-depth \(\mathbb F_2\) formulas, which is false for constant \(r\). Restore "for \(2^r>n/2\), where the bit is a threshold", and keep "unverified".
+- **Commit subject is misreadable.** "remainder plus input sum is a small zero-certificate from the matched image" reads as \(H+Q\) itself being a zero-certificate. Use "differs from the matched image by a small zero-certificate", as the title does.
+
+**Minor**
+- The new AGENTS.md rule largely repeats CLAUDE.md's order-of-work item ("First draft the Plainest bound: the bare count ... on the instance"). The framework rules ask that existing guidance be revised rather than added to. Consider extending that item instead.
+- The spec assessment already says "passed ... with corrections". Keep it only if these corrections are made.
+
+**Process audit.** The title now matches the body: the remainder plus \(H\) differs from the matched image by a polynomial-size zero-certificate. But that is the part the entry itself calls a citation and the plainest bound. The only new content, the \(O((S+t+1)^{48})\) bound on \(D\) in \(P^t\mathcal Z\), appears in the title only as "of polynomial size". So the title is accurate but leads with the part that is not new.
+
+Strength count: 3 (the Bearing and spec constancy quantifier, the spec rationale, and the commit subject).
+
+Files read: /home/kbr/.claude/jobs/d56a25e2/tmp/entry_axiom_syzygy.html, /home/kbr/.claude/jobs/d56a25e2/tmp/commit_axiom.txt, /home/kbr/dev/math-auxiliary/research/results/axiom_repetition_syzygy_20261017/claim-spec.json

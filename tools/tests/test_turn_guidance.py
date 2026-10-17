@@ -188,6 +188,7 @@ class TurnGuidanceTest(unittest.TestCase):
         self.assertIn('C or C++ kernels', notes)
         self.assertIn('propose a general statement and attempt to prove it', notes)
         self.assertIn(self.guide.CASES_PLEA, notes)
+        self.assertIn('read one level down', notes)
         self.assertIn('selects 3 passed leads and 2 passed bridges', notes)
 
     def test_progress_warning_does_not_change_review_schedule(self):

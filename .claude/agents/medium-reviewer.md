@@ -56,6 +56,12 @@ same words with another meaning, the opposite clause order, the form a later ent
 write) and run it, since a correction tested only on its reviewer's examples is fitted to them (17
 October 2026: a block-count check passed every sentence its reviewer gave and missed a fresh one).
 
+Where the brief sends a decision or a next attempt that poses a question about a cited result, read
+the statements that result cites, one hop down, before accepting that the question is open: the
+answer is often already there (17 October 2026: a review asked whether two certificates differ by a
+small certificate, while a lemma its cited result cites already stated the needed certificate
+property).
+
 After the correctness check, and never in place of it, help with what the brief names as the cycle's
 open point: for a failed proof attempt, an adjustment that gets past the failing step or a reason
 none exists; for an unproved expectation, a proof or a counterexample; for a new bound, whether it

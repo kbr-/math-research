@@ -289,7 +289,10 @@ AGENTS.md"):
 - First draft the Plainest bound: the bare count or the oldest recorded lemma on the instance,
   before any method is chosen; then, once a proof exists, each of its own steps used alone (a
   substitution, a reduction, a restriction), since a step that already decides the instance makes
-  the rest of the proof a variant to compare, not the result.
+  the rest of the proof a variant to compare, not the result. Apply it to the question's own objects
+  as well as to the intermediate ones the method introduces (17 October 2026: a bare difference of
+  certificates was applied to an intermediate sum and not to the transformed image itself, where it
+  showed the conclusion empty).
 - Before calling a case hard, handing a step to someone else or asking a question, take the cheapest
   step on the instance yourself: a union bound over its family's members, the default the rules
   already give, the result of the edit just made (17 October 2026: a two-block case called deep, a

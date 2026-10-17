@@ -263,6 +263,11 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
              'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
              'Before each computation, ask whether further computations are needed, or whether the results you '
              'already have are enough to propose a general statement and attempt to prove it. ' + CASES_PLEA,
+             # 17 October 2026: a question was posed and judged at the level of the newest result, while the lemma
+             # beneath it held the answer and the question's own object showed the conclusion empty.
+             'Before posing, answering or summing up a question, read one level down (the statements the newest '
+             'result cites) and one level up (the object the question is about, the goal\'s own instance): apply '
+             'the plainest bound there before the method\'s intermediates.',
              'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
              'fields study the objects of the open statement this cycle advances, and what their strongest '
              'theorems say about them (Outside leads), and also which fields never stood near these objects, since '
