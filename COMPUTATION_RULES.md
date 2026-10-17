@@ -387,7 +387,10 @@ unfinished.
   decision point, not a wait: find what it is doing (which step, memory), and stop it to optimize or
   redesign unless its measured progress justifies the rest. The `monitor-gate.py` hook refuses every
   other tool call until that monitor is armed. Before scaling a script past its control case, size
-  each expensive step, such as Gröbner bases or saturations on generators of the new degrees. Claude
+  each expensive step, such as Gröbner bases or saturations on generators of the new degrees. A new
+  script, or one reused at a new size through another script, first runs end to end at its smallest
+  size, so that its plumbing (labels, pickling for a pool, imports) fails in seconds, not after the
+  large board's setup (17 October 2026: a run failed on pickling after a five-minute setup). Claude
   Code's PreToolUse hook (`tools/hooks/bash_guard.py`) refuses a foreground `compute.sh` run with
   `--expect` over 60 s or `--timeout` over 180 s, and one with `--timeout` over 60 s that gives no
   `--expect`: a run allowed more than a minute either says it is expected to be shorter or goes to
