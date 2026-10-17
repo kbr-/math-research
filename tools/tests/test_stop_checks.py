@@ -450,14 +450,16 @@ class UncheckedClaimTest(HookFixture):
         for text in ('That was my mistake.', 'My own error: the path.', 'I was wrong about the runner.', 'I got that wrong.',
                      'I missed the ignored files.', 'I put it badly.', 'Yes, it was avoidable.', 'I misjudged the cost.',
                      'I withdraw my claim of a floor.', 'I overstated the bound.', 'My earlier reading was wrong.',
-                     'I retracted the what-if.', 'My conclusion is withdrawn.'):
+                     'I retracted the what-if.', 'My conclusion is withdrawn.',
+                     'Twice I worked around a launcher or checker refusal before finding its cause.'):
             with self.subTest(text=text):
                 self.assertEqual(hook.sentences(hook.MISTAKE, [text]), [text.rstrip('.')])
         # A gap declared, another's mistake, a quoted admission and a mention of prevention mid-sentence are none.
         self.assertEqual(hook.sentences(hook.MISTAKE, [
             "I didn't run it. The mistake was the tool's. You were wrong there. He said \"my mistake\". "
             "The author withdrew the claim. The reviewer's reading was wrong. The entry is withdrawn. "
-            "I withdraw that offer. I withdrew the playbook idea."]), [])
+            "I withdraw that offer. I withdrew the playbook idea. The launcher worked around the check. "
+            "I worked around the clock."]), [])
         self.assertIsNotNone(hook.mistake_block(['That was my mistake.'], 'That was my mistake. Its prevention is unknown.'))
 
     def test_promise_shapes(self):

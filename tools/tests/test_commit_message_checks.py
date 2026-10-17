@@ -49,6 +49,16 @@ class ConditionTest(unittest.TestCase):
         self.assertEqual(cmc.dropped_conditions(full, claims), [])
         self.assertEqual(cmc.dropped_conditions('A message that names no claim.', claims), [])
 
+    def test_a_dropped_condition_needs_a_confirmation_line(self):
+        # 17 October 2026: a flagged message was committed unchanged.
+        dropped = [('cor:linear-error-transfer', 'when S misses three holes')]
+        self.assertEqual(cmc.unconfirmed('Main: x\n\nThe criterion holds.', dropped), dropped)
+        ok = 'Main: x\n\nThe criterion holds.\n\nConditions checked: cor:linear-error-transfer (an in-particular case).'
+        self.assertEqual(cmc.unconfirmed(ok, dropped), [])
+        # naming another claim that contains this one's name as a prefix does not confirm it
+        other = 'Main: x\n\nConditions checked: cor:linear-error-transfer-two (another).'
+        self.assertEqual(cmc.unconfirmed(other, dropped), dropped)
+
     def test_a_dropped_degree_window_in_an_entry_is_listed(self):
         # 17 October 2026: a General statement dropped both degree windows of its claim.
         claims = [('prop:p', '(a) If D >= l+1, the least degree is l. (b) If D >= l + ceil(l/2), it is ceil(l/2).')]

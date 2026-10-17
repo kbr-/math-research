@@ -64,12 +64,16 @@ def unsourced(message, paths, read):
     missing = []
     for paragraph in re.split(r'\n\s*\n', body):
         named = [p for p in sources if Path(p).name in paragraph]
-        texts = [t for t in (read(p) for p in (named or sources)) if t]
-        for figure in (m.group(0) for m in FIGURE.finditer(paragraph)):
-            if not all(any(re.search(r'(?<![\d.])' + re.escape(n) + r'(?![\d])', t) for t in texts)
-                       for n in NUMBER.findall(figure)):
-                missing.append(figure)
+        texts = list(filter(None, map(read, named or sources)))
+        figures = [m.group(0) for m in FIGURE.finditer(paragraph)]
+        missing += [figure for figure in figures if not figure_sourced(figure, texts)]
     return missing
+
+
+def figure_sourced(figure, texts):
+    """Whether every number of the figure appears, as a whole number, in one of the texts."""
+    return all(any(re.search(r'(?<![\d.])' + re.escape(n) + r'(?![\d])', t) for t in texts)
+               for n in NUMBER.findall(figure))
 
 
 def tokens(text):
@@ -186,6 +190,15 @@ def unlabelled_scripts(paths, top, compute=None):
     return found
 
 
+def unconfirmed(message, dropped):
+    """The (claim, condition) pairs of `dropped` whose claim no line "Conditions checked: ..." of the message names.
+    17 October 2026: a flagged message was committed unchanged and the drop explained only in a reply; the
+    confirmation now lives in the message, with why each condition does not matter there."""
+    confirmed = ' '.join(re.findall(r'^Conditions checked:(.*)$', message, re.M))
+    return [(ident, condition) for ident, condition in dropped
+            if not re.search(r'(?<![\w:-])' + re.escape(ident) + r'(?![\w-])', confirmed)]
+
+
 def check_staged(message_path):
     message = Path(message_path).read_text(encoding='utf-8', errors='replace')
     paths = git('diff', '--cached', '--name-only').split()
@@ -213,10 +226,28 @@ def check_staged(message_path):
     if 'research/claims/index.json' in paths:
         old = git('show', 'HEAD:research/claims/index.json', check=False)
         dropped = dropped_conditions(message, new_claims(old, read('research/claims/index.json')))
-        for ident, condition in dropped:
+        for ident, condition in unconfirmed(message, dropped):
             print(f'commit-msg: the message\'s sentence on {ident} does not carry its condition "{condition}"; '
-                  'state it, or confirm it does not matter there.', file=sys.stderr)
+                  'state it, or add a line "Conditions checked: ' + ident + ' (why it does not matter there)".',
+                  file=sys.stderr)
+            status = 1
     return status
+
+
+def replay_scripts(rev, root, compute):
+    """For one commit: the research scripts it adds or changes, each written out as it was at `rev` under a
+    research/results path of its own below `root`, and how many lack their labelled lines; prints each line."""
+    changed = git('diff-tree', '--no-commit-id', '--name-only', '--diff-filter=AM', '-r', rev).split()
+    seen = bad = 0
+    for path in [p for p in changed if p.startswith('research/results/')
+                 and Path(p).suffix in compute.REFUTATION_SUFFIXES]:
+        (root / path).parent.mkdir(parents=True, exist_ok=True)
+        (root / path).write_text(git('show', f'{rev}:{path}', check=False))
+        seen += 1
+        lines = unlabelled_scripts([path], root, compute)
+        bad += bool(lines)
+        print('\n'.join(f'{rev[:9]}\tscript\t{line[:160]}' for line in lines), end='\n' if lines else '')
+    return seen, bad
 
 
 def replay(count, scripts_only=False):
@@ -225,23 +256,14 @@ def replay(count, scripts_only=False):
     scripts each adds or changes without their labelled lines; `scripts_only` skips the first two, whose reads
     of the registry at each registering commit take most of the time (400 commits ran past 120 s)."""
     import tempfile
-    refused = framework = listed = registering = scripts = unlabelled = 0
+    refused = framework = listed = registering = scripts = unlabelled = condition_refused = 0
     compute = compute_module(ROOT) if (ROOT / 'compute.sh').is_file() else None
     scratch = tempfile.TemporaryDirectory(prefix='commit-replay-')
     for rev in git('log', f'-{count}', '--format=%H').split():
         if compute:
-            changed = git('diff-tree', '--no-commit-id', '--name-only', '--diff-filter=AM', '-r', rev).split()
-            for path in [p for p in changed if p.startswith('research/results/')
-                         and Path(p).suffix in compute.REFUTATION_SUFFIXES]:
-                # Each script is written out as it was at `rev`, under a research/results path of its own.
-                root = Path(scratch.name) / rev
-                (root / path).parent.mkdir(parents=True, exist_ok=True)
-                (root / path).write_text(git('show', f'{rev}:{path}', check=False))
-                scripts += 1
-                lines = unlabelled_scripts([path], root, compute)
-                unlabelled += bool(lines)
-                for line in lines:
-                    print(f'{rev[:9]}\tscript\t{line[:160]}')
+            seen, bad = replay_scripts(rev, Path(scratch.name) / rev, compute)
+            scripts += seen
+            unlabelled += bad
         if scripts_only:
             continue
         message = git('log', '-1', '--format=%B', rev)
@@ -257,11 +279,14 @@ def replay(count, scripts_only=False):
         if 'research/claims/index.json' in paths:
             registering += 1
             old = git('show', f'{rev}^:research/claims/index.json', check=False)
-            for ident, condition in dropped_conditions(message, new_claims(old, read('research/claims/index.json'))):
+            pairs = unconfirmed(message, dropped_conditions(message, new_claims(old, read('research/claims/index.json'))))
+            condition_refused += bool(pairs)
+            for ident, condition in pairs:
                 listed += 1
                 print(f'{rev[:9]}\tcondition\t{ident}\t{condition}')
     print(f'{count} commits read: {refused} of {framework} framework commits would be refused for figures; '
-          f'{listed} conditions listed over {registering} commits that change the registry; {unlabelled} of '
+          f'{listed} unconfirmed conditions over {registering} commits that change the registry, {condition_refused} '
+          f'of which would now be refused; {unlabelled} of '
           f'{scripts} research/results scripts added or changed would be refused for labelled lines (each written '
           'out now, so the record check\'s modification date applies to all).')
     scratch.cleanup()

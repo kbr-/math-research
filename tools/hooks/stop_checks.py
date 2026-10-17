@@ -464,6 +464,8 @@ MISTAKE = re.compile(r"[^.!?\n]*(?:\bmy (?:own )?(?:mistake|error|fault|oversigh
                      r"\bI got (?:it|that|this) wrong\b|\bI never (?:measured|checked|tested|verified|read|looked|"
                      r"timed|ran|tried)\b|\bI (?:missed|overlooked|misjudged|misread)\b|"
                      r"\bI (?:phrased|put) (?:it|that) badly\b|\bwas avoidable\b|"
+                     # 17 October 2026: "twice I worked around a launcher or checker refusal" passed unanswered.
+                     r"\bI worked around (?:a|the|its|that|this) (?:\w+ ){0,3}(?:refusal|check|gate|guard)\b|"
                      # A claim of one's own taken back is a mistake admitted in other words.
                      r"\bI (?:had )?(?:overstated|misstated|misquoted)\b|\bI (?:withdraw|withdrew|retract(?:ed)?) "
                      r"(?:my|the|that|this) (?:\w+ ){0,2}(?:claim|statement|conclusion|reading|lemma|result|bound|"
