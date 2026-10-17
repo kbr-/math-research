@@ -1,7 +1,7 @@
 """Joint kernel of the separated two-family Pang-form errors at K = 2, from the per-error transfer.
 
 System: functional pigeonhole over F_2 (Booleanity, hole and functionality axioms, pigeon axioms
-Q_i = 1 + sum_h x_ih, multilinear ring), m pigeons, N = 8 holes, D = 4. Everything is computed modulo H, the
+Q_i = 1 + sum_h x_ih, multilinear ring), m pigeons, N holes (8 unless --holes), D = 4. Everything is computed modulo H, the
 closure of the hole and functionality axioms, which is the span of the non-matching monomials of degree <= D
 (monomial axioms), so V_K mod H has the matching monomials of size <= K as basis.
 Errors: q1 = x00 + x11, q2 = x22 + x33, E_e = (1 + q_nu) x_e for the edges e sharing no pigeon and no hole with
@@ -192,7 +192,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', required=True)
     ap.add_argument('--pigeons', default='4,5,6')
+    ap.add_argument('--holes', type=int, default=8)
     args = ap.parse_args()
+    global N
+    N = args.holes
     out = {'positive_control': positive_control(), 'runs': []}
     for m in [int(t) for t in args.pigeons.split(',')]:
         null = run(m, 1)
