@@ -946,7 +946,9 @@ def validate_next_attempt_search(entry, queries):
     Twice on 16 October 2026 a Record search paragraph said a search for the next attempt had returned
     nothing before any such search had run; validate_searches_run passed, as other searches had. The sentence
     naming the next attempt must share two content words with one search logged in the session."""
-    found = re.search(r'<strong>Record search\.</strong>(.*?)</p>', entry, re.S)
+    # A Record search inside a follow-up list item ends at </li>: on 17 October 2026 the match ran on to the
+    # Verification gate's </p> and took its "next attempt's Smallest case" for the attempt.
+    found = re.search(r'<strong>Record search\.</strong>(.*?)(?:</p>|</li>)', entry, re.S)
     if not found:
         return
     plain = html.unescape(strip_tags(found.group(1)))

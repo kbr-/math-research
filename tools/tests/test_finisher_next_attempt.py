@@ -22,6 +22,17 @@ class NextAttemptSearchTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             FT.validate_next_attempt_search(ENTRY, ['empty set returned next attempt search'])
 
+    def test_a_record_search_in_a_list_item_ends_at_the_item(self):
+        # 17 October 2026: the match ran from a follow-up item's Record search to the Verification gate's </p>.
+        entry = ('<ul><li><strong>Record search.</strong> "union of random flats" returned prop:x.</li></ul>'
+                 '<p><strong>Verification gate.</strong> The reviewer checked the next attempt\'s Smallest '
+                 'case outside its range.</p>')
+        FT.validate_next_attempt_search(entry, ['-n 5 union of random flats covering'])
+        inside = entry.replace('returned prop:x.', 'returned prop:x. For the next attempt, quadric pencils '
+                                                   'over cyclotomic towers, nothing.')
+        with self.assertRaises(ValueError):
+            FT.validate_next_attempt_search(inside, ['-n 5 union of random flats covering'])
+
     def test_a_paragraph_without_a_next_attempt_passes(self):
         for entry in ('<p><strong>Record search.</strong> A search for cylinders returned prop:x.</p>',
                       '<p>No record search here; the next attempt is elsewhere.</p>'):
