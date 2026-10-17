@@ -70,8 +70,19 @@ def sentences(fragment):
     return [re.sub(r'\x00(\d+)\x00', lambda m: held[int(m.group(1))], part) for part in parts]
 
 
+# A sentence using a part of the draft's own statement by its letter, outside the paragraphs that state and prove
+# it: on 17 October 2026 five such sentences ("by (a) no fixed-kernel sandpile adds one") dropped the statement's
+# hypothesis that the one rule is reversible, and none was listed beside the statement, as none names its ID.
+OWN_PART = re.compile(r'(?<!its )(?<!that lemma\'s )\b[Pp]arts? \(([a-h])\)|\bby \(([a-h])\)|(?<!\'s )(?<!’s )(?<![\w-])\(([a-h])\) (?:shows|'
+                      r'gives|covers|decides|identifies|removes|holds|applies|proves|implies)\b')
+DEFINING = ('Statement', 'Proof')
+
+
 def citations(draft):
-    """(claim id, section label, sentence text) for every sentence of the draft that cites a claim."""
+    """(claim id, section label, sentence text) for every sentence of the draft that cites a claim, and for every
+    sentence outside the Statement and Proof that uses a part of a claim the draft declares by its letter (each
+    declared claim, as the letter does not say which)."""
+    declared = [c for c in (re.search(r'data-claims="([^"]*)"', draft) or [None, ''])[1].split() if c != 'none']
     found, heading = [], ''
     for tag, body in BLOCK.findall(draft):
         if tag in ('h3', 'h4'):
@@ -80,8 +91,15 @@ def citations(draft):
         label = LABEL.match(body)
         where = label.group(1) if label else heading
         for sentence in sentences(body):
-            for claim in cited(sentence):
+            claims = cited(sentence)
+            for claim in claims:
                 found.append((claim, where, text(sentence)))
+            # labelled paragraphs only: under a section heading the paragraphs are the statement's own proof steps
+            if (declared and label and where not in DEFINING and not where.startswith(('Step', 'Part'))
+                    and OWN_PART.search(text(sentence))):
+                for claim in declared:
+                    if claim not in claims:
+                        found.append((claim, where, text(sentence)))
     return found
 
 

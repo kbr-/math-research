@@ -573,6 +573,21 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
         filled = form.replace('extreme: \n', 'extreme: a translate that covers back edges lowers it\n')
         self.assertEqual(dcs.unextreme(draft, filled), [])
 
+    def test_a_sentence_using_a_declared_part_by_letter_is_listed_under_the_declared_claim(self):
+        # 17 October 2026: "by (a) no fixed-kernel sandpile adds one" dropped the statement's reversibility and was
+        # never set beside the statement, naming no claim.
+        draft = ('<article id="x" data-claims="lem:own-thing"><p><strong>Statement.</strong> (a) Every reversible '
+                 'stage is electrical. (b) Another rule is not.</p><p><strong>Proof.</strong> (a) shows itself; by '
+                 '(a) the rest.</p><p><strong>Follow-up.</strong> Continuing: by (a) no fixed-kernel sandpile adds '
+                 'one. Part (b) shows a state-dependent rule leaves them. Then (a) gives the slack pair. The '
+                 'flow (in cells) is computed. That lemma\'s (b) applies too.</p></article>')
+        rows = [(claim, where, sentence[:20]) for claim, where, sentence in dcs.citations(draft)]
+        self.assertEqual(rows, [('lem:own-thing', 'Follow-up', 'Follow-up. Continuin'),
+                                ('lem:own-thing', 'Follow-up', 'Part (b) shows a sta'),
+                                ('lem:own-thing', 'Follow-up', 'Then (a) gives the s')])
+        # without a declared claim nothing is attributed
+        self.assertEqual(dcs.citations(draft.replace('lem:own-thing', 'none')), [])
+
     def test_an_answer_that_limits_its_sentence_by_a_word_the_sentence_lacks_is_a_gap(self):
         form = dcs.answers_template(self.DRAFT)
         answer = lambda words: form.replace('rests on: \n', f'rests on: {words}\n')

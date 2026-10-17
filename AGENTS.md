@@ -350,7 +350,10 @@ AGENTS.md"):
 - Write every summary (title, New mathematics, Bearing, commit message, report) last, from the final
   statement with its hypotheses and qualifiers; relay what a reviewer, agent or tool found from its
   source, with its qualifiers word for word, and explain a failing check only by quoting the lines
-  of its output that show the cause.
+  of its output that show the cause. A shorthand coined while drafting (a name for a class of
+  objects) is a new statement, not a name for the hypotheses: a sentence using a result says its
+  hypotheses in the statement's own words (17 October 2026: a shorthand stood for "one reversible
+  rule" in five sentences, which lost reversibility).
 - When a computation agrees with what was expected, write next what it does not show, before the
   sentence that concludes from it; and before posing a statement drawn from one worked construction,
   write down the construction most unlike it and check the statement there.
