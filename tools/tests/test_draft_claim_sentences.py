@@ -177,6 +177,14 @@ class ComparisonsTest(unittest.TestCase):
                  'target \\(\\sqrt{N\\log N}\\).</p>')
         self.assertEqual(len(dcs.comparisons(draft)), 1)
 
+    def test_dismissals_of_a_case_are_listed(self):
+        # 17 October 2026: "which the cost keeps small" and "not improved", each wrong at the instance.
+        for sentence in ('its bound times \\(y\\delta_0\\), which the cost keeps small.',
+                         'it leaves \\(g\\) at the fine-grid order, not improved.'):
+            with self.subTest(sentence=sentence):
+                draft = f'<p><strong>Follow-up.</strong> A layer with \\(P<1\\): {sentence}</p>'
+                self.assertEqual(len(dcs.comparisons(draft)), 1)
+
     def test_statements_and_words_without_formulas_are_not_listed(self):
         draft = ('<p><strong>Statement.</strong> Then \\(a\\) is below \\(b\\).</p>'
                  '<p><strong>Review.</strong> The objection above was right.</p>')

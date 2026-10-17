@@ -556,7 +556,10 @@ def exactness_report(draft, width):
 # dropped an attempt because a bound was "below its heuristic target", when the bound was the larger of the two;
 # the reviewer found the comparison read the wrong way round.
 COMPARE = re.compile(r'\b(?:below|above|beats?|beat by|smaller|larger|exceeds?|less than|more than|'
-                     r'better than|worse than|stronger than|weaker than|within)\b', re.I)
+                     r'better than|worse than|stronger than|weaker than|within|negligible|keeps?(?: \w+)? small|'
+                     r'not improved|outside the attempt)\b', re.I)
+# The last four from 17 October 2026: a case was dismissed twice in a row, as kept small by the cost and as
+# not improved, each wrong at the instance's parameters, before a third version computed both sides.
 
 
 def comparisons(draft):

@@ -298,6 +298,10 @@ AGENTS.md"):
   instance's parameters (the saturating ones included), and says which of its parts comes from the
   bookkeeping rather than the object (17 October 2026: a budget threshold contradicted its own
   displayed bound, and a saturating perimeter was written without its level).
+- A sentence a reviewer finds wrong is replaced by one derived again from the statement and the
+  records, its figures computed, not patched from the old wording; a sentence wrong twice is
+  redrafted from its sources before it goes back (17 October 2026: three versions in a row of one
+  case's dismissal, each patched from the last, each wrong).
 - When a tool refuses, collides or reports something unexpected, find its cause before trying
   another route, and state the cause; an opening claim is stated only in the scope already proved.
 - A property of a family (nested, disjoint, packed, few per point) enters a proof only after it is
