@@ -1177,8 +1177,10 @@ def figure_block(reply):
 # on "nothing in the record does that": "How is that an answer to anything? We are the ones developing the record").
 # "if you meant": a question handed back instead of searched and its readings tested (the stand-in review of 17
 # October 2026: "If you meant something else, tell me").
+# "tell me which": a choice handed back mid-turn (17 October 2026, the stand-in review: "Tell me which resolution you
+# want, or I'll take the first", where the rules file the choice in user_requests and continue with the default).
 OFFER = re.compile(r"[^.!?\n]*\b(?:if you (?:want|like|wish|prefer|meant)|shall I|should I|want me to|would you like"
-                   r"(?: me)? to|let me know if)\b[^.!?\n]*", re.I)
+                   r"(?: me)? to|let me know if|(?<!n't )(?<!not )tell me (?:which|whether))\b[^.!?\n]*", re.I)
 RECORD_GAP = re.compile(r"[^.!?\n]*\b(?:nothing in the record|not in the record|isn't in the record|the record "
                         r"(?:lacks|has no|does not (?:have|give|contain|do)|doesn't (?:have|give|contain|do))|no recorded "
                         r"(?:argument|result|theorem|claim|statement))\b[^.!?\n]*", re.I)

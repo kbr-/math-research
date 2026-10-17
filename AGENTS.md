@@ -226,10 +226,11 @@ growing checklists or one-off setup narratives.
   checks only its last step (17 October 2026: a leg's area was halved in a smallest case, and a
   theorem's step decomposition was not tried before a docstring said the theorem did not apply).
   Evidence for a property of the object at hand (a construction's map, a flow's dependence on the
-  counts) is computed on that object, in the variables the property is stated in; a result on a
-  model, or on inputs the object never receives, is written as the model's (17 October 2026: a
-  nonlinearity in the counts was first shown on a two-value model, then on fields no counts produce,
-  before the counts themselves were tried).
+  counts) is computed on that object, in the variables the property is stated in, and a prediction
+  of it is written in those variables (a tail's shape after standardizing, not its raw size); a
+  result on a model, or on inputs the object never receives, is written as the model's (17 October
+  2026: a nonlinearity in the counts was first shown on a two-value model, then on fields no counts
+  produce, before the counts themselves were tried).
 - Once the question, argument and evidence are stable, make one focused correctness review of every
   new mathematical lemma, theorem, rule or encoding before assigning its status. Run the exhaustive
   checker for any rule, tree or encoding change before relying on it. Near the end of the cycle, use
@@ -340,6 +341,11 @@ AGENTS.md"):
   review's stop asked a uniformity over cells that a sum over points does not need, an outcome
   rested on a gluing not tried, and a growth condition was called exact where a fixed offset
   sufficed).
+- A forecast of what a step will yield or be worth (this run decides nothing, this case is hard,
+  this test cannot fail) is a hypothesis about the step, held with the confidence of an untested
+  one: where finding out costs minutes, find out and write the forecast beside the outcome; decline
+  the step only on its measured cost (17 October 2026: a build declined over three entries as
+  uninformative showed, run in minutes at the user's choice, an instability no entry had predicted).
 - Before calling a case hard, handing a step to someone else or asking a question, take the cheapest
   step on the instance yourself: a union bound over its family's members, the default the rules
   already give, the result of the edit just made (17 October 2026: a two-block case called deep, a

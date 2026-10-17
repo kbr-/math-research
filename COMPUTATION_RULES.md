@@ -359,7 +359,10 @@ unfinished.
   estimate is set beside the measured spread before a next size is called decisive (17 October 2026:
   a change in a ratio was read as one flow's drift while the other flow's departure from the
   Gaussian made most of it, and a spread two to three times the estimate left the next size unable
-  to decide).
+  to decide). A committed prediction on such a ratio names the other quantities that move it (a
+  variance change, a shift) and states its threshold after removing them, or predicts them too (17
+  October 2026: a floor on exceedance ratios in fixed units was refuted by a variance drop alone,
+  the shape being unchanged).
 - A script's controls are chosen for what its construction can get wrong, not for what is easy to
   compute: list the construction's failure modes (an orientation, a sign, a boundary term) and give
   each a control that changes when it occurs, with a positive control that plants it. A script that

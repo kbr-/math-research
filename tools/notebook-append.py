@@ -144,6 +144,32 @@ def refuse_off_route(source, entry, ask=None):
         raise ValueError(reason)
 
 
+# A computation declined for not deciding the question. On 17 October 2026 three entries declined to build and
+# measure a flow because "at reachable sizes a measurement cannot tell" what the limit needs; built at the user's
+# choice ("Build it. What if you are wrong....."), its run took minutes and showed an instability no entry had
+# predicted. Not deciding the limit is not being uninformative: the decline gives the step's measured cost, or
+# the output of a run already made.
+DECLINED_RUN = re.compile(r'\bNot taken\b', re.I)
+UNDECIDING = re.compile(r'\b(?:measurement|computation|run|simulation|test)s?\b[^.;]{0,80}\b(?:cannot|can not|could '
+                        r'not|does not|do not|would not)\s+(?:tell|decide|distinguish|show|bear)\b'
+                        r'|\bno (?:computation|measurement|run) at reachable sizes\b|\bdecides? nothing\b', re.I)
+RUN_COST = re.compile(r'\bmeasured\b[^.;]{0,60}\b(?:cost|time|\d+(?:\.\d+)?\s*(?:s|min|minutes|seconds))\b'
+                      r'|research/(?:results|logs)/', re.I)
+
+
+def refuse_unmeasured_decline(entry):
+    """The Shortest route of a research entry that declines a computation because it cannot decide the question
+    says what that computation costs, measured, or cites the output of a run made: [] or the refusal."""
+    given = re.search(r'<strong>Shortest route\.</strong>((?:(?!</p>).)*)', entry, re.S)
+    plain = ' '.join(strip_tags(given.group(1)).split()) if given else ''
+    if DECLINED_RUN.search(plain) and UNDECIDING.search(plain) and not RUN_COST.search(plain):
+        raise ValueError('the Shortest route declines a computation because it cannot decide the question ("'
+                         + UNDECIDING.search(plain).group(0)[:120] + '") without its measured cost or the output '
+                         'of a run made: a run that cannot decide the limit can still show the object something '
+                         'unforeseen; give its measured cost (a smoke run) or run it (user, 17 October 2026: '
+                         '"Build it. What if you are wrong.....")')
+
+
 NONTRIVIAL = re.compile(r'Nontrivial because[:,]?\s+((?:\S+\s+){7,}\S+)', re.I)
 
 
@@ -630,6 +656,7 @@ def append(source, entry, next_html=None, committed=None, reason=None, tools=Non
         raise ValueError(str(error)[0].lower() + str(error)[1:]) from None
     refuse_trivial_smallest_case(entry)
     refuse_uncomputed_smallest_case(entry)
+    refuse_unmeasured_decline(entry)
     entry = with_stand_reason(source, entry, committed, reason)
     own = branch_checks(tools)
     if own:

@@ -721,6 +721,29 @@ class NotebookAppendTests(unittest.TestCase):
 
 
 
+class UnmeasuredDeclineTest(unittest.TestCase):
+    """17 October 2026: a build declined as uninformative ("a measurement cannot tell") showed, once run at the
+    user's choice, an instability no entry had predicted."""
+
+    def entry(self, text):
+        return f'<article id="e" data-kind="research"><p><strong>Shortest route.</strong> {text}</p></article>'
+
+    def test_a_decline_for_not_deciding_needs_a_measured_cost(self):
+        prompting = ('Building the restoring flow and measuring its tails: Not taken, because at reachable sizes a '
+                     'measurement cannot tell a design that escapes the obstructions from one that does not.')
+        with self.assertRaisesRegex(ValueError, 'measured cost'):
+            tool.refuse_unmeasured_decline(self.entry(prompting))
+
+    def test_a_measured_or_made_run_and_other_declines_pass(self):
+        for text in ('Not taken: a measurement cannot tell the limit; its smoke run measured 159 s of time.',
+                     'Not taken: the run decides nothing in the limit, as its output in '
+                     'research/results/x/run.txt shows.',
+                     'Not taken, because its first step is proved and its second needs a rule.',
+                     'Taken: a measurement cannot tell the limit, and the build is made as an existence check.'):
+            with self.subTest(text=text):
+                tool.refuse_unmeasured_decline(self.entry(text))
+
+
 class UnappliedMatchesTest(unittest.TestCase):
     # The exposing case, 17 October 2026: thm:per-level-count-matchings printed beside mixed-level-counts and
     # applied nowhere in the next entry's Own statements (it was named only in its Degenerate cases).

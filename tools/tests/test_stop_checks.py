@@ -680,6 +680,11 @@ class OfferBlockTest(unittest.TestCase):
 
     def test_a_question_handed_back_is_refused(self):
         # the stand-in review of 17 October 2026
+        # 17 October 2026: a choice handed back instead of filed with its default.
+        self.assertIsNotNone(hook.offer_block("Tell me which resolution you want, or I'll take the first."))
+        # A sentence reporting what a tool tells, not asking the user, passes.
+        self.assertIsNone(hook.offer_block('The log tells which run failed.'))
+        self.assertIsNone(hook.offer_block("The harness doesn't tell me which call raised it."))
         block = hook.offer_block("I'm not sure which construction you mean. If you meant something else, tell me.")
         self.assertIn('offer instead of the work', block['reason'])
 
