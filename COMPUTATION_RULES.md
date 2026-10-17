@@ -360,6 +360,13 @@ unfinished.
   a change in a ratio was read as one flow's drift while the other flow's departure from the
   Gaussian made most of it, and a spread two to three times the estimate left the next size unable
   to decide).
+- A script's controls are chosen for what its construction can get wrong, not for what is easy to
+  compute: list the construction's failure modes (an orientation, a sign, a boundary term) and give
+  each a control that changes when it occurs, with a positive control that plants it. A script that
+  builds a flow or a correction to one checks its divergence in weak form, \(\sum w\cdot\nabla g\)
+  against several smooth \(g\), with the correction's leg flipped as the positive control (17
+  October 2026: a correction's only control was its global average, which no misoriented leg
+  changes; see research/results/ultimate_matching_lagged_restoring_20261017/divergence_check.py).
 - A numerical control of a formula includes one check that does not share the method under test:
   both sides computed from the inputs by a route that does not use the formula, or a second
   quadrature or library. A check whose only evidence is one numerical method agreeing with itself is
