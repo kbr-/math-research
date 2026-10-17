@@ -23,6 +23,8 @@ Positive control: over F_2 at seven pigeons the disjoint pair has the common sur
 b in B, by prop:partition-kernels-every-field (d), so J modulo H must exceed W modulo H there.
 Refuted by: J modulo H equal to W modulo H over F_2 at seven pigeons.
 Possible because: a route that lost killers would give equality.
+Forced by counts: nothing; |T_2| = 331 at six pigeons exceeds every control figure, and the generator rows
+outnumber the ranks, so no count fixes a kernel dimension.
 Baseline: W <= J <= the single kernel of E_A; the containment leaves the F_3 figure anywhere in that range.
 Record checked: the claims read were prop:partition-kernels-every-field, prop:partition-common-kernels and
 check:disjoint-pair-kernels-f3; none gives the F_3 common kernel at seven pigeons.
