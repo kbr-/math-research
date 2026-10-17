@@ -26,7 +26,28 @@ def run(command, root):
     subprocess.run(command, cwd=root, check=True)
 
 
+def committed_claims(spec, root):
+    """The spec's claim IDs that HEAD's registry already holds: author build appends only, so for those the
+    rebuild cannot work, and the refresh refuses before it touches any output (17 October 2026: run on a
+    committed claim, it deleted and rewrote the committed build request and only then failed)."""
+    import json
+    path = pathlib.Path(root, spec)
+    if not path.exists():
+        return []
+    ids = [item['id'] for item in json.loads(path.read_text()).get('claims', [])]
+    held = subprocess.run(['git', 'show', f'HEAD:{REGISTRY}'], cwd=root, capture_output=True, text=True)
+    if held.returncode:
+        return []
+    known = {claim['id'] for claim in json.loads(held.stdout).get('claims', [])}
+    return [i for i in ids if i in known]
+
+
 def refresh(spec, out, proposal, report, root=ROOT, summaries_checked=False):
+    held = committed_claims(spec, root)
+    if held:
+        raise SystemExit('claim_refresh.py: HEAD already registers ' + ', '.join(held) + ': a rebuild appends '
+                         'and cannot refresh a committed claim; refresh its reviews through the registry\'s '
+                         'reviewed metadata edit (research/claims/README.md). Nothing was changed.')
     run(['git', 'checkout', 'HEAD', '--', REGISTRY, GENERATED], root)
     for path in (out, proposal, report):
         pathlib.Path(root, path).unlink(missing_ok=True)

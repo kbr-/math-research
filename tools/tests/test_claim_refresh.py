@@ -70,6 +70,28 @@ class ClaimRefreshTests(unittest.TestCase):
                     claim_refresh.refresh('spec.json', 'o', 'p', 'r', root=root)
             self.assertEqual((root / claim_refresh.REGISTRY).read_text(), 'head')
 
+    def test_a_claim_head_already_registers_is_refused_before_any_output_is_touched(self):
+        # 17 October 2026: run on a committed claim, the refresh deleted and rewrote the committed build
+        # request, then failed in author build, which appends only.
+        import json
+        import subprocess
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            subprocess.run(['git', 'init', '-q'], cwd=root, check=True)
+            (root / 'research/claims').mkdir(parents=True)
+            (root / claim_refresh.REGISTRY).write_text(json.dumps({'claims': [{'id': 'cor:old'}]}))
+            subprocess.run(['git', 'add', '.'], cwd=root, check=True)
+            subprocess.run(['git', '-c', 'user.name=t', '-c', 'user.email=t@t', 'commit', '-q', '-m', 'base'],
+                           cwd=root, check=True)
+            (root / 'spec.json').write_text(json.dumps({'claims': [{'id': 'cor:old'}, {'id': 'lem:new'}]}))
+            (root / 'request.json').write_text('committed request')
+            with self.assertRaises(SystemExit) as refused:
+                claim_refresh.refresh('spec.json', 'request.json', 'p.json', 'r.txt', root=root)
+            self.assertIn('cor:old', str(refused.exception))
+            self.assertEqual((root / 'request.json').read_text(), 'committed request')
+            (root / 'spec.json').write_text(json.dumps({'claims': [{'id': 'lem:new'}]}))
+            self.assertEqual(claim_refresh.committed_claims('spec.json', root), [])
+
 
 if __name__ == '__main__':
     unittest.main()
