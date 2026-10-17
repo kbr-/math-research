@@ -58,6 +58,8 @@ class ExcerptTest(unittest.TestCase):
         self.assertEqual(excerpt.readable_text(source),
                          'Title\nA bold claim \\(a<b & c\\) \\(k<2\\).\none\ntwo\n')
         self.assertEqual(excerpt.readable_text('<table><tr><th>k</th><td>v  w</td></tr></table>'),'\tk\tv w\n')
+        finished=source.replace('<div class="timing-report">','<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="t">')
+        self.assertEqual(excerpt.readable_text(finished),'Title\nA bold claim \\(a<b & c\\) \\(k<2\\).\none\ntwo\n')
 
     def test_duplicate_and_unclosed_anchors_fail(self):
         book=excerpt.Notebook('<section id="x"></section><section id="x"></section>')

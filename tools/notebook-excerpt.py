@@ -36,7 +36,8 @@ def visible_text(source):
 
 BLOCKS = {'p', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'tr', 'div', 'article', 'section',
           'ol', 'ul', 'table', 'br'}
-TIMING = re.compile(r'<div class="timing-report"[\s\S]*?</table>\s*<p class="timing-note">[\s\S]*?</p>\s*</div>')
+# The finisher writes data-generated before class (finish-turn.py), so the class may follow other attributes.
+TIMING = re.compile(r'<div\b[^>]*\bclass="timing-report"[\s\S]*?</table>\s*<p class="timing-note">[\s\S]*?</p>\s*</div>')
 
 
 def readable_text(source):
