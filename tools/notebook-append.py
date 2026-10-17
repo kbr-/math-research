@@ -52,6 +52,7 @@ PARKING = re.compile(r'\b(cycles?|the spin|the goal|research|work)\s+(waits?|pau
                      r'|\bwaits?\s+(on|for)\s+your\s+(approvals?|answers?|decisions?)\b'
                      r'|\b(pause|park)(s|d|ed|ing)?\s+(the\s+)?(goal|spin|loop|research|cycles?)\b', re.I)
 STAND_LABEL = '<p><strong>Where we stand.</strong> Unchanged: '
+STAND_WORDS = 6
 
 
 def section(source, name):
@@ -90,6 +91,11 @@ def with_stand_reason(source, entry, committed, reason):
         raise ValueError('Where we stand is unchanged since the last commit. Update it for this cycle '
                          '(AGENTS.md: after every research turn), or pass --stand-unchanged REASON '
                          'saying why nothing in it changed')
+    # 17 October 2026: "--stand-unchanged x", carried over from skeleton checks, passed and wrote "Unchanged: x"
+    # into an entry whose result belonged in the section; the 368 reasons in the record have at least 7 words.
+    if len(reason.split()) < STAND_WORDS:
+        raise ValueError(f'--stand-unchanged needs a reason of at least {STAND_WORDS} words saying why nothing in '
+                         'Where we stand changed; it is written into the entry')
     paragraph = f'{STAND_LABEL}{html.escape(reason.strip(), quote=False)}</p>'
     meta = re.search(r'<p class="entry-meta">.*?</p>', entry, re.S)
     at = meta.end() if meta else entry.rindex('</article>')
@@ -497,7 +503,7 @@ def skeleton_check(source, entry, next_html=None, committed=None, reason=None, p
     # its refusal does not hide the append's later ones (16 October 2026: it hid the open sub-ideas refusal).
     run('where we stand', lambda: with_stand_reason(source, entry, committed, reason))
     proposed = []
-    run('append', lambda: proposed.append(append(source, entry, next_html, committed, reason or 'skeleton check',
+    run('append', lambda: proposed.append(append(source, entry, next_html, committed, reason or 'a stand-in reason for the skeleton check',
                                                  checked=False)))
     try:
         body = proposed[0] if proposed else insert_entry(source, entry)

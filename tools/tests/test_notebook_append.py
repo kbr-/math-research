@@ -430,8 +430,12 @@ class NotebookAppendTests(unittest.TestCase):
         self.assertIn('<p class="entry-meta">Status: finite check.</p>\n<p><strong>Where we stand.</strong> Unchanged: '
                       'a check of &lt;one&gt; case &amp; no more</p>\n<p>Body.</p>', kept)
         # Without a status line the paragraph ends the entry.
-        self.assertIn('three\n<p><strong>Where we stand.</strong> Unchanged: why</p>\n</article>',
-                      tool.append(notebook('old'), '<article id="a3">three</article>', committed=notebook('old'), reason='why'))
+        why = 'a route review that changes no statement of it'
+        self.assertIn(f'three\n<p><strong>Where we stand.</strong> Unchanged: {why}</p>\n</article>',
+                      tool.append(notebook('old'), '<article id="a3">three</article>', committed=notebook('old'), reason=why))
+        # 17 October 2026: a one-letter reason passed and wrote "Unchanged: x" into an entry.
+        with self.assertRaisesRegex(ValueError, 'at least 6 words'):
+            tool.append(notebook('old'), entry, committed=notebook('old'), reason='x')
         # A changed section, a notebook not yet committed and one without the section take the entry as it is.
         for source, committed in ((notebook('new'), notebook('old')), (notebook('old'), None), (NOTEBOOK, NOTEBOOK)):
             for reason in (None, 'why'):
@@ -476,8 +480,9 @@ class NotebookAppendTests(unittest.TestCase):
             with self.assertRaisesRegex(SystemExit, 'Where we stand is unchanged since the last commit'):
                 run()
             self.assertEqual((root / 'notebook.html').read_text(), source)
-            run('--stand-unchanged', 'only a lemma')
-            self.assertIn('three\n<p><strong>Where we stand.</strong> Unchanged: only a lemma</p>\n</article>',
+            run('--stand-unchanged', 'only a lemma, which changes no statement')
+            self.assertIn('three\n<p><strong>Where we stand.</strong> Unchanged: only a lemma, which changes no '
+                          'statement</p>\n</article>',
                           (root / 'notebook.html').read_text())
 
     def test_next_alone_replaces_the_proposed_next_step_and_appends_nothing(self):
