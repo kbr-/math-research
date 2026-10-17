@@ -938,6 +938,8 @@ class BearingTest(unittest.TestCase):
         self.check([first, sub], said, last='data-idea="y" data-bearing="none"')     # a different item
         orphan = ('research', 'unchanged', 'data-check="entry-gone:s1" data-bearing="none"')
         self.check([first, orphan], said, last='data-idea="x" data-bearing="none"')  # no parent found
+        # The user may pick the item anyway (user, 17 October 2026: "(a) append the entry").
+        self.check([first, sub], said, last='data-idea="x" data-bearing="none" data-picked="user"')
 
     def test_after_three_entries_without_bearing_the_next_states_its_best_outcome(self):
         said = 'Unchanged. <strong>Bearing.</strong> ' + 'Nothing at the degree the goal needs; spent to decide the item.'

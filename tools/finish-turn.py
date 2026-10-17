@@ -2039,33 +2039,14 @@ def validate_bearing(body, article, progress, text=None):
             raise ValueError('This entry declares data-bearing="some" and its Bearing statement says that '
                              'something it relies on was not checked: check it, or declare "none" '
                              '(AGENTS.md, goal progress)')
-    item = re.search(ITEM_TAG, tag)
-    if item is None:
+    import lead_queue as lq
+    root = lq.tag_item(body, tag)
+    if root is None or 'data-picked="user"' in tag:     # the user's pick, its words checked by lead_queue.picked
         return
-    root = item_root(body, item.group(1))
-    earlier = [t for t in re.findall(r'<article\b[^>]*>', body[:article])
-               if f'data-route="{route}"' in t and 'data-kind="research"' in t][-2:]
-    same = [t for t in earlier if (found := re.search(ITEM_TAG, t)) and item_root(body, found.group(1)) == root
-            and 'data-bearing="none"' in t]
-    if len(same) == 2:
+    excluded = lq.no_bearing_excluded(body[:article])
+    if excluded.get(route) == root:
         raise ValueError(f'The last two entries developed {root} and declared that they give nothing '
                          "at the goal's parameters: develop a different queue item now (AGENTS.md, goal progress)")
-
-
-ITEM_TAG = r'data-(?:check|lead|bridge|idea|build)="([^"]+)"'
-
-
-def item_root(body, ident, depth=0):
-    """The top-level queue item a tag develops: a sub-idea "entry-X:sN" belongs to the item entry X develops.
-
-    On 17 October 2026 a third entry without bearing on common-multiplier-homology passed, the middle one
-    being tagged with a sub-idea of an entry on that item, which the literal comparison read as another item."""
-    sub = re.fullmatch(r'(entry-[^:"]+):s\d+', ident)
-    if sub is None or depth > 8:
-        return ident
-    parent = re.search(r'<article\b[^>]*\bid="' + re.escape(sub.group(1)) + r'"[^>]*>', body)
-    found = re.search(ITEM_TAG, parent.group(0)) if parent else None
-    return item_root(body, found.group(1), depth + 1) if found else ident
 
 
 def validate_progress(body, article, close, *, check_registered_claims=True):

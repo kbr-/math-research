@@ -2163,6 +2163,14 @@ class QueueTrendTest(unittest.TestCase):
         self.assertIn('Route step: the last 3', notes[0])
         self.assertIn('Best outcome', notes[0])
         self.assertEqual(guide.bearing_run_notes(notebook(interleaved[:3] + interleaved[4:], queue)), [])
+        # 17 October 2026: an item the finisher will refuse is named at the start, sub-ideas resolved to it.
+        first = '<article id="entry-p" data-kind="research" data-route="step" data-idea="x" data-bearing="none"></article>'
+        second = ('<article id="entry-q" data-kind="research" data-route="step" data-check="entry-p:s1" '
+                  'data-bearing="none"></article>')
+        notes = guide.bearing_run_notes(notebook([some, first, second], queue))
+        self.assertTrue(any('REFUSED IN ADVANCE' in n and 'developed x' in n for n in notes))
+        notes = guide.bearing_run_notes(notebook([some, first, second.replace('entry-p:s1', 'y')], queue))
+        self.assertFalse(any('REFUSED IN ADVANCE' in n for n in notes))
 
 
 class LastItemGuidanceTest(unittest.TestCase):

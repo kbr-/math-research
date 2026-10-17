@@ -184,6 +184,12 @@ class NextStepItemTests(unittest.TestCase):
         other = '<article id="a4" data-kind="research" data-route="y" data-check="item-0" data-bearing="none">t</article>'
         with self.assertRaisesRegex(ValueError, 'last two entries declared no bearing'):
             tool.refuse_excluded_item(both + other, '<p>Develop item-1 again.</p>')
+        # 17 October 2026: the second entry carried a sub-idea of the first; it is the same item.
+        sub = tagged('a3', 'a2:s1', 'none').replace('id="a3"', 'id="entry-a3"')
+        parent = tagged('entry-a2', 'item-1', 'none')
+        nested = queued(2).replace('<article id="a2">two</article>', parent) + sub.replace('a2:s1', 'entry-a2:s1')
+        with self.assertRaisesRegex(ValueError, 'last two entries declared no bearing'):
+            tool.refuse_excluded_item(nested, '<p>Develop item-1 again.</p>')
 
     def test_a_next_step_planning_no_bearing_in_such_a_run_is_refused_unless_it_closes(self):
         def tagged(anchor, bearing):

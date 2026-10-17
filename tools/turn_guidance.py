@@ -148,6 +148,12 @@ def bearing_run_notes(body):
             runs[found.group(1)] = runs.get(found.group(1), 0) + 1
         else:
             ended.add(found.group(1))
+    # Before the work, not at the finisher: on 17 October 2026 an entry was drafted, computed and reviewed on an
+    # item the finisher then refused, while this guidance named only the item's spell count.
+    for route, item in sorted(lq.no_bearing_excluded(body).items()):
+        notes.append(f'REFUSED IN ADVANCE: on route {route} the last two research entries developed {item} and '
+                     'declared no bearing; the finisher refuses the next entry on that route that develops it. Develop '
+                     'a different item, unless the user picks this one (data-picked="user").')
     for route, count in sorted(runs.items()):
         if count >= BEARING_RUN:
             notes.append(f'Route {route}: the last {count} research entries on it declared no bearing; the next entry '

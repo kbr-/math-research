@@ -554,15 +554,19 @@ item; after three entries in a row on the route declaring `none`, across items, 
 before its work, after `<strong>Best outcome.</strong>`, what its best outcome would give at the
 goal's own parameters and, by claim ID, the recorded result it must beat; and an entry in such a run
 whose follow-up is Continuing states `<strong>Record search.</strong>`, the registry searches made
-for the next attempt it names (the finisher checks all six). Keep the obligation ID stable while
-that implication is unchanged. The finisher checks declarations and evidence references, not the
-truth of the agent's assessment; the existing reviewer must challenge that assessment. Every new
-`data-bearing="some"` entry links its matched parameter ledger from **Bearing** with a named link
-such as `<a data-ledger="selection" href="#selection-ledger">selection budget</a>`. Each
-**Nonvacuity** paragraph uses a matching named link to identify the particular budget its witness
-verifies. Assertions about both or all budgets need separately named references. These checks
-validate references and declarations; the reviewer checks that the inequalities and application
-really hold.
+for the next attempt it names (the finisher checks all six). A rule that limits which work may be
+started (an item, a route, a kind of entry) is checked where that work starts, at `compute.sh start`
+and at the Proposed next step, the finisher's copy being a backstop; work done against such a rule
+is never discarded but held for the user's choice (user, 17 October 2026: "work should be blocked
+before you waste time and tokens, not when it is already done", and "Do not throw away work ever").
+Keep the obligation ID stable while that implication is unchanged. The finisher checks declarations
+and evidence references, not the truth of the agent's assessment; the existing reviewer must
+challenge that assessment. Every new `data-bearing="some"` entry links its matched parameter ledger
+from **Bearing** with a named link such as `<a data-ledger="selection"
+href="#selection-ledger">selection budget</a>`. Each **Nonvacuity** paragraph uses a matching named
+link to identify the particular budget its witness verifies. Assertions about both or all budgets
+need separately named references. These checks validate references and declarations; the reviewer
+checks that the inequalities and application really hold.
 
 Fold an `<h4>Architecture review</h4>` section into each scheduled review, with these
 `<p><strong>Label.</strong> ...</p>` paragraphs:

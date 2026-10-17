@@ -347,6 +347,44 @@ def picked(tag, text):
                          'paragraph')
     return True
 ARTICLE_RE = re.compile(r'<article\b[^>]*>.*?</article>', re.S)
+ITEM_TAG = r'data-(?:check|lead|bridge|idea|build)="([^"]+)"'
+
+
+def item_root(body, ident, depth=0):
+    """The top-level queue item a tag develops: a sub-idea "entry-X:sN" belongs to the item entry X develops.
+
+    On 17 October 2026 a third and a fourth entry without bearing on one idea passed the finisher, the next-step
+    check and the start guidance, the middle entry being tagged with a sub-idea of an entry on that idea, which
+    each read literally as another item."""
+    sub = re.fullmatch(r'(entry-[^:"]+):s\d+', ident)
+    if sub is None or depth > 8:
+        return ident
+    parent = re.search(r'<article\b[^>]*\bid="' + re.escape(sub.group(1)) + r'"[^>]*>', body)
+    found = re.search(ITEM_TAG, parent.group(0)) if parent else None
+    return item_root(body, found.group(1), depth + 1) if found else ident
+
+
+def tag_item(body, tag):
+    """The top-level item an article tag develops, or None."""
+    found = re.search(ITEM_TAG, tag)
+    return item_root(body, found.group(1)) if found else None
+
+
+def no_bearing_excluded(body):
+    """{route: item} for each route whose last two research entries develop one item and declare no bearing:
+    the finisher refuses the next entry on that route that develops the item (AGENTS.md, goal progress)."""
+    by_route = {}
+    for tag in re.findall(r'<article\b[^>]*>', body):
+        route = re.search(r'\bdata-route="([^"]+)"', tag)
+        if 'data-kind="research"' in tag and route:
+            by_route.setdefault(route.group(1), []).append(tag)
+    out = {}
+    for route, tags in by_route.items():
+        last = tags[-2:]
+        items = {tag_item(body, t) for t in last}
+        if len(last) == 2 and len(items) == 1 and None not in items and all('data-bearing="none"' in t for t in last):
+            out[route] = items.pop()
+    return out
 
 
 @functools.lru_cache(maxsize=8)

@@ -452,16 +452,14 @@ def refuse_excluded_item(source, next_html):
     # Each named item on its own route: on 16 October 2026 a next step written in an entry of another route
     # named an item whose route had just had two such entries, and the check, reading the route of the last
     # entry, passed it; the finisher refused the entry that developed it.
+    import lead_queue
+    blocked = lead_queue.no_bearing_excluded(source)    # sub-ideas resolved to their item (lead_queue.item_root)
     excluded = []
     for full in sorted({ident.full for ident, *_ in items}):
         kind, _, ident = full.partition(':')
-        mark = f'data-{kind}="{ident}"'
-        mine = [t for t in tags if mark in t]
+        mine = [t for t in tags if lead_queue.tag_item(source, t) == ident]
         route = re.search(r'data-route="([^"]+)"', mine[-1]) if mine else None
-        if route is None:
-            continue
-        last = [t for t in tags if f'data-route="{route.group(1)}"' in t][-2:]
-        if len(last) == 2 and all(mark in t and 'data-bearing="none"' in t for t in last):
+        if route is not None and blocked.get(route.group(1)) == ident:
             excluded.append((full, ident))
     if not excluded:
         return
