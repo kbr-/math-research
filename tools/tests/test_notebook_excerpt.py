@@ -192,6 +192,22 @@ class ClaimExcerptsTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'registered without a statement: cor:blank'):
             tool.claim_excerpts(['lem:first', 'cor:blank'], registry)
 
+    def test_a_resembling_claim_not_named_is_listed_beside_the_one_it_resembles(self):
+        # 17 October 2026: a brief cited a lower bound at interior pairs while a resembling one held at every pair
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('notebook_excerpt_tool', Path(__file__).resolve().parents[1] / 'notebook-excerpt.py')
+        tool = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(tool)
+        weak = 'the cell averaged discrepancy of the conjugate class is at least c sqrt N log N at interior pairs of the curve'
+        registry = {'claims': [
+            {'id': 'lem:weak', 'summary': weak},
+            {'id': 'lem:strong', 'summary': weak.replace('at interior pairs of the curve', 'at every pair of the curve')},
+            {'id': 'lem:other', 'summary': 'a flow on dyadic squares moves each excess across its midline'}]}
+        text = tool.claim_excerpts(['lem:weak'], registry)
+        self.assertIn('Resembling, not named here (read before relying on this one): lem:strong', text)
+        self.assertNotIn('lem:other', text)
+        self.assertNotIn('Resembling', tool.claim_excerpts(['lem:weak', 'lem:strong'], registry))   # both named
+
 
 class RecordStatementTest(unittest.TestCase):
     def test_each_claim_carries_its_record_statements_read_once_per_notebook(self):

@@ -363,6 +363,19 @@ def record_statements(record, root, cache, ident=None, summary=''):
     return shown
 
 
+NEAR_AT = 0.5     # tools/claim_resemblance.py's measure; its refusal threshold for a new claim is 0.4
+NEAR_SHOWN = 2
+
+
+def near_statements(claim, registered, named, threshold=NEAR_AT, count=NEAR_SHOWN):
+    """[(score, id)]: the registered claims, other than `claim` and those `named`, whose summaries resemble its
+    summary at `threshold` or more, the nearest first, at most `count`."""
+    import claim_resemblance
+    others = [c for c in registered if c['id'] != claim['id'] and c['id'] not in named]
+    return [(score, ident) for score, ident in claim_resemblance.similar_claims(others, claim.get('summary', ''),
+                                                                              count) if score >= threshold]
+
+
 def claim_excerpts(idents, registry, root=None):
     """The registered statement, assessment, status and record of each named claim, for a reviewer's brief;
     ValueError naming every identifier the registry does not hold.  On 11 October 2026 a dependency file given to
@@ -386,6 +399,11 @@ def claim_excerpts(idents, registry, root=None):
             source, kind, target = (str(edge.get('id', '')).split('::') + ['', '', ''])[:3]
             if kind == 'corrects' and target == ident:
                 block += f"  Corrected by {source}: {claims.get(source, {}).get('summary', '')}\n"
+        # 17 October 2026: a brief cited lem:leighton-shor-class-lower-bound for a forced order that
+        # lem:lipschitz-class-lower-bound forces at every pair; no edge joins them, and the resemblance measure
+        # scores the pair 0.59. The nearest statements not named in the excerpt are listed beside each claim.
+        for score, other in near_statements(claim, registry['claims'], set(idents)):
+            block += f"  Resembling, not named here (read before relying on this one): {other} ({score:.2f})\n"
         if root is not None:
             block += ''.join(f'  Record statement: {line}\n'
                              for line in record_statements(claim.get('record', ''), Path(root), cache, ident,
