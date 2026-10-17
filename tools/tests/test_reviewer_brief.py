@@ -108,6 +108,41 @@ class ReviewerBriefTest(unittest.TestCase):
 
 
 
+class BlindStageTest(unittest.TestCase):
+    # The exposing case, 17 October 2026: the stage-one brief beside the previous review's text.
+    PROMPT = 'Read {d}/stage1.txt and do what it asks. Its files are your only sources.'
+
+    def test_a_blind_brief_beside_unnamed_files_is_refused(self):
+        with tempfile.TemporaryDirectory() as d:
+            Path(d, 'stage1.txt').write_text('BLIND STAGE\nStage one of a route review. Results: ' + d + '/results.txt\n')
+            Path(d, 'results.txt').write_text('claims\n')
+            Path(d, 'six.txt').write_text('the previous review and its route\n')
+            repo = Path(__file__).resolve().parents[2]
+            self.assertEqual(hook.blind_leaks(self.PROMPT.format(d=d), repo), [str(Path(d, 'six.txt').resolve())])
+            Path(d, 'six.txt').unlink()
+            self.assertEqual(hook.blind_leaks(self.PROMPT.format(d=d), repo), [])
+
+    def test_the_reviewer_s_ways_around_are_refused(self):
+        # Its second pass, 17 October 2026: a subfolder, and a bare name that admitted a file.
+        repo = Path(__file__).resolve().parents[2]
+        with tempfile.TemporaryDirectory() as d:
+            Path(d, 'stage1.txt').write_text('BLIND STAGE\n')
+            Path(d, 'old').mkdir()
+            Path(d, 'old', 'six.txt').write_text('route\n')
+            self.assertEqual(len(hook.blind_leaks('Read ' + d + '/stage1.txt.', repo)), 1)
+            Path(d, 'six.txt').write_text('route\n')
+            self.assertEqual(len(hook.blind_leaks('Read ' + d + '/stage1.txt. Do not read six.txt.', repo)), 2)
+
+    def test_a_brief_that_is_not_blind_may_share_its_folder(self):
+        # Its third pass: a stage-two message naming the stage-one report was refused by the first word pattern.
+        repo = Path(__file__).resolve().parents[2]
+        for text in ('Second stage: the route and the draft.', 'Independent alternative reports your stage one.'):
+            with tempfile.TemporaryDirectory() as d:
+                Path(d, 'brief.txt').write_text(text + '\n')
+                Path(d, 'six.txt').write_text('the previous review\n')
+                self.assertEqual(hook.blind_leaks('Read ' + d + '/brief.txt. ' + text, repo), [], text)
+
+
 class MissingBriefFileTest(unittest.TestCase):
     def test_a_brief_naming_a_file_that_is_not_there_is_refused(self):
         with tempfile.TemporaryDirectory() as tmp:

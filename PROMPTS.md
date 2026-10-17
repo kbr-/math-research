@@ -233,7 +233,10 @@ So perform the following, in a loop:
   Continuing, and change it to Closed or Developed only after the review has read the run's figures
   and the readings: a loop that wants the queue drained otherwise writes the closure first and reads
   the figures as its support (17 October 2026: an item was closed on a run whose own kurtosis
-  pointed against the closure).
+  pointed against the closure). Before a step, name what the setting it runs in brings with it (the
+  files beside it, the form the problem is computed in, the previous entry's framing) and remove or
+  translate what the step must not carry (17 October 2026: a blind reviewer's brief sat beside the
+  route it was blind to, and a primal computation was searched only in its primal form).
 - update the notebook as usual
 - Apply the [cheap significance check](research/claims/README.md#significance-check-and-attention)
   through claim metadata and the finalizer; surface new/reopened candidates without rerunning a

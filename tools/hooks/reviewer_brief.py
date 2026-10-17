@@ -214,6 +214,52 @@ def research_drafts(prompt, tools=TOOLS):
     return drafts
 
 
+# A brief for a stage that must not see the current route: AGENTS.md's Independent alternative stage.
+# Declared, not guessed: a blind stage's brief holds a line "BLIND STAGE" (AGENTS.md, Independent alternative).  A
+# first version matched words (stage one, independent alternative), and its reviewer found a stage-two message,
+# which names the stage-one report, refused by them.
+BLIND = re.compile(r'^\s*BLIND STAGE\b', re.M)
+WALK_LIMIT = 500   # files read in a brief's folder before the check stops and says so
+
+
+def blind_leaks(prompt, repository):
+    """For a blind-stage brief (BLIND in the prompt or in a brief file it names): files outside the repository that
+    sit in the folder of a file the brief names and that neither the prompt nor the brief names.  On 17 October 2026
+    a stage-one brief sat in the scratch folder of the review being drafted, beside the previous review's text, and
+    the reviewer, told that the brief's files were its sources, read the route it was to be blind to.  Not caught,
+    from its reviewer: a route reached through the repository (the notebook, the registry), which the stage may
+    search; a brief in a folder inside the checkout (ignored scratch), which is skipped; a brief named by a relative
+    or ~ path, or in a format other than .md and .txt, whose text is not read; a blind brief without the declared
+    line; and a leaked file named by its full path anywhere in the brief, even in "do not read /.../six.txt"."""
+    named = list(dict.fromkeys(NAMED_FILE.findall(prompt)))
+    texts = [prompt]
+    for path in named:
+        if path.endswith(('.md', '.txt')) and Path(path).is_file():
+            try:
+                texts.append(Path(path).read_text(errors='replace')[:200000])
+            except OSError:
+                pass
+    # The brief's words, not its file names: a file called blind.md does not make a brief blind.
+    if not any(BLIND.search(NAMED_FILE.sub(' ', t)) for t in texts):
+        return []
+    # Only a file named by its full path is the brief's: a bare name, as in "do not read six.txt", does not admit it
+    # (the reviewer's way around a first version that admitted every name written).
+    mentioned = {Path(p).resolve() for t in texts for p in NAMED_FILE.findall(t)}
+    leaks = []
+    for folder in {Path(p).resolve().parent for p in named}:
+        if folder.is_relative_to(repository) or not folder.is_dir():
+            continue
+        # Subfolders too: a folder of leaked files beside the brief is as readable as one file.  The walk is
+        # bounded: a brief in a large folder (/tmp) is itself the leak, reported as one.
+        for count, item in enumerate(folder.rglob('*')):
+            if count >= WALK_LIMIT:
+                leaks.append(f'{folder} (more than {WALK_LIMIT} files; not read further)')
+                break
+            if item.is_file() and item.resolve() not in mentioned:
+                leaks.append(str(item))
+    return sorted(leaks)
+
+
 def refusal(payload, tools=TOOLS, log=None, now=None):
     """The reason to refuse this tool call, or None."""
     tool_input = payload.get('tool_input') or {}
@@ -244,6 +290,12 @@ def refusal(payload, tools=TOOLS, log=None, now=None):
     unread = unread_sentences(prompt, tools)
     if unread:
         return SENTENCES_REASON.format(', '.join(unread))
+    leaks = blind_leaks(prompt, tools.resolve().parent)
+    if leaks:
+        return ('the brief is for a blind stage, and the folder of its files also holds ' + ', '.join(leaks[:6])
+                + (' ...' if len(leaks) > 6 else '') + ', which the brief does not name: a reviewer told that '
+                "the brief's files are its sources can read them. Put the stage's brief and excerpts in a folder "
+                'of their own (AGENTS.md, Independent alternative)')
     # A brief that sends an entry draft (an .html file) for review also sends the drafted commit message: on
     # 16 October 2026 a commit message called a PK_oplus2 corollary an AC0[2]-Frege bound, outside every text the
     # reviewer read.

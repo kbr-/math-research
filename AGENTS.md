@@ -355,7 +355,10 @@ AGENTS.md"):
   new: compare from the record's side (the entries a draft leans on, their dependencies and
   dependents), not from the draft's own wording, and only then decide what is new. The comparison
   reads the proofs of the results the draft builds on for a step, not only their statements: a step
-  that is inside a cited proof is a citation, not new.
+  that is inside a cited proof is a citation, not new. A result computed on one side of a recorded
+  duality (a flow and its dual class, a cut and its single layer) is first read on the other side,
+  whose recorded bounds apply through that duality (17 October 2026: a single set's forced flow cost
+  was called new while a recorded single-layer bound gave it through conjugacy).
 - Name a relation between two statements (false, superseded, implied, a special case) only after
   setting the earlier statement's own words beside the new one, and choose the weakest relation both
   support: a statement true of its own method is not made false by a better method; a one-sided
@@ -524,11 +527,13 @@ Fold an `<h4>Architecture review</h4>` section into each scheduled review, with 
 - **Independent alternative.** Initially give the review's existing medium reviewer only the goal
   and bounded available-result excerpts, withholding the preferred route, and ask it open questions:
   one that presupposes its answer's form (a single reason, a negative, a named class) steers the
-  stage (16 October 2026: a blind reviewer reported two such questions). List the route's registered
-  open conjectures with their evidence beside the proved results. Ask for a materially different
-  architecture or a reason none was found. Then reveal the current route for comparison and the
-  usual correctness review. Link the reviewer evidence here; do not manufacture an alternative or
-  spawn a second reviewer for this step.
+  stage (16 October 2026: a blind reviewer reported two such questions). Its brief opens with a line
+  "BLIND STAGE" and sits in a folder of its own, which `tools/hooks/reviewer_brief.py` checks (17
+  October 2026: a brief beside the previous review's text leaked the route). List the route's
+  registered open conjectures with their evidence beside the proved results. Ask for a materially
+  different architecture or a reason none was found. Then reveal the current route for comparison
+  and the usual correctness review. Link the reviewer evidence here; do not manufacture an
+  alternative or spawn a second reviewer for this step.
 - **Rank normalization.** For dimension counts, ask whether losses and surviving objects are
   measured in the same quotient and whether relative contraction could replace absolute smallness.
   Otherwise state why this question does not apply.
