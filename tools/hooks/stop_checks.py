@@ -160,7 +160,10 @@ def turn_refusals(path):
             if block.get('type') == 'tool_result':
                 text = block.get('content')
                 text = ' '.join(t.get('text', '') for t in text) if isinstance(text, list) else str(text or '')
-                if CLASSIFIER_REFUSAL in text:
+                # A refusal is an error result or opens with the message; the words inside a printed file are not
+                # one (17 October 2026: sed output of this hook and of its test, which quote the message, read as two
+                # refusals).
+                if text.lstrip().startswith(CLASSIFIER_REFUSAL) or (block.get('is_error') and CLASSIFIER_REFUSAL in text):
                     refused.append(block.get('tool_use_id'))
     return [names.get(i, ('?', '')) for i in refused]
 

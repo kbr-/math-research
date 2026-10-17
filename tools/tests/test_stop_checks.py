@@ -655,6 +655,21 @@ class RefusalBlockTest(unittest.TestCase):
                                              'The classifier refused the checkout; the decision is in user_requests.'))
         self.assertIsNone(hook.refusal_block(self.transcript(False), 'The file is restored.'))
 
+    def test_a_printed_file_quoting_the_message_is_not_a_refusal(self):
+        # 17 October 2026: sed output of the hook's own source, which quotes the message, read as a refusal.
+        printed = "118\t# A call the harness's permission classifier refused ...\n121\tCLASSIFIER_REFUSAL = " \
+                  "'Permission for this action was denied'\n"
+        lines = [{'type': 'user', 'message': {'content': 'go on'}},
+                 {'type': 'assistant', 'message': {'content': [
+                     {'type': 'tool_use', 'id': 't1', 'name': 'Bash', 'input': {'command': 'sed -n 118,122p x.py'}}]}},
+                 {'type': 'user', 'message': {'content': [{'type': 'tool_result', 'tool_use_id': 't1',
+                                                           'content': printed, 'is_error': False}]}}]
+        f = tempfile.NamedTemporaryFile('w', suffix='.jsonl', delete=False)
+        f.write('\n'.join(json.dumps(x) for x in lines) + '\n')
+        f.close()
+        self.addCleanup(os.unlink, f.name)
+        self.assertIsNone(hook.refusal_block(f.name, 'The hook prints its source.'))
+
 
 if __name__ == '__main__':
     unittest.main()
