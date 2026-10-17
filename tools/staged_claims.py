@@ -86,7 +86,11 @@ def check(root=ROOT, base='HEAD', until=None):
     already made."""
     started = time.monotonic()
     span = ['--cached', base] if until is None else [base, until]      # the index against the base, amend included
-    notebooks = git(root, 'diff', *span, '--name-only', '--diff-filter=AM', '--', '*.html').stdout.split()
+    # Notebooks only: an entry's draft kept under research/results declares the claims of the entry it drafts,
+    # which are checked when it is appended; on 17 October 2026 a draft held back from the record was read as a
+    # notebook and its unregistered claims refused the commit that kept it.
+    notebooks = git(root, 'diff', *span, '--name-only', '--diff-filter=AM', '--', 'notebook.html',
+                    '*/notebook.html').stdout.split()
     count, labels, touched, unread = 0, set(), [], []
     for path in notebooks:
         old = git(root, 'show', f'{base}:{path}', check=False).stdout

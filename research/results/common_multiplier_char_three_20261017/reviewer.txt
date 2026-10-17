@@ -1,0 +1,83 @@
+Reviewer record, cycle char-three-pair (one fresh-context medium reviewer, 17 October 2026).
+
+First pass (brief: research/results/common_multiplier_char_three_20261017 draft, rank_kernels.py, rank_kernels.json,
+modp_rank.cpp, basis_kernels.py, dependency statements).
+
+Verdict: pass with corrections. The computation is sound and every figure matches the output file, but the draft's
+claims that no recorded statement decides the seven-pigeon characteristic-3 disjoint pair are false: recorded results
+decide it in a few lines (the reviewer's argument, checked by the reviewer against the dependency statements, not
+reviewed by anyone else).
+
+Checked and correct:
+- Item 1, formula and code: the common kernel is the set of u in span(T_2) with uE_b in rowspan G for each b; with
+  r copies of G block-diagonal, rank S = r rank G + rank(product rows modulo (rowspan G)^r), giving
+  |T_2| - (rank S - r rank G). block_entries places copies at row offsets b*gens and column offsets b*cols; product
+  rows start at base = r*gens with columns b*cols + index; products tE stay inside the columns (size <= 3 = D).
+  modp_rank.cpp reduces each value mod p and adds duplicates mod p; FFPACK::Rank on the dense matrix; sizes within
+  its limit (about 6259 x 9746).
+- Item 2: every figure matches rank_kernels.json (2793/2793/4873/673; 238 in all three fields; 256 and 304; 238 and
+  246; 241 and 246; six pigeons 141/197/165/155 and 141/155/141/143).
+- Item 4: hand counts agree with prop:partition-kernels-every-field (d): characteristic not 2, overlapping pair
+  j = 0, h in {3,4,5}, 3 (2 at five holes); characteristic 2, 2*2*2 = 8 disjoint, 6 + 2 overlapping, 6 at five
+  holes; single error 2*4 = 8 against excess 18.
+- Item 3: the single-error decomposition (room 4), J in Phi_F + W, disjoint zero sets, Phi_F not in H in
+  characteristic 3 are correct; "other combinations with room are multiples of a single representative" is correct
+  (only alpha(E_A+Q_2), beta(E_B+Q_2), alpha F); "other" should say "other than F".
+
+Required changes:
+- The outcome follows from recorded lemmas. Let u in J. cor:partition-transfer-every-k (N - |A| = 4 >= rho) gives
+  u = a + w, w in W, a in V_2 vanishing off Z_A = {2 in A, 1 not in A}. Then aE_B in C; with
+  sum_{j not in B} x_2j = 1 - Q_2 - sum_{j in B} x_2j, aE_B = a(1 + s_B) - aQ_2 - sum_{j in B} a x_2j, s_B the sum of
+  x_1j over B; aQ_2 in C (degree K+1 <= D); a x_2j (j in B) vanishes at every matching since a needs pigeon 2 in A
+  and A, B are disjoint, so it is in H; hence a(1 + s_B) in C. lem:low-hole-linear-transfer on {1 + s_B} (L = B,
+  P = {1}, room N - |B| = 4 >= max(2K-1, K+1) = 3) gives a in Ann_H(1 + s_B) cap V_2 + W; 1 + s_B takes the values
+  1 and 2 only, so outside characteristic 2 Ann_H(1+s_B) = H and a in W: J = W. So "which no statement gives",
+  Nonvacuity's "neither recorded route decides it" and "could have been anything in that range", the Smallest
+  case's "no statement gives" and Own statements' "None decides the general case" are false. Register it as a
+  proposition, the computation its check. It does not cover six pigeons (N - |A| = 3 < rho; single kernel 155 >
+  141), which stays computation only.
+- "An independent route with NumPy elimination" is too strong: rank_kernels.py imports matchings, dances, poly_mul,
+  q, error from basis_kernels.py; only elimination and stacking differ, so a generator-set error could not make the
+  six-pigeon controls fail. The docstring's "a wrong ... generator set would change them" is false for shared code.
+- The Record comparison misdescribes check:representative-intersection-kernels: its seven-pigeon figures are
+  |A| = 3 orbits (dim J = 479, dim W = 469 in V_2), not these pairs, and are full dimensions in V_2, not modulo C.
+  It gives an independent control (tools/pc_closure.py): 469 - (904 - 673) = 238 = W modulo H over F_2.
+- Hypotheses: the argument uses only characteristic not 2, A cap B empty, a single room for E_A and the low-hole
+  room for B; characteristic 3 itself is never used.
+
+Open point (unverified beyond the reviewer's check): outside characteristic 2, A, B disjoint, E_A with a single room
+(N - |A| >= rho or |A| >= rho) and max(|B|, N - |B|) >= max(2K-1, K+1), or A and B exchanged, give J = W. The case
+|A| >= rho uses the zero set {1 in A^c, 2 not in A^c}, where pigeon 2 is never in B; the case |B| >= max(2K-1,K+1)
+uses 2 - sum_{j not in B} x_1j, equal to 1 + s_B modulo Q_1, taking values 1 and 2. For K <= 2 the B condition
+always holds (N >= 5). Boards where neither error has a single room (six pigeons, five holes) stay open; a
+counterexample would have to be there.
+
+Suggestions (unverified): register the proposition with the seven-pigeon instance as Nonvacuity and aim the next
+attempt at disjoint pairs with no single room; try the restrict-then-reduce step on the overlapping pair, where
+a x_2j for j in A cap B is not in H and the excesses 3, 2 equal the monomial counts.
+
+Process audit: title proposed "Characteristic-three pair kernels at seven pigeons", or with the proposition
+"Disjoint pair without common killer outside characteristic two". The plainest step (restrict to Z_A, the record's
+transfer lemma on the second error) was not tried before the negative sentence. The six-pigeon controls were called
+independent while sharing the generator code. The record's independent seven-pigeon W was not used as a control.
+This is the fourth entry on common-multiplier-homology after two declaring bearing none, and the draft does not
+say why AGENTS.md allows it. The living edit should say seven pigeons follows from recorded lemmas. Review
+disposition 1 admits the re-filing "right in part" but neither undoes nor files anything. Strength count: 5.
+
+Second pass (the corrected entry with the proposition).
+
+Verdict: pass with corrections. Statement and every proof step correct as written (the |A| >= rho case via the
+Q_1 representative, room |A|, zero set {1 in A^c, 2 not in A^c}; the |B| >= max(2K-1,K+1) case via
+2 - sum_{j not in B} x_1j, room |B|, values 1 and 2; Ann_H part in H cap V_K inside W; the N >= 2 rho - 1
+consequence; the characteristic-2 remark). Hypotheses, Degenerate cases and Nonvacuity correct; B = A^c needs
+a clause that the proposition covers it only when A has a single room. Record comparison: common-kernels (a)
+right but name its mixed-choice clause; (d) 'neither implies the other' right; every-field (a) 'neither more
+nor less general' wrong: for disjoint pairs each pair room implies the new hypotheses, while (a) reaches
+characteristic 2 and overlapping pairs. Scope: the open class is pairs failing both orders, at N <= 2 rho - 2,
+smallest K = 3, D = 4, N = 7, A = {0,1}, B = {2,3,4}; the Smallest case's sizes 3 and 4 at N = 7 are B = A^c;
+check:disjoint-pair-kernels-f3 computed six pigeons only. The 238 control holds (904 = 1+42+861, 673 =
+1+42+630) and controls W over F_2 only. claim-spec.json kept 'independent NumPy route' and did not register
+prop:disjoint-pairs-outside-two. Process audit: title needs the room qualifier; the claim of corrected
+independence was untrue of the spec. Strength count 3. Suggestion (unverified): at N = 7, K = 3 the step
+reduces to a one-pigeon error with edges in B needing room 5 against 4; a sharper transfer or a K = 3
+computation may decide it.

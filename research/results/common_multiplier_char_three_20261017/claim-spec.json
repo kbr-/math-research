@@ -1,0 +1,44 @@
+{
+  "source": {
+    "record": "[Characteristic-three pair](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-char-three-pair)",
+    "label": "Characteristic-three pair",
+    "targets": [
+      "branches/common-multiplier/notebook.html#entry-2026-10-17-char-three-pair"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "polynomial-calculus"
+  ],
+  "claims": [
+    {
+      "id": "prop:disjoint-pairs-outside-two",
+      "summary": "Disjoint pairs outside characteristic two: on the functional pigeonhole system (Booleanity, hole and functionality axioms, pigeon axioms Q_i = 1 - sum_h x_ih, multilinear ring) over a field of characteristic other than 2, with m >= 2 pigeons, two distinct ones written 1 and 2, N holes, 1 <= K < D <= ceil(N/2), rho = max(2K - 1, K + 2), W = C cap V_K, C the degree-D closure, for disjoint sets of holes A, B with partition errors E_A, E_B, if A has N - |A| >= rho or |A| >= rho and max(N - |B|, |B|) >= max(2K - 1, K + 1), or the same with A and B exchanged, then Ann_C(E_A) cap Ann_C(E_B) cap V_K = W; in particular every disjoint pair has J = W when N >= 2 rho - 1. Pairs failing both orders, all at N <= 2 rho - 2, are not covered.",
+      "assessment": "Working proof; the argument is the reviewer's, written out in the entry and checked by the same sole fresh-context medium reviewer in a second pass, which passed it with scope corrections applied.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Settles common surviving killers of disjoint partition pairs outside characteristic 2 wherever a single room and the one-pigeon room hold, characteristic 3 included.",
+      "next_action": "The disjoint pairs failing both room orders in characteristic 3, first K = 3, N = 7, A = {0, 1}, B = {2, 3, 4}.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "check:char-three-pair-kernels",
+      "summary": "Exact F_2, F_3 and F_5 computation (rank_kernels.py with research/tools/modp_rank.cpp, FFPACK::Rank, on basis_kernels.py's spanning set of C/H) on the functional pigeonhole system with 7 pigeons and 6 holes, D = 3, K = 2: modulo H, W = C cap V_2 has dimension 238 over all three fields (2793 generators of rank 2793, 4873 columns, |T_2| = 673); the single kernel of E_A, A = {0, 1}, is 256 over F_3 and F_5 and 304 over F_2; the disjoint pair A = {0, 1}, B = {2, 3} has J = 238 = W over F_3 and F_5 and 246 over F_2; the overlapping pair {0, 1}, {0, 2} has 241 over F_3 and F_5 and 246 over F_2. Other boards, pairs and characteristics are not computed.",
+      "assessment": "Exact computation over three fields; the six-pigeon controls share the generator code with basis_kernels.py and test the elimination only; W over F_2 agrees with the independent tools/pc_closure.py figure of check:representative-intersection-kernels.",
+      "status": "finite_check",
+      "category": "route_specific",
+      "rationale": "The computed instance of prop:disjoint-pairs-outside-two in characteristic 3, with the overlapping pair and F_2 beside it.",
+      "next_action": "None for this board; the open pairs are those prop:disjoint-pairs-outside-two leaves.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    ["prop:disjoint-pairs-outside-two", "depends_on", "prop:partition-kernels-every-field", "Its (a) with one error is the single-error step."],
+    ["prop:disjoint-pairs-outside-two", "depends_on", "lem:low-hole-linear-transfer", "The one-pigeon transfer for the second error."],
+    ["prop:disjoint-pairs-outside-two", "cites", "prop:partition-common-kernels", "Contains its (a) for disjoint pairs; neither it nor (d) implies the other."],
+    ["check:char-three-pair-kernels", "cites", "prop:disjoint-pairs-outside-two", "Its computed instance in characteristic 3."],
+    ["check:char-three-pair-kernels", "cites", "check:disjoint-pair-kernels-f3", "The same question at six pigeons, reproduced as controls."],
+    ["check:char-three-pair-kernels", "cites", "check:representative-intersection-kernels", "Its F_2 dim W at seven pigeons is the independent control."]
+  ]
+}

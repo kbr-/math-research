@@ -120,6 +120,21 @@ class StagedClaimsTest(unittest.TestCase):
         messages, _ = self.run_check(missing=['lem:new'])
         self.assertIn('lem:new: declared by a staged entry and not in the registry', messages[0])
 
+    def test_a_draft_outside_a_notebook_is_not_read_as_an_entry(self):
+        draft = self.root / 'research' / 'results' / 'cycle' / 'entry.html'
+        draft.parent.mkdir(parents=True)
+        draft.write_text(entry('b', 'lem:new'))
+        self.git('add', '.')
+        messages, stale = self.run_check(missing=['lem:new'])
+        self.assertEqual(messages, [])
+        stale.assert_not_called()
+        side = self.root / 'research' / 'branches' / 'side' / 'notebook.html'
+        side.parent.mkdir(parents=True)
+        side.write_text(entry('c', 'lem:new'))
+        self.git('add', '.')
+        messages, _ = self.run_check(missing=['lem:new'])
+        self.assertIn('lem:new: declared by a staged entry and not in the registry', messages[0])
+
     def test_an_unstaged_registry_or_notebook_is_refused_before_the_registry_is_read(self):
         self.nb.write_text(entry('a', 'lem:one') + entry('b', 'lem:two'))
         self.git('add', 'notebook.html')
