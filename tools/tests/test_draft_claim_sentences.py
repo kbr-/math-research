@@ -494,6 +494,11 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
         # a phrase with a colon, and an identifier inside a path or after another colon, are not claims
         self.assertEqual(dcs.cited('note:well-known, proof:by-induction, q:is-it, x.py:lem:a-b, (cor:c-d).'),
                          ['cor:c-d'])
+        # a finite check's identifier is cited bare too, also before an apostrophe (17 October 2026: an answer
+        # resting on ex:simultaneous-rule-tails was refused as ungrounded); "ex:" alone or a one-word name is not
+        self.assertEqual(dcs.cited("ex:simultaneous-rule-tails' registered statement, ex:short, e.g. ex: a case"),
+                         ['ex:simultaneous-rule-tails'])
+        self.assertTrue(dcs.grounded("the registered statement of ex:simultaneous-rule-tails, read this session"))
         # a bare identifier the registry does not hold is listed and fails nothing; in code tags it does
         listed, missing = dcs.report('<article id="e"><p>By lem:not-there it holds.</p></article>', self.REGISTRY, 0)
         self.assertIn('lem:not-there\n  REGISTERED: (not in the registry; written without code tags', listed)

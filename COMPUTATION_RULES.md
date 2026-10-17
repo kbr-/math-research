@@ -117,6 +117,10 @@ in another; wait on a job's own completion notice.
   multiple cutoffs, orders or degree bounds where possible. For example, ascending-degree column
   elimination gives every prefix rank. Compiled calls inside a Python loop do not excuse repeated
   whole-matrix reduction when only new rows need reducing.
+- A run that repeats or extends a recorded run (another size, another threshold) starts from that
+  run's recorded command and flags, read from its session record under
+  `research/provenance/session-records/`, and changes only what the new run changes (17 October
+  2026: a launch written from memory lacked the kernel reason the earlier run had recorded).
 - List the run's stages before launch and remove every known waste, even when it does not affect the
   result. Design from the question and the output its conclusion needs, not the nearest driver:
   remove unrelated outputs and skip parameters that proved results or archived runs already settle.
@@ -344,6 +348,12 @@ unfinished.
   at one size) and `Parallel use:` (how it uses the CPUs, or why it cannot): a series whose
   predicted difference is a power of \(\log N\) over a few units of \(\log N\) decides nothing
   (user, 16 October 2026: "Optimize and parallelize your stuff").
+- A ratio or difference of two estimated quantities is read only after each part is printed beside
+  its own baseline (a Gaussian value, an analytic one), and a script's committed decisiveness
+  estimate is set beside the measured spread before a next size is called decisive (17 October 2026:
+  a change in a ratio was read as one flow's drift while the other flow's departure from the
+  Gaussian made most of it, and a spread two to three times the estimate left the next size unable
+  to decide).
 - A numerical control of a formula includes one check that does not share the method under test:
   both sides computed from the inputs by a route that does not use the formula, or a second
   quadrature or library. A check whose only evidence is one numerical method agreeing with itself is
@@ -430,9 +440,12 @@ shared path/size/hash metadata; `--session TURN` records its timing-session labe
 rejects changing inputs, and refuses to replace an existing manifest.
 
 Take every quoted number, case count and sampling grid from saved output, read by a script rather
-than from memory. Keep long runs observable: flush progress, avoid filters that buffer it until
-completion, and write each completed case to the output file immediately so a timeout preserves the
-finished cases.
+than from memory; a constant of the computation that a summarizing script uses (a grid size,
+positions per seed) is read there from the generating code or its output, never typed in (17 October
+2026: a summary typed 4^J positions per seed where the rule's grid has 4^(J+1), and printed every
+count four times too small). Keep long runs observable: flush progress, avoid filters that buffer it
+until completion, and write each completed case to the output file immediately so a timeout
+preserves the finished cases.
 
 ## Timing export and evidence archival
 

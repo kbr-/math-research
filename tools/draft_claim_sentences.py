@@ -37,7 +37,11 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 PREFIXES = ('lem|thm|prop|cor|conj|obs|ex|def|rem|local|historical|imp|check|audit|third-party|ctx|criterion|q|'
             'note|open|draft|proof')
 # Bare, only the kinds that name a statement: "note:", "proof:", "q:" and the like begin ordinary phrases.
-BARE_PREFIXES = 'lem|thm|prop|cor|conj|obs|criterion'
+# ex: (a registered finite check) names a statement too: until 17 October 2026 a bare ex: identifier was not
+# a citation, so an answer resting on one was refused as ungrounded; over the nine notebooks then, the bare
+# ex: pattern matched 1371 times, every one a registered identifier
+# (research/provenance/framework/bare-ex-prefix-scan-20261017.txt).
+BARE_PREFIXES = 'lem|thm|prop|cor|conj|obs|criterion|ex'
 # An identifier in code tags, or bare with a hyphen in its name: a notebook that keeps code formatting for
 # program names writes its claims bare, and until 12 October 2026 none of them was listed (0 citing sentences
 # in every draft of the riemann notebook, 105 entries).

@@ -1,0 +1,41 @@
+Review record: entry-2026-10-17-exceedance-curve (ultimate-matching), 17 October 2026.
+One fresh-context medium reviewer (medium-reviewer agent type), read-only; its reports, condensed here
+with their verdicts and required changes in the reviewer's terms.
+
+First pass. Verdict: pass with corrections. Figures match partial_summary.txt and partial_J5_J6.txt;
+Control 1 and the positive control reported as committed. Required: the coordinate-2 "flattening" is
+mostly the dyadic flow's own change (its fractions over the Gaussian at J=5: 1.03, 1.10, 1.15, 1.42;
+against erfc the rule's coordinate-2 slope changes by 0.10, not 0.29; hand arithmetic, unverified);
+Control 1's maximum is a trend in t, not few exceedances; Nonvacuity and the Follow-up contradict the
+spreads (bound >= 0.6; refutation threshold -0.772 + 2 sqrt(0.0458 + s7^2)); the committed standard
+error 0.096 against measured 0.21-0.30, so J=7 cannot detect a 1/J drift; the positive control cannot
+fail on drift, and nanstd drops empty splits; std(half-difference)/2 is first-order right, halves
+slightly dependent; time and memory figures need sources; cite ex:simultaneous-rule-tails.
+Suggestions (unverified): measure drift against the Gaussian; follow the fourth cumulant level by
+level; check for an analytic recursion. Process audit: as listed in the entry. Title proposed:
+"Exceedance slopes at J = 5, 6". Strength count 3.
+
+Second pass. Verdict: pass with corrections. The new slopes match gaussian_slopes.txt; the per-level
+decomposition exists in level_step. Required: counts four times too small (G = 2^(J+1), so 4096 and
+16384 positions per seed; dyadic at 3.6: 624, 944, 2284, 3064; planted 10, 12, 40, 64); Power: 2 s5
+alone (0.60, 0.43) exceeds 0.29; the limit is the seed count, not J; commit subject; Plainest bound:
+the dyadic increments are nested functions of the counts, not independent, and a fixed per-level
+shortfall alone gives a vanishing excess; run the Smallest case; the PROMPTS.md line duplicates the
+COMPUTATION_RULES.md rule. Process audit: the confirming script uncommitted, its positions per seed
+from memory. Strength count 3.
+
+Third pass. Verdict: pass with corrections. Increments, standardization and correlation in
+per_level_smallest.py right. Required: no script wrote per_level_J2_independent_sum.txt; the
+independent-levels value pooled excesses with position-averaged variances and is biased (the dyadic
+control shows the same factor 1.5-2); compute it per position and state an absolute gap beside the
+dyadic control with a split spread; "more than doubles" unsupported; the full gap is not decisive
+(nearby-level dependence also vanishes like 1/J): measure the joint fourth cumulants by |i-j|, whose
+sum is the full fourth cumulant; name the artefacts (pooling, finest levels, seed noise, Newton
+convergence); the rules are general and correctly placed; the message's factor and the seed-count
+qualifier. Process audit: the J=2 factor read without the dyadic control's factor. Strength count 2.
+
+Fourth check. Verdict: pass, no change required. per_position_gap standardizes each half by its own
+moments; the split is over seeds, so the halves are independent and half the standard deviation of
+the half-gap difference is the full-sample spread to first order (20 splits: about 16% relative error
+on the spread, adequate for +-0.01 against 0.20). Figures match per_level_J2.json. Minor: the level
+correlation (about -0.006) shifts (sum v)^2 by about 1%, the excess by about 0.003. Strength count 0.

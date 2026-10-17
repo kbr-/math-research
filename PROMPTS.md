@@ -241,7 +241,8 @@ So perform the following, in a loop:
   setting it runs in brings with it (the files beside it, the form the problem is computed in, the
   previous entry's framing) and remove or translate what the step must not carry (17 October 2026: a
   blind reviewer's brief sat beside the route it was blind to, and a primal computation was searched
-  only in its primal form).
+  only in its primal form). A figure the entry interprets is read by [the ratio
+  rule](COMPUTATION_RULES.md#numerical-verification) before the interpretation is written.
 - update the notebook as usual
 - Apply the [cheap significance check](research/claims/README.md#significance-check-and-attention)
   through claim metadata and the finalizer; surface new/reopened candidates without rerunning a
