@@ -259,6 +259,14 @@ class OwnSummariesTest(unittest.TestCase):
         self.assertIn('4 summary sentences beside 1 statements.', report)
         # A draft that proves no statement of its own gets no listing.
         self.assertEqual(dcs.own_summaries('<p><strong>New mathematics.</strong> None.</p>'), ([], []))
+        # The record's form, a Statement label before "Corollary (...)", is the draft's own statement (17 October
+        # 2026: such a draft was listed as having none); a General statement paragraph is not.
+        record_form = ('<p><strong>Statement.</strong> Corollary (k). Over any field, m &gt;= 5.</p>'
+                       '<p><strong>General statement.</strong> cor:k holds.</p>'
+                       '<p><strong>New mathematics.</strong> The kernel is C.</p>')
+        statements, summaries = dcs.own_summaries(record_form)
+        self.assertEqual([label for label, _ in statements], ['Statement'])
+        self.assertEqual([where for where, _ in summaries], ['New mathematics'])
 
 
 class ConstructionStepsTest(unittest.TestCase):

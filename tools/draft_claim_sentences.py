@@ -504,7 +504,9 @@ def unread_report(draft, registry, width, spec=None):
                       'first or cite only what was read (AGENTS.md):'] + lines + [f'{len(found)} such sentences.'])
 
 
-OWN_STATEMENT = re.compile(r'^(?:Lemma|Theorem|Proposition|Corollary)\b')
+# The record's own form is "<strong>Statement.</strong> Corollary (...)"; 17 October 2026: such a draft was
+# listed as having no statement, so its summaries were compared with nothing.
+OWN_STATEMENT = re.compile(r'^(?:Lemma|Theorem|Proposition|Corollary|Statement)\b')
 OWN_SUMMARY = re.compile(r'^(?:New mathematics|Goal progress|Architecture test)$')
 LEDGER = re.compile(r'<h4\b[^>]*ledger[^>]*>.*?</h4>\s*<ul>(.*?)</ul>', re.S | re.I)
 
