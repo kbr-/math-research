@@ -1023,7 +1023,8 @@ CLASS = re.compile(r'\b(?:no|every|all|any|none of the)\b[^.;:]*?\b(?:whose|that
 # exclusion matching anywhere dropped 15, 3 of them wrongly (positive statements holding "is proved" or "known");
 # anchored to a negation and applied per clause, as here, it asks 92, each drop judged
 # (research/provenance/framework/bearing-within-20261017.txt).
-NOT_OBTAINED = re.compile(r'\b(?:no|not|nothing|none)\b[^;]*?\b(?:is|are|was|were|been)\s+(?:\w+\s+){0,2}(?:proved|'
+NOT_OBTAINED = re.compile(r'(?:(?:^\W*(?:\w+\.\s*)?|:\s+|\bbut\s+)(?:[Nn]o|None|Nothing)\b[^;]*?\b(?:is|are|was|were|been)\s+(?:\w+\s+){0,2}'
+                          r'|\b(?:is|are|was|were|been|has|have)\s+(?:not|never)\s+(?:been\s+)?(?:\w+\s+)?)(?:proved|'
                           r'proven|established|found|supplied|constructed|obtained|certified|advanced|exhibited|shown|'
                           r'produced|given|changed)\b'
                           r'|\bremains?\s+(?:open|unchanged)\b|\bnot advanced\b|\bgives nothing\b|\bfinds no\b'
@@ -1034,16 +1035,53 @@ NOT_OBTAINED = re.compile(r'\b(?:no|not|nothing|none)\b[^;]*?\b(?:is|are|was|wer
 def states_class(sentence):
     """Whether some clause of SENTENCE (split at semicolons) states a class and does not report something not
     obtained (a negation before the participle, 'remains open', or a clause opening with None or Nothing).
-    Known misses, both of a sentence that states a class and is not asked (the reviewer's fifth pass, 17 October
-    2026): a negation inside the class description itself ("every flow with no crossing edge is shown to fail"),
-    and a class stated after a colon in a clause that first says "gives nothing", since clauses split only at
-    semicolons."""
+    The negation must govern the clause: open it ("No family ... is produced") or stand before the participle
+    ("is not proved"); a negation inside the class description ("every flow with no crossing edge is shown to
+    fail") does not exclude it.  Known misses, of a sentence that states a class and is not asked: a class stated
+    after a colon in a clause that first says "gives nothing", since clauses split only at semicolons; and a
+    class without a relative clause ("Every chain has a bounded value"), which the older symbol route still asks
+    when the cited claim's symbols go unnamed."""
     return any(CLASS.search(clause) and not NOT_OBTAINED.search(clause) for clause in sentence.split(';'))
+
+
+# A review declares no proof, yet its Assessment, Obstacle and Decision sum up what the period's results cover: on
+# 17 October 2026 the eighth review's draft wrote hierarchical constructions excluded "as a class" in all three,
+# where the theorem covered local fields keeping the square means, and nothing asked it.  Such a sentence is
+# answered against the claims it cites, or, citing none, those its paragraph cites.
+REVIEW_SUMMARY = ('assessment of this line', 'obstacle', 'decision')
+
+
+def review_class_rows(article):
+    """[(key, section label, sentence, claims)] for the class sentences of a review's summing-up paragraphs."""
+    by_label, summary = {}, []
+    heading = ''
+    for tag, body in BLOCK.findall(STATUS_LINE.sub('', article)):
+        if tag in ('h3', 'h4'):
+            heading = text(body) if tag == 'h4' else ''
+            continue
+        label = LABEL.match(body)
+        where = label.group(1) if label else heading
+        by_label.setdefault(where.lower(), []).extend(cited(body))
+        if where.lower() in REVIEW_SUMMARY:
+            summary.extend((where, text(LABEL.sub('', s) if i == 0 and label else s))
+                           for i, s in enumerate(sentences(body)))
+    rows = []
+    for where, sentence in summary:
+        # every sentence of the three paragraphs, not only those universals() lists: "closed as a class" holds no
+        # universal word and names its class without the pattern's relative clause (the reviewer's follow-up: two of
+        # the review's five overstatements had that form)
+        if states_class(sentence) or re.search(r'\bas a class\b', sentence):
+            claims = cited(sentence) or list(dict.fromkeys(by_label.get(where.lower(), [])))
+            rows.append((hashlib.sha1(sentence.encode()).hexdigest()[:8], where, sentence,
+                         ' / '.join(claims) or 'no claim cited: name the results it sums up'))
+    return rows
 
 
 def class_rows(article):
     """[(key, section label, sentence, claims)] for the Goal progress sentences of ARTICLE that state a class, when
-    ARTICLE declares a proof; claims names every declared proof, joined by ' / '."""
+    ARTICLE declares a proof; claims names every declared proof, joined by ' / '.  A review's are review_class_rows."""
+    if re.search(r'<article\b[^>]*\bdata-kind="review"', article):
+        return review_class_rows(article)
     proofs = [c for c in (re.search(r'data-claims="([^"]*)"', article) or [None, ''])[1].split()
               if c.split(':')[0] in ('thm', 'lem', 'prop', 'cor')]
     if not proofs:

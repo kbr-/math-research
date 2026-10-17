@@ -1,6 +1,7 @@
 """Sentences of a draft that cite a claim are listed beside the claim's registered statement."""
 import json
 import pathlib
+import re
 import sys
 import tempfile
 import unittest
@@ -508,6 +509,10 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
                       'At the goal\'s parameters, conditionally on such cores existing, which is not known, every '
                       'source that pairs them is excluded'):
             self.assertTrue(dcs.states_class(asked), asked)
+        # a negation inside the class description does not exclude it (the reviewer's fifth pass)
+        self.assertTrue(dcs.states_class('every flow with no crossing edge that keeps the means is shown to fail'))
+        self.assertFalse(dcs.states_class('No family with a near-half barrier is produced'))
+        self.assertFalse(dcs.states_class('A bound for every chain that crosses it is not proved'))
         for not_asked in ('Bearing. None at the goal\'s own parameters: the results are on the system with one rule',
                           'Nothing at the goal\'s parameters yet: the lemma decides no class that is new'):
             self.assertFalse(dcs.states_class(not_asked), not_asked)
@@ -517,6 +522,28 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
                                        {}), [])
         # an entry with finite checks only is not asked
         self.assertEqual(dcs.domain_rows(draft.replace('thm:x ', ''), {}), [])
+
+    def test_a_review_s_summing_up_class_sentences_answer_within(self):
+        # 17 October 2026: the eighth review's draft summed up a theorem on local fields keeping the square means as
+        # excluding every hierarchical flow, in its Assessment, Obstacle and Decision, and nothing asked it
+        draft = ('<article id="r" data-kind="review" data-claims="none">'
+                 '<p><strong>Assessment of this line.</strong> Primal: thm:square-mean-flow-obstruction excludes every '
+                 'hierarchical flow whose fine steps keep the dyadic square means.</p>'
+                 '<h4>Obstacle</h4><p>The square means, which every hierarchical step forces to walk with pushes, '
+                 'must return. See thm:dyadic-flow-obstruction.</p>'
+                 '<p><strong>Decision.</strong> Core: every partition that cuts at the median is closed.</p>'
+                 '<p><strong>Rank normalization.</strong> Every count with a rank is absent here.</p></article>')
+        rows = dcs.domain_rows(draft, {})
+        self.assertEqual([(r[1], r[3]) for r in rows],
+                         [('Assessment of this line', 'thm:square-mean-flow-obstruction'),
+                          ('Obstacle', 'thm:dyadic-flow-obstruction'),
+                          ('Decision', 'no claim cited: name the results it sums up')])
+        # "as a class", the review's Decision's form
+        closed = draft.replace('every partition that cuts at the median is closed',
+                               'if it transfers, hierarchical constructions are closed as a class')
+        self.assertIn('Decision', [r[1] for r in dcs.domain_rows(closed, {})])
+        # a review stating no class is asked nothing
+        self.assertEqual(dcs.domain_rows(re.sub(r'every|whose|which', 'one', draft), {}), [])
 
     def test_a_claim_written_without_code_tags_is_cited(self):
         found = dcs.citations(self.DRAFT)

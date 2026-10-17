@@ -408,7 +408,10 @@ AGENTS.md"):
   of its output that show the cause. A shorthand coined while drafting (a name for a class of
   objects) is a new statement, not a name for the hypotheses: a sentence using a result says its
   hypotheses in the statement's own words (17 October 2026: a shorthand stood for "one reversible
-  rule" in five sentences, which lost reversibility).
+  rule" in five sentences, which lost reversibility). A summary of a result's reach (a Bearing, a
+  living-section clause, a review's Decision, a reply) names the class its hypotheses cover, never
+  the class its mechanism suggests (17 October 2026: "no rule can change the square means" was
+  summed up as "no flow", in an entry and then in the review after it).
 - When a computation agrees with what was expected, write next what it does not show, and read each
   of its figures for what it says against the conclusion (a statistic on the far side of a bound the
   conclusion assumes), before the sentence that concludes from it (17 October 2026: a closure read a

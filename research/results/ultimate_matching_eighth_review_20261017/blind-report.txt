@@ -1,0 +1,57 @@
+Stage one (BLIND STAGE) of the eighth route review, ultimate-matching, 17 October 2026: the report of the
+review's medium reviewer, given blind/brief.txt and blind/results.txt only (the goal, the thread's registered
+statements with their assessments, open questions; the route, the reviews' decisions and the next steps
+withheld). Condensed in its own terms.
+
+1. Hardest part: one matching meeting all intermediate tail levels, frequency at most e^(-u^4) of a
+displacement u sigma for every u between 1 and (log N)^(1/4). Both ends covered (AKT and (2,2) by
+thm:dyadic-flow-square-exponential; the maximum by thm:maximum-displacement-curve-threshold; each level
+separately, thm:per-level-count-matchings; low mixed levels, thm:low-level-mixed-counts and
+thm:windowed-mixed-counts); lem:per-level-gluing-fails shows levels cannot be glued abstractly. The plainest
+bound: (2,2) with Gaussian counts gives (4,4) only at scale L (log N)^(1/4) s. Dually the same gap is
+conj:conjugate-class-discrepancy for gradients over many levels; the record pays (log log N)^(1/4)
+(lem:flow-coarea-level-bound (b)) or (log N)^(1/8) (its (d)), and covers single layers, bands, guided chains
+and gradients at least N^c.
+
+2. What the obstructions exclude: thm:below-curve-matching-exclusion and lem:common-exponent-cap fix the target
+and exclude no method. thm:square-mean-flow-obstruction, lem:conditional-push-obstruction and
+thm:dyadic-flow-obstruction exclude the flow bound for level-by-level fields (i) measurable level by level,
+(ii) local over the finest theta log_2 N levels, (iii) keeping the dyadic step's square means at those levels
+or pushing along the running sign with probability at least p; a construction must break (ii) or (iii):
+fine-level steps moving mass across dyadic square boundaries depending on the running field, or a strong pull
+back toward zero; nothing about matchings not obtained through a flow. lem:segment-flow-cost: a good matching
+with tube density O(N) gives a good flow, so if the conjecture holds with bounded tube density a good flow
+exists, non-local or breaking the square means. thm:position-blind-cell-exits: exits must be chosen by
+position. lem:sample-point-pyramids: smearing at cell scale is necessary. Refutation side: single-pair exits
+useless (cor:box-exit-exclusion); straight cuts force only O(10^-4 N) (lem:straight-cut-forced-flux); chain
+certificates must be longer than e^(lambda sqrt(log N)) (thm:bounded-length-chains, (4,4) arithmetic
+checked); the class lower bounds stop at the threshold. A refutation needs a multiscale construction beating
+the constant at some pair of the curve.
+
+3. Architecture: restoring drift. In every recorded construction the per-point displacement is a sum of about
+log N increments of size about sigma/sqrt(log N); linear rules make it Gaussian, and linear pull-back
+(Ornstein-Uhlenbeck) stays Gaussian. A tail e^(-c u^4) is the stationary law of a running field with nonlinear
+restoring drift, R_{j+1} = R_j - V'(R_j)/log N + noise, V proportional to |R|^4; anisotropically V_k
+proportional to |R_k|^(alpha_k), the curve being the drift's budget. Offered as a heuristic, not a proved link.
+The drift must be realized by cross-boundary transfers sized |R|^(alpha-1), whose cost falls on other points.
+First lemma (one-level feedback): for one level-j square whose running field is large on a set E, a level-j
+step matching the counts' divergence with conditional mean increment -c sign(R)|R|^3/(sigma^2 log N) on E at
+added cost bounded by that level's energy budget. Smallest test: a two-level model, J = 2 or 3, as a small
+convex program, measuring the attainable drift against the extra quartic cost; feasibility at fixed J is the
+question. Separate direct check: the exact optimal assignment for the cost psi_4(|Delta|/s) up to N about
+10^4, its exceedances against the dyadic flow's at u = 2.2 and 3.3, and its tube density (whether
+lem:segment-flow-cost applies); at these sizes (log N)^(1/4) is about 1.7, so it shows a direction only.
+
+4. Most informative weaker statement: the diagonal pair (alpha, alpha) for some alpha in (2, 4), above the
+curve, open as far as results.txt shows; every flow obstruction already applies above exponent 2; a proof of
+(2+eps, 2+eps) isolates the mechanism; an equivalent quantitative form is (4,4) at scale
+L (log N)^(1/4 - eps) s.
+
+Process audit: conj:ultimate-matching's assessment says (2,2) holds "only with probability 9/10", stale against
+thm:dyadic-flow-square-exponential; lem:leighton-shor-class-lower-bound's open AKT question is dominated by
+lem:lipschitz-class-lower-bound, a relation to register; conj:conjugate-class-discrepancy's assessment omits
+the later partial dual results and their losses; no exact-optimum simulation is among the finite checks.
+Strength count 0.
+
+Suggestions (unverified): restoring drift with its feedback lemma and two-level convex program; (alpha, alpha)
+with alpha in (2, 4) as the next open statement; the exact psi_4-optimal matching and its tube density.
