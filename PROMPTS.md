@@ -249,7 +249,11 @@ So perform the following, in a loop:
   computations of their own, each number in exact arithmetic beside its formula and each case run
   through the proof's steps, not written after the proof from the result's shape (17 October 2026: a
   witness's constant from a floating-point ceiling, two degenerate cases never run, a spec's scope
-  wider than its entry, and a stationary variance off by two, all in one entry's closing text).
+  wider than its entry, and a stationary variance off by two, all in one entry's closing text). A
+  correction that changes a relation, a sign or a count after a review is recomputed as a new claim,
+  its computation saved beside the entry's results (an exact check of both statements' constants for
+  a relation), before it goes back: moving to the opposite wording is a patch (17 October 2026:
+  "refines" corrected to "neither implies", both wrong, the relation holding with a free constant).
 - update the notebook as usual
 - Apply the [cheap significance check](research/claims/README.md#significance-check-and-attention)
   through claim metadata and the finalizer; surface new/reopened candidates without rerunning a

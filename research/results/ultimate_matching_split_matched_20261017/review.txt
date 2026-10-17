@@ -1,0 +1,41 @@
+Review of entry-2026-10-17-split-matched-transports (thm:split-matched-transport-obstruction), ultimate-matching,
+17 October 2026: one medium reviewer, given the draft, its commit message, lem:block-lower-tail's statement and the
+record entry of thm:adapted-partition-obstruction. Condensed in its own terms.
+
+First pass. Verdict: pass with corrections. The proof is correct for the theorem as stated; checked: the walk
+(both increments, xi + delta_pm, c delta_- + (1-c) delta_+ = 0, the choice of C_*); the push in both signs
+(threshold at most (A + 1/4) sqrt n, (A + 1/2) sqrt n for n >= 16 on the other side; variance at least eps/4
+for n >= 1/eps^2, its true minimum about 15 eps/32; x, lem:block-lower-tail's conditions for n >= 8 m_x/eps);
+counts (geometric growth going up, gamma_N's bound); push size e^(-gamma)/sqrt(Gamma N); chain and Chebyshev;
+cost 1/9 - 1/20 = 11/180 and u_N; constants x^2 = 4, m_x = 512, lambda = 3076, 1/6156, m = 2. No unused
+hypothesis.
+
+Required changes: the claim that it contains or refines thm:adapted-partition-obstruction is false as written:
+that theorem allows error m/(18 sqrt N) and theta < 1/(2 + 2 lambda_A) with x_A = 4(A + 1/2)/sqrt 3, while
+here the error m/(20 sqrt(Gamma N)) is smaller and (ii) needs eps < 1/2, so x is larger and the theta range
+narrower; sharpen (error m/(18 sqrt(Gamma N)); variance 3 eps(1-eps)/4, x = 2(A + 1/2)/sqrt(3 eps(1-eps)),
+which equals x_A at eps = 1/2) and still drop or weaken the refines edge. Inside the containment argument: A
+must be a constant (A = A' works); dyadic targets give Gamma = 1, not 2; (iii) holds with kappa e^(-2 gamma)
+and K e^(2 gamma). "Steering of any size" contradicts the Degenerate cases. Nonvacuity: a leftover drafting
+fragment; (ii) fails at n = 16 (deviation at most 1/4 only from about n = 300); kappa, K, J not given (K >= 16
+kappa needed). Owed attempt omits (ii)-(iv) and the measurability. Degenerate cases claim an equivalence
+where summability is only sufficient. Hypotheses: kappa also used for gamma_N and V_{j0}; the capacities need
+only rho bounded, so (i)'s stated weakest form is stronger than needed. Follow-up: tau = c at every cut makes
+every cell its own target by induction from the root, so T is the identity and correcting the mismatches is
+the original problem, the goal itself; the sqrt(n_f) figure is the Poisson fluctuation of N|C|; the next
+attempt is a restatement, missed by Smallest case and Own statements; cite lem:straight-cut-forced-flux there.
+Review paragraph: (1) "cannot exist" rests on one tried form; (3) the quoted run failed two tests, unmentioned.
+Record searches: "target split count split hierarchical transport order statistic" and "capacity mismatch cell
+count surplus correction across boundary matching": nothing on this thread except lem:straight-cut-forced-flux.
+Title proposed: "Split-matched hierarchical transports also fail". Process audit: the containment claim written
+from the shape of the result; the self-review missed n >= 16 and the fragment; a next attempt whose outcome
+the draft's own walk formula fixes; the commit message repeats refines and omits that the conclusion is
+asymptotic; the witness constants file does not check (ii) at the witness's n. Strength count 7.
+Suggestions (unverified): tau = q + w(c - q), w < 1 fixed: xi = (1 - w)(q - c) l'/2, the same push event;
+capacities need |tau - q| <= w|c - q| = O(sqrt(log N/n)) with high probability, gamma_N bounded, not -> 0,
+enough if h absorbs e^gamma; so every w < 1 falls to the walk and only w = 1, the identity, escapes: a
+dichotomy; close the tau = c attempt as a restatement.
+
+Second pass (the corrections and the interpolation outline). Verdict: pass with corrections. Constants right: the variance bound on both signs, the lemma's condition, the cost step's m/(18 sqrt(Gamma N)) and u_N, x = x_A at eps = 1/2. The paragraph after the Statement wrong in two places (partly the reviewer's error carried from the first pass): at Gamma = 1 the error bounds are equal; and the theta bound 1/(12 m_x + 6 log2(1/eps)) against 1/(12 m_A + 6): when 128 x_A^2 is not an integer, m_x = m_A for eps close to 1/2, so the new theorem implies thm:adapted-partition-obstruction for every A outside a countable set, and for the others for theta < 1/(12 m_A + 18). Fix there and in the Record comparison, New mathematics, Process assessment, commit message and spec; or (suggestion, unverified) state the variance bound as eps(1-eps)(1-delta) with delta free, which gives the implication for every A and restores refines. Nonvacuity right (x^2 = 16/9, m_x = 228, lambda = 1372, 1/2748; kappa log N = 6931; window contains 2^14; K = 16 kappa). Hypotheses acceptable, with the caveat that e^(-2 beta) needs beta <= 1/2. Follow-up: tau = c giving the identity right; child choice measurable; two repairs: chain membership must be the order-statistic event (the Hoeffding event is not G_j-measurable), and (iv) depends on c for w > 0, bounded on the Hoeffding event. Process: the committed check tests only that a Refinement checked paragraph is present, and the draft shows a written comparison can be wrong; name that limit. Review answers (1) and (3) supported as worded. Strength count 4.
+
+Third pass (the restored implication, the witness at delta = 1/4, the Follow-up repairs). Verdict: pass with corrections. The implication holds for every A, eps slightly below 1/2 included: at delta = 1/10, 128 x^2 <= m_A - (1/6) 128 x_A^2 <= m_A - 28 (x_A^2 >= 4/3), continuity in eps gives m_x <= m_A - 1, and the theta denominator is below 12 m_A + 6 when eps > 1/8; the variance bound holds on both sides of the push; the lemma's conditions hold. Witness at delta = 1/4 right (x^2 = 16/9; n >= 3243 met at 6931). Follow-up repairs, Prevention's named limit, the spec's refines edge and the commit message right. Required: write the all-A margin into the Refinement checked paragraph in place of the examples; a stray parenthesis in the Record comparison (found balanced on reading: the math closes, then the parenthetical); record delta = 1/4 in witness-constants.txt. Strength count 0.
