@@ -297,7 +297,9 @@ def timed_run(args, found, broken):
           + (f', {len(skipped)} skipped' if skipped else ''))
     if not failed and not slow and not args.modules:
         try:
-            SUITE_PASS.write_text(json.dumps({'unix_s': started_unix, 'tests': sum(r[1] for r in results)}))
+            # seconds as printed above, so that a commit message's "N tests in X s" can be checked against it
+            SUITE_PASS.write_text(json.dumps({'unix_s': started_unix, 'tests': sum(r[1] for r in results),
+                                              'seconds': round(elapsed, 1)}))
         except OSError:
             pass
     return 1 if failed or slow else 0

@@ -176,6 +176,36 @@ def shared_code(paths, top):
     return found
 
 
+# A suite figure in a message, "1341 tests in 9.4 s" or "Ran 1341 tests in 9.4s".  On 17 October 2026 a message
+# claimed a passing run of 1341 tests in 9.4 s before the run, which then failed; the figure check passed because
+# the provenance file it cited held an older run's figure.
+SUITE_FIGURE = re.compile(r'(\d[\d,]*) tests in (\d+(?:\.\d+)?) ?s\b')
+# A failure reported, not denied: "Nothing failed: the suite ran ..." skipped a false figure in the bypass try.
+FAILED_NEAR = re.compile(r'(?<!nothing )(?<!none )(?<!not )(?<!no test )(?:\bfail(?:ed|s|ure)?\b|\btoo slow\b)', re.I)
+
+
+def suite_figures_unmatched(message, top):
+    """The suite figures of MESSAGE that report a passing run (no failure word in the 60 characters before them)
+    and differ from the last passing run of the whole suite, as tools/tests/run.py stamped it."""
+    try:
+        stamp = json.loads((top / 'tools/tests/.suite-pass.json').read_text())
+    except (OSError, ValueError):
+        stamp = {}
+    found = []
+    for m in SUITE_FIGURE.finditer(' '.join(message.split())):
+        flat = ' '.join(message.split())
+        if FAILED_NEAR.search(flat[max(0, m.start() - 60):m.start()]):
+            continue
+        tests, seconds = int(m.group(1).replace(',', '')), float(m.group(2))
+        # one module's run ("test_goal_progress: 60 tests in 1.0 s") is a small part of the suite, not a claim
+        # about it: over the last 300 messages, five such figures would otherwise have been refused
+        if stamp.get('tests') and tests < stamp['tests'] / 2:
+            continue
+        if stamp.get('tests') != tests or stamp.get('seconds') is None or abs(stamp['seconds'] - seconds) > 0.05:
+            found.append(m.group(0))
+    return found
+
+
 def suite_after(paths, top):
     """None when the whole suite passed after the last edit of each staged shared path, else the refusal."""
     shared = [p for p in shared_code(paths, top) if (top / p).exists()]
@@ -295,6 +325,11 @@ def check_staged(message_path):
     refusal = suite_after(paths, top)
     if refusal:
         print(refusal, file=sys.stderr)
+        status = 1
+    for figure in suite_figures_unmatched(message, top):
+        print(f'commit-msg: the message reports a passing suite run, "{figure}", that is not the last passing run of '
+              'the whole suite (tools/tests/.suite-pass.json): write the figure from the run\'s own output after it '
+              'exists, or say in the 60 characters before it that the run failed.', file=sys.stderr)
         status = 1
     staged_changed = git('diff', '--cached', '--name-only', '--diff-filter=AM').split()
     callers = [p for p in paths if p in CALLERS or (p.startswith('tools/hooks/') and p.endswith('.py'))]

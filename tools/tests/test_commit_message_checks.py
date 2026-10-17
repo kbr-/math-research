@@ -116,6 +116,23 @@ class SuiteAfterTest(unittest.TestCase):
             os.utime(top / 'tools/hooks/guard.py', (9e9, 9e9))                               # edited after it
             self.assertIn('tools/hooks/guard.py', cmc.suite_after(['tools/hooks/guard.py'], top))
             self.assertIsNone(cmc.suite_after(['tools/alone.py'], top))                     # its own tests do
+            # a suite figure must be the last passing run's (17 October 2026: "1341 tests in 9.4 s" was written
+            # before the run, which failed, and a stale provenance file let it pass)
+            stamp.write_text(json.dumps({'unix_s': 1, 'tests': 1341, 'seconds': 9.8}))
+            claimed = 'The suite ran 1341 tests in 9.4 s after the last edit to shared code.'
+            self.assertEqual(cmc.suite_figures_unmatched(claimed, top), ['1341 tests in 9.4 s'])
+            self.assertEqual(cmc.suite_figures_unmatched(claimed.replace('9.4', '9.8'), top), [])
+            both = ('the whole suite first failed on three browser timing limits alone, 1341 tests in 17.0 s, and '
+                    'once rerun passed, 1341 tests in\n9.8 s')
+            self.assertEqual(cmc.suite_figures_unmatched(both, top), [])                   # the failed run is said so
+            self.assertEqual(cmc.suite_figures_unmatched('Nothing failed: ' + claimed, top),  # a denial is no report
+                             ['1341 tests in 9.4 s'])
+            self.assertEqual(cmc.suite_figures_unmatched('Ran 1342 tests in 9.8s: OK', top), ['1342 tests in 9.8s'])
+            for module_run in ('test_goal_progress: 60 tests in 1.0 s', "the guard's and the tool's tests after it, "
+                               '34 tests in 0.2 s'):                                       # one module's run
+                self.assertEqual(cmc.suite_figures_unmatched(module_run, top), [], module_run)
+            stamp.write_text(json.dumps({'unix_s': 1, 'tests': 1341}))                     # an older stamp: no seconds
+            self.assertEqual(cmc.suite_figures_unmatched(claimed.replace('9.4', '9.8'), top), ['1341 tests in 9.8 s'])
 
 
 class UnlabelledScriptTest(unittest.TestCase):
