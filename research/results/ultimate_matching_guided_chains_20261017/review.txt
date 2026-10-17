@@ -1,0 +1,50 @@
+Review record of entry-2026-10-17-guided-chains, 17 October 2026, one fresh-context Claude Code
+medium-reviewer. Condensed in layout only.
+
+First pass. Verdict: pass with corrections; no error in the core steps of (a)-(d). Checked: F
+vanishes outside the union of T; the inner part of V^0 at most P(A) + P(S) by the Fubini count; the
+extra term at most 8W #T; the tube lemma's conditions (k <= j = l_1, j >= 1); cut-cell (a) at the
+coarse mesh ((2^(-l_1)/delta_0)^2 <= 4 sqrt(log N)/kappa^2); (b) by relative isoperimetry on the
+unit square and Bernstein; (c) the per-layer sum, Phi_(k_k) <= Phi_w, the layer count and C; (d)
+2.214, 13.38, 23 from log N >= 180; the first witness's nesting, beta = 6, #T_k, cost, K_N,
+discrete-flow (c) from log N >= 4096, y delta_0 K_N <= T/34. Required: the family fixed before the
+event (quantifier order), and no union over delta_0 in (b); at W = 1 the one W-cell has 4W of
+boundary, not 2W; the ring holds 8 s_k/delta_0 + 16 fine cells, so P_k <= 32 s_k + 64 delta_0; the
+witness at w = 2^(-l_1) is decided by the per-cell count (Bernstein per coarse cell with a union
+over its 2^((W/delta_0)^2) subsets, C sqrt(N log N) W #T), which with (b) decides every chain with w
+2^(l_1) = O(1) and loses a factor W 2^(l_1) beyond, so the Baseline and Plainest bound must name it
+and the witness have w 2^(l_1) growing; "exponential in 1/delta_0^2" overstates the number of
+chains; the Degenerate case A = S keeps the c_kappa term; the spec's "multiplicity one" should be
+"any multiplicity"; the Bearing dropped "fixed in advance"; the Architecture test said the operation
+holds and is not the operation; Own statements' "None decides" wrong: parallel copies at sigma >=
+sqrt 2 delta_0 have multiplicity one, so lem:discrete-flow-bound (c) bounds them within (log
+y)^(1/4) of the conjectured order, and dilations lose the scales below their offset by construction,
+so the next attempt is largely decided by the record. More general at no cost: (c) uses nesting, the
+cost and (4,4) only through y delta_0 sum P_k <= T. Record search: "parallel set dilation Minkowski
+sum layers multiplicity one nested chain guide polynomial family union bound":
+lem:cut-cell-variance-bound, lem:mesh-function-discrepancy, lem:discrete-flow-bound; none states (a)
+or (c). Suggestions (unverified): the open question is the factor (log y)^(1/4) for multiplicity-one
+chains; a ramp band around an r-regular extremal set, charged as a band, breaking where the slope is
+not locally bounded. Process audit: commit title dropped its scope (proposed "Chains near fixed
+polynomial guide families"); the witness exercised only what an elementary count decides; the next
+attempt was fixed by the record's own lemma; a figure in the Review paragraph without its saved
+output; strength count 4.
+
+Follow-up. Verdict: pass with corrections. Checked: the quantifier order, (c) as a weighted sum and
+(d) with a_k = y delta_0; 12W #T; the new witness (w 2^(l_1) in [log N, 2 log N), 7 s_k <= P_k <= 8
+s_k + 16w, beta = 8, nesting, cost, K_N of order N^(1/2-o(1)), y delta_0 K_N <= T/9, the per-cell
+count about sqrt N w/delta_0 per unit tube length). Required: W_k in [2^(-l_1), w]; 'chains of this
+shape' to 'guided chains with these tubes'; my translates claim false (the front edges have
+multiplicity one, so only 8(log(y/2))^(-1/4) holds, and flow (c) at m = K polynomial is above the
+conjectured order: translates not decided); tube-localized (c) does not apply to the square's
+plateau with a one-sided ramp (rectangles decide it); 'outside every polynomial family' to 'chosen
+after the points from more than N^c'; (b) holds for any fixed family of M members with log M in
+place of c log N; the reformulated next attempt marked as mine; 'N large' in the commit message.
+Strength count 4.
+
+Third check. Verdict: pass with corrections. Checked: (b) for M_N members; the back-boundary cost
+(Ky/2 >= e^16) and y delta_0 K P_back <= 8 (log(Ky/2))^(-1/4); flow (c) at m = K; parallel copies
+dropped; the Smallest case arithmetic. Required: the back boundary is the -e_1-facing edges whose
+left cell lies outside A_1, multiplicity up to K; the Smallest case needs sigma a multiple of
+delta_0 at most the square's side; the family argument from the smallest family (log M of order P
+2^(l_1)), not all unions. Strength count 2.

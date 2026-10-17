@@ -1,0 +1,58 @@
+{
+  "source": {
+    "record": "[Guided chains](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-guided-chains)",
+    "label": "Guided chains",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-17-guided-chains"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "lem:guided-chain-bound",
+      "summary": "For X_1..X_N i.i.d. uniform on [0,1]^2, kappa > 0 fixed, l_1 the Leighton-Shor scale, D(g) = sum_i g(X_i) - N int g, c > 0 and a family F_N of at most N^c unions of cells of side 2^(-l_1) fixed before the points are drawn, with probability tending to one, for every dyadic delta_0 with kappa sqrt(log N/N) <= delta_0 <= 2^(-l_1): (a) every union A of cells of side delta_0, every union S of cells of side 2^(-l_1), every dyadic W = 2^(-k) in [2^(-l_1), 1] and every set T of W-cells whose union contains the symmetric difference of A and S have |D(1_A) - D(1_S)| <= c_kappa sqrt(N log N) P(A) + L sqrt N ((2(l_1 - k) + 5)^(3/4) + sqrt(log N))(P(A) + P(S) + 12 W #T), P the inner perimeter, c_kappa and L the constants of lem:cut-cell-variance-bound and lem:tube-localized-discrepancy; (b) every S in F_N has |D(1_S)| <= P(S) sqrt((c+3) N log N) + (c+3) log N, and for any family of M_N unions of coarse cells fixed in advance, |D(1_S)| <= P(S) sqrt(N(log M_N + 3 log N)) + log M_N + 3 log N; (c) for every beta > 0 and w in [2^(-l_1), 1], every weighted sum sum_k a_k 1_{A_k} of unions of fine cells with P(A_k) > 0, each with a guide S_k in F_N, a dyadic W_k in [2^(-l_1), w] and a set T_k of W_k-cells covering the symmetric difference, with P(S_k) + 12 W_k #T_k <= beta P(A_k), has |D| <= C sqrt N ((2 log_2(w 2^(l_1)) + 5)^(3/4) + sqrt(log N)) sum_k |a_k| P(A_k), C = c_kappa + L(1 + beta) + beta sqrt(c+3) + (c+3)/kappa; (d) at (4,4) a nested chain y delta_0 sum_k 1_{A_k} of such layers at level y >= 2e^16 with discrete cost at most 2 has |D| <= C sqrt N T((2 log_2(w 2^(l_1)) + 5)^(3/4) + sqrt(log N)), T = 8 (log(y/2))^(-1/4), for every number of layers, and |D| <= 23 C sqrt(N log N) for N large when log(w 2^(l_1)) <= (log N)^(2/3)(log(y/2))^(1/3).",
+      "assessment": "Working proof: (a) lem:cut-cell-variance-bound (a) at the Leighton-Shor mesh, then lem:tube-localized-discrepancy (b) for E 1_A - 1_S, which vanishes on the coarse cells outside the union of T, with inner variation at most P(A) + P(S), boundary ring at most 4W #T and extra term at most 8W #T; (b) Bernstein for the binomial count with variance at most N P(S)^2/2 by the relative isoperimetry of lem:cut-cell-variance-bound's entry on the unit square, and a union over the family; (c) linearity, (a) and (b) per layer, the additive log N charged to P(A_k) >= delta_0; (d) the nesting identity and lem:fine-grid-leighton-shor (c) for sum_k P(A_k) <= T/(y delta_0), and arithmetic.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "On dyadic grids against Lebesgue measure, sets near guides from a polynomial family fixed in advance cost the tube factor (log(w 2^(l_1)))^(3/4) per unit perimeter, and at (4,4) nested chains of any number of layers whose layers lie within tubes of width w <= 2^(-l_1) exp((log N)^(2/3)(log(y/2))^(1/3)) of such guides, with guide and tube lengths at most beta times each layer's perimeter, are at most C sqrt(N log N): the fifth review's outcome (A) for such chains, beyond lem:cut-cell-variance-bound (d), which needs K <= N^(1/7), and lem:discrete-flow-bound (c), which loses up to (log N)^(1/8).",
+      "next_action": "Nested unions of translates of one Leighton-Shor set, whose back boundary has multiplicity K and which lem:discrete-flow-bound (c) charges (log(K y))^(1/4) above the conjectured order: decide whether the front boundaries add coherently, given that the cost bounds the back boundary's share of the variation by 8 (log(K y/2))^(-1/4).",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:guided-chain-bound",
+      "depends_on",
+      "lem:cut-cell-variance-bound",
+      "Its (a) at the Leighton-Shor mesh, its relative isoperimetry for (b), and the nesting identity of its (c)."
+    ],
+    [
+      "lem:guided-chain-bound",
+      "depends_on",
+      "lem:tube-localized-discrepancy",
+      "Part (b) on the difference of the coarse averages and the guide."
+    ],
+    [
+      "lem:guided-chain-bound",
+      "depends_on",
+      "lem:fine-grid-leighton-shor",
+      "Its (c) bounds the total variation of a chain at level y."
+    ],
+    [
+      "lem:guided-chain-bound",
+      "cites",
+      "lem:discrete-flow-bound",
+      "Its (c) bounds chains of multiplicity m at C sqrt(N log N)(1 + (log(m y))^(1/4)); part (d) here bounds guided chains of any multiplicity without that factor. Neither implies the other."
+    ],
+    [
+      "lem:guided-chain-bound",
+      "applies",
+      "conj:conjugate-class-discrepancy",
+      "At (4,4) on dyadic grids, against Lebesgue measure: guided chains of any number of layers are at most C sqrt(N log N); a bound of the goal's smeared form, through lem:smeared-y-term (b), only for class functions whose cell averages are such chains."
+    ]
+  ]
+}
