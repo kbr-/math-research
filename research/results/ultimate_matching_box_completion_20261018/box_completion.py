@@ -203,6 +203,7 @@ KMAX = 60  # levels tried per sample; a sample stopped here with no firing is re
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', required=True)
+    ap.add_argument('--sizes', type=int, nargs='+', default=[4096, 16384, 65536])
     args = ap.parse_args()
     result = dict(controls=controls(np.random.default_rng(20261018)), samples=[])
     c = result['controls']
@@ -210,7 +211,7 @@ def main():
     assert c['soundness']['cert_fires_where_holds'] == 0, c['soundness']
     assert c['soundness']['nuD_fires_where_holds'] == 0, c['soundness']
     print('controls', json.dumps(c))
-    for N in (4096, 16384, 65536):
+    for N in args.sizes:
         for L in (0.5, 1.0):
             for seed in range(3):
                 lv = sample(N, L, 1000 * N + 10 * int(2 * L) + seed)
