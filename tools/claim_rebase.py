@@ -109,7 +109,24 @@ def main(argv=None):
     print(f'Rebuilt {len(rebuilt)} claim(s) on the base\'s registry ({size:.1f} MB): {", ".join(rebuilt)}.')
     print('Registry files staged; changed-claim and append-only checks pass against HEAD.')
     print('Next: GIT_EDITOR=true git rebase --continue, then tools/check-claims.py and tools/ff-base.sh.')
+    unstaged_names = unstaged(cwd)
+    if unstaged_names:
+        print(unstaged_warning(unstaged_names))
     return 0
+
+
+def unstaged(cwd):
+    """Tracked files with changes not staged, which make git rebase --continue refuse."""
+    return [name for name in git('diff', '--name-only', cwd=cwd).splitlines() if name]
+
+
+def unstaged_warning(names):
+    # 17 October 2026: git rebase --continue refused twice with only "You must edit all merge conflicts and then
+    # mark them as resolved using git add", while no conflict was left, because two tool files had unstaged
+    # edits; the cause was guessed as a commit hook and a hand commit put git's conflict comments in the message.
+    return (f'Unstaged changes in {", ".join(names)}: git rebase --continue refuses with "You must edit all merge '
+            'conflicts", though none is left. Set them aside (copy them out and git checkout -- them) and restore '
+            'them after the rebase.')
 
 
 if __name__ == '__main__':

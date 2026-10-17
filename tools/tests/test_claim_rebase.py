@@ -31,6 +31,26 @@ class GuardTest(unittest.TestCase):
         self.assertEqual(cr.already_registered(registry, [{'claims': [{'id': 'lem:c'}]}]), [])
 
 
+class UnstagedTest(unittest.TestCase):
+    def test_unstaged_tracked_changes_are_named_and_staged_ones_are_not(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            git(tmp, 'init', '-q', '-b', 'main')
+            git(tmp, 'config', 'user.email', 't@example.org')
+            git(tmp, 'config', 'user.name', 'T')
+            for name in ('a.txt', 'b.txt'):
+                Path(tmp, name).write_text('base\n')
+            git(tmp, 'add', '.')
+            git(tmp, 'commit', '-q', '-m', 'base')
+            self.assertEqual(cr.unstaged(tmp), [])
+            Path(tmp, 'a.txt').write_text('edited\n')
+            Path(tmp, 'b.txt').write_text('staged\n')
+            git(tmp, 'add', 'b.txt')
+            Path(tmp, 'new.txt').write_text('untracked\n')
+            self.assertEqual(cr.unstaged(tmp), ['a.txt'])
+            self.assertIn('a.txt', cr.unstaged_warning(['a.txt']))
+            self.assertIn('You must edit all merge conflicts', cr.unstaged_warning(['a.txt']))
+
+
 class RefusalTest(unittest.TestCase):
     def repo(self, tmp):
         git(tmp, 'init', '-q', '-b', 'main')
