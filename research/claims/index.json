@@ -670995,7 +670995,7 @@
       "reviews": {
         "mathematical_status": {
           "state": "reviewed",
-          "revision": "1850ba7f5ac383e3cb59fa32e0996fe8ba873dc8",
+          "revision": "921e85b16a54b68d59bb6860928afa4e478a4190",
           "date": "2026-10-17",
           "reviewer": "Claude Code with sole fresh-context medium reviewer",
           "note": "Status checked against the entry and its verification gate.",
@@ -671012,7 +671012,7 @@
         },
         "formalization": {
           "state": "reviewed",
-          "revision": "1850ba7f5ac383e3cb59fa32e0996fe8ba873dc8",
+          "revision": "921e85b16a54b68d59bb6860928afa4e478a4190",
           "date": "2026-10-17",
           "reviewer": "Claude Code with sole fresh-context medium reviewer",
           "note": "No Lean artifact.",
@@ -671029,7 +671029,7 @@
         },
         "topics": {
           "state": "reviewed",
-          "revision": "1850ba7f5ac383e3cb59fa32e0996fe8ba873dc8",
+          "revision": "921e85b16a54b68d59bb6860928afa4e478a4190",
           "date": "2026-10-17",
           "reviewer": "Claude Code with sole fresh-context medium reviewer",
           "note": "Topics checked against the entry.",
@@ -671046,7 +671046,7 @@
         },
         "significance": {
           "state": "reviewed",
-          "revision": "1850ba7f5ac383e3cb59fa32e0996fe8ba873dc8",
+          "revision": "921e85b16a54b68d59bb6860928afa4e478a4190",
           "date": "2026-10-17",
           "reviewer": "Claude Code with sole fresh-context medium reviewer",
           "note": "Significance assessed at this checkpoint.",
@@ -671063,13 +671063,13 @@
         },
         "relationships": {
           "state": "reviewed",
-          "revision": "1850ba7f5ac383e3cb59fa32e0996fe8ba873dc8",
+          "revision": "921e85b16a54b68d59bb6860928afa4e478a4190",
           "date": "2026-10-17",
           "reviewer": "Claude Code with sole fresh-context medium reviewer",
-          "note": "New claim; relationships recorded.",
+          "note": "New claim; relationships recorded. Universal completion fails on random lines: new relationship with thm:universal-completion-criterion.",
           "next_action": null,
           "claim_sha256": "e5169d4eeba24b96e96e79f2b083e63361a1eb5f8b9fbbf1c666c7084b8c0694",
-          "value_sha256": "2fa8d176c59dc7b77e9b4247524204da814dcc926a8bd35d6b47c6276e6ec331",
+          "value_sha256": "33629913b27964c1d4b9d173fb63821349db1b20e02e272a678efa7f9aec2060",
           "evidence": [
             {
               "target": "branches/ultimate-matching/notebook.html#entry-2026-10-17-local-completion-masking",
@@ -671304,6 +671304,121 @@
             {
               "target": "branches/common-multiplier/notebook.html#entry-2026-10-17-char-three-pair",
               "sha256": "df7adcaabdf152d4347f1d4a146d1784d1ec5a104aa37dc78f897393389657de",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "thm:universal-completion-criterion",
+      "summary": "(a) For every bipartite graph G, every set U_X of X-vertices left unmatched by some maximum matching and every such set U_Y of Y-vertices, some maximum matching leaves exactly U_X and U_Y unmatched; hence, for nested bipartite graphs with deficiencies m_k, completion asked for every maximum matching of G_k (a matching inside its leftover in G_{k+1} of size >= m_k - m_{k+1}) holds iff every such pair spans a matching of that size in G_{k+1}, and fails at a level with m_{k+1} < m_k where some pair spans no edge of G_{k+1}. (b) For fixed 0 < r_1 < r_2, independent samples of n i.i.d. uniform points of [0, n] and the graphs of pairs within r_1 and r_2, with a, b, delta > 0, delta <= a, a + 2 delta < r_1 < b - 2 delta, b + 2 delta < r_2 < 2a + b - 2 delta, an offset c > r_2 + delta, a window length W > max(4, c + 2a + b + delta + r_2) and p_n = (n(n-1)(2 delta/n)^2 (1 - W/n)^(n-2))^2, for n > 2W this universal form fails at the first with probability at least 1 - 1/(floor(n/W) p_n) (an isolated open four-point gadget in a window, by a second moment, the window events negatively correlated); at r_1 = 1, r_2 = e, W = 10 the bound is below 1 from n = 4.8517e13. (c) For independent samples of N i.i.d. uniform points of [0,1]^2, s = L sqrt(log N/N) and L > 1/sqrt(2), with probability tending to one no point has at most three points of the other sample within s in both coordinates, so no bipartite graph containing those pairs has a component of at most four vertices.",
+      "assessment": "Working proof: (a) by the components of the union of two maximum matchings, a parity argument excluding the one conflicting path; (b) by a per-component bound on leftover matchings, the exact window probabilities, the factor 1 - W^2/(n-W)^2 and Chebyshev; (c) by binomial tails and a union bound over the 2N points, counting only the other sample, with the boundary points counted separately.",
+      "record": "[Universal completion fails on random lines](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-universal-completion-criterion)",
+      "mathematical_status": "working_proof",
+      "formalization": {
+        "status": "not_started",
+        "scope": "Informal proof or computation; no Lean verification.",
+        "references": [
+          "branches/ultimate-matching/notebook.html#entry-2026-10-17-universal-completion-criterion"
+        ],
+        "artifacts": []
+      },
+      "topics": [
+        "random-matchings"
+      ],
+      "significance": {
+        "category": "route_specific",
+        "rationale": "Reduces the universal completion form, the one local completion that glues per-level matchings (thm:local-completion-dichotomy (f)), to pairs of co-bases, shows it fails for random samples on a unit-density line between any two fixed radii, and excludes components of at most four vertices, the line's mechanism, at the goal's lowest box scale for L > 1/sqrt(2), the range of the proof's accounting; not covered: the universal form at the goal's box levels, decided neither way.",
+        "novelty": "not_claimed",
+        "publication_status": "not_applicable",
+        "references": [
+          "branches/ultimate-matching/notebook.html#entry-2026-10-17-universal-completion-criterion"
+        ],
+        "next_action": "Decide the universal form at the goal's box levels through (a): two co-bases of a level whose deficiency drops with no edge of the next level between them, or a proof that every such pair is joined."
+      },
+      "reviews": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "revision": "921e85b16a54b68d59bb6860928afa4e478a4190",
+          "date": "2026-10-17",
+          "reviewer": "Claude Code with sole fresh-context medium reviewer",
+          "note": "Status checked against the entry and its verification gate.",
+          "next_action": null,
+          "claim_sha256": "70d74ee3f4c2929402e2d977b001b263097f044397ef07951ed8aff1d21f4cae",
+          "value_sha256": "758341548df3c608ddb89413e84e3bc8a6fa42d9577d3737bd5ec501464f7285",
+          "evidence": [
+            {
+              "target": "branches/ultimate-matching/notebook.html#entry-2026-10-17-universal-completion-criterion",
+              "sha256": "21e9b50e799e76bf851f87ca51ccb14fb5eae8f4b61f81567ec3449475519681",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "formalization": {
+          "state": "reviewed",
+          "revision": "921e85b16a54b68d59bb6860928afa4e478a4190",
+          "date": "2026-10-17",
+          "reviewer": "Claude Code with sole fresh-context medium reviewer",
+          "note": "No Lean artifact.",
+          "next_action": null,
+          "claim_sha256": "70d74ee3f4c2929402e2d977b001b263097f044397ef07951ed8aff1d21f4cae",
+          "value_sha256": "ee0e854d4c43a906bf692b61775f0e4e1b38a4a09f8331f9c5706bbf805d9aa8",
+          "evidence": [
+            {
+              "target": "branches/ultimate-matching/notebook.html#entry-2026-10-17-universal-completion-criterion",
+              "sha256": "21e9b50e799e76bf851f87ca51ccb14fb5eae8f4b61f81567ec3449475519681",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "topics": {
+          "state": "reviewed",
+          "revision": "921e85b16a54b68d59bb6860928afa4e478a4190",
+          "date": "2026-10-17",
+          "reviewer": "Claude Code with sole fresh-context medium reviewer",
+          "note": "Topics checked against the entry.",
+          "next_action": null,
+          "claim_sha256": "70d74ee3f4c2929402e2d977b001b263097f044397ef07951ed8aff1d21f4cae",
+          "value_sha256": "d88d729f316b646f26147d2027fd84a84a34976bad5fcee6bead24aaafa0f850",
+          "evidence": [
+            {
+              "target": "branches/ultimate-matching/notebook.html#entry-2026-10-17-universal-completion-criterion",
+              "sha256": "21e9b50e799e76bf851f87ca51ccb14fb5eae8f4b61f81567ec3449475519681",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "significance": {
+          "state": "reviewed",
+          "revision": "921e85b16a54b68d59bb6860928afa4e478a4190",
+          "date": "2026-10-17",
+          "reviewer": "Claude Code with sole fresh-context medium reviewer",
+          "note": "Significance assessed at this checkpoint.",
+          "next_action": null,
+          "claim_sha256": "70d74ee3f4c2929402e2d977b001b263097f044397ef07951ed8aff1d21f4cae",
+          "value_sha256": "8481cd550c5512b1a53533cd9958fe567b057482193ade34f0f6ca1ce76af6f3",
+          "evidence": [
+            {
+              "target": "branches/ultimate-matching/notebook.html#entry-2026-10-17-universal-completion-criterion",
+              "sha256": "21e9b50e799e76bf851f87ca51ccb14fb5eae8f4b61f81567ec3449475519681",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "relationships": {
+          "state": "reviewed",
+          "revision": "921e85b16a54b68d59bb6860928afa4e478a4190",
+          "date": "2026-10-17",
+          "reviewer": "Claude Code with sole fresh-context medium reviewer",
+          "note": "New claim; relationships recorded.",
+          "next_action": null,
+          "claim_sha256": "70d74ee3f4c2929402e2d977b001b263097f044397ef07951ed8aff1d21f4cae",
+          "value_sha256": "4c8a32568259eb2e6bda4d4e3798c650599bddc07460e3740bbed56e0777acb8",
+          "evidence": [
+            {
+              "target": "branches/ultimate-matching/notebook.html#entry-2026-10-17-universal-completion-criterion",
+              "sha256": "21e9b50e799e76bf851f87ca51ccb14fb5eae8f4b61f81567ec3449475519681",
               "normalization": "notebook-article-v1"
             }
           ]
@@ -1022996,6 +1023111,31 @@
         "date": "2026-10-17",
         "reviewer": "Claude Code with sole fresh-context medium reviewer",
         "note": "Its F_2 dim W at seven pigeons is the independent control."
+      }
+    },
+    {
+      "id": "thm:universal-completion-criterion::depends_on::thm:local-completion-dichotomy",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "thm:universal-completion-criterion",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "thm:local-completion-dichotomy",
+        "locator": null
+      },
+      "scope": "Part (a) concerns its universal form (f), the one that glues.",
+      "evidence": [
+        "branches/ultimate-matching/notebook.html#entry-2026-10-17-universal-completion-criterion"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "921e85b16a54b68d59bb6860928afa4e478a4190",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Part (a) concerns its universal form (f), the one that glues."
       }
     }
   ],

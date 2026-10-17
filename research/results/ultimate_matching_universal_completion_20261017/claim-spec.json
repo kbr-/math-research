@@ -1,0 +1,34 @@
+{
+ "source": {
+  "record": "[Universal completion fails on random lines](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-universal-completion-criterion)",
+  "label": "Universal completion fails on random lines",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-17-universal-completion-criterion"
+  ]
+ },
+ "date": "2026-10-17",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "claims": [
+  {
+   "id": "thm:universal-completion-criterion",
+   "summary": "(a) For every bipartite graph G, every set U_X of X-vertices left unmatched by some maximum matching and every such set U_Y of Y-vertices, some maximum matching leaves exactly U_X and U_Y unmatched; hence, for nested bipartite graphs with deficiencies m_k, completion asked for every maximum matching of G_k (a matching inside its leftover in G_{k+1} of size >= m_k - m_{k+1}) holds iff every such pair spans a matching of that size in G_{k+1}, and fails at a level with m_{k+1} < m_k where some pair spans no edge of G_{k+1}. (b) For fixed 0 < r_1 < r_2, independent samples of n i.i.d. uniform points of [0, n] and the graphs of pairs within r_1 and r_2, with a, b, delta > 0, delta <= a, a + 2 delta < r_1 < b - 2 delta, b + 2 delta < r_2 < 2a + b - 2 delta, an offset c > r_2 + delta, a window length W > max(4, c + 2a + b + delta + r_2) and p_n = (n(n-1)(2 delta/n)^2 (1 - W/n)^(n-2))^2, for n > 2W this universal form fails at the first with probability at least 1 - 1/(floor(n/W) p_n) (an isolated open four-point gadget in a window, by a second moment, the window events negatively correlated); at r_1 = 1, r_2 = e, W = 10 the bound is below 1 from n = 4.8517e13. (c) For independent samples of N i.i.d. uniform points of [0,1]^2, s = L sqrt(log N/N) and L > 1/sqrt(2), with probability tending to one no point has at most three points of the other sample within s in both coordinates, so no bipartite graph containing those pairs has a component of at most four vertices.",
+   "assessment": "Working proof: (a) by the components of the union of two maximum matchings, a parity argument excluding the one conflicting path; (b) by a per-component bound on leftover matchings, the exact window probabilities, the factor 1 - W^2/(n-W)^2 and Chebyshev; (c) by binomial tails and a union bound over the 2N points, counting only the other sample, with the boundary points counted separately.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Reduces the universal completion form, the one local completion that glues per-level matchings (thm:local-completion-dichotomy (f)), to pairs of co-bases, shows it fails for random samples on a unit-density line between any two fixed radii, and excludes components of at most four vertices, the line's mechanism, at the goal's lowest box scale for L > 1/sqrt(2), the range of the proof's accounting; not covered: the universal form at the goal's box levels, decided neither way.",
+   "next_action": "Decide the universal form at the goal's box levels through (a): two co-bases of a level whose deficiency drops with no edge of the next level between them, or a proof that every such pair is joined.",
+   "novelty": "not_claimed"
+  }
+ ],
+ "relationships": [
+  [
+   "thm:universal-completion-criterion",
+   "depends_on",
+   "thm:local-completion-dichotomy",
+   "Part (a) concerns its universal form (f), the one that glues."
+  ]
+ ]
+}
