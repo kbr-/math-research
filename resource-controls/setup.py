@@ -184,9 +184,12 @@ def session_watchdog_unit(checkout, claude, actions):
     """
     flags = ''.join(f' --{a}' for a in actions)
     script = checkout / 'tools' / 'session_watchdog.py'
+    # WorkingDirectory= takes a bare absolute path: quotes make systemd reject the unit.
+    if any(c.isspace() or c in '"\'%\\' for c in str(checkout)):
+        raise RuntimeError(f'{SESSION_UNIT}: checkout path {checkout} needs escaping; not installed')
     return ('[Unit]\nDescription=Session watchdog: wakes stalled looping sessions, flags prompt waits\n\n'
             '[Service]\nType=simple\n'
-            f'WorkingDirectory={unit_quote(checkout)}\n'
+            f'WorkingDirectory={checkout}\n'
             f'Environment={unit_quote("PATH=" + str(Path(claude).parent) + ":/usr/local/bin:/usr/bin:/bin")}\n'
             f'ExecStart={unit_quote(sys.executable)} {unit_quote(script)} run --interval 45{flags}\n'
             'Restart=on-failure\nRestartSec=30s\nCPUAffinity=0-13\n'

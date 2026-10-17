@@ -251,6 +251,27 @@ class Service(unittest.TestCase):
         text = setup.session_watchdog_unit(Path('/repo'), '/home/u/.local/bin/claude', ['notify', 'wake'])
         self.assertIn('/repo/tools/session_watchdog.py" run --interval 45 --notify --wake\n', text)
         self.assertIn('PATH=/home/u/.local/bin:', text)
+        self.assertIn('\nWorkingDirectory=/repo\n', text)  # systemd rejects a quoted path here
+        with self.assertRaises(RuntimeError):
+            setup.session_watchdog_unit(Path('/my repo'), '/c/claude', [])
+
+    def test_systemd_accepts_the_unit(self):
+        """The unit text is read by systemd's own verifier, not only matched as text (a quoted
+        WorkingDirectory= passed the text checks and made systemd reject the unit)."""
+        import shutil
+        import subprocess
+        if not shutil.which('systemd-analyze'):
+            self.skipTest('systemd-analyze not installed')
+        spec = importlib.util.spec_from_file_location('rc_setup', TOOLS.parent / 'resource-controls' / 'setup.py')
+        setup = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(setup)
+        d = Path(tempfile.mkdtemp())
+        self.addCleanup(lambda: shutil.rmtree(d))
+        unit = d / setup.SESSION_UNIT
+        unit.write_text(setup.session_watchdog_unit(TOOLS.parent, shutil.which('true'), ['notify']))
+        out = subprocess.run(['systemd-analyze', '--user', 'verify', str(unit)], capture_output=True, text=True,
+                             timeout=20)
+        self.assertEqual(out.returncode, 0, out.stderr)
         self.assertIn('run --interval 45\n', setup.session_watchdog_unit(Path('/repo'), '/c/claude', []))
 
 
