@@ -845,5 +845,18 @@ sys.exit(compute.main())
         self.assertFalse((self.root / 'research/provenance').exists())
 
 
+class SuggestionsSectionTest(unittest.TestCase):
+    # 17 October 2026: a follow-up list after the section, before the next heading, was read as suggestions.
+    def test_the_section_ends_at_its_list(self):
+        record = '<strong>Record.</strong> check:six-by-five-numberings bears on it.'
+        body = (f"<h4>Reviewer's suggestions, unverified</h4>\n<ul>\n<li>A proof. {record}</li>\n</ul>\n"
+                '<ul>\n<li data-check="x:s1">Not made. <strong>Follow-up.</strong> Continuing.</li>\n</ul>\n'
+                '<h4>Sub-ideas</h4>')
+        FT.validate_suggestions(body, 0, len(body))
+        bare = body.replace(record, 'No search.')
+        with self.assertRaisesRegex(ValueError, 'lack'):
+            FT.validate_suggestions(bare, 0, len(bare))
+
+
 if __name__ == '__main__':
     unittest.main()

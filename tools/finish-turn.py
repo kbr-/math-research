@@ -2147,6 +2147,12 @@ def validate_paragraphs(body, article, close):
 
 
 SUGGESTIONS_RE = re.compile(r"<h4>Reviewer(?:'s|&#39;s|\u2019s)? suggestions[^<]*</h4>(.*?)(?=<h4>|<p><strong>|$)", re.S)
+
+
+# A queue item's follow-up (<li data-check=...>, data-sub, data-idea and the like) is not a suggestion, though it may
+# stand in the suggestions section before the next heading (17 October 2026: such an item was read as one).  Ending
+# the section at its first list would lose suggestions that two past reviews listed in a second list.
+QUEUE_ITEM_LI = re.compile(r'<li\b[^>]*\bdata-(?:check|sub|idea|build|lead|bridge|source)=')
 RECORD_RE = re.compile(r'<strong>Record\.</strong>(.*)', re.S)
 
 
@@ -2157,7 +2163,8 @@ def validate_suggestions(body, article, close):
     <strong>Record.</strong> and what the search found: claim IDs or anchors, or the words searched without
     a match."""
     for section in SUGGESTIONS_RE.finditer(body[article:close]):
-        items = re.findall(r'<li\b[^>]*>(.*?)</li>', section.group(1), re.S)
+        items = [m.group(1) for m in re.finditer(r'<li\b[^>]*>(.*?)</li>', section.group(1), re.S)
+                 if not QUEUE_ITEM_LI.match(m.group(0))]
         if not items:
             raise ValueError("A Reviewer's suggestions section lists each suggestion as a <li> item")
         bare = [i for i, item in enumerate(items, 1)
