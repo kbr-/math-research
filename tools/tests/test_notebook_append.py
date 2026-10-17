@@ -656,10 +656,11 @@ class NotebookAppendTests(unittest.TestCase):
         import draft_claim_sentences
         entry = ('<article id="new"><h3>T</h3><p><strong>New mathematics.</strong> No point hides.</p>'
                  '<p>Every other paragraph is not asked about.</p></article>')
-        with self.assertRaisesRegex(ValueError, '1 summing-up sentences.*--answers FILE'):
+        # the title is a summing-up sentence too (17 October 2026: three titles of one entry dropped cases)
+        with self.assertRaisesRegex(ValueError, '2 summing-up sentences.*title.*--answers FILE'):
             tool.refuse_unanswered(entry, None)
         form = draft_claim_sentences.answers_template(entry)
-        with self.assertRaisesRegex(ValueError, '1 of 1 summing-up sentences are not answered(?s:.*)fewer than 4'):
+        with self.assertRaisesRegex(ValueError, '2 of 2 summing-up sentences are not answered(?s:.*)fewer than 4'):
             tool.refuse_unanswered(entry, form)
         # 17 October 2026: an answer present but citing nothing the tool accepts was refused as "not answered"
         with self.assertRaisesRegex(ValueError, 'cites no claim ID, #entry- anchor, research/ path or formula'):

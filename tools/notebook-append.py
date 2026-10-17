@@ -822,7 +822,8 @@ def refuse_unanswered(entry, answers):
         refuse_unbounded(entry, answers)
         return
     if answers is None:
-        raise ValueError(f'{len(rows)} summing-up sentences of the entry say no, every, exactly and the like; '
+        raise ValueError(f'{len(rows)} summing-up sentences of the entry (its title and status line, and those '
+                         'saying no, every, exactly and the like) are answered before the append; '
                          'answer each in a file and pass it with --answers FILE '
                          '(tools/draft_claim_sentences.py DRAFT --answers FILE writes the form)')
     left = draft_claim_sentences.unanswered(entry, answers)

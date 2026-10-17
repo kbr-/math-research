@@ -613,13 +613,14 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
 
     def test_summing_up_sentences_are_answered_by_key_and_a_changed_sentence_is_new(self):
         rows = dcs.summing_up(self.DRAFT)
-        self.assertEqual([where for _, where, _ in rows], ['New mathematics', 'Follow-up'])   # not "Reading"
+        # 17 October 2026: the title is answered too, three titles of one entry having dropped cases of its theorem
+        self.assertEqual([where for _, where, _ in rows], ['title', 'New mathematics', 'Follow-up'])  # not "Reading"
         form = dcs.answers_template(self.DRAFT)
-        self.assertEqual(len(dcs.unanswered(self.DRAFT, form)), 2)                 # an empty form answers nothing
+        self.assertEqual(len(dcs.unanswered(self.DRAFT, form)), 3)                 # an empty form answers nothing
         short = form.replace('rests on: \n', 'rests on: the proposition\n')
-        self.assertEqual(len(dcs.unanswered(self.DRAFT, short)), 2)                # fewer than four words
+        self.assertEqual(len(dcs.unanswered(self.DRAFT, short)), 3)                # fewer than four words
         vague = form.replace('rests on: \n', 'rests on: part two of the proposition\n')
-        self.assertEqual(len(dcs.unanswered(self.DRAFT, vague)), 2)                # points at nothing
+        self.assertEqual(len(dcs.unanswered(self.DRAFT, vague)), 3)                # points at nothing
         filled = form.replace('rests on: \n', 'rests on: part two of prop:local-count-reach\n')
         self.assertEqual(dcs.unanswered(self.DRAFT, filled), [])
         for ground in ('the display \\(T\\ge0\\) of its paragraph', 'see #entry-old for the bound',
@@ -711,7 +712,8 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
         self.assertEqual(dcs.qualifier_gaps(self.DRAFT, answer('part two of prop:local-count-reach')), [])
         gaps = dcs.qualifier_gaps(self.DRAFT, answer('prop:local-count-reach, one direction only, as read'))
         self.assertEqual([(where, missing) for _, where, _, missing in gaps],
-                         [('New mathematics', ['as read', 'one direction', 'only']),
+                         [('title', ['as read', 'one direction', 'only']),
+                          ('New mathematics', ['as read', 'one direction', 'only']),
                           ('Follow-up', ['as read', 'one direction', 'only'])])
         self.assertIn('the answer says: as read, one direction, only', dcs.qualifier_gaps_report(gaps))
         # the registered words in quotation marks are the claim's, not the answer's limit
@@ -726,13 +728,13 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
         limited = self.DRAFT.replace('The bound holds for', 'Under a count only, the bound holds for')
         left = dcs.qualifier_gaps(limited, dcs.answers_template(limited).replace(
             'rests on: \n', 'rests on: prop:local-count-reach under a count only\n'))
-        self.assertEqual(len(left), 2)
+        self.assertEqual(len(left), 3)                                             # the title, the other two
         self.assertFalse(any('Under a count only' in sentence for _, _, sentence, _ in left))
         # or the answer says where the entry states it, in five or more of the entry's consecutive words
         said = answer('prop:local-count-reach, given a count; stated in: A count of fewer than zeros')
-        self.assertEqual(len(dcs.qualifier_gaps(self.DRAFT, said)), 2)             # not consecutive in the entry
+        self.assertEqual(len(dcs.qualifier_gaps(self.DRAFT, said)), 3)             # not consecutive in the entry
         said = answer('prop:local-count-reach, given a count; stated in: "the form of prop:local-count-reach, with"')
-        self.assertEqual(len(dcs.qualifier_gaps(self.DRAFT, said)), 2)             # the passage lacks "given"
+        self.assertEqual(len(dcs.qualifier_gaps(self.DRAFT, said)), 3)             # the passage lacks "given"
         stating = self.DRAFT.replace('<h4>Reading</h4>', '<h4>Reading</h4><p>All this is given a count of the '
                                      'points in each unit.</p>')
         form2 = dcs.answers_template(stating)
@@ -747,12 +749,12 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
         # the count over a file of articles counts a repeated sentence once
         two = self.DRAFT + self.DRAFT.replace('id="entry-y"', 'id="entry-z"')
         out = dcs.gaps_count(two, answer('prop:local-count-reach, one side only'), 1)
-        self.assertIn('2\t2\tentry-y', out)
-        self.assertTrue(out.endswith('2 distinct answered summing-up sentences in 2 articles; 2 of them have an '
+        self.assertIn('3\t3\tentry-y', out)                                        # the title counted too
+        self.assertTrue(out.endswith('3 distinct answered summing-up sentences in 2 articles; 3 of them have an '
                                      'answer that limits the sentence by a word it lacks (second column), from 1 '
                                      'answers files.'))
         self.assertEqual(len(dcs.qualifier_gaps(self.DRAFT, answer('prop:local-count-reach given it; stated in: '
-                                                                   'the form of'))), 2)   # fewer than five words
+                                                                   'the form of'))), 3)   # fewer than five words
 
     def test_the_refusal_names_the_condition_each_stated_in_passage_fails(self):
         # 17 October 2026: a second answers file added passages that quoted the entry but held none of the words

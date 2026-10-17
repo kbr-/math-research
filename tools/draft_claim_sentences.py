@@ -894,9 +894,14 @@ def summing_up(draft):
     sentence's text, so a sentence changed after its answer is unanswered again."""
     rows = [(where, sentence) for where, sentence in universals(draft)[0]]
     rows += [(where, sentence) for where, sentence, _ in exactness(draft)]
+    # The title and the status line sum up the whole entry and are answered like its summing-up paragraphs: on 17
+    # October 2026 three titles in a row of one entry each dropped a case of its theorem ("does not glue", "fails
+    # to glue", "Only universal ... glues") while the listing printed them and no answer set them beside the parts.
+    head = [('title', text(t)) for t in TITLE.findall(draft)[:1]]
+    head += [('status line', text(s)) for s in STATUS_LINE.findall(draft)[:1]]
     found = {}
-    for where, sentence in rows:
-        if SUMMARY.match(where):
+    for where, sentence in head + rows:
+        if where in ('title', 'status line') or SUMMARY.match(where):
             found.setdefault(hashlib.sha1(sentence.encode()).hexdigest()[:8], (where, sentence))
     return [(key, where, sentence) for key, (where, sentence) in found.items()]
 
