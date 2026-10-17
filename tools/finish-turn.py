@@ -348,6 +348,26 @@ WINDOW_FROM = '2026-10-16'      # reviews from this date say where their test's 
 GATE_PARAGRAPH_RE = re.compile(r'<p><strong>Verification gate\.</strong>(.*?)</p>', re.S)
 
 
+COST_FROM = '2026-10-17'        # reviews from this date cost a computation their Attempt leaves to the test
+LEFT_UNDONE = re.compile(r'\bnot run\b|\bnot computed\b|\bleft to the test\b|\bnot yet run\b', re.I)
+COSTED = re.compile(r'\b(?:measured|estimate[ds]?|took)\b[^.;]*?\d|\d[\d.]*\s*(?:s|seconds?|minutes?|hours?)\b'
+                    r'|\b(?:one|two|three|four|five|six|seven|eight|nine|ten|a few)\s+(?:seconds?|minutes?|hours?)\b',
+                    re.I)
+
+
+def dated_attempt_left_uncosted(text, plain):
+    """Whether a review dated from COST_FROM has an Attempt (plain text) that leaves a computation undone with no
+    cost beside it. On 17 October 2026 a review's Attempt stopped twice at a computation, once one that took
+    seconds and decided its instance, and once with "its cost not measured"; its reviewer found both."""
+    dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})', text)
+    if not (dated and dated.group(1) >= COST_FROM):
+        return False
+    # the cost belongs in the sentence that leaves the computation undone: a figure elsewhere in the paragraph
+    # (another board's run time) passed the exposing sentence "not run in this cycle, its cost not measured"
+    return any(LEFT_UNDONE.search(sentence) and not COSTED.search(sentence)
+               for sentence in re.split(r'(?<=\.)\s+(?=[A-Z])', plain))
+
+
 def attempt_checked(text):
     """Whether the entry's Verification gate paragraph says, after its Attempt checked. marker, at least forty
     characters of plain text before the next marker."""
@@ -2033,6 +2053,11 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
                                      'posing the test, to answer it from the statements it cites, and where that '
                                      'stopped; a test those statements answer in a few lines is a lemma, not a '
                                      'test (AGENTS.md, Decisive test)')
+                if dated_attempt_left_uncosted(text, plain):
+                    raise ValueError('Decisive test\'s Attempt leaves a computation to the test ("not run", "not '
+                                     'computed", "left to the test") without its cost: run it when it takes seconds, '
+                                     'or state the measured cost, or an estimate labelled as one, with its figure '
+                                     '(AGENTS.md, Decisive test)')
                 # Four reviews in a row posed a test their reviewer then closed in a few lines: the gate of a
                 # review says what the reviewer found when it tried the step at which the Attempt stops.
                 dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})', text)

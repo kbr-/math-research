@@ -1010,5 +1010,29 @@ class CountListingReportTest(unittest.TestCase):
         self.assertEqual(FT.absence_report(entry('Continuing: one more attempt.')), [])
 
 
+class AttemptCostTest(unittest.TestCase):
+    """A review's Attempt that leaves a computation to the test states its cost in the same sentence."""
+    DATED = '<article id="entry-2026-10-17-window-review">'
+
+    def test_the_exposing_sentence_is_refused_although_another_board_has_a_time(self):
+        plain = ('Both boards were run: four pigeons in about a second and six pigeons in 98 s. At seven pigeons '
+                 'it is 128 by 128 representative pairs per orbit, a computation not run in this cycle, its cost '
+                 'not measured; the Attempt stops there.')
+        self.assertTrue(FT.dated_attempt_left_uncosted(self.DATED, plain))
+
+    def test_an_estimate_or_a_measured_cost_beside_it_passes(self):
+        estimate = ('An estimate, not a measurement, is two to three minutes per orbit, so the step was left to '
+                    'the test.')
+        measured = 'The step was not run here; its measured cost is 98 s on the smaller board.'
+        self.assertFalse(FT.dated_attempt_left_uncosted(self.DATED, estimate))
+        self.assertFalse(FT.dated_attempt_left_uncosted(self.DATED, measured))
+
+    def test_an_attempt_that_leaves_no_computation_and_older_reviews_pass(self):
+        plain = 'The cited statements bound the rank from above; the Attempt stops there.'
+        self.assertFalse(FT.dated_attempt_left_uncosted(self.DATED, plain))
+        old = '<article id="entry-2026-10-16-band-review">'
+        self.assertFalse(FT.dated_attempt_left_uncosted(old, 'The computation was not run.'))
+
+
 if __name__ == '__main__':
     unittest.main()
