@@ -453,6 +453,23 @@ def subagent_transcript(command: str):
     return None
 
 
+SELF_MATCH = re.compile(r"\bp(?:grep|kill)\s+(?:-\w+\s+)*-\w*f\w*\s+(?:-\w+\s+)*(['\"])(.+?)\1|"
+                        r"\bp(?:grep|kill)\s+(?:-\w+\s+)*-\w*f\w*\s+(?:-\w+\s+)*([^\s'\";|&)]+)")
+
+
+def self_matching_pgrep(command: str):
+    """pgrep -f or pkill -f with a pattern the same command also holds elsewhere: it matches the shell running
+    the command, so a wait loop never sees its target end and a kill can kill its own shell (COMPUTATION_RULES.md;
+    18 October 2026: a Monitor's wait loop matched itself)."""
+    for found in SELF_MATCH.finditer(command):
+        pattern = found.group(2) or found.group(3)
+        if pattern and command.count(pattern) > 1:
+            return (f"pgrep/pkill -f with the pattern {pattern!r}, which this command also holds, matches the shell "
+                    "running the command itself; wait on the job's own completion notice or a file it writes "
+                    "(tools/watch_run.py SESSION for a compute.sh run)")
+    return None
+
+
 def blocked(command: str):
     """Return the reason for the first filtered must-read command, or None."""
     for segment in SEPARATOR.split(shell_code(command)):
@@ -764,10 +781,17 @@ def check() -> int:
         payload = json.load(sys.stdin)
     except json.JSONDecodeError:
         return 0
-    if payload.get("tool_name") != "Bash":
-        return 0
     tool_input = payload.get("tool_input") or {}
     command = tool_input.get("command") or ""
+    if payload.get("tool_name") == "Monitor":
+        # A Monitor's command is a shell loop too: only the self-matching wait is checked there.
+        reason = self_matching_pgrep(command)
+        if reason:
+            print(f"Refused: {reason}.", file=sys.stderr)
+            return 2
+        return 0
+    if payload.get("tool_name") != "Bash":
+        return 0
     COMMANDS.append(command)
     background = bool(tool_input.get("run_in_background"))
     reason = (foreground_long_run(command, background) or foreground_download(command, background)
@@ -777,7 +801,7 @@ def check() -> int:
         return 2
     reason = (unchained_heredoc(command) or stdin_cat(command) or adhoc_replace_helper(command) or tool_removed(command) or sed_in_place(command)
               or sed_ampersand(command) or staging_silenced(command) or shared_run_file_write(command)
-              or subagent_transcript(command)
+              or subagent_transcript(command) or self_matching_pgrep(command)
               or existing_result_folder(command, payload.get("cwd") or os.getcwd())
               or tracked_result_overwrite(command, payload.get("cwd") or os.getcwd())
               or stale_branch(command, payload.get("cwd") or os.getcwd(), time.time()))

@@ -30,6 +30,23 @@ def run(command, tool="Bash", background=False):
     return types.SimpleNamespace(returncode=status, stderr=said.getvalue())
 
 
+class SelfMatchingPgrepTest(unittest.TestCase):
+    def test_a_wait_loop_matching_its_own_command_is_refused_in_a_monitor_and_in_bash(self):
+        # 18 October 2026: the Monitor command that prompted the check.
+        loop = ('until [ -f out.json ] || ! pgrep -f "box_completion.py --sizes" >/dev/null; do sleep 2; done; '
+                './compute.sh run s -- python3 box_completion.py --sizes 4096')
+        for tool in ("Monitor", "Bash"):
+            self.assertEqual(run(loop, tool=tool).returncode, 2, tool)
+        self.assertIn("matches the shell", run(loop, tool="Monitor").stderr)
+        self.assertEqual(run("pkill -f watch_run.py && echo watch_run.py stopped").returncode, 2)
+
+    def test_a_pattern_that_appears_once_and_other_monitors_pass(self):
+        self.assertEqual(run('pgrep -f "box_completion.py" >/dev/null', tool="Monitor").returncode, 0)
+        self.assertEqual(run("python3 tools/watch_run.py um-completion", tool="Monitor").returncode, 0)
+        self.assertEqual(run("tail -f log | grep --line-buffered ERROR", tool="Monitor").returncode, 0)
+        self.assertEqual(run("pgrep -x Singular", tool="Bash").returncode, 0)
+
+
 class CannotFailTestsTest(unittest.TestCase):
     def test_a_commit_adding_a_test_that_cannot_fail_is_refused_only_in_a_session_of_this_checkout(self):
         flagged = types.SimpleNamespace(returncode=1, stdout='CANNOT FAIL tools/tests/test_x.py::X.test_y: it passes\n'
