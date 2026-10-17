@@ -20,6 +20,8 @@ Also asserted, for the summed condition: the summed ranks 31 - dim Ann_C(E) over
 Control: each single error's domain-side kernel Ann_H(E) + C cap V_1 is inside its C-kernel (containment, always).
 Refuted by: an H-side kernel not inside the C-kernel, which would mean the closures are built wrongly.
 Possible because: a wrong axiom list or degree would break H inside C.
+Forced by counts: no count forces the containment control, since both kernels are computed spaces of 31
+coordinates; the null control's 15 is a recorded number, not a count of this instance's rows.
 Positive control: three_quantities.positive_control() (a linear axiom transporting a killer) must give excess 1.
 Refuted by: excess 0 there, which would mean the kernel code cannot see a transported killer.
 Possible because: a bug in the kernel or in the space sums would hide transported killers.
