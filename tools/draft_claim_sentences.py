@@ -528,6 +528,79 @@ SCOPE_WORD = re.compile(r'\b(?:super-?polynomial(?:ly)?|polynomial(?:ly)? (?:in|
                         r'exponentially|vacuous|empty|unreachable|not reachable)\b', re.I)
 
 
+TEX_NUMERIC = re.compile(r'^[\d\s+\-*/().^]+$')
+
+
+def tex_value(expr):
+    """The value of a purely numeric TeX expression (digits, + - * / ( ) ^, \\cdot, \\times, \\frac{a}{b}, a digit or
+    ) before a ( meaning a product), or None when anything else is in it."""
+    e = re.sub(r'\\frac\{([^{}]*)\}\{([^{}]*)\}', r'((\1)/(\2))', expr)
+    e = re.sub(r'\\(?:cdot|times)', '*', e).replace('{', '(').replace('}', ')').replace(r'\,', '').replace('~', '')
+    e = re.sub(r'\\left|\\right', '', e)
+    if '\\' in e or not TEX_NUMERIC.match(e) or not re.search(r'\d', e):
+        return None
+    e = re.sub(r'(?<=[\d)])\s*\(', '*(', e).replace('^', '**')
+    exact = re.sub(r'\d+(?:\.\d+)?', lambda m: f'F("{m.group(0)}")', e)
+    import fractions
+    for source, names in ((exact, {'F': fractions.Fraction}), (e, {})):
+        try:
+            value = eval(source, {'__builtins__': {}}, names)     # only digits, operators and F reach here
+        except (SyntaxError, ZeroDivisionError, OverflowError, TypeError, ValueError):
+            continue
+        if isinstance(value, (int, float, fractions.Fraction)):
+            return value
+    return None
+
+
+SMALL_PRIMES = (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 32003)   # 32003: the computer algebra prime the record uses
+
+
+def equal_mod_small_prime(a, b):
+    """Whether two exact rationals agree modulo some prime up to 31 (both defined there): an equality of a
+    finite-field computation (1+1=0, 3=1, -1/2=1), which the record writes as such."""
+    import fractions
+    if not (isinstance(a, fractions.Fraction) and isinstance(b, fractions.Fraction)):
+        return False
+    for p in SMALL_PRIMES:
+        if a.denominator % p and b.denominator % p:
+            if (a.numerator * pow(a.denominator, -1, p) - b.numerator * pow(b.denominator, -1, p)) % p == 0:
+                return True
+    return False
+
+
+def displayed_tolerance(*sides):
+    """Half a unit of the last displayed decimal place among the sides, or 0 when none shows a decimal point."""
+    places = [len(m.group(1)) for side in sides for m in [re.fullmatch(r'\s*-?\d+\.(\d+)\s*', side)] if m]
+    return 0.5 * 10 ** -max(places) if places else 0.0
+
+
+def false_equalities(draft):
+    """[(sentence, left, right, values)] for each chain a=b in the draft's math whose neighbouring parts are both
+    purely numeric and differ by more than one part in a thousand (or both are 0 and nonzero).  On 17 October 2026
+    "\\(1-2(3/4)^2=7/8\\)" stood in a Plainest bound sentence, the left side being -1/8, and the unsourced-figure
+    listing, which reads only decimals in four paragraphs, could not see it."""
+    found = []
+    for m in MATH.finditer(draft):
+        body = m.group(0)[2:-2] if m.group(0)[:2] in ('\\(', '\\[') else m.group(0)[2:-2]
+        parts = body.split('=')
+        for left, right in zip(parts, parts[1:]):
+            a, b = tex_value(left.strip()), tex_value(right.strip())
+            if a is None or b is None or equal_mod_small_prime(a, b) or {a, b} == {0, 1}:
+                continue                # "1=0" is the record's way of saying a derivation reaches a contradiction
+            tolerance = displayed_tolerance(left, right)
+            if abs(float(a) - float(b)) > max(tolerance, 1e-9 * max(abs(float(a)), abs(float(b)), 1.0)):
+                found.append((m.group(0), left.strip(), right.strip(), (float(a), float(b))))
+    return found
+
+
+def false_equalities_report(found, width):
+    lines = [f'  {whole}: {left} = {a:.6g}, {right} = {b:.6g}' for whole, left, right, (a, b) in found]
+    return '\n'.join(['Displayed numeric equalities whose two sides differ; recompute each and correct the sentence '
+                      '(AGENTS.md: a figure drawn from a bound is computed, not written from memory):']
+                     + [line if width <= 0 else line[:width] for line in lines]
+                     + [f'{len(found)} such equalities.'])
+
+
 def scope_words_at_figures(draft):
     """[(label, sentence)] for the sentences that hold both an asymptotic or emptiness word (superpolynomial,
     polynomial in, negligible, exponentially, vacuous, empty, not reachable) and a figure computed at one instance
@@ -1690,6 +1763,7 @@ def main():
     print('\n' + unread_named_claims_report(unread_named_claims(draft, ROOT), args.width))
     print('\n' + unsourced_figures_report(unsourced_figures(draft, ROOT), args.width))
     print('\n' + scope_words_report(scope_words_at_figures(draft), args.width))
+    print('\n' + false_equalities_report(false_equalities(draft), args.width))
     spec =json.loads(pathlib.Path(args.spec).read_text()) if args.spec else None
     print('\n' + unread_report(draft, registry, args.width, spec))
     print('\n' + own_summaries_report(draft, args.width))

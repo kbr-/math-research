@@ -808,6 +808,19 @@ class ScopeWordsTest(unittest.TestCase):
         self.assertIn('1 such sentences.', dcs.scope_words_report(found[:1], 0))
 
 
+class FalseEqualitiesTest(unittest.TestCase):
+    def test_a_numeric_equality_whose_sides_differ_is_listed(self):
+        # 17 October 2026: the reviewer's case, 1 - 2(3/4)^2 is -1/8, not 7/8.
+        draft = ('<p><strong>Plainest bound.</strong> The joint zero set has density at least \\(1-2(3/4)^2=7/8\\). '
+                 'Accepted: \\(41\\cdot9=369\\), \\(2\\cdot(9/16)=9/8\\), \\(\\frac{3}{4}=0.75\\), \\(K/4=2^{346}\\), '
+                 '\\(e=\\min(c,u)\\), \\(3^4=81\\) and \\(x=1+|S|\\); the record\'s field and rounding idioms '
+                 '\\(1+1=0\\), \\(h=-1/2=1\\), \\(32001=-2\\), \\(0.925/2=0.46\\), \\(1=0\\); and its slip '
+                 '\\(2^7=127\\).</p>')
+        found = dcs.false_equalities(draft)
+        self.assertEqual([(left, right) for _, left, right, _ in found], [('1-2(3/4)^2', '7/8'), ('2^7', '127')])
+        self.assertIn('2 such equalities.', dcs.false_equalities_report(found, 0))
+
+
 class UnreadNamedClaimsTest(unittest.TestCase):
     def test_a_claim_named_from_a_search_listing_is_listed_until_read(self):
         # 17 October 2026: a review's Record search named claims whose statements had not been read.
