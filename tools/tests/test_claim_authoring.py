@@ -88,6 +88,16 @@ class AuthoringTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             prepare(self.empty, request, self.root)
 
+    def test_an_assessment_saying_the_review_is_pending_is_refused_on_a_reviewed_status(self):
+        # 17 October 2026: "Working proof, pending review" was registered for three reviewed claims
+        import claim_authoring as ca
+        spec = {'claims': [{'id': 'lem:x', 'status': 'working_proof', 'assessment': 'Working proof, pending review: a.'},
+                           {'id': 'lem:y', 'status': 'conditional', 'assessment': 'Conditional, pending review.'},
+                           {'id': 'lem:z', 'status': 'working_proof', 'assessment': 'Working proof, two review passes.'}],
+                'overrides': {'lem:w': {'assessment': 'Finite check, not yet reviewed.'},
+                              'lem:v': {'significance': 'pending review of a neighbour'}}}
+        self.assertEqual(ca.pending_assessments(spec), ['lem:x', 'lem:w'])
+
     def test_pending_is_honest_and_requires_action(self):
         request = self.request(self.empty)
         submission = request['submissions'][0]

@@ -313,6 +313,20 @@ def refines_report(spec, registry, width=300):
 REFINEMENT_CHECKED = re.compile(r'<strong>Refinement checked\.</strong>(.*?)</p>', re.S)
 
 
+PENDING = re.compile(r'\b(?:pending|awaiting|before) (?:the )?review\b|\bnot yet reviewed\b', re.I)
+
+
+def pending_assessments(spec):
+    """The claims of `spec`, new or overridden, whose assessment says the review is still to come while their status
+    is a reviewed one. On 17 October 2026 three claims were registered as working proofs with assessments written
+    before their review, "Working proof, pending review", which the next review's blind stage found."""
+    found = [claim['id'] for claim in spec.get('claims', [])
+             if claim.get('status') != 'conditional' and PENDING.search(claim.get('assessment', ''))]
+    found += [ident for ident, fields in (spec.get('overrides') or {}).items()
+              if PENDING.search(str(fields.get('assessment', '')))]
+    return found
+
+
 def unchecked_refines(spec, root=ROOT):
     """The refines edges of SPEC whose source entry has no "Refinement checked." paragraph naming both claims.
     The report above shows the two statements; on 17 October 2026 a spec still declared refines where the new
@@ -417,6 +431,11 @@ def main():
                 'needs a paragraph <p><strong>Refinement checked.</strong> ...</p> naming both claims and setting their '
                 'constants and hypotheses side by side, or the edge becomes cites: '
                 + ', '.join(f'{s} -> {t}' for s, t in unchecked))
+        stale = pending_assessments(compact)
+        require(not (stale and args.proposal),
+                'An assessment written before the review still says the review is pending while the claim is '
+                'registered as reviewed: rewrite it from the Verification gate (passes, reviewer, what was checked) '
+                'before registering: ' + ', '.join(stale))
         require(not (newer and args.proposal and not args.summaries_checked),
                 'The source notebook changed after the spec was last edited: compare each summary above with the '
                 'entry statements beside it, correct the spec if they differ, then rerun with --summaries-checked')
