@@ -99,6 +99,14 @@ class ProcessPoolThreadsTest(unittest.TestCase):
             keyword = script(folder, 'import multiprocessing\nmultiprocessing.Pool(processes=8)\n', 'k.py')
             self.assertIn('8 workers', CS.pool_admission_error(['python3', str(keyword)], 14, 1))
 
+    def test_a_long_pooled_run_with_one_thread_per_worker_is_not_serial(self):
+        # 17 October 2026: --threads 1 --pool-workers 14, as the admission check asks, was refused as serial
+        self.assertFalse(CS.serial_reason_needed(1400, 1, 14, ''))
+        self.assertTrue(CS.serial_reason_needed(1400, 1, 0, ''))         # one thread, no pool: serial
+        self.assertTrue(CS.serial_reason_needed(1400, 1, 2, ''))         # two CPUs in all
+        self.assertFalse(CS.serial_reason_needed(1400, 1, 0, 'one elimination, which does not split'))
+        self.assertFalse(CS.serial_reason_needed(300, 1, 0, ''))         # short runs need no reason
+
 
 class BaselineTest(unittest.TestCase):
     def test_a_tested_statement_needs_a_baseline_line(self):

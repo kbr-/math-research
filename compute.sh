@@ -790,6 +790,16 @@ def scripts_with_process_pool(command):
 LITERAL_WORKERS = re.compile(r'\b(?:max_workers|processes)\s*=\s*(\d+)|\b(?:Pool|ProcessPoolExecutor)\(\s*(\d+)')
 
 
+def serial_reason_needed(expect, threads, pool_workers, serial_reason):
+    """Whether a run expected to exceed LONG_RUN_S uses fewer than PARALLEL_THREADS CPUs without saying why.
+
+    The CPUs a run uses are its library threads times its declared pool workers: pool_admission_error requires a
+    pooled script to run with --threads 1 and --pool-workers N, so counting --threads alone refused every long
+    pooled run (17 October 2026: a fourteen-worker run was refused as serial)."""
+    used = threads * (pool_workers if pool_workers and pool_workers > 0 else 1)
+    return (expect or 0) > LONG_RUN_S and used < PARALLEL_THREADS and not (serial_reason or '').strip()
+
+
 def pool_admission_error(command, threads, pool_workers):
     """The refusal for a pooled script run at `threads` library threads, or None.  Admitted: --threads 1, or a
     declared --pool-workers N > 0 with N times --threads within the CPUs and N not below the largest literal
@@ -1218,7 +1228,8 @@ def main():
                      f'{MAX_RUN_S // 60} minutes unless the user explicitly approves more (COMPUTATION_RULES.md)')
     if args.expect is not None and not 0 < args.expect <= args.timeout:
         parser.error('--expect must be positive and at most --timeout')
-    if (args.expect or 0) > LONG_RUN_S and args.threads < PARALLEL_THREADS and not args.serial_reason.strip():
+    pooled = bool(command) and Path(command[0]).name.startswith('python') and bool(scripts_with_process_pool(command))
+    if serial_reason_needed(args.expect, args.threads, args.pool_workers if pooled else 0, args.serial_reason):
         parser.error(f'a run expected to exceed {LONG_RUN_S:g} s on fewer than {PARALLEL_THREADS} threads '
                      'needs --serial-reason: use the parallel paths first (COMPUTATION_RULES.md)')
     if (args.expect or 0) > LONG_RUN_S and not args.user_approved.strip():
