@@ -375,9 +375,12 @@ AGENTS.md"):
   objects) is a new statement, not a name for the hypotheses: a sentence using a result says its
   hypotheses in the statement's own words (17 October 2026: a shorthand stood for "one reversible
   rule" in five sentences, which lost reversibility).
-- When a computation agrees with what was expected, write next what it does not show, before the
-  sentence that concludes from it; and before posing a statement drawn from one worked construction,
-  write down the construction most unlike it and check the statement there.
+- When a computation agrees with what was expected, write next what it does not show, and read each
+  of its figures for what it says against the conclusion (a statistic on the far side of a bound the
+  conclusion assumes), before the sentence that concludes from it (17 October 2026: a closure read a
+  kurtosis offset as support while that kurtosis, below the baseline's, pointed against it); and
+  before posing a statement drawn from one worked construction, write down the construction most
+  unlike it and check the statement there.
 - Before writing any durable text (docstring, commit message, entry, reply), list each figure and
   finding it will carry beside its source (a saved output, a named agent's report, a proof in the
   entry); one whose only source is another agent's report is written as that agent's, or recomputed

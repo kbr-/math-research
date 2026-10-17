@@ -1,0 +1,62 @@
+{
+  "source": {
+    "record": "[Simultaneous rule tails](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-simultaneous-rule-tails)",
+    "label": "Simultaneous rule tails",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-17-simultaneous-rule-tails"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "lem:equalized-flow-separable",
+      "summary": "In the dyadic flow's model (square fields with tent profiles; a square's vertical move phi(t_1) tent(t_2) compensated by -tent'(t_2) Phi(t_1), its horizontal moves likewise), the equalized flow, taking at every square Phi(t_1) = -(d_0 - d_1) tent(t_1)/(2 rho) and no horizontal profile change: (a) is the dyadic flow with its splits transposed (left and right halves first, then each half vertically; d_0 + d_1 is the left half's excess); (b) so every coarser field stays separable on every finer square, the flow is linear in the counts, and thm:dyadic-flow-obstruction applies to it with the coordinates exchanged; (c) its Phi is the exact minimizer of the square's coordinate-1 cost alone for every convex cost, and for the quartic cost of both coordinates a descent direction at the dyadic choice, at the rate (a_0 - a_1)^2 (a_0^2 + a_0 a_1 + a_1^2) per column (a_b the halves' coordinate-1 loads), not the simultaneous rule's own step.",
+      "assessment": "Working proof: (a) direct substitution and two identities of the excesses, also checked on random excesses; (b) the axis exchange applied to lem:sequential-rules-dyadic (a) and thm:dyadic-flow-obstruction; (c) convexity per column and the directional derivative, coordinate 2 stationary since the coarser load there depends on t_2 alone and psi has zero mean. Elementary.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "The exact coordinate-1 minimizer in the simultaneous rule's family is the transposed dyadic flow, still obstructed, so any gain of the rule comes from its nonlinear balance of the two coordinates.",
+      "next_action": "None for this lemma; the rule itself is ex:simultaneous-rule-tails.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "ex:simultaneous-rule-tails",
+      "summary": "Simulation, N = 16*4^J uniform points, J = 6, 7, 8, eight seeds each: the simultaneous rule (each square's two crossing profiles chosen together by Newton's method to minimize the quartic load of both coordinates given the coarser field, level by level) has kurtosis of its pooled values after division by the dyadic flow's analytic per-position standard deviation, 2.505-2.674 in coordinate 1 and 2.530-2.621 in coordinate 2 against the dyadic flow's 2.882-3.108 and 2.962-3.019, a gap of 0.356-0.439 with growth +0.062 and -0.019 from J = 6 to 8, below twice the half-sample seed spread (0.221, 0.263), so its trend is undecided; below 3 by more than the dyadic flow's own shortfall, which suggests and does not establish platykurtic per-point laws, and variance ratios to the dyadic flow 0.579-0.650 and 1.260-1.364.",
+      "assessment": "Finite check, expectations committed before the run; controls: global averages agree to 4.6e-16 and the variance ratios differ from 1; the per-square cost control is nearly automatic under the damped line search and Newton's convergence is not checked. The Prediction named J = 6..9; the run stops at J = 8. Kurtosis does not decide the tails at sqrt(log N) standard deviations.",
+      "status": "finite_check",
+      "category": "route_specific",
+      "rationale": "Tests the simultaneous rule of the queue item two-choice-routing: a constant shape change in the fourth moment at the sizes run, its trend undecided, its tails unmeasured.",
+      "next_action": "The exceedance fractions at the fixed thresholds 2.2 and 3.3 standard deviations, and at c sqrt(2 log G^2), with both the dyadic flow's and the rule's own per-position sigma, for the rule and the dyadic flow at J = 6, 7, 8.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:equalized-flow-separable",
+      "cites",
+      "lem:sequential-rules-dyadic",
+      "Uses its model and nesting step; its (b) is that lemma's (a) after exchanging the axes."
+    ],
+    [
+      "ex:simultaneous-rule-tails",
+      "cites",
+      "ex:greedy-circulation-tails",
+      "The same model and cost with a function's worth of freedom per square instead of one pyramid circulation; both lower the kurtosis, that run without trend and this one with its trend undecided."
+    ],
+    [
+      "ex:simultaneous-rule-tails",
+      "cites",
+      "lem:equalized-flow-separable",
+      "The exact coordinate-1 minimizer in the rule's family is the transposed dyadic flow; the run measures the full rule."
+    ],
+    [
+      "lem:equalized-flow-separable",
+      "cites",
+      "thm:dyadic-flow-obstruction",
+      "Applies to the equalized flow with the coordinates exchanged."
+    ]
+  ]
+}

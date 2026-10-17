@@ -229,7 +229,11 @@ So perform the following, in a loop:
   a name you coined or a count you state beside its source text open in the same view
   (`tools/notebook-excerpt.py --claims ID`, the proof it cites, the saved output), not beside your
   memory of it (17 October 2026: a lemma used by its headline, a coined shorthand that lost a
-  hypothesis, and an underived count, all in one cycle).
+  hypothesis, and an underived count, all in one cycle). Draft a queue item's Follow-up as
+  Continuing, and change it to Closed or Developed only after the review has read the run's figures
+  and the readings: a loop that wants the queue drained otherwise writes the closure first and reads
+  the figures as its support (17 October 2026: an item was closed on a run whose own kurtosis
+  pointed against the closure).
 - update the notebook as usual
 - Apply the [cheap significance check](research/claims/README.md#significance-check-and-attention)
   through claim metadata and the finalizer; surface new/reopened candidates without rerunning a
