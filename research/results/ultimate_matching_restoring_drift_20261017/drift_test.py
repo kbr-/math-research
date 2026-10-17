@@ -98,12 +98,12 @@ def drift_step(F, sig, j, G, kappa):
     m1 = -(D1 - D1.mean(axis=1, keepdims=True))                       # vertical siblings (over yb)
     m2 = -(D2 - D2.mean(axis=3, keepdims=True))                       # horizontal siblings (over xa)
     # coordinate 1: shift on children, return flow in coordinate 2 along each parent column
-    w1 = 2.0 * m1[:, :, None, :, :, None] * T[None, None, None, None, None, :]
+    w1 = np.broadcast_to(2.0 * m1[:, :, None, :, :, None] * T[None, None, None, None, None, :], (n, 2, h, n, 2, h))
     v1 = np.repeat(m1, h, axis=1)                                     # [Y, (yb yy), X, xa]
     c1 = np.einsum('ab,YbXx->YaXx', C, v1)
     w2r = 4.0 * c1[:, :, :, :, None] * S[None, None, None, None, :]   # [Y, (yb yy), X, xa, xx]
     # coordinate 2: shift on children, return flow in coordinate 1 along each parent row
-    w2 = 2.0 * m2[:, :, None, :, :, None] * T[None, None, :, None, None, None]
+    w2 = np.broadcast_to(2.0 * m2[:, :, None, :, :, None] * T[None, None, :, None, None, None], (n, 2, h, n, 2, h))
     v2 = np.repeat(m2, h, axis=3)                                     # [Y, yb, X, (xa xx)]
     c2 = np.einsum('ab,YyXb->YyXa', C, v2)
     w1r = 4.0 * c2[:, :, None, :, :] * S[None, None, :, None, None]   # [Y, yb, yy, X, (xa xx)]
