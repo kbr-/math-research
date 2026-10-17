@@ -372,5 +372,32 @@ class RunnerChecks(unittest.TestCase):
             self.assertNotIn('Pure reasoning time', output.read_text())
 
 
+class RecordedKernelReasonTest(unittest.TestCase):
+    def test_a_refused_launch_is_shown_the_reason_recorded_for_code_it_shares(self):
+        # 17 October 2026: two launches in a row lacked the kernel reason a run of the same imported flows had
+        # recorded; a script sharing no code is shown none.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            res = root / 'research/results'
+            (res / 'a').mkdir(parents=True)
+            (res / 'b').mkdir()
+            (res / 'a/rule.py').write_text('x = 1\n')
+            (res / 'a/old.py').write_text("RULE = 'rule.py'\n")
+            (res / 'b/new.py').write_text("LEVELS = 'mid.py'\n")
+            (res / 'b/mid.py').write_text("RULE = 'rule.py'\n")
+            (res / 'b/alone.py').write_text('y = 2\n')
+            rec = root / 'research/provenance/session-records/s'
+            rec.mkdir(parents=True)
+            (root / 'research/logs').mkdir(parents=True)
+            reason = 'NumPy batched solves per level do the work once'
+            (rec / 'session.jsonl').write_text(
+                json.dumps({'event': 'run_start', 'unix_s': 5, 'command': ['python3', 'research/results/a/old.py'],
+                            'kernel_reason': reason}) + '\n'
+                + json.dumps({'event': 'run_start', 'unix_s': 6, 'command': ['python3', 'x.py'],
+                              'kernel_reason': ''}) + '\n')
+            self.assertEqual(compute.recorded_kernel_reasons(res / 'b/new.py', root), [('old.py', reason)])
+            self.assertEqual(compute.recorded_kernel_reasons(res / 'b/alone.py', root), [])
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=1)

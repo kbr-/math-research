@@ -852,6 +852,65 @@ def scripts_without_baseline(command):
 RECORD_CHECKED = re.compile(_LINE_START + r'Record checked:' + _FIVE_WORDS, re.M)
 RECORD_CHECKED_FROM = 1792170000      # 16 October 2026 17:00 UTC; scripts last changed earlier are left alone
 
+_PY_NAME = re.compile(r'([\w.-]+\.py)\b')
+
+
+def recorded_kernel_reasons(script, root=None, limit=3):
+    """Kernel reasons recorded for earlier runs of scripts that share code with SCRIPT: the same script, or one
+    whose local imports (Python file names its text names, followed three deep through the scripts under
+    research/results) meet SCRIPT's.  Returned as (script name, reason), the latest first, at most LIMIT.  On 17
+    October 2026 two launches in a row were refused for want of a kernel reason that a run of the same imported
+    flows had recorded, the second after a rule said to start from the recorded flags."""
+    root = Path(root or ROOT)
+    index = {}
+    for path in (root / 'research/results').rglob('*.py'):
+        index.setdefault(path.name, []).append(path)
+    cache = {}
+
+    def closure(path):
+        if path.name in cache:
+            return cache[path.name]
+        seen, todo = {path.name}, [(path, 0)]
+        while todo:
+            current, depth = todo.pop()
+            try:
+                text = current.read_text(errors='replace')
+            except OSError:
+                continue
+            for name in _PY_NAME.findall(text):
+                if name not in seen and depth < 3:
+                    seen.add(name)
+                    todo += [(p, depth + 1) for p in index.get(name, [])]
+        cache[path.name] = seen
+        return seen
+
+    ours = closure(Path(script))
+    journals = list((root / 'research/logs').glob('*.jsonl'))
+    journals += list((root / 'research/provenance/session-records').glob('*/session.jsonl'))
+    found = {}
+    for journal in journals:
+        try:
+            lines = journal.open(errors='replace').readlines()
+        except OSError:
+            continue
+        for line in lines:
+            if '"kernel_reason": "' not in line or '"kernel_reason": ""' in line:
+                continue
+            try:
+                event = json.loads(line)
+            except ValueError:
+                continue
+            names = [Path(c).name for c in event.get('command') or [] if str(c).endswith('.py')]
+            if not names or len(event.get('kernel_reason', '').split()) < 6:
+                continue
+            paths = index.get(names[0]) or [root / names[0]]
+            if any(closure(p) & ours for p in paths):
+                reason = event['kernel_reason']
+                if reason not in found or found[reason][0] < event.get('unix_s', 0):
+                    found[reason] = (event.get('unix_s', 0), names[0])
+    latest = sorted(found.items(), key=lambda item: -item[1][0])[:limit]
+    return [(name, reason) for reason, (_, name) in latest]
+
 
 def scripts_without_record_check(command):
     """Script arguments under research/results that test a statement but carry no "Record checked:" line (at
@@ -1305,10 +1364,14 @@ def main():
         parser.error(refusal)
     if (exe.startswith('python') and args.timeout > KERNEL_RUN_S and args.category == 'computation'
             and len(args.kernel_reason.split()) < 6):
+        script = next((Path(c) for c in command[1:] if c.endswith('.py') and Path(c).is_file()), None)
+        recorded = recorded_kernel_reasons(script) if script else []
         parser.error(f'a Python computation allowed more than {KERNEL_RUN_S} s needs --kernel-reason "..." of at '
                      'least six words: name the compiled C/C++ kernel doing the heavy work (including product '
                      'or row generation) and the reuse (one incremental pass per series, shared prefixes '
-                     'computed once and copied); never launch with known waste (CLAUDE.md)')
+                     'computed once and copied); never launch with known waste (CLAUDE.md)'
+                     + ''.join(f'\n  recorded for {name}, which shares its code: --kernel-reason "{reason}"'
+                               for name, reason in recorded))
     script = next((c for c in command[1:] if c.endswith('.py')), None) if exe.startswith('python') else None
     # 16 October 2026: a script refused here was rerun at a shorter allowance, under the threshold, instead of
     # being optimized.  A refused script stays refused, at any allowance, until its text changes.
