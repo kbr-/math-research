@@ -2386,12 +2386,31 @@ COST_CLAIM = re.compile(
     re.I)
 
 
+# A bare "cost" is a running cost only beside a resource in its sentence; elsewhere it is the mathematics' own
+# cost (a flow's cost, a matching's cost), which the rule does not ask to be measured (17 October 2026: a build
+# about summaries of a flow's cost was refused, and "not measured" was added only to pass).
+RESOURCE = re.compile(r'\b(?:resources?|profiles?|profiling|loading|time|times|run|runs|runtime|seconds?|minutes?|hours?|tokens?|cpu|memory|ram|disk|'
+                      r'calls?|suite|cycles?|turns?|budget|\d[\d.,]*\s*(?:s|ms|min|h|mb|gb))\b', re.I)
+
+
+def cost_claim(text):
+    """The first cost or saving claim of a build's text, or None (COST_CLAIM, with RESOURCE for a bare cost)."""
+    for found in COST_CLAIM.finditer(text):
+        if re.fullmatch(r'costs?', found.group(0), re.I):
+            start = max(text.rfind('.', 0, found.start()), text.rfind(';', 0, found.start())) + 1
+            ends = [i for i in (text.find('.', found.end()), text.find(';', found.end())) if i >= 0]
+            if not RESOURCE.search(text[start:min(ends, default=len(text))]):
+                continue
+        return found
+    return None
+
+
 def build_evidence(text):
     """What a build's text lacks, or None: a text that claims a cost or a saving (slow, saves, took 27 s)
     says whether the claim is measured, with the word: 'measured' and what was, or 'not measured'.  A figure
     alone does not say it: the build that prompted this rule gave figures of a census and guessed their cause,
     and promised a saving for several cycles that one measurement refuted (10 October 2026)."""
-    claim = COST_CLAIM.search(text)
+    claim = cost_claim(text)
     if claim and not re.search(r'\bmeasur(?:ed|ement|ements)\b', text, re.I):
         return (f'the text claims a cost or a saving ("{claim.group(0)}") and does not say what it rests on: name '
                 'the measurement ("measured: ...", with where it is saved), or write "not measured"')

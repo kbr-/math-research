@@ -758,7 +758,8 @@ class LeadQueueTest(unittest.TestCase):
     def test_a_build_that_claims_a_cost_or_a_saving_says_whether_it_is_measured(self):
         head = notebook([self.rev], self.q)
         claims = ('Share the runs: it saves most of the time.', 'Cache it; the scan is slow.', 'The copy took 27 s each run.',
-                  'Skip the copy, which takes several minutes.', 'Make it faster.', 'A change that cost the run 5 s was hidden.')
+                  'Skip the copy, which takes several minutes.', 'Make it faster.', 'A change that cost the run 5 s was hidden.',
+                  'The scan is the main cost of each turn.', 'Profiling shows registry loading as the largest cost.')
         for text in claims:
             with self.subTest(text=text):
                 with self.assertRaisesRegex(ValueError, r'^a-build: the text claims a cost or a saving \(".+"\) and does '
@@ -771,7 +772,11 @@ class LeadQueueTest(unittest.TestCase):
                 lq.add(head, 'idea', 'an-idea', 's', text)
         # No claim of a cost: a verb of taking or saving something else, a time that is no duration.
         for text in ('Port it to main.', 'Let the tool take a source that was rewritten.', 'Ask for the saved output of a run.',
-                     'A mutant took the group down twice, the first time unseen.', 'It took four calls by hand.'):
+                     'A mutant took the group down twice, the first time unseen.', 'It took four calls by hand.',
+                     # The mathematics' own cost is no running cost (17 October 2026: a build on summaries of a
+                     # flow's cost was refused).
+                     'List each outcome beside its bound: a late restoration was said not to lower the cost.',
+                     'Flag a sentence that bounds the cost of one part and concludes about the whole.'):
             with self.subTest(text=text):
                 lq.add(head, 'build', 'a-build', 's', text)
         body = lq.add(head, 'build', 'a-build', 's', 'Port it.')
