@@ -256,7 +256,9 @@ def unconfirmed(message, dropped):
     """The (claim, condition) pairs of `dropped` whose claim no line "Conditions checked: ..." of the message names.
     17 October 2026: a flagged message was committed unchanged and the drop explained only in a reply; the
     confirmation now lives in the message, with why each condition does not matter there."""
-    confirmed = ' '.join(re.findall(r'^Conditions checked:(.*)$', message, re.M))
+    # The whole paragraph, its wrapped lines included: tools/rewrap_md.py wraps a long confirmation, and the
+    # claims on its continuation lines went unread (18 October 2026).
+    confirmed = ' '.join(re.findall(r'^Conditions checked:(.*(?:\n(?!\n|Conditions checked:).+)*)', message, re.M))
     return [(ident, condition) for ident, condition in dropped
             if not re.search(r'(?<![\w:-])' + re.escape(ident) + r'(?![\w-])', confirmed)]
 

@@ -68,6 +68,13 @@ class ConditionTest(unittest.TestCase):
         # naming another claim that contains this one's name as a prefix does not confirm it
         other = 'Main: x\n\nConditions checked: cor:linear-error-transfer-two (another).'
         self.assertEqual(cmc.unconfirmed(other, dropped), dropped)
+        # 18 October 2026: a wrapped confirmation named the claim on its second line, which went unread
+        wrapped = ('Main: x\n\nConditions checked: lem:a (why), and\ncor:linear-error-transfer (an in-particular '
+                   'case).')
+        self.assertEqual(cmc.unconfirmed(wrapped, dropped), [])
+        # a later paragraph is not part of the confirmation
+        later = 'Main: x\n\nConditions checked: lem:a (why).\n\ncor:linear-error-transfer holds.'
+        self.assertEqual(cmc.unconfirmed(later, dropped), dropped)
 
     def test_a_dropped_degree_window_in_an_entry_is_listed(self):
         # 17 October 2026: a General statement dropped both degree windows of its claim.
