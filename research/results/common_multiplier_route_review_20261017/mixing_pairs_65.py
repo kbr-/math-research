@@ -73,7 +73,8 @@ def domain_kernels(E):
 
 def row(args):
     """For one representative of the first error: the best and the sum over the second error's representatives."""
-    h1, h2s, W = args
+    # spaces travel as basis lists: three_quantities is loaded by path, so its Space does not pickle
+    h1, h2s, W = tq.Space(args[0]), [tq.Space(x) for x in args[1]], tq.Space(args[2])
     best, total = 0, tq.Space()
     for h2 in h2s:
         x = h1 & h2
@@ -100,7 +101,8 @@ def measure_orbit(pool, key, A, B):
     E1, E2 = error(A), error(B)
     J = dl.ann_poly(cC, monos, E1) & dl.ann_poly(cC, monos, E2)
     h1s, h2s = domain_kernels(E1), domain_kernels(E2)
-    parts = pool.map(row, [(h1, h2s, W) for h1 in h1s])
+    lists = [list(x.basis.values()) for x in h2s]
+    parts = pool.map(row, [(list(h1.basis.values()), lists, list(W.basis.values())) for h1 in h1s])
     a = max(p[0] for p in parts)
     total = joined(parts, W)
     I = summed(h1s, W) & summed(h2s, W)
