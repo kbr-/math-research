@@ -469,6 +469,18 @@ class NotebookAppendTests(unittest.TestCase):
                       'the L = 9 chain was not run, its enumeration measured at 40 minutes.'):
             tool.refuse_uncomputed_smallest_case(draft.replace('its ratio not yet computed.', legit))
 
+    def test_a_nonlinearity_claim_needs_an_additivity_witness(self):
+        # 17 October 2026: "the lagged flow is nonlinear in the counts (its amplitudes solve cubic equations)".
+        bare = '<article id="a"><p>The lagged flow is nonlinear in the counts (its amplitudes solve cubic equations).</p></article>'
+        with self.assertRaisesRegex(ValueError, 'without the defining relation'):
+            tool.refuse_unwitnessed_nonlinearity(bare)
+        for good in (bare.replace('(its amplitudes solve cubic equations)',
+                                  '(means (2,-2) give 2/3, (1,1) give 0, their sum (3,-1) gives 0.852)'),
+                     '<article id="b"><p>Build a flow nonlinear in the counts whose fine levels correct the coarse '
+                     'ones.</p></article>',
+                     '<article id="c"><p>The rule is linear in the counts by its formula.</p></article>'):
+            tool.refuse_unwitnessed_nonlinearity(good)
+
     def test_a_review_naming_a_missing_construction_must_build_one(self):
         # 17 October 2026: the ninth review's Obstacle and a Decision sending the next entry to an exclusion.
         review = ('<article id="r9" data-kind="review" data-scope="goal">\n<h4>Obstacle</h4>\n<p>On the primal '

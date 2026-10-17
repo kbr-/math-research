@@ -109,6 +109,26 @@ def refuse_unbuilt_obstacle(entry):
                          'not make any attempt to construct this?")')
 
 
+NONLINEAR_CLAIM = re.compile(r'\b(?:is|are)\s+(?:not linear|nonlinear|non-linear) in the counts\b', re.I)
+ADDITIVITY_WITNESS = re.compile(r'additiv|their sum|the sum of|superposition', re.I)
+
+
+def refuse_unwitnessed_nonlinearity(entry):
+    """A sentence asserting that a rule or flow is (not linear | nonlinear) in the counts gives, in that sentence,
+    the defining relation failing: two inputs and their sum (AGENTS.md: a property defined over all inputs is not
+    concluded from one computed instance). On 17 October 2026 a draft called a flow nonlinear because its amplitudes
+    solve cubic equations, while its own two-value model had cubic stationarity with a linear solution. Replayed over
+    every notebook, the assertion form matches one earlier sentence (an exit scheme "is not linear in the counts");
+    the appositive form ("..., nonlinear in the counts") is not matched, since six of the nine such sentences in the
+    record name a class of flows, not a property of one."""
+    plain = strip_tags(entry)
+    for sentence in re.split(r'(?<=[.;])\s+', ' '.join(plain.split())):
+        if NONLINEAR_CLAIM.search(sentence) and not ADDITIVITY_WITNESS.search(sentence):
+            raise ValueError('a sentence says a rule is nonlinear (or not linear) in the counts without the defining '
+                             'relation failing in it (two inputs and their sum, or additivity): "' + sentence[:200] +
+                             '" (AGENTS.md: a property defined over all inputs is shown by exhibiting it fail)')
+
+
 def refuse_off_route(source, entry, ask=None):
     """A research entry of a notebook whose goal is open states its Shortest route and, read by the route judge
     (tools/route_judge.py, Haiku), takes it or says why not (user, 17 October 2026: "When you identify a direct
@@ -590,6 +610,7 @@ def append(source, entry, next_html=None, committed=None, reason=None, tools=Non
     refuse_broken_text('entry', entry)
     refuse_early_review_credit(entry)
     refuse_unbuilt_obstacle(entry)
+    refuse_unwitnessed_nonlinearity(entry)
     if next_html is not None:
         refuse_broken_text('next step', next_html)
         refuse_next_structure(next_html)
