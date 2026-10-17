@@ -14,7 +14,10 @@ Control: for a congruent pair (E, E + member of span{Q_i}), s = E gives Ann_C(s)
 Refuted by: no s found on a congruent pair.
 Possible because: a wrong kernel comparison would miss it.
 Forced by counts: nothing forces the count of s; 8192 elements against one 5-dimensional target.
-No positive control: the control above is one, the congruent pair having a known dominating element.
+Positive control: the matching path itself must find, for one 5-dimensional kernel of some s, that s (added after
+the first run, whose congruent-pair control did not pass through the path that gave its zeros); asserted.
+Refuted by: no s matched for a kernel taken from the table itself.
+Possible because: a wrong span comparison would match nothing.
 Baseline: dim Ann_C(s) is at least dim W = 4 for every s; it decides nothing.
 Record checked: lem:factor-ideal-domination (the clause's form) and mixing_pairs.json; none gives the s.
 """
@@ -46,6 +49,10 @@ def main():
         s = {monos[k] for k in range(len(monos)) if bits >> k & 1}
         K = dl.ann_poly(cC, monos, s)
         kernels.setdefault(frozenset(K.basis.values()) if len(K) == 5 else None, []).append(sorted(s))
+    # positive control of the matching path: a 5-dimensional kernel of some s must be matched by that s
+    probe = next(key for key in kernels if key is not None)
+    assert sum(len(ss) for key, ss in kernels.items()
+               if key is not None and len(tq.Space(list(key)) + tq.Space(list(probe))) == 5) >= 1, 'positive control'
     Q = [{0} | {1 << v(i, j) for j in range(mp.N)} for i in range(mp.N + 1)]
     span_Q = {frozenset(sh) for _, sh in mp.ls.representatives(Q)}
     hits = json.loads((mp.SRC / 'row_search.json').read_text())['4x3 rows [1, 2]']['first']
