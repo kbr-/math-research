@@ -257,7 +257,11 @@ So perform the following, in a loop:
   Before an item is closed as refuted, the strongest positive form its words allow is written and a
   proof of it is tried, since counterexamples to the forms in hand do not refute the form not yet
   written (17 October 2026: an item was closed on four refuted readings while the universal one
-  glued in a few lines).
+  glued in a few lines). A sentence stating a property of a computed quantity (a sign, a crossing
+  point, a range) is written after the quantity is computed at the instance: a crossing point is
+  solved for, not read between two grid values, and a range is the object's only when no step of the
+  proof's accounting set it (17 October 2026: a ratio called at most one from its factors' look, a
+  threshold read off two grid points, and a range set by a corner-area bound, in one draft).
 - update the notebook as usual
 - Apply the [cheap significance check](research/claims/README.md#significance-check-and-attention)
   through claim metadata and the finalizer; surface new/reopened candidates without rerunning a
