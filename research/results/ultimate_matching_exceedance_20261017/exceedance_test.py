@@ -61,6 +61,11 @@ rule = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(rule)
 
 
+def run_job(job):
+    """The imported rule's run, called from this module so that the process pool can pickle it by name."""
+    return rule.run(job)
+
+
 def fractions(arrs, k, thresholds, scale=1.0):
     z = np.abs(np.concatenate([a[k].ravel() for a in arrs])) / scale
     return [float(np.mean(z > t)) for t in thresholds]
@@ -75,7 +80,7 @@ def main():
     a = p.parse_args()
     jobs = [(J, a.per_cell * 4 ** J, s) for J in a.levels for s in a.seeds]
     with ProcessPoolExecutor(max_workers=min(8, len(a.seeds))) as pool:
-        results = list(pool.map(rule.run, jobs))
+        results = list(pool.map(run_job, jobs))
     by = {}
     for r, dz, sz in results:
         by.setdefault(r['J'], []).append((dz, sz))
