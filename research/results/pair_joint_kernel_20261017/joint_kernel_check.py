@@ -33,6 +33,11 @@ Control: the parity rule with the wrong constant |S| in place of 1 + |S|; it mus
 Refuted by: the wrong rule agreeing with the direct values everywhere.
 Possible because: a constant shift of both parities moves the set, which the check would miss only if the
     direct evaluation were itself computed from the rule under test.
+Forced by counts: the wrong rule's set for a row is disjoint from the true zero set (both parities flipped), and
+    the true set is nonempty (c = 0 gives chi = 0, c = 1 a pair of points), so once (1) holds the wrong rule must
+    differ at every instance: that half tests only the routine; whether the wrong sets A' meet U is forced by no
+    count; the positive control's nonzero kernel is forced by lem:cylinder-killer-degree (b), and it shows only
+    that the kernel computation sees an effect the record guarantees.
 Positive control: coordinate products (unit rows), M of them all reading coordinate 0, whose transversal {0}
     gives the killer [chi_0 = 0] of degree 1 (lem:cylinder-killer-degree (b)); the joint kernel must be
     nonzero there and the affine search must find a killer.
