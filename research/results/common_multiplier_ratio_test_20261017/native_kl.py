@@ -5,12 +5,16 @@ Setting: by lem:native-restriction (b) and (c), for the functional pigeonhole sy
 functionals lam_j on A_{K+L} with {u in A_K : lam_j(u v) = 0 for all v in A_L, all j} = 0, A_k = V_k(B)/W_k(B) on
 the reduced board B modulo C (W_k the span of the x_s Q_i with |s|+1 <= k), A_k = V_k(B) modulo H. Over F_2.
 Statement tested (the conjecture of the native-restriction entry, here at K = 3, L = 1): random functionals attain
-the ratio lower bound ceil(dim A_K / dim A_L) in both models, on the reduced boards with 8 holes and 3, 4, 5
-pigeons (the boards with 4, 5, 6 pigeons and 9 holes at D = 5 = ceil(9/2)).
+the ratio lower bound ceil(dim A_K / dim A_L) in both models, on the reduced boards with 8 holes and 3, 4
+pigeons (the boards with 4, 5 pigeons and 9 holes at D = 5 = ceil(9/2)); also run at K = L = 2 on the same boards
+and as a validation at K = 2, L = 1 on six holes.
 The extreme the question needs: m_min is a minimum over choices, so the least number of random functionals that
 detect, minimized over seeds, is an upper bound, set beside the ratio lower bound.
 Expected: the least number equals the ratio bound in both models on every board run (the conjecture).
 Refuted by: on some board and model, no seed among twenty detecting with as many functionals as the ratio bound.
+(Corrected after the runs: that criterion was met at K = L = 2, three pigeons, modulo the closure, and was badly
+formed, a count being an existence claim that random seeds can miss; the rerun with 200 seeds found detecting
+functionals, and total_eval.py's embedding explains them. Recorded in the entry.)
 Possible because: on the cube the record has the count known only up to its ratio at K = 3, L = 1, and a slack
 smaller than K - 1 leaves each functional's map A_K -> A_L^* structured (lem:native-functional-growth).
 Control: with one functional fewer than the ratio bound no seed may detect.

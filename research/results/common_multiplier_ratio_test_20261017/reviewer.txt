@@ -1,0 +1,55 @@
+Reviewer's reports for entry-2026-10-17-native-ratio (sole fresh-context medium reviewer, 17 October 2026),
+transcribed by the agent from the reports delivered to the session (reading the subagent transcript from the shell
+is refused outside the worktree); condensed, the required changes kept item by item; two passes.
+
+=== First pass
+
+Verdict: pass with corrections. The lemma's proof is correct. The script is correct, and every figure in the finite
+check matches the json files. The conjecture's scope and several sentences around it need fixing.
+
+Required changes:
+- Lemma, second sentence and its spec summary: lem:native-restriction assumes D <= ceil(N/2); add it.
+- Lemma scope narrower than the proof: the proof uses only x_t(sigma) = 1 iff t is in sigma and that the points of
+  size <= K lie in the domain; state it for every down-set domain; its real hypothesis is V_K in V_L.
+- Record comparison misses a precedent: on the cube lem:native-rectangle-upper-bound already gives one functional,
+  the sum of delta_z over B_L, which at K = L is this construction.
+- Hypotheses bullet and Smallest case on the closure ("the proof does not apply", "the step that fails is the
+  existence of the points") are true only when the reduced board has p > n; every board computed at (3,1) and
+  (2,2) has p < n, where the pigeon axioms have common zeros.
+- The conjecture's evidence at (3,1) and (2,2) never touches the pigeonhole regime, which at D = 5, N = 9 starts at
+  9 pigeons and 8 holes on the reduced board; the only pigeonhole-regime evidence is (2,1) at 7 pigeons, 6 holes,
+  and (1,1) at 5/4.
+- The conjecture's first clause, every reduced board and every K, L, is false or undefined: on 2 pigeons, 1 hole,
+  1 is in W_2, A_2 = 0, and at K = 1, L = 2 no functional detects; carry 1+K+L <= ceil((n+1)/2).
+- The conjecture says over every field; the evidence is F_2 only; name both gaps.
+- Smallest case: K = L = 1 at the reduced 5/4 board is decided by check:one-native-functional; the first undecided
+  closure case is K = L = 2 on 9 pigeons and 8 holes (reduced).
+- Follow-up: the next object is the closure, not the matching domain; "three slacks" is wrong (L = 1, 2; three
+  (K,L) pairs).
+- Computation: the reproduction holds for 3 and 4 pigeons only.
+Checked and holding: the script's product table (shared edges), W skipping i in rows(s), |s|+1 <= k, the
+annihilator, uniform draws, targets; every figure; the lemma arithmetic (193, M^T M invertible over F_2); the
+translations to 4 or 5 pigeons and 9 holes at D = 5; the Owed attempt quote.
+Open point (unverified): on satisfiable boards, if evaluation at the total matchings is injective on A_K the
+lemma's argument gives count 1 modulo C (test: rank of V_2 on the 336 total matchings of the 3/8 board, expected
+145); in the pigeonhole regime, the symmetric pseudo-expectation lambda(x_t) = 1/(n)_{|t|} vanishes on every x_s Q_i
+with |s|+1 <= n, so is a functional modulo the closure over Q when 2K <= n, its pairing invariant; test its rank
+at 5/4 (K = L = 1) and 9/8 (K = L = 2); leads cor:charged-slice-pairing and historical:imp:php. Domain model at
+K > L: no construction found.
+Suggestions (unverified): the lemma for any point set embedding A_K; the rank test; the pseudo-expectation test;
+free transfers (characteristic 2 by extension; domain-model 0/1 detections to Q and almost all primes).
+Process audit: Chosen's "growth past the ratio" contradicts the Evidence; Goal progress suggests a test not made;
+a pre-registered refutation fired (0 of 20 at K = L = 2, three pigeons, closure) and is not said; the docstring is
+stale; "ten entries" and the spell count unsourced; the Owed attempt's "literature unread" has no retrieval; the
+Review paragraph has no source; proposed title "One domain functional at L >= K; native counts at (3,1) and (2,2)".
+Strength count: 5.
+
+=== Follow-up
+
+Follow-up verdict: pass with corrections. The general lemma, the 2-pigeon/1-hole degenerate case, the transfer
+paragraph and total_eval.py are sound. Required: X must be a set of partial matchings (evaluation is defined and
+multiplicative on V_k only at points of the domain), not "no condition modulo the domain"; instance (ii) is
+computed over F_2 only, say so in the Statement, the proof, Evidence and New mathematics; the degenerate case's "no
+functional detects A_K" holds for K <= 1, for K >= 2 A_K = 0; "explains" the rerun should be "explains the
+existence"; the Setting's {0,1} should be {0,1}^E. Optional, unverified: instance (ii) over Q (0/1 evaluation
+matrix, integer generators of W). Strength count: 2.
