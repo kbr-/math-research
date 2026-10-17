@@ -119,7 +119,9 @@ def refuse_uncomputed_smallest_case(entry):
     instance named and left untried (research/provenance/framework/smallest-case-uncomputed-replay-20261017.txt).
     A sentence that calls itself a judgement, or gives the measured cost of the step it leaves, is exempt."""
     for given in re.finditer(r'<strong>Smallest case\.</strong>((?:(?!</p>)(?!</li>).)*)', entry, re.S):
-        for sentence in re.split(r'(?<=[.;])\s+', strip_tags(given.group(1))):
+        # whole sentences: a qualifier in a later clause ("...not tried; as a judgement ...") covers it (the
+        # stand-in review of 17 October 2026: a split at ";" cut a judgement off the clause it qualifies)
+        for sentence in re.split(r'(?<=\.)\s+(?=[A-Z\\(])', strip_tags(given.group(1))):
             if UNCOMPUTED.search(sentence) and not re.search(r'\bjudgement\b|\bmeasured\b', sentence, re.I):
                 raise ValueError('the Smallest case leaves its instance uncomputed ("' + sentence.strip()[:160]
                                  + '"): run the attempt on it, or on a smaller instance that decides it, before '

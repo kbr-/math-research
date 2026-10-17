@@ -459,7 +459,7 @@ class NotebookAppendTests(unittest.TestCase):
         tool.refuse_uncomputed_smallest_case('<article id="a7"><p>Nothing not computed here.</p></article>')
         # each phrase family in a legitimate sentence: said as a judgement, or with its measured cost
         for legit in ('as a judgement, the larger chain remains to compute and is not needed.',
-                      'the K=3 dance is to be checked, as a judgement not bearing on the attempt.',
+                      'the K=3 dance is to be checked; as a judgement it does not bear on the attempt.',
                       'the L = 9 chain was not run, its enumeration measured at 40 minutes.'):
             tool.refuse_uncomputed_smallest_case(draft.replace('its ratio not yet computed.', legit))
 

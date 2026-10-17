@@ -316,6 +316,22 @@ def new_refusal_functions(caller_lines, removed_lines, message):
     return [] if not found or BYPASS.search(message) else found
 
 
+RULE_FILES = ('AGENTS.md', 'PROMPTS.md', 'COMPUTATION_RULES.md', 'CLAUDE.md')
+
+
+def unnamed_rule_files(message, paths):
+    """The rule files a commit changes that its message does not name. On 17 October 2026 a cycle's commit staged
+    a new PROMPTS.md rule while its message, said in the session to carry the change, did not; the commit went in
+    and the message was amended afterwards."""
+    # the stem names it too: subjects write "COMPUTATION_RULES: ..." (2 of 3 refusals of the first replay), and a
+    # stem of two words may be written as words ("the computation rules", the third); a one-word stem may not,
+    # "agents" being ordinary prose
+    def named(path):
+        stem = path[:-len('.md')]
+        return stem in message or ('_' in stem and stem.replace('_', ' ').lower() in message.lower())
+    return [p for p in paths if p in RULE_FILES and not named(p)]
+
+
 def check_staged(message_path):
     message = Path(message_path).read_text(encoding='utf-8', errors='replace')
     paths = git('diff', '--cached', '--name-only').split()
@@ -325,6 +341,11 @@ def check_staged(message_path):
     refusal = suite_after(paths, top)
     if refusal:
         print(refusal, file=sys.stderr)
+        status = 1
+    for rule_file in unnamed_rule_files(message, paths):
+        print(f'commit-msg: the commit changes {rule_file} and its message does not name it: say what the change '
+              'does, under the file\'s name (a rule change is reported with the commit that makes it).',
+              file=sys.stderr)
         status = 1
     for figure in suite_figures_unmatched(message, top):
         print(f'commit-msg: the message reports a passing suite run, "{figure}", that is not the last passing run of '

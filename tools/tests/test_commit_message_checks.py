@@ -244,5 +244,19 @@ class BypassTest(unittest.TestCase):
         self.assertEqual(cmc.unbypassed_checks(self.ADDED, [own], self.MESSAGE), [])
 
 
+class RuleFilesNamed(unittest.TestCase):
+    def test_a_changed_rule_file_is_named_in_the_message(self):
+        # 17 October 2026: a cycle's commit staged a PROMPTS.md rule and its message did not carry it
+        paths = ['PROMPTS.md', 'research/branches/b/notebook.html']
+        self.assertEqual(cmc.unnamed_rule_files('Ultimate matching: a result\n\nthm:x: ...', paths), ['PROMPTS.md'])
+        self.assertEqual(cmc.unnamed_rule_files('subject\n\nPROMPTS.md: a step before closing.', paths), [])
+        # the stem, and a two-word stem written as words, name the file; a one-word stem as a word does not
+        rules = ['COMPUTATION_RULES.md']
+        self.assertEqual(cmc.unnamed_rule_files('COMPUTATION_RULES: a number is recomputed', rules), [])
+        self.assertEqual(cmc.unnamed_rule_files('the computation rules now ask for it', rules), [])
+        self.assertEqual(cmc.unnamed_rule_files('reviewer agents read it', ['AGENTS.md']), ['AGENTS.md'])
+        self.assertEqual(cmc.unnamed_rule_files('no rule file', ['tools/x.py']), [])
+
+
 if __name__ == '__main__':
     unittest.main()
