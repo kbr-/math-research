@@ -1,0 +1,76 @@
+{
+  "source": {
+    "record": "[Cut-cell variance](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-cut-cell-variance)",
+    "label": "Cut-cell variance",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-17-cut-cell-variance"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "lem:cut-cell-variance-bound",
+      "summary": "For X_1..X_N i.i.d. uniform on [0,1]^2, kappa > 0 fixed, D(g) = sum_i g(X_i) - N int g, with probability tending to one: (a) for all square grids of sides delta_0 <= W with 1/W and W/delta_0 integers (dyadic or not), delta_0 >= kappa sqrt(log N/N) and (W/delta_0)^2 <= log N, every g constant on the cells of side delta_0 has |D(g) - D(E_W g)| <= c_kappa sqrt(N log N) TV(g), E_W the averages on the cells of side W, TV(g) = sum over inner edges of delta_0 |jump|, c_kappa = sqrt(10 + 20/kappa^2) + 5/(3 kappa); (b) for every dyadic delta_0 with kappa sqrt(log N/N) <= delta_0 <= 2^(-l_1) (l_1 the Leighton-Shor scale), every union A of cells of side delta_0 with inner perimeter P(A) >= 1 has |D(1_A)| <= C sqrt N P(A)((2 log_2 max(1, 2^(l_1)/P(A)) + 5)^(3/4) + sqrt(log N)), C depending only on kappa; (c) at (4,4), on such grids, every nested chain g = y delta_0 sum_{k <= K} 1_{A_k} with y >= 2e^16 and discrete cost sum_e delta_0^2 psi*_4(|Delta_e g|/(2 delta_0)) <= 2 has |D(g)| <= C sqrt N T((2 log_2(K y^2) + 5)^(3/4) + sqrt(log N)) + L sqrt N (log N)^(3/4) y delta_0 sum_{k: P(A_k) < 1} P(A_k), T = 8 (log(y/2))^(-1/4); (d) hence |D(g)| <= C' sqrt(N log N) when K <= N^(1/7) and log K <= (log N)^(2/3)(log(y/2))^(1/3), in particular for single layers (K = 1) at every level y >= 2e^16.",
+      "assessment": "Working proof: (a) Bernstein conditionally on the coarse counts with the binomial variance n_C p(1-p), bounded by N l_C^2 (1 + 2/kappa^2) through a relative isoperimetric inequality in each coarse square, min(area(B), area(C minus B)) <= l_C^2/2 (mixed rows and columns), a union over the subsets of the at most log N fine cells of each coarse cell, at most P(A)/delta_0 cut cells, and the layer-cake formula; (b) (a) at W = 2^(-l_1) and lem:tube-localized-discrepancy (b) for the coarse averages at tube width W in [1/(2P), 1/P]; (c) linearity, (b) for layers of perimeter at least 1 with Jensen's inequality for the concave P (2 log_2(c/P) + 5)^(3/4), lem:fine-grid-leighton-shor (a) for the others and (c) for the total variation; (d) arithmetic, with lem:fine-grid-leighton-shor (c) for y >= N^(1/3).",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Below the Leighton-Shor mesh the cut cells cost sqrt(log N) per unit of variation, not (log N)^(3/4). So on dyadic grids, against Lebesgue measure, every grid function of the single-level discrete class at (4,4) (increments 0 or at least y delta_0 with y >= 2e^16, discrete cost at most 2) has the discrepancy of its coarse averages at the Leighton-Shor mesh up to 8 c_kappa sqrt(N log N)(log(y/2))^(-1/4); and nested chains with K <= N^(1/7) and log K <= (log N)^(2/3)(log(y/2))^(1/3) layers, single layers included, are at most C sqrt(N log N), removing there the loss of up to (log N)^(1/8) of lem:discrete-flow-bound (c).",
+      "next_action": "Nested chains with log K > (log N)^(2/3)(log(y/2))^(1/3) layers: the gap-charged bound for their coarse averages at the Leighton-Shor mesh, which by (a) carries the whole operation, first on concentric curves each wiggling below its gap to the next.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:cut-cell-variance-bound",
+      "cites",
+      "lem:fine-grid-leighton-shor",
+      "Same split and union over subsets; that lemma charges a cut cell by its count, (log N)^(3/4) per unit perimeter in all, this one by its variance, sqrt(log N) for the fine part; with lem:mesh-function-discrepancy for the coarse averages, (a) implies that lemma's (a) and (b) up to constants. Parts (c) and (d) depend on its (a) and (c)."
+    ],
+    [
+      "lem:cut-cell-variance-bound",
+      "depends_on",
+      "lem:tube-localized-discrepancy",
+      "Part (b), on the coarse averages."
+    ],
+    [
+      "lem:cut-cell-variance-bound",
+      "depends_on",
+      "lem:mesh-function-discrepancy",
+      "Its event, through lem:tube-localized-discrepancy."
+    ],
+    [
+      "lem:cut-cell-variance-bound",
+      "cites",
+      "lem:discrete-flow-bound",
+      "Its (c) bounds single layers and chains of multiplicity m at C sqrt(N log N)(1 + (log(m y))^(1/4)); part (d) here removes that loss for chains of subexponentially many layers, and neither implies the other (multiplicity against number of layers)."
+    ],
+    [
+      "lem:cut-cell-variance-bound",
+      "applies",
+      "conj:conjugate-class-discrepancy",
+      "At (4,4) on dyadic grids, against Lebesgue measure: a grid function of the single-level discrete class (increments 0 or at least y delta_0, y >= 2e^16, cost at most 2) has the discrepancy of its coarse averages at the Leighton-Shor mesh up to 8 c_kappa sqrt(N log N)(log(y/2))^(-1/4), and nested chains with K <= N^(1/7) and log K <= (log N)^(2/3)(log(y/2))^(1/3) are at most C sqrt(N log N); a bound of the goal's smeared form, through lem:smeared-y-term (b), only for class functions whose cell averages are such chains."
+    ],
+    [
+      "lem:cut-cell-variance-bound",
+      "cites",
+      "lem:local-factor-discrepancy",
+      "Charges cell functions on partitions into cells of side at least 2^(-l_1) by the levels of their edges; at the uniform Leighton-Shor mesh of the coarse averages in (b) its factor is the full l_1^(3/4). Neither implies the other: it works at and above the mesh, this lemma below it."
+    ],
+    [
+      "lem:cut-cell-variance-bound",
+      "cites",
+      "lem:cellwise-lipschitz-split",
+      "The same split into cell averages and a remainder; its remainder is bounded cell by cell through Lipschitz oscillation, (a) here through the variance of jumps bounded by isoperimetry, for functions constant on cells below the mesh. Neither implies the other."
+    ],
+    [
+      "lem:cut-cell-variance-bound",
+      "cites",
+      "lem:smeared-y-term",
+      "Whose (b) makes the X-term bounds here bounds of the goal's smeared form on grids of side at least 20/sqrt N."
+    ]
+  ]
+}
