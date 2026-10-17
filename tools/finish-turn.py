@@ -1454,6 +1454,7 @@ def draft_statuses(text, known=None):
 def validate_drafted_proofs(text, drafted):
     """The checks of proved statements that the registry path runs, run on a draft with `drafted` statuses."""
     validate_plainest(text, drafted)
+    validate_one_function(text, drafted)
     if drafted & PROVED:
         validate_degenerate_cases(text, drafted)
         claims = re.search(r'data-claims="([^"]*)"', text)
@@ -1512,6 +1513,41 @@ def validate_plainest(text, statuses=()):
 
 
 OWN_FROM = '2026-10-17'
+ONE_FUNCTION_FROM = '2026-10-17'
+# A fixed witness said to escape the record ("decided by none of the recorded chain bounds", "which no recorded
+# bound decides"): 17 October 2026, twice in a row, while Chebyshev on the one function decided it.
+WITNESS_UNDECIDED = re.compile(r'\b(?:decided by none|no recorded (?:\w+ ){0,3}decides|'
+                               r'neither decides the witness|none of the recorded (?:\w+ ){0,3}decides?)\b', re.I)
+
+
+def validate_one_function(text, statuses=()):
+    """A proof entry that calls its witness undecided by the record says what one function's bound gives on it.
+
+    AGENTS.md: "For a statement uniform over a family, every fixed witness is decided by a bound for one function
+    (its variance ...): the sentence then says so and names what the uniformity adds."  The rule let the same
+    sentence through in two entries in a row on 17 October 2026; the Nonvacuity paragraph now carries, after
+    <strong>One function.</strong>, that bound on the witness and what the statement's uniformity adds."""
+    dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})', text)
+    if not dated or dated.group(1) < ONE_FUNCTION_FROM or not PROVED & set(statuses):
+        return
+    paragraphs = [m.group(0) for label in ('Nonvacuity', 'Goal progress')
+                  for m in re.finditer(rf'<strong>{label}\.</strong>(?:(?!</p>).)*', text, re.S)]
+    def plain(paragraph):
+        # without parenthesized groups, which list the bounds between "no recorded chain bound" and "decides"
+        said, before = html.unescape(strip_tags(paragraph)), None
+        while said != before:
+            said, before = re.sub(r'\s*\([^()]*\)', '', said), said
+        return said
+    if not any(WITNESS_UNDECIDED.search(plain(p)) for p in paragraphs):
+        return
+    said = [m.group(1) for nonvacuity in re.finditer(r'<strong>Nonvacuity\.</strong>(?:(?!</p>).)*', text, re.S)
+            for m in re.finditer(r'<strong>One function\.</strong>((?:(?!</p>).)*)', nonvacuity.group(0), re.S)]
+    if not any(len(html.unescape(strip_tags(s)).strip()) >= 30 for s in said):
+        raise ValueError('The entry says its witness is decided by no recorded bound: a fixed witness is decided by '
+                         'a bound for that one function (its variance by Chebyshev, a family of one in a guided '
+                         'bound). Say in the Nonvacuity paragraph, after <strong>One function.</strong> and in at '
+                         'least 30 characters, what that bound gives on the witness and what the statement\'s '
+                         'uniformity adds over it (AGENTS.md)')
 
 
 N_UPPER_RE = re.compile(r'\\log\\log N\s*\\le\s*\d|\\log N\s*\\le\s*\d|(?<![\w\\])N\s*\\le\s*\d')
@@ -2208,6 +2244,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
             validate_baseline(text, statuses)
             validate_composed(text, statuses)
             validate_plainest(text, statuses)
+            validate_one_function(text, statuses)
             validate_unbounded_witness(text)
         else:
             # A draft's claims are not registered yet: a Proof paragraph stands for a proved status, so the

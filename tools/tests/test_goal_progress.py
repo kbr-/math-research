@@ -461,6 +461,31 @@ class ComposedTest(unittest.TestCase):
 
 
 class PlainestBoundTest(unittest.TestCase):
+    def test_an_undecided_witness_names_its_one_function_bound(self):
+        # 17 October 2026, twice in a row: a fixed witness called undecided by the record, which Chebyshev decides.
+        refused = [
+            '<p><strong>Goal progress.</strong> Unchanged. <strong>Bearing.</strong> The class includes the witness, '
+            'which no recorded chain bound (lem:a (c) and (d), lem:b) decides from \\(\\ln N=400\\) on.</p>',
+            '<p><strong>Goal progress.</strong> Unchanged. <strong>Bearing.</strong> Its witness is decided by none '
+            'of the recorded chain bounds.</p>',
+            '<p><strong>Nonvacuity.</strong> The staircase witness. lem:a and lem:b leave a factor of order '
+            '\\((\\log N)^{1/8}\\); neither decides the witness in the limit.</p>']
+        for paragraph in refused:
+            article = '<article id="entry-2026-10-17-x">' + paragraph
+            with self.assertRaisesRegex(ValueError, 'One function'):
+                FT.validate_one_function(article, {'working_proof'})
+            FT.validate_one_function(article, {'finite_check'})
+            FT.validate_one_function(article.replace('2026-10-17', '2026-10-16'), {'working_proof'})
+            FT.validate_one_function(article + '<p><strong>Nonvacuity.</strong> The witness. <strong>One function.'
+                                     '</strong> Chebyshev gives \\(O_P(\\sqrt N)\\) on this one function; the lemma '
+                                     'adds uniformity over its class.</p>', {'working_proof'})
+        # The phrases in sentences about something other than a witness's decision.
+        for sentence in ('a flow on a coarser grid, which no recorded statement gives',
+                         'no recorded lemma decides the sign of this flux, so it is left open',
+                         'the case decided by none of its inputs alone is the mixed one'):
+            FT.validate_one_function('<article id="entry-2026-10-17-x"><p><strong>Statement.</strong> '
+                                     + sentence + '.</p>', {'working_proof'})
+
     def test_smallest_case_and_witness_name_the_plainest_bound(self):
         # 16 October 2026: a next attempt and a witness that bare per-cell counts already decided.
         smallest = ('<article id="entry-2026-10-16-x"><p><strong>Smallest case.</strong> One band along a '

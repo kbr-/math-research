@@ -1,0 +1,42 @@
+Review record: entry-2026-10-17-staircase-bundles, one fresh-context medium reviewer, 17 October 2026. Reports as returned, layout abridged.
+
+=== First pass: pass with corrections ===
+1. Lemma. (a) translates edge-disjoint: correct, monotonicity only. (b)/(h) correct in the interior, undefined at the
+ends: "a diagonal staircase from p to p+m tau" does not fix its turns, and the wrong choice puts a side edge on
+Gamma + tau (p = (0,0), horizontal first edge, side up then left uses (0,1)-(-1,1)); define band i as the cells whose
+centre is gamma + (i + 1/2) tau, gamma a lattice point of Gamma, endpoints included, which gives (a), (b), (c) at once
+and fixes the ends. (c), (d) correct; contact cases as in the separated record. (e) 4 m_b side edges suffice with
+either end step. (f) false as written ("each line x + s tau meets Gamma exactly once" holds only for anti-diagonal sums
+in [u_p, u_q]); the conclusion holds by the centre distance (i+1) delta_0. (g) 756 and 759 right; count half-open
+W-cells. No unused hypotheses.
+2. Witness: nesting, (B1), (B3), (B4) hold; (B2) holds, band-i cells at most i+1 columns left, at most
+i + ceil((i+1)/2) <= 1.5m + 1 < 2m + 2 rows above f_j; wording fix to bands 0..m; end edges covered; separated bundles
+does not apply. Wrong figure: TV >= 0.043 false, the script prints 0.0427 at ln N = 400 and 0.0410 at 700.
+3. Bearing false as written: the witness is one fixed function, sup|g| < 1, Var D(g) <= N, Chebyshev O_P(sqrt N);
+lem:guided-chain-bound (d) with F_N the coarse roundings of the witness's K <= sqrt N layers, W_k = w = 2^(-l_1),
+gives 23 C sqrt(N log N). Rewrite with the fixed-witness rule: the lemma adds uniformity. Band clauses again not
+compared, the second entry in a row.
+4. Smallest case wrong: nesting allows (0,0), (0,1), (1,1); the lead's formula gives (1,1), multiplicity 3; the draft
+set its (0,1) against the lead's words; "on Gamma" against "on the collision line".
+Suggestions (unverified): absorb colliding layers into the group (weak point: the Phi term (log M)^(3/4)); obstruction
+to any recursion: D consecutive lines of multiplicity m with fewer than about mD free rows cannot be spread below
+about mD/(D + room), a steep ramp of slope my, the object of the band clauses of lem:tube-localized-discrepancy.
+Process audit: Bearing and spec rationale against the fixed-witness rule; Plainest bound skipped one function's
+variance; band clauses deferred again; lead restated against its formula; figure off its output; orbiting: one
+hypothesis per entry while the obstructions point to stacks as ramps, never named. Title matches the body.
+Strength count 2.
+
+=== Second pass, on draft-v2: pass with corrections ===
+Checked and right: neighbour analysis (u-1 in band i or i+1, u+1 in band i or i-1; translate edges fixed by their
+pair of bands), side count at most 4 m_b, distance (i+1) delta_0, half-open W-cells, the One function clause's
+Chebyshev part, TV >= 0.041, the witness wording.
+Required: (1) "no union of one-function bounds over a fixed family gives it" is a negative without its attempt;
+lem:guided-chain-bound (d) over a coarser guide family fails its condition on w (sketch, unverified); write the
+attempt or narrow. (2) Bearing list omits lem:guided-chain-bound (d). (3) The residue is not a cell function against
+a continuous ramp; the per-cell count needs the within-cell term (conditional Hoeffding, or lem:tube-localized-
+discrepancy (e)'s mechanism, "Bernstein per cell and the cellwise remainder"); quote (e). (4) The pigeonhole covers
+inward spreads only. (5) "decide only stacks with r >= m" wrong: for D >= 2 every line but the deepest collides at
+depth 1; the lemmas decide only D = 1 with m_b + 1 rows. (6) Band comparison: add the route (b) per layer by the
+triangle inequality, the limit w -> 0, and that the excerpts do not define phi. (7) Gate: two passes; credit the
+second pass with what it checked; the replay figure not checked by it.
+Strength count 2.
