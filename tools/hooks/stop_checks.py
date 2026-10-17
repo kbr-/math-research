@@ -867,12 +867,13 @@ def describe(calls):
     return '\n'.join(lines) or '(none)'
 
 
-def judge(reply, calls):
+def judge(reply, calls, session=None):
     """Haiku's verdict as {'ok': bool, ...}; {'error': str, 'refused': bool} when the call fails,
-    refused being whether the API refused it, such as for a retired model."""
+    refused being whether the API refused it, such as for a retired model. `session` is the stopping
+    harness session, under which the call's usage is recorded."""
     prompt = PROMPT.read_text().replace('$TOOL_CALLS', describe(calls)).replace('$REPLY', reply)
     try:
-        verdict = ask(prompt, JUDGE_TIMEOUT)
+        verdict = ask(prompt, JUDGE_TIMEOUT, session=session)
     except Failed as error:
         return {'error': str(error), 'refused': isinstance(error, Refused)}
     checked = validate_verdict(reply, verdict)
@@ -1390,7 +1391,7 @@ def main(argv):
         return 0
     if not reply.strip() or 'judge' in off:
         return 0
-    verdict = judge(reply, calls)
+    verdict = judge(reply, calls, data.get('session_id'))
     if verdict and verdict.get('refused'):
         # A refused call would let every stop through unseen; warn on each one until the hook is fixed.
         print(json.dumps({'systemMessage': (

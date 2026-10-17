@@ -78,6 +78,12 @@ class HookFixture(unittest.TestCase):
 class UncheckedClaimTest(HookFixture):
     """The hook's own checks, which every branch runs."""
 
+    def test_the_judge_is_asked_on_behalf_of_the_stopping_session(self):
+        asked = []
+        with mock.patch.object(hook, 'ask', lambda prompt, timeout, session=None: asked.append(session) or {}):
+            self.run_hook(session_id='stopping-session')
+        self.assertEqual(asked, ['stopping-session'])
+
     def test_a_verdict_that_names_no_third_party_tool_does_not_block(self):
         reply = 'It copies the staged files to a temporary directory.'
         answer = {'kind': 'missing-feature', 'quote': reply, 'checked': False, 'declared': False, 'reason': 'r'}
