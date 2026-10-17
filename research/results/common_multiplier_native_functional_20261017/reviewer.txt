@@ -1,0 +1,86 @@
+Reviewer's reports for entry-2026-10-17-native-restriction (sole fresh-context medium reviewer, 17 October 2026),
+transcribed by the agent from the reports delivered to the session (the tool that saves transcripts verbatim
+was refused for reading a subagent transcript outside the worktree); the first pass's correctness items close to
+their wording, its process audit and the two follow-ups condensed; three passes.
+
+=== First pass
+
+Verdict: pass with corrections. Parts (b)-(d), the script and every figure check out. One real gap: the lemma is
+false at N = 1. The rest are wording and process fixes.
+
+Correctness (required changes)
+- Statement and (c): the lemma fails at N = 1 as written. When N = 1 the reduced board has no holes, so Q_i' = 1
+  has degree 0. Then W_0(B_e) = span(1), A_0 = 0 and (c) gives m_min(C) = 0. But for m >= 2, D = 1, K = L = 0:
+  Q_{e's pigeon} = 1 - x_e lies in C, so x_e = 1 mod C. By (a), x_e is not in C, so ker T = 0 and m_min = 1. The
+  step that fails is (c)'s converse: x_s Q_i has degree |s|+1, but its image has degree |s| when N = 1.
+  lem:functional-killer-transfer covers N >= 1, so the draft inherits N = 1 silently. The Degenerate cases never
+  tried it. Fix: define W_k as the span of x_s Q_i' with |s|+1 <= k, or add N >= 2. The claim spec needs the same.
+- (d), upper bound: the injectivity W_{K+L} cap V_K(B_e) = W_K uses the recorded sentence K_D cap span(T_K) = K_K
+  on B_e, which is about the closure, not W_k. Add the identification W_k(B_e) = K_k(B_e) for k <= ceil((N-1)/2),
+  in both directions. The degree check D-1 <= ceil((N-1)/2) is correct.
+- (a) is correct; it is IPS's own degree bound read through the recorded basis. Say so. No later step uses it.
+- (b) and (c) otherwise checked: x_e w = x_e rho_e(w) mod H; the injection of V_{K+L}(B_e) modulo H_e; every
+  lambda extends; Ann = rho_e^{-1}(H_e); rho_e^{-1}(W_k) = ker rho_e + C cap V_k; x_e W_{K+L} in C; the product
+  well defined; the transfer lemma's K+|E| <= D at k = K+L.
+- Computation paragraph: "the lower bound holds over every field, the upper only over F_2" contradicts (d), whose
+  upper bound dim A_K holds over every field. What is F_2-only is that the ratio is attained.
+- Figures: all match native_count.json (673, 43, 238, 7, 435, 36; the ratio bounds 13 and 16; all ten per-board
+  values; V_2 = 1+6p+30 C(p,2), A_1 = 1+5p; 1+35+399 = 435 and 630-399 = 231 = 238-7 consistent). The dancing
+  matchings themselves were not recounted; the script asserts 435 and 36.
+- Independent cross-check missed: at 6 pigeons, 5 holes, D = 3, the lemma gives dim A_1 = 21-5 = 16, exactly the
+  rank r = 16 for x00 that check:one-native-functional computed in the closure itself. Cite it.
+- Script: correct (W(k) generators over F_2 modulo H; the product table's three cases; the annihilator; uniform
+  functionals on V_3 for H and XOR combinations of W_3's annihilator for C; the XOR fix; rank = dim A_2 iff the
+  kernel is W_2). The "rank above dim A_2" assertion caught the integer-sum bug, so it is a control that can fail;
+  the draft undersells it. native_small.json is not mentioned; say what it is or drop it.
+- Hypotheses: "The field and m: no step uses either" is correct; N >= 2 or the W_k fix must be added.
+- Owed attempt: the named refutation degree at 7 pigeons and 6 holes was not made; the record has refutation
+  degrees only up to 5 holes (check:functional-factor-kernels). Report it as unmade with its reason, or make it.
+
+Open point (sketch, unverified)
+- H-model closed form: with P = pn and d = (p-1)(n-1)/2, dim V_2 = 1+P+Pd and dim V_1 = 1+P, so the ratio is
+  1+ceil(d); fits 6, 9, 11, 14, 16.
+- Construction by point evaluations at partial matchings: the first functional the evaluations at matchings of
+  size <= 1 (rank 1+P); each further one a set S of size-2 matchings, edges of Gamma = K_p x K_n, with rank
+  P - c(S) + [S non-bipartite] <= P; the ratio is attained when Gamma decomposes into ceil(d) spanning, connected,
+  non-bipartite pieces with P edges each. Literature on Hamilton decompositions of tensor products, unread.
+- Where it can fail: for p = 2, Gamma is bipartite; at 3 pigeons and 8 holes (reduced p = 2, n = 7) the ratio is
+  4 and point evaluations give 5. Whether general functionals reach 4 there is a direct test.
+- C-model: computed ratios 2p-1, a pattern from five boards; point evaluations not available.
+
+Suggestions (unverified): run the 3-pigeon, 8-hole case in both models; prove the H-model closed form.
+
+Process audit: title and status pending (proposed: "Native restriction: a variable error's native count on the
+functional pigeonhole system"); the Question drops prop:top-degree-native-count's independence hypothesis; the
+Owed attempt presents a replaced attempt as made; the Follow-up states the reduction without its degree
+conditions; the Bearing's "found the opposite" drops its boards; the Computation's F_2 sentence misstates the
+lemma; "nine entries" has no source; the Smallest case cites lem:native-functional-growth, not in the excerpts;
+N = 1 not tried; Review answers (1), (3), (5) meet the form with queued builds but no partial check built, (4)
+quotes no output, (2) does its job; the Meta's change is a promise with no durable home; the reviewer's search
+found check:functional-factor-kernels, not in the Record search. Strength count: 4.
+
+=== Follow-up
+
+Follow-up verdict: pass with corrections. (1) W_k redefined by |s|+1 <= k: correct, and the N = 1 degenerate case
+checks out. (2) W_k(B_e) = C' cap V_k: correct for N >= 2, broken at N = 1 (the reduced board has no holes; C'
+contains Q_i' = 1); the conclusion of (d) still holds at N = 1, since K = L = 0; treat N = 1 separately. (3) Part
+(e) correct (dim V_2 = 1+P+Pd, the interval argument with 2d < 1+P, all seven values); at d = 0 state it
+separately; add (e) to Hypotheses, New mathematics, the General statement and the spec. (4) The two-pigeon run's
+figures match native_two_pigeons.json (H: ratio 4 on one seed of 20; C: 42/13, ratio 4 on two of 20; three
+pigeons 7 and 6 on all 20); "must go beyond point evaluations" is stronger than its source, the bipartite rank loss
+applying only to functionals on size-2 points: say "beyond that construction"; give the seed counts; add the
+seven-hole boards to the General statement and New mathematics. (5) The Review answer (4) quotes a refusal line,
+not seen by the reviewer; the Meta's "10 of the 12" does not match tried-output-replay.txt, which has 11 lines with
+tried=True, 9 refused; the new check passes its cheapest bypass (any old saved output); state its real scope or
+check that the file is new, and run it against that bypass. Strength count: 3.
+
+=== Second follow-up, on commit 80bdae32a
+
+Verdict: pass with corrections. The commit closes the bypass named (an old, committed output no longer passes;
+"committed replay passes: False"), but cheaper bypasses remain: any new file passes, even one written only to be
+named; any leftover untracked output passes; appending a byte to an old output passes; a source not saying review
+or stand-in skips the rule; outside Git everything counts as uncommitted; a path like research/results/../../x
+passes the prefix test. Required: run the cheapest bypasses and save the run; close them or state the narrower
+scope (require untracked, not merely changed; tie the file to the build, or state the scope); apply the rule to
+every build not sourced from the user; normalize the path; fix the entry's Meta, which still says a build is
+"queued only after a partial check has run in the turn". Strength count: 1.

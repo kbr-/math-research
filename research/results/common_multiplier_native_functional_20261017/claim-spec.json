@@ -1,0 +1,68 @@
+{
+  "source": {
+    "record": "[Native restriction](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-native-restriction)",
+    "label": "Native restriction",
+    "targets": [
+      "branches/common-multiplier/notebook.html#entry-2026-10-17-native-restriction"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "polynomial-calculus"
+  ],
+  "claims": [
+    {
+      "id": "lem:native-restriction",
+      "summary": "Native restriction: over any field, for the functional pigeonhole system (Booleanity, hole and functionality axioms, pigeon axioms Q_i = 1 - sum_h x_ih, multilinear ring) with any number of pigeons and N holes, D <= ceil(N/2), C its degree-D closure and H that of the hole and functionality axioms, an edge e and K, L >= 0 with 1+K+L <= D: (a) 1 is not in C; (b) the least number of old functionals modulo H whose rectangle forms mu(x_e u v), v in V_L, detect Ann_H(x_e) cap V_K is the least number of functionals on V_{K+L}(B_e) detecting 0 in V_K(B_e) through V_L(B_e), B_e the board without e's pigeon and hole; (c) modulo C it is the same count on A_k = V_k(B_e)/W_k(B_e), W_k the span of the x_s Q_i' with |s|+1 <= k (Q_i' the reduced pigeon axioms; counted before restriction, so that N = 1 is covered), by lem:functional-killer-transfer at K and K+L; (d) hence ceil(dim A_K / dim A_L) <= m_min(C) <= dim A_K (the injectivity through the reduced board's closure for N >= 2, directly at N = 1), and likewise for H with V_k(B_e); (e) in the H-model at K = 2, L = 1 with p pigeons and n holes on B_e the lower bound is 1 + ceil((p-1)(n-1)/2).",
+      "assessment": "Working proof passed by the sole fresh-context medium reviewer with corrections, checked in one follow-up; the N = 1 case was the reviewer's counterexample to the first statement, repaired by counting W_k before restriction.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Turns the native count of a variable error modulo the functional pigeonhole system's proper closure into a computable count on the reduced board, without the closure.",
+      "next_action": "Whether the ratio bound of (d) is attained in general, by a construction at K = 2, L = 1, then at K = 3, L = 1 with N >= 9.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "check:reduced-native-counts",
+      "summary": "Exact F_2 computation (native_count.py with tools/f2_span.py): at K = 2, L = 1, random functionals (uniform on V_3, or on the annihilator of W_3) attain the ratio bound of lem:native-restriction (d) in both models on the reduced boards with 7 holes and 2 or 3 pigeons (H: 4, 7; C: 4, 6; on one of twenty seeds in the H-model and two of twenty in the C-model at 2 pigeons, where the reviewer's point-evaluation construction needs 5) and with 6 holes and 3..7 pigeons on all five seeds: m_min(H) = 6, 9, 11, 14, 16 (dim V_2/dim V_1 = 109/19, 205/25, 331/31, 487/37, 673/43) and m_min(C) = 5, 7, 9, 11, 13 (dim A_2/dim A_1 = 73/16, 135/21, 216/26, 316/31, 435/36); by lem:native-restriction these are the counts of a variable error on the boards with 4..8 pigeons and 7 holes, and with 3 and 4 pigeons and 8 holes, at D = 4, 13 modulo C against 16 modulo H on the pigeonhole board. Control: one functional below the ratio cannot detect (forced by the row count); no positive control.",
+      "assessment": "Exact computation checked by the sole fresh-context medium reviewer (script, product table, annihilator, figures); upper bounds from random functionals over F_2 only.",
+      "status": "finite_check",
+      "category": "route_specific",
+      "rationale": "Measures the native cost on the first proper closure where the pigeon axioms act in every degree, against the domain model's.",
+      "next_action": "Other fields, K = 3, more holes.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:native-restriction",
+      "depends_on",
+      "lem:functional-killer-transfer",
+      "The kernel equalities of part (c) at K and K+L."
+    ],
+    [
+      "lem:native-restriction",
+      "cites",
+      "lem:native-detection-count",
+      "Its bracket, restated on the reduced quotient in part (d)."
+    ],
+    [
+      "lem:native-restriction",
+      "cites",
+      "prop:top-degree-native-count",
+      "The product system's counterpart, where the counts modulo C and H are equal."
+    ],
+    [
+      "check:reduced-native-counts",
+      "depends_on",
+      "lem:native-restriction",
+      "The reduction that turns the computed counts into counts of a variable error."
+    ],
+    [
+      "check:reduced-native-counts",
+      "cites",
+      "check:native-upper-ranks",
+      "The cube's counts at K = 2, L = 1, where the ratio is also attained."
+    ]
+  ]
+}
