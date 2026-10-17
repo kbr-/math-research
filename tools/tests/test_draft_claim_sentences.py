@@ -713,6 +713,19 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
                       'are not equivalently described here.</p>')
         self.assertEqual([where for _, where, _ in dcs.converse_rows(equivalent)], ['Goal progress'])
 
+    def test_a_description_of_a_cited_proof_needs_a_source_answer(self):
+        # 17 October 2026: an Attempt named a cited lemma's stop from memory of its kind, not from its assessment.
+        draft = ('<article id="x"><p><strong>Decisive test.</strong> <strong>Attempt.</strong> On the retained test, '
+                 'lem:multilevel-chain-bound\'s proof was rerun: the count condition comes from the union of those '
+                 'events.</p><p><strong>Proof.</strong> By lem:multilevel-chain-bound\'s proof the bound holds.</p>'
+                 '<p><strong>Decision.</strong> The line is retained.</p></article>')
+        self.assertEqual([where for _, where, _ in dcs.source_rows(draft)], ['Decisive test'])
+        form = dcs.answers_template(draft)
+        self.assertIn('  source: \n', form)
+        self.assertEqual(len(dcs.unsourced(draft, form)), 1)
+        filled = form.replace('source: \n', 'source: the assessment, Jensen over the per-layer costs\n')
+        self.assertEqual(dcs.unsourced(draft, filled), [])
+
     def test_a_sentence_using_a_declared_part_by_letter_is_listed_under_the_declared_claim(self):
         # 17 October 2026: "by (a) no fixed-kernel sandpile adds one" dropped the statement's reversibility and was
         # never set beside the statement, naming no claim.

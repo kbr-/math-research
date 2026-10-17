@@ -923,7 +923,8 @@ def answers_template(draft, summaries=None):
     asked |= set(domain)
     form += ''.join(f'{key} [{where}] {sentence}\n  hypotheses: \n'
                     for key, where, sentence in hypothesis_rows(draft) if key not in asked)
-    return form + ''.join(f'{key} [{where}] {sentence}\n  converse: \n' for key, where, sentence in converse_rows(draft))
+    form += ''.join(f'{key} [{where}] {sentence}\n  converse: \n' for key, where, sentence in converse_rows(draft))
+    return form + ''.join(f'{key} [{where}] {sentence}\n  source: \n' for key, where, sentence in source_rows(draft))
 
 
 # A summing-up sentence that cites a registered claim while its paragraph leaves some of the claim's symbols
@@ -1047,6 +1048,40 @@ def unconversed_report(rows):
                       'no "converse:" answer: say which direction the source proves and the step that gives the other, '
                       'or rewrite the sentence as a one-sided condition:']
                      + [f'{key} [{where}] {sentence[:160]}\n  converse: ' for key, where, sentence in rows])
+
+
+# A summing-up or test sentence that cites a claim and describes its proof, scope or what it uses is answered on
+# a line "source:": the passage of the claim's record (its assessment, its proof's step) the description rests on.
+# On 17 October 2026 a review's Attempt said a cited lemma's condition "comes from the union of those events over
+# layers", while the claim's assessment gives Jensen over per-layer factors; the advisory listing of such sentences
+# had printed it beside the record and was read past.  Over all past articles it asks 210 sentences in 155 of 2552
+# (research/provenance/framework/proof-source-replay-20261017.txt).
+SOURCE_ANSWER = re.compile(r'^([0-9a-f]{8})\b[^\n]*\n(?:[ \t]*(?:rests on|within|extreme|hypotheses|converse):[^\n]*\n)*'
+                           r'[ \t]*source:[ \t]*([^\n]*)$', re.M)
+
+
+def source_rows(draft):
+    """[(key, section label, sentence)] for the sentences of summing-up and test paragraphs that cite a claim and
+    describe its proof, remarks or scope, each once."""
+    found = {}
+    for where, sentence, _, _ in pairings(draft):
+        bare = text(re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]', ' ', sentence, flags=re.S))
+        if CONVERSE_LABELS.match(where) and DESCRIBES.search(bare) and cited(sentence):
+            found.setdefault(hashlib.sha1(sentence.encode()).hexdigest()[:8], (where, sentence))
+    return [(key, where, sentence) for key, (where, sentence) in found.items()]
+
+
+def unsourced(draft, answers):
+    """The rows of source_rows(draft) whose answer has no "source:" line of at least ANSWER_WORDS words."""
+    given = {key: answer for key, answer in SOURCE_ANSWER.findall(answers or '')}
+    return [row for row in source_rows(draft) if len(given.get(row[0], '').split()) < ANSWER_WORDS]
+
+
+def unsourced_report(rows):
+    return '\n'.join([f'{len(rows)} sentences describe a cited claim\'s proof or scope and have no "source:" answer: '
+                      'name the passage of the claim\'s record (its assessment, its proof\'s step) the description '
+                      'rests on, read in this session:']
+                     + [f'{key} [{where}] {sentence[:160]}\n  source: ' for key, where, sentence in rows])
 
 
 def unchecked_hypotheses(draft, answers):

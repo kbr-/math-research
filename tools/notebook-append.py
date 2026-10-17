@@ -878,6 +878,12 @@ def refuse_unanswered(entry, answers):
             raise ValueError(draft_claim_sentences.unchecked_hypotheses_report(unchecked)
                              + ('\n(pass the answers with --answers FILE; tools/draft_claim_sentences.py DRAFT '
                                 '--answers FILE writes the form)' if answers is None else ''))
+    if draft_claim_sentences.source_rows(entry):      # a cited proof described, the passage it rests on named
+        open_source = draft_claim_sentences.unsourced(entry, answers or '')
+        if open_source:
+            raise ValueError(draft_claim_sentences.unsourced_report(open_source)
+                             + ('\n(pass the answers with --answers FILE; tools/draft_claim_sentences.py DRAFT '
+                                '--answers FILE writes the form)' if answers is None else ''))
     if draft_claim_sentences.converse_rows(entry):     # a condition called exact, its other direction answered
         open_converse = draft_claim_sentences.unconversed(entry, answers or '')
         if open_converse:
