@@ -22,6 +22,8 @@ class FigureTest(unittest.TestCase):
         # A paragraph naming a file is checked against that file only (the builds' reviewer, 17 October 2026).
         self.assertEqual(cmc.unsourced('Tool: x\n\nIt flags 10 calls (suite.txt).\n', paths, files.get), ['10 calls'])
         self.assertEqual(cmc.unsourced('Tool: x\n\nIt flags 10 calls (replay.txt).\n', paths, files.get), [])
+        # the refusal names the files each paragraph was checked against
+        self.assertEqual(cmc.searched_files('Tool: x\n\nIt flags 10 calls (replay.txt).\n', paths), [['replay.txt']])
         self.assertEqual(cmc.figures('1514 texts, 56 paragraphs, 13 conditions over 9 commits'),
                          ['1514 texts', '56 paragraphs', '13 conditions', '9 commits'])
         self.assertEqual(cmc.figures('# 3 tests in a comment line\nNo figure here.'), [])

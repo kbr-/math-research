@@ -70,6 +70,21 @@ def unsourced(message, paths, read):
     return missing
 
 
+def searched_files(message, paths):
+    """For each paragraph of the message with a figure, the source files unsourced() checks it against: the files
+    the paragraph names, or all the commit's sources when it names none. A refusal says what it examined, not only
+    what it found missing (17 October 2026: the cause of a refusal was guessed as a line break, while the check had
+    searched only the two files the paragraph named)."""
+    sources = [p for p in paths if p.startswith(SOURCES)]
+    body = '\n'.join(line for line in message.splitlines() if not line.startswith('#'))
+    out = []
+    for paragraph in re.split(r'\n\s*\n', body):
+        if FIGURE.search(paragraph):
+            named = [p for p in sources if Path(p).name in paragraph]
+            out.append(sorted(Path(p).name for p in (named or sources)))
+    return out
+
+
 def figure_sourced(figure, texts):
     """Whether every number of the figure appears, as a whole number, in one of the texts."""
     return all(any(re.search(r'(?<![\d.])' + re.escape(n) + r'(?![\d])', t) for t in texts)
@@ -295,7 +310,9 @@ def check_staged(message_path):
         if missing:
             print('commit-msg: figures in a framework commit message found in no file it adds or changes under '
                   'research/results or research/provenance: ' + '; '.join(missing) + '. Save the output they '
-                  'came from with the commit, or drop them (AGENTS.md: each figure beside its saved output).',
+                  'came from with the commit, or drop them (AGENTS.md: each figure beside its saved output). '
+                  'Searched, by paragraph (a paragraph naming files is checked against those only): '
+                  + ' | '.join(', '.join(names) or 'none' for names in searched_files(message, paths)) + '.',
                   file=sys.stderr)
             status = 1
     if 'research/claims/index.json' in paths:
