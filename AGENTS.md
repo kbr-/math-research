@@ -316,6 +316,10 @@ AGENTS.md"):
 - A sentence that gives a decision its reason (dropping, choosing, calling a case decided) names its
   source: a proof, a statement of record, or the word judgement; the reason is written from that
   source, not from the decision it is meant to support.
+- A size or depth stated for a construction is counted from the construction written out in the
+  proof, level by level of its gates, and the count is written beside the figure: a cost read from
+  the picture of a construction is a guess (17 October 2026: two depth bounds in one draft, \(k+5\)
+  for five and \(+4\) for \(+5\), and an unstated depth the entry before).
 - Check a witness's or construction's constraints as functions of the growing parameter, in the
   limit, never at the size written for; check there also what the recorded statements it is meant to
   escape give on it, and read each line a listing tool prints beside the source it names before the

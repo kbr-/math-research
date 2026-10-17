@@ -56,6 +56,10 @@ same words with another meaning, the opposite clause order, the form a later ent
 write) and run it, since a correction tested only on its reviewer's examples is fitted to them (17
 October 2026: a block-count check passed every sentence its reviewer gave and missed a fresh one).
 
+Recount every size and depth bound a draft states for a construction from the construction as the
+proof writes it, gate level by gate level, and report a bound whose count the proof does not show
+(17 October 2026: depth bounds stated from the picture of a formula were off by a level).
+
 Where the brief sends a decision or a next attempt that poses a question about a cited result, read
 the statements that result cites, one hop down, before accepting that the question is open: the
 answer is often already there (17 October 2026: a review asked whether two certificates differ by a
