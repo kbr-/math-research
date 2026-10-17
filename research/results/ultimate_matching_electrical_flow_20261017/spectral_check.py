@@ -18,6 +18,9 @@ a route sharing nothing with the spectral sum.
 Control: the spectral and direct routes agree to 1e-9 at k <= 32 (printed beside the size of M_e).
 Refuted by: a disagreement above 1e-9 between the two routes at some k at most 32.
 Possible because: the spectral sum drops or double-counts eigenpairs if the (0,0) mode or the edge indexing is wrong.
+Forced by counts: no count forces either control; both routes compute the same k(k-1) numbers by different
+factorizations, and the planted control fails only if the true mean at k = 128 is below 16 ln(128)/pi^4 = 0.797,
+which the heuristic ln(k)/(4 pi) = 0.386 predicts but no count fixes.
 Positive control: the same mean check run with every eigenvalue multiplied by 4 (planted error, M_e divided by 16)
 must fail (i) at k = 128, where 16 ln(k)/pi^4 exceeds the true mean.
 Refuted by: the planted run passing (i) at k = 128, which would show the check cannot see a factor 16.
