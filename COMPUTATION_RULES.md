@@ -289,15 +289,19 @@ unfinished.
   asserts that difference before testing. An altered statement decided by the same computed quantity
   as the true one (a bound with one added, failing exactly where the bound is attained) is a
   restatement and is not reported as a negative control. Identify whether an instance is PHP,
-  another unsatisfiable system, or a satisfiable finite domain. Before coding, in the same cycle,
-  state the smallest nonvacuous parameters and space sizes, count the claim's predictions at
-  reachable parameters, compare with unconditional bounds, and verify the hypotheses. Record the
-  count in the entry, in a `<strong>Nonvacuity.</strong>` paragraph (the finisher requires it of
-  every entry that registers a finite check): a test whose every outcome is compatible with the
-  claim decides nothing. Report outcomes for links, fibers or restrictions by sub-instance size; do
-  not interpret failures confined to sizes below the nonvacuous threshold. For a proposed bound,
-  test the simplest structurally different extremal examples and compare full success with what the
-  goal needs.
+  another unsatisfiable system, or a satisfiable finite domain. On a satisfiable instance, a
+  polynomial claimed to lie in a closure (a claimed killer times its error, a claimed member) is
+  first evaluated at the instance's solutions in each characteristic it is claimed for, with
+  `tools/solution_check.py` on pigeonhole boards: a nonzero value refutes it in any field (17
+  October 2026: a killer claimed in characteristic 3 from a hand check of one family failed at a
+  solution). Before coding, in the same cycle, state the smallest nonvacuous parameters and space
+  sizes, count the claim's predictions at reachable parameters, compare with unconditional bounds,
+  and verify the hypotheses. Record the count in the entry, in a `<strong>Nonvacuity.</strong>`
+  paragraph (the finisher requires it of every entry that registers a finite check): a test whose
+  every outcome is compatible with the claim decides nothing. Report outcomes for links, fibers or
+  restrictions by sub-instance size; do not interpret failures confined to sizes below the
+  nonvacuous threshold. For a proposed bound, test the simplest structurally different extremal
+  examples and compare full success with what the goal needs.
 - Compute the statement's own quantity, not a stronger or weaker surrogate. Put the tested statement
   in the script's docstring, generate inputs meeting its hypotheses and assert those hypotheses in
   code. Write there too, before the run, the outcome expected of the statement and of each control:
