@@ -2858,7 +2858,12 @@ def finish(root, turn, next_turn=None, notebook_name=None):
             raise ValueError('Changed-claim metadata incomplete:\n' + '\n'.join(contract['errors'])
                              + stale_review_hint(contract['errors']))
     if next_turn and (root / 'research/logs' / f'{next_turn}.jsonl').exists():
-        raise ValueError('Next session already exists; omit --next when retrying finalization')
+        # 17 October 2026: an older cycle's session of the same name was read as this finalization's retry.
+        archived = (root / 'research/provenance/session-records' / next_turn).exists()
+        raise ValueError(f'Next session {next_turn} already exists'
+                         + (' and is archived in research/provenance/session-records, an earlier cycle\'s: choose '
+                            'an unused name' if archived else
+                            ': omit --next when retrying finalization, or choose an unused name'))
     print(checks_note(time.monotonic() - started), end='')
 
     if (root / 'research/claims/index.json').exists():

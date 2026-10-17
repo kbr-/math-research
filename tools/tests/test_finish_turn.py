@@ -499,6 +499,11 @@ sys.exit(compute.main())
         notebook.write_text(current)
         (self.root / 'research/logs/claim-searches.jsonl').write_text(json.dumps({
             'unix_s': self.events('test_turn')[0]['unix_s'], 'query': 'fixture compatibility'}) + '\n')
+        # 17 October 2026: an earlier cycle's session of the same name was read as a retry of this finalization.
+        (self.root / 'research/logs/old_turn.jsonl').write_text('{"event": "start"}\n')
+        (self.root / 'research/provenance/session-records/old_turn').mkdir(parents=True)
+        with self.assertRaisesRegex(ValueError, "an earlier cycle's: choose an unused name"):
+            self.fixture_finisher().finish(self.root, 'test_turn', next_turn='old_turn')
         self.fixture_finisher().finish(self.root, 'test_turn', next_turn='next_turn')
         self.assertNotIn('<!-- TIMING test_turn -->', notebook.read_text())
         self.assertIn('data-generated="finish-turn-timing-v1"', notebook.read_text())

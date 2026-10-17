@@ -1249,6 +1249,22 @@ QUALIFIER = re.compile(r'\b(one direction|only|conditional(?:ly)?|given|under|pr
                        r'unread|omits?|up to|heuristic(?:ally)?|assum\w+|as read)\b', re.I)
 STATED = re.compile(r'\bstated in:\s*(.+)$', re.I)
 STATED_WORDS = 5
+# A "stated in:" passage may end the "rests on:" line or stand on a line of its own in the key's block
+# (17 October 2026: a passage on its own line was not read, and the refusal said "no passage" three times).
+STATED_LINE = re.compile(r'^[ \t]*stated in:[ \t]*([^\n]+)$', re.M | re.I)
+KEY_LINE = re.compile(r'^([0-9a-f]{8})\b', re.M)
+
+
+def stated_answers(answers):
+    """{key: its "rests on:" answer}, with a "stated in:" line of the key's block joined to it when the answer
+    carries none of its own."""
+    given = {key: answer for key, answer in ANSWER.findall(answers or '')}
+    starts = [(m.start(), m.group(1)) for m in KEY_LINE.finditer(answers or '')]
+    for (start, key), (end, _) in zip(starts, starts[1:] + [(len(answers or ''), None)]):
+        line = STATED_LINE.search((answers or '')[start:end])
+        if line and key in given and not STATED.search(given[key]):
+            given[key] = f'{given[key]}; stated in: {line.group(1).strip()}'
+    return given
 
 
 def plain(fragment):
@@ -1262,7 +1278,7 @@ def qualifier_gaps(draft, answers):
     and holding each missing word: the place where the entry itself states the limit.  An answer beginning
     "none:" limits nothing.  A word match: an answer reworded without the word passes, and a reviewer of the
     first form found any five words of the draft accepted (12 October 2026)."""
-    given = {key: answer for key, answer in ANSWER.findall(answers or '')}
+    given = stated_answers(answers)
     words = ' ' + ' '.join(plain(draft)) + ' '
     found = []
     for key, where, sentence in summing_up(draft):
@@ -1311,7 +1327,7 @@ def stated_in_reasons(draft, answers, gaps):
     few words, not a run of the entry's words outside the sentence, or lacking a missing word.  On 17 October
     2026 a second answers file added "stated in:" passages that quoted the entry but held none of the missing
     words, and the refusal, unchanged, did not say which condition the passages failed."""
-    given = {key: answer for key, answer in ANSWER.findall(answers or '')}
+    given = stated_answers(answers)
     words = ' ' + ' '.join(plain(draft)) + ' '
     reasons = {}
     for key, _, sentence, missing in gaps:

@@ -819,6 +819,20 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
             'prop:local-count-reach, given a count; stated in: "the form of prop:local-count-reach, with"'), gaps))
         self.assertIn('stated in: the passage does not hold given', report)
 
+    def test_a_stated_in_line_of_its_own_is_read(self):
+        # 17 October 2026: a passage on its own line under the key was not read, and the refusal said "no
+        # passage" three times before the parser was read.
+        stating = self.DRAFT.replace('<h4>Reading</h4>', '<h4>Reading</h4><p>All this is given a count of the '
+                                     'points in each unit.</p>')
+        form = dcs.answers_template(stating)
+        alone = form.replace('rests on: \n', 'rests on: prop:local-count-reach, given a count\n  stated in: this is '
+                             'given a count of the points\n')
+        self.assertEqual(dcs.qualifier_gaps(stating, alone), [])
+        wrong = alone.replace('this is given a count of the points', 'the form of')     # still checked
+        self.assertTrue(dcs.qualifier_gaps(stating, wrong))
+        self.assertEqual(sorted(set(dcs.stated_in_reasons(stating, wrong, dcs.qualifier_gaps(stating, wrong))
+                                    .values())), ['the passage has 3 words, fewer than 5'])
+
 
 class NewListingsTest(unittest.TestCase):
     """The vanishing-factor, hypothesis-restriction and unread-section listings (17 October 2026)."""

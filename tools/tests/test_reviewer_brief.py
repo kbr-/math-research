@@ -137,6 +137,11 @@ class BlindStageTest(unittest.TestCase):
             Path(d, 'six.txt').write_text('the previous review and its route\n')
             repo = Path(__file__).resolve().parents[2]
             self.assertEqual(hook.blind_leaks(self.PROMPT.format(d=d), repo), [str(Path(d, 'six.txt').resolve())])
+            # 17 October 2026: a refusal read as an error when the brief named a file by its bare name only
+            payload = {'tool_name': 'Agent', 'tool_input': {'subagent_type': 'medium-reviewer',
+                                                            'prompt': self.PROMPT.format(d=d) + ' Also six.txt.'}}
+            self.assertIn('does not name by full path (a bare file name does not admit a file',
+                          hook.refusal(payload) or '')
             Path(d, 'six.txt').unlink()
             self.assertEqual(hook.blind_leaks(self.PROMPT.format(d=d), repo), [])
 

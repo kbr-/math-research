@@ -388,7 +388,8 @@ def refusal(payload, tools=TOOLS, log=None, now=None):
     leaks = blind_leaks(prompt, tools.resolve().parent)
     if leaks:
         return ('the brief is for a blind stage, and the folder of its files also holds ' + ', '.join(leaks[:6])
-                + (' ...' if len(leaks) > 6 else '') + ', which the brief does not name: a reviewer told that '
+                + (' ...' if len(leaks) > 6 else '') + ', which the brief does not name by full path (a bare file '
+                'name does not admit a file, so that "do not read six.txt" cannot): a reviewer told that '
                 "the brief's files are its sources can read them. Put the stage's brief and excerpts in a folder "
                 'of their own (AGENTS.md, Independent alternative)')
     # A brief that sends an entry draft (an .html file) for review also sends the drafted commit message: on
