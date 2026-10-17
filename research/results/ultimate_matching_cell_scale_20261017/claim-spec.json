@@ -1,0 +1,74 @@
+{
+ "source": {
+  "record": "[Cell-scale reduction](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-cell-scale-reduction)",
+  "label": "Cell-scale reduction",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-17-cell-scale-reduction"
+  ]
+ },
+ "date": "2026-10-17",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "claims": [
+  {
+   "id": "thm:cell-scale-reduction",
+   "summary": "For exponents alpha_1, alpha_2 in [2, infinity), a fixed beta >= 1/2 (independent of N) with (beta - 1/2)(max_k alpha_k - 2) < 1, L >= 260, s = L sqrt(log N/N), J the least integer with 2^(-J) <= s/32, X_1..X_N i.i.d. uniform on [0,1]^2 and Y evenly spread, and dyadic cell sides l = 2^(-j_c) with 2^(-J) <= l <= (log N)^beta/sqrt N: with probability tending to one, for every bounded field Phi_c with int grad g . Phi_c = int g d(nu^l_X - N Leb) for all Lipschitz g (nu^l_X: each X_i smeared uniformly over its level-j_c dyadic square), the minimal matching cost min_pi sum_i sum_k psi_alpha_k(|X_i^k - Y^k_pi(i)|/s) is at most (N/8) sum_k int psi_alpha_k(8|Phi_c,k|/(L sqrt(N log N))) + 0.03 N, psi_alpha(u) = e^(u^alpha) - 1. Hence the conclusion of conj:ultimate-matching at the pair alpha with constant L follows whenever such a Phi_c with sum_k int psi_alpha_k(8|Phi_c,k|/(L sqrt(N log N))) <= 7 exists with probability tending to one. At (4,4) every beta < 1 is allowed, cells coarser than the Leighton-Shor side (log N)^(3/4)/sqrt N included.",
+   "assessment": "Working proof: the flow bound (lem:flow-matching-bound (2)) for Phi = Phi_in + Phi_c, Phi_in the dyadic flow of thm:dyadic-flow-square-exponential's proof at the levels j_c <= j < J, which carries the fine smearing to nu^l_X; convexity splits the cost; Phi_in has, per coordinate and point, Hoeffding sub-Gaussian tails of variance 8N(J - j_c) (that proof's supermartingale started at level j_c) and on E_1 the cap 24 N l (|Phi^S| <= 6 max|e_c|/rho, |e_c| <= 2N rho^2), so its psi_alpha integral has expectation at most alpha Gamma(alpha/2)(2/A)^(alpha/2), A = L^2 log N/(1024 (J - j_c)), once the cap's u_max^(alpha - 2) <= A/2, which holds for large N exactly under the condition on beta; Markov.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "The route's flow need not resolve the finest levels: a flow between measures smeared over cells of side up to (log N)^beta/sqrt N suffices, the finest (beta - 1/2) log_2 log N levels being carried by the dyadic flow at no cost in the limit; a converse up to replacing L by L/4 (subtracting the inner flow from a fine flow) is sketched in the entry, not proved.",
+   "next_action": "Build the nonlinear flow on the cells of side l (the tenth review's construction), its normalized per-edge loads tested against psi_4 at scale s.",
+   "novelty": "not_claimed"
+  },
+  {
+   "id": "cor:coarse-mean-growing-shift",
+   "summary": "thm:coarse-mean-flow-obstruction holds with the fixed shift r replaced by a sequence of integers r = r(N) >= 0 with j_1 - r >= 0, r <= (1/2) log_2 ln N, and, with C = (theta/(sqrt2 L))^alpha, a = 770 theta and r* = (1/2 - 1/alpha) log_2 ln N: for finite alpha in (2, infinity), liminf_N (C 2^(alpha (r* - r)) - a) > 0, in particular r <= r* - c_0 - eps for a fixed eps > 0, c_0 = log_2(a/C)/alpha; for alpha = infinity, 2^(-r) theta sqrt(ln N)/(sqrt2 L) >= 2 for all large N. All other hypotheses (depth, theta, locality at level j_1 - r, the coarse mean condition with F_j-measurable signs) as in that theorem.",
+   "assessment": "Working proof: the theorem's proof step by step at r = r(N): the push h_r = 2^(-r) sqrt(N/32) and its probability p_0 hold for every r; n_P >= 256 eases as r grows; mu = (p_0/4)^m does not depend on r; Chebyshev's factor 16 4^r K log N N^(1542 theta - 1) tends to 0 as 4^r <= ln N; the cost step u_N^alpha - a ln N = ln N (C 2^(alpha (r* - r)) - a) diverges under the condition, and at alpha = infinity u_N >= 2 gives I_k >= N^(1 - 770 theta)/8.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Locates the end of the coarse-mean proof at shifts r* - c_0, at (4,4) squares within a constant number of levels of the Leighton-Shor side; together with thm:cell-scale-reduction it shows where corrections are needed and where none are.",
+   "next_action": "Rerun its proof with an added F_(j+1)-measurable mean term from exchanges at shifts beyond r* - c_0, the item's next attempt.",
+   "novelty": "not_claimed"
+  }
+ ],
+ "relationships": [
+  [
+   "thm:cell-scale-reduction",
+   "depends_on",
+   "lem:flow-matching-bound",
+   "Its flow bound (2) for the summed field."
+  ],
+  [
+   "thm:cell-scale-reduction",
+   "depends_on",
+   "thm:dyadic-flow-square-exponential",
+   "Its dyadic flow, event E_1 and supermartingale tail, run on the inner levels only."
+  ],
+  [
+   "thm:cell-scale-reduction",
+   "cites",
+   "lem:grid-flow-duality",
+   "Its (c) needs cells of side at most s/32; the reduction allows cells of side (log N)^beta/sqrt N."
+  ],
+  [
+   "thm:cell-scale-reduction",
+   "cites",
+   "lem:flow-coarea-level-bound",
+   "A dual neighbour: class bounds through the full dyadic flow at psi_2, (b) and (d) for partials bounded by Y; neither implies the other."
+  ],
+  [
+   "thm:cell-scale-reduction",
+   "cites",
+   "conj:conjugate-class-discrepancy",
+   "The reduction's flow requirement is the primal form behind that conjecture at a coarser mesh; the primal-dual equivalence is proved on grids (lem:grid-flow-duality), and a converse to the reduction is only sketched."
+  ],
+  [
+   "cor:coarse-mean-growing-shift",
+   "refines",
+   "thm:coarse-mean-flow-obstruction",
+   "Its fixed r is a constant sequence, which meets the condition for large N."
+  ]
+ ]
+}

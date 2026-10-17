@@ -1,0 +1,64 @@
+Cell-scale reduction entry, review, 17 October 2026. One fresh-context medium reviewer, given draft.html,
+claim-spec.json, dyadic-flow-entry.txt, hopf-lax-entry.txt, coarse-mean-entry.txt and claims.txt. Its
+report, condensed in its own words.
+
+Verdict: pass with corrections. Strength count 4.
+
+Checked and holding: the telescoping (each level gives nu^(j+1) - nu^j); the flow bound use (lambda' =
+N/4; the error is about 0.008N, below 0.02N); the convexity constant 8; A = L^2 log N/(1024 m'); the cap
+24 N l and u_max; the Gamma integral; the condition step; Markov; 0.905N and 2N. Corollary: the push,
+n_P, mu, Chebyshev with 4^r <= ln N, the cost identity 2^(-r alpha)(ln N)^(alpha/2) = ln N 2^(alpha(r* -
+r)), c_0 = 10.92 (recomputed), alpha = infinity, the refines edge (a constant r meets every condition
+for large N).
+
+Required changes:
+- beta must be fixed: the proof needs A -> infinity, i.e. m' = o(log N), true for fixed beta (or l =
+  N^(-1/2 + o(1))). State it in the theorem, the spec and the General statement.
+- Degenerate case "l = 1 allowed when max alpha = 2" is false for this proof: at l = 1, m' = J and A =
+  L^2 ln2/512 ~ 91.5 stays bounded, eta ~ 0.087, Markov gives no probability tending to one. Remove.
+- Hypotheses: alpha_k >= 2 is also used in the integral step (u^(alpha - 2) <= u_max^(alpha - 2) on [0,
+  u_max] fails near 0 for alpha < 2); j_c <= J makes beta >= 1/2 automatic.
+- Not covered: "removes only a bounded number of levels" is wrong: for fixed beta > 1/2, m' ~ (beta -
+  1/2) log_2 log N -> infinity; at large max alpha it is unbounded but a small fraction of log_2 log N.
+- Not covered: "thm:linear-flow-obstruction applies unchanged" is not shown: it holds for edge flows on
+  the l-grid measured by grid edge cost; write "in its grid form". The dyadic and coarse-mean
+  obstructions transfer: Phi = Phi_c + Phi_in meets their hypotheses, and I(Phi, 4) <= (1/2) I_c(8) +
+  (1/2) I_in(8) with I_in -> 0.
+- Goal progress "equivalent up to constants": psi_alpha(2u) is not O(psi_alpha(u)); Phi_c = Phi - Phi_in
+  gives I_c(8) <= (1/2) I(16 Phi) + (1/2) I_in(16), so up to replacing L by L/4, and sketched, not proved;
+  same in the spec's rationale and its conj:conjugate-class-discrepancy edge (the primal-dual
+  equivalence is proved only on grids).
+- Bearing "each of its steps must still change the means" is too strong: the negation of the
+  corollary's hypothesis is "some step j >= j_1 must".
+- Follow-up Plainest bound: sum_{j >= i + r_0} 2^(-2(j - i)) N/16 ~ N 4^(-r_0)/12, not "of order N".
+- Smallest case: exchanges at coarser levels shift P_0 and P_1 by different amounts and add to R, so the
+  recursion is exact only for shapes constant on the coarse siblings, which lem:sibling-exchange-leg
+  forbids; the proxies decay geometrically, so only (b) with sigma_0 applies; and a fixed sibling pair is
+  not where the obstruction acts, which is a chain of squares at a fixed shift r < r_0.
+- Corollary Nonvacuity: r(N) = floor(r* - 12) is negative until log_2 ln N >= 48; use max(0, .) or "for
+  large N".
+
+Open point (the reviewer's own computation, unverified): the coarse problem is as hard as the original
+up to L -> L/4; the fine-flow obstructions transfer to Phi_c by the convexity step; linear rules fail on
+the l-grid in grid form. Likely obstruction to the named attempt: an exchange at shift >= r_0 has, on a
+chain square P at shift r < r_0, a mean that is a function of the coarse aggregate R, which sums about
+4^(r_0 - r) pushes with P's own push at weight 4^(-(r_0 - r)); conditional on the others, X_P keeps its
+spread, so the push plausibly survives if d's increment over X_P's range is small against h_r; test by
+rerunning the coarse-mean proof with an added F_(j+1)-measurable mean term c_P(R). Cell scale: no
+structural gain found (cells of (log N)^(2 beta) points have relative deviations (log N)^(-beta)).
+
+Suggestions (unverified): compose the theorem with lem:grid-flow-duality (b) (the RT field of an edge
+flow on the l-grid; nu^l_X has density n_Q/l^2) so that (d) gives a discrete primal-dual reduction at
+cell side l, extending (c) beyond delta <= s/32; lem:discrete-flow-bound already allows any coarse
+delta_0 >= 4 sqrt(log N/N) on the dual side, cite it. Endpoints: at alpha = infinity with m' bounded (l =
+c s), a union bound with P(U > 1) <= 2 N^(-L^2/(1024 m')) might work; the sup over x inside cells not
+checked.
+
+Process audit: strength in Goal progress "equivalent up to constants", Bearing "each of its steps", Not
+covered "apply unchanged", spec rationale "the converse holding"; the theorem and General statement omit
+"beta fixed"; Not covered's "bounded number of levels" not evaluated at the end of beta's range; the
+Smallest case chosen on the fixed-pair recursion, which the draft's own Plainest bound shows harmless,
+instead of the chain mechanism; orbiting: cor:coarse-mean-growing-shift is one more exclusion registered
+after the review named the construction (cheap, computed by hand, its next action "None"); Degenerate
+cases' l = 1 claim asserted without running A at m' = J; the converse used for a goal-progress decision
+without a proof; title a placeholder.
