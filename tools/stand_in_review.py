@@ -59,8 +59,10 @@ assistant wrote about its work over the last stretch of a long session: several 
 ended by a checkpoint. You stand in for the engineer whose {what} {these} {are}. List what he would object to: where a
 directive of the {what} was not followed, and anything else he would not let pass (an unmeasured claim, a
 mistake fixed with no prevention, an anomaly passed over, a question left to him that the assistant should
-have settled, work stopped that should have gone on, anything unclear). At most five, the strongest first;
-none if nothing.
+have settled, work stopped that should have gone on, anything unclear). You see only this text, not the record
+it cites: where a sentence's support lies in a cited file or entry, object to what the text leaves unclear about
+it, not to a status you cannot see (a bound the text calls checked numerically may be proved in the entry). At
+most five, the strongest first; none if nothing.
 Answer with JSON only: {{"objections": [{{"quote": "<words copied exactly from the text, one line of it>",
 "objection": "<one sentence, as he would say it>"}}]}}
 

@@ -1056,7 +1056,11 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   each stand-in review's right objections, in the entry's `<strong>Meta.</strong>` paragraph; the
   Stop hook, the commit check and the finisher enforce it (user, 13 October 2026: "I won't be there
   forever ... AIs will live on and they must learn to become better on their own"; ported from
-  another branch, 16 October 2026).
+  another branch, 16 October 2026). A reviewer's wrong objection is a mistake too, of the reviewer's
+  setup: its answer changes what let the reviewer make it (the brief,
+  `.claude/agents/medium-reviewer.md`, or the stand-in prompt in `tools/stand_in_review.py`), so
+  that the same misreading costs no second round (user, 17 October 2026: "Perhaps we need
+  prevention+meta for reviewer's mistakes to reduce friction, wasted tokens and time").
 - When the harness or its classifier refuses a tool call, its goal is not reached by another command
   or tool: say in the reply which call was refused and why, file the decision in `user_requests`
   with the default being followed (leave the file as it is), and continue other work (17 October
