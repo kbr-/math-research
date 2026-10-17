@@ -160,7 +160,7 @@ def instance(rng, s, t, M, kind):
     return mats
 
 
-def run_instance(points, s, k, mats, mono, check_reference):
+def run_instance(points, s, k, mats, mono, check_reference, explain=False):
     out = {'M': len(mats), 't': int(mats[0].shape[0])}
     # (1) parity description, and the control with the wrong constant
     agree = control_differs = True
@@ -218,12 +218,54 @@ def run_instance(points, s, k, mats, mono, check_reference):
     out['control_sets_meet_U'] = control_fail
     out['H_tested'] = not out['count_decides'] and killers == 0
     out['H_refuted'] = out['H_tested'] and out['kernel_dim'] > 0
+    if out['H_refuted'] and explain:
+        out['explained'] = explain_kernel(points, s, mats, mono, nz, zero)
     return out
+
+
+def kernel_vectors(sub):
+    """Kernel combinations of the columns of a 0/1 matrix, by tools/f2_span.py on (column << n) | (1 << j): the
+    pivots all lie in the evaluation bits, so a column whose evaluation part reduces to zero leaves its
+    combination in the low bits."""
+    n = sub.shape[1]
+    span, found = f2_span.Span(), []
+    for j in range(n):
+        x = (int(''.join('1' if v else '0' for v in sub[:, j]) or '0', 2) << n) | (1 << j)
+        r = span.reduce(x)
+        if r >> n:
+            span.add(r)
+        else:
+            found.append(r & ((1 << n) - 1))
+    return found
+
+
+def explain_kernel(points, s, mats, mono, nz, zero):
+    """For an instance refuting H: the matrices, and for one kernel element g its support, junta degree and, for
+    each product, the factors whose zero sets hold each support point (a single factor holding all of them would
+    be an affine killer's set; several are a union)."""
+    combos = kernel_vectors(mono[nz])
+    g = np.zeros(len(points), dtype=bool)
+    for j in range(mono.shape[1]):
+        if combos[0] >> j & 1:
+            g ^= mono[:, j]
+    assert not (g & nz).any() and g.any()
+    support = np.flatnonzero(g)
+    report = {'matrices': [C.tolist() for C in mats], 'kernel_dim': len(combos),
+              'support_size': int(len(support)), 'junta_degree': junta_degree(g, s),
+              'support_points': points[support].tolist(), 'cover': []}
+    for a, zs in enumerate(zero):
+        holders = [[j for j in range(len(zs)) if zs[j][p]] for p in support]
+        common = set(range(len(zs))).intersection(*map(set, holders))
+        report['cover'].append({'product': a, 'factors_holding_each_point': holders,
+                                'one_factor_holds_all': sorted(common)})
+    print(json.dumps(report), flush=True)
+    return report
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', required=True)
+    ap.add_argument('--explain', action='store_true', help='print the kernel element of each instance refuting H')
     ap.add_argument('--smallest', action='store_true', help='the plumbing run: s = 4, k = 2, M <= 2')
     args = ap.parse_args()
     t0 = time.time()
@@ -239,7 +281,8 @@ def main():
                 for seed in range(3):
                     for kind in (('dense', 'coordinate') if seed == 0 else ('dense',)):
                         mats = instance(rng, s, t, M, kind)
-                        out = run_instance(points, s, k, mats, mono, check_reference=(s <= 6 and seed == 0))
+                        out = run_instance(points, s, k, mats, mono, check_reference=(s <= 6 and seed == 0),
+                                           explain=args.explain)
                         out.update(s=s, k=k, kind=kind, seed=seed)
                         results.append(out)
                         lines.append(f"s={s} k={k} t={t} M={M} {kind:10s} seed={seed}: |U|={out['U']:5d} dimVk="
