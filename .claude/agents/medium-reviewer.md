@@ -100,12 +100,15 @@ already answer: search with `tools/search-claims.py` under the object's other na
 names, a dual formulation, the objects in the proofs of the claims the draft cites), since a search
 in the draft's own words misses a result filed under another name, and report what it missed; a rule
 added to AGENTS.md, when the brief includes framework changes, that speaks about one goal's
-mathematics instead of every notebook; a rule or check placed in a file whose own statement of its
-scope does not cover it (a shared rule in CLAUDE.md, a goal's rule in AGENTS.md, a tool's behaviour
-only in prose), read from that file's opening lines. Give each finding with its location, or write
-"no findings". End the audit with "Strength count: N", the number of sentences outside the proofs
-(title, status, bearing, decision, follow-up, commit message) whose claim is stronger than its
-source in the draft, so that the pattern is counted per entry.
+mathematics instead of every notebook; a gate, a refusal or a reviewer's demand answered in the
+cheapest form that passes it (another command for a refused one, a queued item for a needed check, a
+citation of the rule that failed, an exception list fitted to the cases at hand), asked of each
+answer: does it do the job its rule names; a rule or check placed in a file whose own statement of
+its scope does not cover it (a shared rule in CLAUDE.md, a goal's rule in AGENTS.md, a tool's
+behaviour only in prose), read from that file's opening lines. Give each finding with its location,
+or write "no findings". End the audit with "Strength count: N", the number of sentences outside the
+proofs (title, status, bearing, decision, follow-up, commit message) whose claim is stronger than
+its source in the draft, so that the pattern is counted per entry.
 
 Report a verdict (pass, pass with corrections, or fail) followed by short bullets: each concrete gap
 or error with the exact location and the change required, and each unused hypothesis. Then, under a
