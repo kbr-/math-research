@@ -418,6 +418,17 @@ class NotebookAppendTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'next step contains a dollar sign'):
             tool.append(NOTEBOOK, entry, '<p>Costs $5.</p>')
 
+    def test_a_status_line_crediting_a_review_before_the_gate_is_refused(self):
+        # 17 October 2026: "with a reviewed correction pass" stood beside a placeholder Verification gate.
+        early = ('<article id="a3">\n<p class="entry-meta">Working proof, with a reviewed correction pass.</p>\n'
+                 '<p><strong>Verification gate.</strong> [written after the second pass]</p>\n</article>')
+        with self.assertRaisesRegex(ValueError, 'credits a review'):
+            tool.refuse_early_review_credit(early)
+        for entry in (early.replace('[written after the second pass]', 'One reviewer, two passes.'),
+                      early.replace('with a reviewed correction pass', 'two-choice routing'),
+                      '<article id="a4">\n<p class="entry-meta">Reviewed unsuccessful estimate.</p>\n</article>'):
+            tool.refuse_early_review_credit(entry)
+
     def test_an_entry_is_refused_while_where_we_stand_is_as_committed_unless_a_reason_is_given(self):
         def notebook(stand):
             return f'<section id="where-we-stand"><p>{stand}</p></section>' + NOTEBOOK

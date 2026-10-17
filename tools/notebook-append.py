@@ -68,6 +68,22 @@ def goal_open(source):
     return '<li' in (section(source, 'open-statements') or '')
 
 
+PLACEHOLDER = re.compile(r'\[written after\b', re.I)
+REVIEW_CREDIT = re.compile(r'\breview(?:ed|er|s)?\b|\bpass(?:es)?\b', re.I)
+
+
+def refuse_early_review_credit(entry):
+    """A status line that credits a review while the entry still holds a '[written after ...]' placeholder was
+    written before the review it credits (17 October 2026: "with a reviewed correction pass" stood in a draft whose
+    Verification gate was still a placeholder). The record's 125 research status lines that mention a review were
+    written after it, and none of their entries holds a placeholder."""
+    meta = re.search(r'<p class="entry-meta">(.*?)</p>', entry, re.S)
+    if meta and REVIEW_CREDIT.search(meta.group(1)) and PLACEHOLDER.search(entry):
+        raise ValueError('the status line credits a review while the entry still holds a "[written after ...]" '
+                         'placeholder: write the status line after the review returns, from the reviewed body '
+                         '(AGENTS.md: title and status line written after the review)')
+
+
 def refuse_broken_text(what, text):
     if '$' in text:
         # The finisher refuses this too, but only after the entry is in the notebook.
@@ -430,6 +446,7 @@ def append(source, entry, next_html=None, committed=None, reason=None, tools=Non
     if not m or not entry.endswith('</article>'):
         raise ValueError('entry must be one <article id="..."> ... </article> element')
     refuse_broken_text('entry', entry)
+    refuse_early_review_credit(entry)
     if next_html is not None:
         refuse_broken_text('next step', next_html)
         refuse_next_structure(next_html)
