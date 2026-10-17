@@ -1,0 +1,63 @@
+Reviewer record: the free commutator coordinates entry, 17 October 2026.
+One fresh-context medium-reviewer; its reports follow verbatim.
+
+=== Report 1: the first draft ===
+
+**Verdict: pass with corrections.** The lemma's mathematics holds. The closure is missing one composition step, and the depth claim and some sizes are overstated.
+
+**Checked and correct**
+- The identity: \(x[x,y]x=x^2yx-xyx^2=b\,yx-xy\,b\). The \(\bar x\) form holds with signs over any commutative coefficient ring, since \(\bar x^2-\bar x=b\) and \([\bar x,y]=-c\). So \(D_1\) and \(D_0\) are zero-certificates.
+- The Boolean-point coordinates in (b), and (c)'s use of \(C(a,e_{uv})\) as the \(Y_{uv}\)-coordinate. This needs placeholder-linearity and the scalars being central, and both are stated.
+- Mirror refutation: `validate()` passes. The output gives inputs \(0,0,1\), so \(i^*=3\) and \(\varepsilon=1\). The first non-input line true at the point is line 16, so \(n_0=16\). Input 0 is cited at line 13 with multiplier \(f(x)=1\), so \(w_1=1\). Input 1 is cited only at line 18, after \(n_0\), so \(w_2=0\). The hand counts are right.
+- Nonvacuity: \(M=(1+x)y\) is 1 exactly at that point. \(C_\pi-A_t=+\gamma_{3,2}\) has coefficient 1 there, and adding \(M(D_1+D_0)\) through \(D_0\) cancels it, but only because the fixture is over \(\mathbb F_2\).
+
+**Required changes**
+- **Depth in (b) is false at small depth.** As written, \(M_0D_0\) with \(D_0\) a sum of products of \((1-x)\) has depth \(\max(\operatorname{depth}M,3)+2\). For a constant \(M\) that is 5, not 3. Fix: distribute, giving terms \(M_i\cdot\ell\cdot Y\cdot\ell\) with depth \(\max(\operatorname{depth}M,1)+2\le\operatorname{depth}M+3\), and say so in the proof. Alternatively state \(\max(\operatorname{depth}M_i,3)+2\).
+- **Ordered pairs.** The record's generator tuples use \(x_ix_j-x_jx_i\) for \(i<j\) only; the notebook says "Add \(x_i^2-x_i\) and \(x_ix_j-x_jx_i\), \(i<j\)". The lemma says "for variables \(u\ne v\)" with \(c_{uv}\) in the tuple. State it for each pair whose commutator is in the tuple. Either variable may play \(x\): \(x_v[x_v,x_u]x_v\) gives \(-x_vc_{uv}x_v\). Only one order is needed. In the Nonvacuity, name which order the fixture's generator has.
+- **Nonvacuity over a general field.** It works because \(+M\) equals \(-M\) over \(\mathbb F_2\); say so, since over other fields it needs \(-M\). It also exercises only (b): (c)'s subtraction of \(C(x,e_{uv})\) is never exercised, so either exercise it or say it is not.
+- **Title.** "by a zero-certificate the size of the pattern's formula" is wrong: \(D\) contains a copy of \(C\), so its size is \(O(S+\sigma)\). "Commutator coordinates" (plural) also overstates (c), which moves one \(Y_{uv}\). The joint version follows because by (b) each pair's \(D\) has zero coordinate at the other pairs. It costs \(O(pS+\sum\sigma)\) for \(p\) pairs. State it as a remark, or narrow the title.
+- **Bearing.** "size polynomial in the smallest certificate's size" is wrong. The bound is \(O(S_{\min}+\sigma)\), and \(\sigma\) depends on the refutation, not on \(S_{\min}\). Restate: a lower bound \(L\) for pattern-certificates gives \(S_{\min}\ge \Omega(L)-O(\sigma)\), with \(\sigma\) polynomial in the refutation size.
+- **Ledger, "For matched images".** The justification omits \(i^*(a)\), \(\varepsilon(a)\) and \(\gamma\)'s \(Y_{uv}\)-coefficient. Use the plain argument: the image's pattern is \(C_\pi(x,e_{uv})\), a formula of size \(|C_\pi|=O(s^{12})\) by the depth-audit compiler. With that, \(\sigma\le|C_\pi|\), and the counts' definition is not needed.
+- **Closure gap.** "Closed: restatement" defeats a property Q of the images' Boolean-point coefficients only if every small certificate can be turned into a small one having Q. If Q also involves the clause or \(Z\) coordinates, the lemma does not supply it: it keeps \(C\)'s own coordinates, not the input list's. "Fixed by the ordered input list" is a statement about images, not a construction. The missing step is in the record: lem:matched-jet-envelope. In characteristic two, \(A_t+P^{t+1}C\) is a certificate of size \(O(|A_t|+|C|+(t+1)(s+m))\) whose Boolean values are \(A_t\)'s. Then (c) shifts the commutator coordinates to the image's pattern. With that composition cited, and its characteristic-two and \(|A_t|=O((S+t+1)^{48})\) costs stated, the item does close. Add matched-jet-envelope to Sources read. lem:shallow-Boolean-commutator-certificates is listed there but unused.
+- **Record comparison.** lem:certificate-cube-erasure is described too thinly. It already makes every Boolean-point coefficient value, commutator coordinates included, equal to \(H\)'s ("all Boolean-point coefficient values ... can simultaneously be made independent of the supplied certificate"), at the cost of changing the clause coefficients. The lemma's real addition is keeping the clause polynomials fixed; say that.
+- **Unused or misplaced hypotheses.** Placeholder-linearity is used only in (c), as stated. "Over any field" is right for the lemma, but the closure step through the envelope needs characteristic two.
+
+**Record searches** (registry, run with `tools/search-claims.py`): "commutator coordinates Boolean point zero-certificate" and "Booleanity syzygy noncommutative zero certificate commutator placeholder coefficient shift". The nearest results are lem:boolean-image-values, cor:evaluation-cost-barrier, lem:koszul-bucket-collapse and cor:certificate-word-query-gap. None states the lemma or a special case of it. The closure step it needs is lem:matched-jet-envelope, which the draft does not cite.
+
+**Suggestions (unverified)**
+- **Open point.** No value-based property seems to survive.
+  - Algebras whose simple modules all have dimension one, the cube included, are erased by cor:evaluation-cost-barrier (b).
+  - Upper triangular points of dimension \(l\le t\) give \(A_t\) for every envelope member.
+  - At algebras with a simple module of dimension at least two, the "cheap" side of the argument fails, by (a).
+  - The axiom repetition syzygy makes any property tolerant of small zero-certificates constant.
+- **One candidate.** The only form left is intolerant and non-evaluative: the cost of the smallest zero-certificate relating two images of one input list, as a function of the two proofs. It is bounded above by the sum of their sizes, so it can separate only through a lower bound on that relative cost. I could not show it differs from the IPS lower bound, and found nothing stronger.
+
+**Process audit**
+- Title: overstated on cost (missing \(S\)) and on plurality (one pair per application); see above.
+- Bearing: wrong size relation.
+- Follow-up: the "restatement" closes the item without the composition step that delivers the clause and Boolean coordinates. The Not examined paragraph says "nothing else", but that step was never examined.
+- Mirror attempt: the obvious refutation with \(w_2=1\) was not tried, for example weakening \(\neg x\) by \(x\) before \(n_0\). The lemma makes the attempt moot, but "no pair with different counts was found" reflects one try.
+- Nonvacuity: called a witness of the lemma, but it never exercises (c)'s subtraction step.
+- Depth claim: stated without being derived.
+- Stand-in Review paragraph: the claim that a hook check was committed could not be checked against any output supplied.
+
+Strength count: 3 (title; Bearing; Follow-up closure sentence).
+
+Files read: /home/kbr/.claude/jobs/d56a25e2/tmp/entry_free_comm.html, /home/kbr/dev/math-auxiliary/research/results/free_commutator_coordinates_20261017/mirror_refutation.py and mirror-output.txt.
+
+=== Report 2: the corrected draft ===
+
+**Verdict on the corrections: pass with two small corrections.** The composition claim holds, the Bearing's inequality is right, and the closure stands in characteristic two.
+
+**Checked and correct**
+- **Composition.** \(A_t+P^{t+1}C\) has \(A_t\)'s values at Boolean points, since \(P(a)=0\). By lem:boolean-image-values, \(C_\pi-A_t\) at \(a\) is \(-\varepsilon\sum_k(w_k-1)\gamma_{i^*,k}\), and the \(\gamma\) carry only commutator placeholders. Both \(C_\pi\) and \(A_t\) are placeholder-linear, so \(N_{uv}(a)\) is exactly their \(Y_{uv}\)-difference. By (b), each added \((D_1+D_0)_{uv}\) contributes \(N_{uv}(a)\) at \(Y_{uv}\) and zero elsewhere. So "all of \(C_\pi\)'s Boolean-point coefficient values" holds. thm:shallow-noncommutative-sequent-simulation does give tree size \(O(S^{12})\) over \(\mathbb F_2\), and reordering the inputs first keeps the size.
+- **Bearing.** The total is \(O(|A_t|+|C|+(t+1)(s_U+m)+p(|C_\pi|+|A_t|))\). The \(p\,s^{12}\) and \(|A_t|\) terms are absorbed in \(p(s+t+1)^{48}\), so \(|C|\ge\Omega(L)-O(p(s+t+1)^{48}+(t+1)(s_U+m))\) is right. This needs a size-\(s\) refutation to exist, which the route assumes.
+- **Closure.** It now stands for properties of Boolean-point coefficient values, in characteristic two. The Not examined paragraph is adequate.
+- **Other corrections.** The depth after distributing, the pair hypothesis, the Nonvacuity and the Record comparison are right.
+
+**Required changes**
+- **"Several pairs" (new error).** "Applying (c) to \(p\) pairs in turn" does not give \(O(pS+\sum\sigma)\). Each step copies the current certificate through \(C_k(x,e_{uv})\), so the size roughly doubles per pair and is exponential in \(p\). The correct form uses the original \(C\) for every pair: \(C+\sum_{uv}(M_{uv}-C(x,e_{uv}))(D_1+D_0)_{uv}\). This is valid because by (b) the other pairs' \(D\) do not change \(Y_{uv}\)'s coordinate at Boolean points. The same wording ("several pairs at O(pS+sum sigma)") appears in New mathematics, the commit message and the spec; reword it there too.
+- **Spec versus entry.** The spec says "For a pair u<v whose commutator is in the tuple". The entry says either variable may play \(x\). Make them agree; the entry's form is the general one.
+- **Status line.** "the item closes as a restatement" drops the qualifier "in characteristic two", which the Follow-up and the spec's rationale carry. Add it.
+
+**Process audit.** The new title matches the body: one commutator, cost linear in the certificate and the formula, clause coefficients and Boolean-generator coordinates kept. The overstatements left are the "in turn" cost in Several pairs and its copies in New mathematics, the commit message and the spec, plus the status line missing "in characteristic two". Strength count: 2.

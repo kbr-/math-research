@@ -306,7 +306,11 @@ AGENTS.md"):
   redrafted from its sources before it goes back (17 October 2026: three versions in a row of one
   case's dismissal, each patched from the last, each wrong).
 - When a tool refuses, collides or reports something unexpected, find its cause before trying
-  another route, and state the cause; an opening claim is stated only in the scope already proved.
+  another route, and state the cause; an opening claim is stated only in the scope already proved. A
+  retry that passes because the check remembers the text, a rerun until a timing passes, or a rule
+  left written after it let the same thing through is another route: the refusal is a finding about
+  the tool or the work, fixed or queued with its cause (17 October 2026: all three in one framework
+  turn).
 - A property of a family (nested, disjoint, packed, few per point) enters a proof only after it is
   checked on the family's extreme members: boundaries that coincide, many members through one point.
 - A sentence that gives a decision its reason (dropping, choosing, calling a case decided) names its
@@ -330,7 +334,11 @@ AGENTS.md"):
   setting the earlier statement's own words beside the new one, and choose the weakest relation both
   support: a statement true of its own method is not made false by a better method; a one-sided
   bound is summarized as a bound or a sufficient condition, never with "is", "equals" or "reduces
-  to".
+  to". A question is called a restatement of a wider one only beside the construction that carries
+  every member of the wider class to the property asked about, with its cost: what a narrower class
+  has is not yet what every member can be given (17 October 2026: an item was closed from what
+  matched images share with an initial segment, before the envelope certificate that gives it to
+  every certificate was cited).
 - Write every summary (title, New mathematics, Bearing, commit message, report) last, from the final
   statement with its hypotheses and qualifiers; relay what a reviewer, agent or tool found from its
   source, with its qualifiers word for word, and explain a failing check only by quoting the lines

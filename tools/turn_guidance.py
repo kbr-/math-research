@@ -267,7 +267,9 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
              # beneath it held the answer and the question's own object showed the conclusion empty.
              'Before posing, answering or summing up a question, read one level down (the statements the newest '
              'result cites) and one level up (the object the question is about, the goal\'s own instance): apply '
-             'the plainest bound there before the method\'s intermediates.',
+             'the plainest bound there before the method\'s intermediates. A conclusion of the same form as the '
+             'previous entry\'s (constant, a restatement, nothing beyond) is derived again for the new object, '
+             'with its construction, never carried over by its shape.',
              'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
              'fields study the objects of the open statement this cycle advances, and what their strongest '
              'theorems say about them (Outside leads), and also which fields never stood near these objects, since '
