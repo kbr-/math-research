@@ -173,14 +173,63 @@ def pass2(job):
     return out
 
 
-def boot_ratio(cnt, f, k, t, rng, B=400):
-    """Ratio of flow f's count to the dyadic flow's at coordinate k and threshold t, and its bootstrap spread."""
-    a = cnt[:, f, k, t].astype(float)
-    b = cnt[:, 0, k, t].astype(float)
-    ratio = a.sum() / max(b.sum(), 1.0)
+def boot_ratio(cnt, f, rng, B=400):
+    """Ratio of flow f's counts to the dyadic flow's, for every coordinate and threshold, with its bootstrap spread
+    over seeds: a list [coord][t] of [ratio, spread]."""
+    a = cnt[:, f].astype(float)                                       # [seed, coord, t]
+    b = cnt[:, 0].astype(float)
+    ratio = a.sum(axis=0) / np.maximum(b.sum(axis=0), 1.0)
     idx = rng.integers(0, len(a), size=(B, len(a)))
-    rb = a[idx].sum(axis=1) / np.maximum(b[idx].sum(axis=1), 1.0)
-    return float(ratio), float(rb.std())
+    rb = a[idx].sum(axis=1) / np.maximum(b[idx].sum(axis=1), 1.0)     # [B, coord, t]
+    return np.stack([ratio, rb.std(axis=0)], axis=-1).tolist()
+
+
+def summarize_level(J, N, nseeds, per, sd, rng):
+    """One level's fractions, ratios with bootstrap spreads, variance ratios and fourth moments."""
+    order = sorted(per)
+    self_c = np.stack([per[s]['self'] for s in order])               # [seed, flow, coord, t]
+    ana_c = np.stack([per[s]['ana'] for s in order])
+    m4 = np.mean(np.stack([per[s]['m4'] for s in order]), axis=0)
+    npos = nseeds * (1 << (J + 1)) ** 2
+    var = (sd ** 2).mean(axis=(-2, -1))                              # [flow, coord]
+    e = {'J': J, 'N': N, 'positions': npos,
+         'dyadic_self_fraction': (self_c[:, 0].sum(axis=0) / npos).tolist(),
+         'dyadic_ana_fraction': (ana_c[:, 0].sum(axis=0) / npos).tolist(),
+         'variance_ratio': (var[1:] / var[0]).tolist(), 'fourth_moment': m4.tolist(), 'shifts': {}}
+    for f, (r0, g) in enumerate(CONFIGS, start=1):
+        e['shifts'][f'{r0},{g}'] = {'self_ratio': boot_ratio(self_c, f, rng), 'ana_ratio': boot_ratio(ana_c, f, rng)}
+    e['planted_ana_ratio'] = boot_ratio(ana_c, len(CONFIGS) + 1, rng)
+    return e
+
+
+def run_level(pool, J, N, nseeds):
+    """The two passes at one level: per-position spreads, then each seed's counts."""
+    seeds = list(range(1, nseeds + 1))
+    chunks = [seeds[c::14] for c in range(14)]
+    r1 = list(pool.map(pass1, [(J, N, c) for c in chunks]))
+    S = sum(r[0] for r in r1)
+    Q = sum(r[1] for r in r1)
+    mean = S / nseeds
+    sd = np.sqrt(np.maximum(Q / nseeds - mean ** 2, 1e-300))
+    per = {}
+    for r in pool.map(pass2, [(J, N, c, mean, sd) for c in chunks]):
+        per.update(r)
+    return per, sd
+
+
+def judge(res):
+    """The Prediction's verdict per configuration and normalization, and the planted positive control."""
+    pred = []
+    for f, (r0, g) in enumerate(CONFIGS):
+        for norm in ('self_ratio', 'ana_ratio'):
+            vals = [e['shifts'][f'{r0},{g}'][norm][0][-1] for e in res]    # coordinate 1, largest threshold
+            floor_ok = min(v[0] for v in vals) >= 0.7
+            trend_ok = vals[-1][0] >= vals[0][0] - 2 * max(vals[0][1], vals[-1][1])
+            pred.append({'r0': r0, 'gain': g, 'norm': norm, 'coord1_last': vals,
+                         'floor_ok': floor_ok, 'trend_ok': trend_ok})
+    planted = np.array([np.array(e['planted_ana_ratio'])[:, :, 0] for e in res])     # [level, coord, t]
+    return {'prediction': all(p['floor_ok'] and p['trend_ok'] for p in pred), 'details': pred,
+            'positive_control_planted': bool((planted[:, :, -1] < planted[:, :, 0]).all())}
 
 
 def controls(out):
@@ -222,49 +271,13 @@ def main():
     with ProcessPoolExecutor(max_workers=14) as pool:
         for J in a.levels:
             N = a.per_cell * 4 ** J
-            seeds = list(range(1, a.seeds + 1))
-            chunks = [seeds[c::14] for c in range(14)]
-            r1 = list(pool.map(pass1, [(J, N, c) for c in chunks]))
-            S = sum(r[0] for r in r1)
-            Q = sum(r[1] for r in r1)
-            mean = S / a.seeds
-            sd = np.sqrt(np.maximum(Q / a.seeds - mean ** 2, 1e-300))
-            per = {}
-            for r in pool.map(pass2, [(J, N, c, mean, sd) for c in chunks]):
-                per.update(r)
-            order = sorted(per)
-            self_c = np.stack([per[s]['self'] for s in order])        # [seed, flow, coord, t]
-            ana_c = np.stack([per[s]['ana'] for s in order])
-            m4 = np.mean([per[s]['m4'] for s in order], axis=0)
-            npos = a.seeds * (1 << (J + 1)) ** 2
-            e = {'J': J, 'N': N, 'positions': npos,
-                 'dyadic_self_fraction': (self_c[:, 0].sum(axis=0) / npos).tolist(),
-                 'dyadic_ana_fraction': (ana_c[:, 0].sum(axis=0) / npos).tolist(),
-                 'variance_ratio': [[float((sd[f, k] ** 2).mean() / (sd[0, k] ** 2).mean()) for k in range(2)]
-                                    for f in range(1, 1 + len(CONFIGS))],
-                 'fourth_moment': m4.tolist(), 'shifts': {}}
-            for f, (r0, g) in enumerate(CONFIGS, start=1):
-                e['shifts'][f'{r0},{g}'] = {
-                    'self_ratio': [[boot_ratio(self_c, f, k, t, rng) for t in range(len(T_SELF))] for k in range(2)],
-                    'ana_ratio': [[boot_ratio(ana_c, f, k, t, rng) for t in range(len(T_ANA))] for k in range(2)]}
-            pl = len(CONFIGS) + 1
-            e['planted_ana_ratio'] = [[boot_ratio(ana_c, pl, k, t, rng)[0] for t in range(len(T_ANA))]
-                                      for k in range(2)]
+            per, sd = run_level(pool, J, N, a.seeds)
+            e = summarize_level(J, N, a.seeds, per, sd, rng)
             out['results'].append(e)
             print(json.dumps(e), flush=True)
             Path(a.out).write_text(json.dumps(out, indent=1))
-    res = out['results']
-    pred = []
-    for r0, g in CONFIGS:
-        for norm, last in (('self_ratio', len(T_SELF) - 1), ('ana_ratio', len(T_ANA) - 1)):
-            vals = [e['shifts'][f'{r0},{g}'][norm][0][last] for e in res]
-            floor_ok = all(v[0] >= 0.7 for v in vals)
-            trend_ok = vals[-1][0] >= vals[0][0] - 2 * max(vals[0][1], vals[-1][1])
-            pred.append({'r0': r0, 'gain': g, 'norm': norm, 'coord1_last': vals, 'floor_ok': floor_ok, 'trend_ok': trend_ok})
-    verdict = {'prediction': all(p['floor_ok'] and p['trend_ok'] for p in pred), 'details': pred,
-               'positive_control_planted': all(e['planted_ana_ratio'][k][-1] < e['planted_ana_ratio'][k][0]
-                                               for e in res for k in range(2)),
-               'controls': out['controls']['ok']}
+    verdict = judge(out['results'])
+    verdict['controls'] = out['controls']['ok']
     out['verdict'] = verdict
     print(json.dumps(verdict), flush=True)
     Path(a.out).write_text(json.dumps(out, indent=1))
