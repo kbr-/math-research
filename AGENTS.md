@@ -371,6 +371,11 @@ AGENTS.md"):
   is written with the record's own sentence quoted beside it, never restated from the gist kept
   while reading: a paraphrase keeps the condition and loses which way it runs (17 October 2026: a
   review's "necessary for such a numbering, not sufficient" was restated as covering every case).
+- A choice made to save cost or fitted to the case at hand (a sample size, a check's scope, a
+  summary word) is written beside what it changes in the quantity measured or the class covered,
+  before it is used (17 October 2026: a seed count cut for time moved an estimator's bias, a
+  launcher check covered only the command that prompted it, and "Gaussian by the theorem" stood for
+  a lower bound).
 - Write every summary (title, New mathematics, Bearing, commit message, report) last, from the final
   statement with its hypotheses and qualifiers; relay what a reviewer, agent or tool found from its
   source, with its qualifiers word for word, and explain a failing check only by quoting the lines

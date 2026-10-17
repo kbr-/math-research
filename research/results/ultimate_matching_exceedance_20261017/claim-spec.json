@@ -1,0 +1,40 @@
+{
+  "source": {
+    "record": "[Simultaneous rule exceedances](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-simultaneous-rule-exceedances)",
+    "label": "Simultaneous rule exceedances",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-17-simultaneous-rule-exceedances"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "ex:simultaneous-rule-exceedances",
+      "summary": "Simulation, N = 16*4^J uniform points, J = 6, 7, 512 independent seeds, each position standardized by its own standard deviation across the seeds: the dyadic flow's per-point exceedance fractions match the Gaussian ones (0.0276-0.0281 at 2.2 standard deviations against 0.0278, 0.00090-0.00111 at 3.3 against 0.00097), while the simultaneous rule's are about 0.71 of the dyadic flow's at 2.2 and 0.245 (J = 6) and 0.309 (J = 7) in coordinate 1, 0.364 and 0.330 in coordinate 2, at 3.3; coordinate 1's ratio rose beyond the spread of one split of the seeds into halves (0.031), coordinate 2's fell within it (0.062), so the change is undecided. The standard deviation includes the value standardized, lowering a Gaussian fraction at 3.3 by 3.4% at 512 seeds, nearly equally for both flows; per-position means were not checked, which could only understate the rule's lightness. An eight-seed design pooling the positions of a few seeds failed its Gaussian control for the dyadic flow and measures no per-point tail.",
+      "assessment": "Finite check, two runs with expectations committed before each; in the second, controls: the dyadic flow's fractions Gaussian, its empirical per-position variance 0.988-0.995 of the analytic one, and a planted lighter law seen (ratio 0.036-0.063, fixed analytically near 0.04, so a code check only). Two sizes give a difference, not a trend, and each spread is a single split; 3.3 standard deviations is below the sqrt(log N) scale of thm:dyadic-flow-obstruction.",
+      "status": "finite_check",
+      "category": "route_specific",
+      "rationale": "The simultaneous rule's per-point tail is lighter than Gaussian at 3.3 standard deviations by a factor of 3 to 4 at J = 6, 7; whether that lightness persists, grows or returns toward the dyadic flow's with J is undecided.",
+      "next_action": "J = 5, 6, 7 at 512 seeds each, with per-position means and sigma, the log-ratio of exceedances at t = 2.6, 3.0, 3.3, 3.6 in both coordinates, and the spread over many random splits.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "ex:simultaneous-rule-exceedances",
+      "cites",
+      "ex:simultaneous-rule-tails",
+      "Measures the same rule's per-point tails directly, which that run's pooled kurtosis only suggested."
+    ],
+    [
+      "ex:simultaneous-rule-exceedances",
+      "cites",
+      "thm:dyadic-flow-obstruction",
+      "Its dyadic flow, Gaussian at these thresholds by the run's Control 1, is the reference; the rule's lighter tail is measured below the theorem's sqrt(log N) scale."
+    ]
+  ]
+}

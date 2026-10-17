@@ -1,0 +1,45 @@
+Review record, simultaneous rule exceedances entry (17 October 2026), one fresh-context medium
+reviewer.
+
+First pass. Verdict: pass with corrections; scripts correct, every figure quoted from
+many_seeds_results.json checked. Required: the self-inclusion bias of standardizing by np.std over
+512 seeds with the value included (its estimate: P(|t_511|>3.33), about 0.00092, roughly -5%; within
+Control 1's band, nearly equal for both flows, so the ratios stand); the uncentred numerator (rule's
+per-position means unchecked; a nonzero mean would understate lightness); the planted control's
+outcome fixed analytically near 0.04, a bug check that could hardly fail; the half-sample spread a
+single draw, so the coordinate-1 rise is suggestive; 'Gaussian by thm:dyadic-flow-obstruction'
+stronger than the theorem's psi-integral lower bound, cite Control 1; Bearing to say the run is
+silent at sqrt(log N); 'factor near 3' to '3 to 4'; next attempt: the spread is set by coarse
+counts, 160 seeds give about 1.8 times the seed-level spread and move the self-inclusion threshold
+to about 3.41, so rerun at fixed seeds or with a leave-one-out sd; reconcile the Prediction with
+Nontrivial because (0.31-0.34 undefined); state coordinate 2 too; a 1/sqrt J drift changes by only
+0.055 from J = 6 to 8; first run's cause 'consistent with', not 'the cause'; compute.sh check reads
+only named scripts, misses -m, -c and imported pools, refuses products within 14, untested false
+refusal, and the commit message overstates it; drop the spec rationale's 'balls-into-bins'. Open
+point (unverified): fixed estimator at J = 5, 6, 7 and the log-ratio curve against t at 2.6, 3.0,
+3.3, 3.6; a scale argument (normalized cumulants decaying like 1/J if each level's correction is a
+fixed fraction). Record search: ex:simultaneous-rule-tails, ex:greedy-circulation-tails (cited),
+lem:local-factor-discrepancy, lem:band-family-discrepancy, thm:cube-residual-generator-bound
+(unrelated); nothing uncited bears. Process audit: 'not growing' and 'no sign of growth' without
+qualifiers; planted control presented as a resolution check; seed count chosen by cost; 'Gaussian by
+the theorem'; the compute.sh check fitted to one case. Title proposal: 'Rule's tails lighter at 3.3
+sigma'. Strength count 5.
+
+Second pass. Verdict: pass with corrections. Accepted the -3.4% (512) and -10.8% (160) bias over its
+-5%, asking 'exact' to be qualified for the uncentred numerator (O(1/S)). Required: the 1/sqrt J
+drift is 1 - sqrt(5/7) = 0.155, not a tenth, about 0.15 on a slope near -1, below twice the
+difference's s.e. (its estimate: 0.096 at J = 5, about 0.05 at J = 7, twice the difference about
+0.21), so unresolvable, while a 1/J drift (0.286) can just refute; name the spread as that of the J
+= 5 vs 7 difference; cite the record's two-threshold slopes (coordinate 1 -0.98, -0.76; coordinate 2
+-0.61, -0.66) and fix the reading of a split outcome beforehand; Plainest bound's 'Gaussian at these
+thresholds by Control 1' only at 2.2 and 3.3, J = 6, 7; compute.sh --pool-workers is self-declared,
+evaded by --pool-workers 1 --threads 14 on a 14-worker script: read a literal worker count; add
+tests of the admission. New AGENTS.md rule general; COMPUTATION_RULES.md placement right. Strength
+count 1.
+
+Third pass. Verdict: pass with one correction. Coordinate 2 slope at J = 7 is -0.694 (ratios 0.7082
+at 2.2, 0.32988 at 3.3), its -0.66 wrong; the other slopes and 15.5%, 28.6% right; 'slope near -1'
+loose (J = 7 gives 0.12), optional. pool_admission_error closes the named way around; tests read,
+not run. Required: the keyword form Pool(processes=8) is not read by LITERAL_WORKERS. Noted: a
+thread pool's max_workers also counts (conservative); a computed count is unchecked, as documented.
+Strength count 0.

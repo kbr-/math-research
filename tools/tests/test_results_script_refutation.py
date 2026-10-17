@@ -66,6 +66,40 @@ class ForcedByCountsTest(unittest.TestCase):
             self.assertEqual(CS.scripts_without_forced_counts(['python3', str(counted), str(plain)]), [])
 
 
+class ProcessPoolThreadsTest(unittest.TestCase):
+    def test_scripts_that_start_worker_processes_are_found(self):
+        # 17 October 2026: 14 workers at --threads 14 timed out at more than three times their estimate.
+        with tempfile.TemporaryDirectory() as folder:
+            pooled = script(folder, 'from concurrent.futures import ProcessPoolExecutor\n'
+                                    'with ProcessPoolExecutor(max_workers=14) as pool:\n    pass\n', 'p.py')
+            mp = script(folder, 'import multiprocessing\nmultiprocessing.Pool(4)\n', 'm.py')
+            plain = script(folder, 'import numpy\nprint(numpy.ones(3).sum())\n', 'n.py')
+            named = script(folder, '"""Mentions ProcessPoolExecutor only in prose."""\nprint(1)\n', 'q.py')
+            self.assertEqual(CS.scripts_with_process_pool(['python3', str(pooled)]), [str(pooled)])
+            self.assertEqual(CS.scripts_with_process_pool(['python3', str(mp)]), [str(mp)])
+            bare = script(folder, 'from multiprocessing import Pool\nPool(4).map(abs, [1])\n', 'b.py')
+            self.assertEqual(CS.scripts_with_process_pool(['python3', str(bare)]), [str(bare)])
+            other = script(folder, '"""Unlike multiprocessing, this uses a thread pool."""\n'
+                                   'from mylib import Pool\nPool(4)\n', 'o.py')
+            self.assertEqual(CS.scripts_with_process_pool(['python3', str(plain), str(named), str(other)]), [])
+
+    def test_the_admission_of_threads_and_declared_workers(self):
+        with tempfile.TemporaryDirectory() as folder:
+            pooled = script(folder, 'from concurrent.futures import ProcessPoolExecutor\n'
+                                    'with ProcessPoolExecutor(max_workers=7) as pool:\n    pass\n', 'p.py')
+            plain = script(folder, 'print(1)\n', 'n.py')
+            cmd = ['python3', str(pooled)]
+            self.assertIsNone(CS.pool_admission_error(cmd, 1, 0))           # one thread per worker
+            self.assertIsNone(CS.pool_admission_error(cmd, 2, 7))           # 7 x 2 = 14
+            self.assertIsNotNone(CS.pool_admission_error(cmd, 3, 7))        # 21 > 14
+            self.assertIsNotNone(CS.pool_admission_error(cmd, 4, 0))        # no declaration
+            # The reviewer's way around: declaring fewer workers than the script writes.
+            self.assertIn('7 workers', CS.pool_admission_error(cmd, 14, 1))
+            self.assertIsNone(CS.pool_admission_error(['python3', str(plain)], 14, 0))
+            keyword = script(folder, 'import multiprocessing\nmultiprocessing.Pool(processes=8)\n', 'k.py')
+            self.assertIn('8 workers', CS.pool_admission_error(['python3', str(keyword)], 14, 1))
+
+
 class BaselineTest(unittest.TestCase):
     def test_a_tested_statement_needs_a_baseline_line(self):
         # 16 October 2026: a strip computation's expectation followed from the bare point count.

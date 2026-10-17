@@ -759,6 +759,62 @@ def scripts_without_forced_counts(command):
 BASELINE = re.compile(_LINE_START + r'Baseline:' + _FIVE_WORDS, re.M)
 
 
+PROCESS_POOL = re.compile(r'\b(?:ProcessPoolExecutor|multiprocessing\.Pool|mp\.Pool)\s*\(')
+
+
+def scripts_with_process_pool(command):
+    """Python script arguments that start worker processes (a ProcessPoolExecutor or a multiprocessing pool).  Run
+    with --threads above 1, each worker gets that many library threads, and the workers times the threads exceed
+    the 14 CPUs: on 17 October 2026 a run with 14 workers at --threads 14 timed out at more than three times its
+    estimate, and two earlier runs paired 8 workers with --threads 8 (COMPUTATION_RULES.md: worker count times
+    threads per worker within 14).  It reads the text of the script files named on the command line only: a pool
+    started by `python -m`, `python -c` or inside an imported module is not seen."""
+    found = []
+    for arg in command[1:]:
+        path = Path(arg)
+        if path.suffix != '.py' or not path.is_file():
+            continue
+        try:
+            text = path.read_text(errors='replace')
+        except OSError:
+            continue
+        # `from multiprocessing import Pool` then `Pool(4)` is the plainest way around the qualified names.
+        # A bare `Pool(` counts only after `Pool` is imported from multiprocessing, so that a script naming the
+        # module in prose and calling another library's Pool is not refused (the reviewer's false refusal).
+        if PROCESS_POOL.search(text) or (re.search(r'from\s+multiprocessing(?:\.\w+)?\s+import[^\n]*\bPool\b', text)
+                                         and re.search(r'\bPool\s*\(', text)):
+            found.append(arg)
+    return found
+
+
+LITERAL_WORKERS = re.compile(r'\b(?:max_workers|processes)\s*=\s*(\d+)|\b(?:Pool|ProcessPoolExecutor)\(\s*(\d+)')
+
+
+def pool_admission_error(command, threads, pool_workers):
+    """The refusal for a pooled script run at `threads` library threads, or None.  Admitted: --threads 1, or a
+    declared --pool-workers N > 0 with N times --threads within the CPUs and N not below the largest literal
+    worker count the script writes (max_workers=14, Pool(8)), so that declaring 1 for a script that starts 14 is
+    refused (the reviewer's way around a self-declared count), also in the keyword form Pool(processes=8).  A
+    worker count the script computes is not read: there the declaration is unchecked.  Every literal in the file
+    counts, a thread pool's max_workers included, which can only ask for a larger declaration."""
+    if threads <= 1:
+        return None
+    pooled = scripts_with_process_pool(command)
+    if not pooled:
+        return None
+    literal = 0
+    for arg in pooled:
+        for a, b in LITERAL_WORKERS.findall(Path(arg).read_text(errors='replace')):
+            literal = max(literal, int(a or b))
+    if pool_workers > 0 and pool_workers * threads <= len(MAX_CPUS) and pool_workers >= literal:
+        return None
+    shown = f' (it writes {literal} workers)' if literal else ''
+    return ('the script ' + ', '.join(pooled) + f' starts worker processes{shown}, and --threads {threads} gives '
+            'each worker that many library threads; run it with --threads 1, or give --pool-workers N, at least '
+            f'the literal worker count, with N times --threads at most {len(MAX_CPUS)} (COMPUTATION_RULES.md: '
+            'worker count times threads per worker within the CPUs)')
+
+
 def scripts_without_baseline(command):
     """Script arguments under research/results that test a statement (a "Refuted by:" line, no "No statement
     tested:") but carry no "Baseline:" line of at least five words: what the plainest available bound (a bare
@@ -1027,6 +1083,10 @@ def run_options(parser):
     parser.add_argument('--serial-reason', default='',
                         help='Why a run expected to exceed the long-run limit uses fewer than '
                              f'{PARALLEL_THREADS} threads')
+    parser.add_argument('--pool-workers', type=int, default=0,
+                        help='For a script that starts worker processes: their number, so that it times --threads '
+                             'stays within the CPUs; checked against a literal worker count in the script, '
+                             'otherwise an unchecked declaration')
     parser.add_argument('--kernel-reason', default='',
                         help=f'For a Python command with --timeout above {KERNEL_RUN_S} s: the compiled kernel (C/C++) '
                              'doing the heavy work and why nothing is recomputed')
@@ -1229,6 +1289,9 @@ def main():
                              'and a serial run wastes the CPU budget; write both lines (at least five words each), '
                              'commit and run, or shorten the run (COMPUTATION_RULES.md)')
     exe = Path(command[0]).name if command else ''
+    refusal = pool_admission_error(command, args.threads, args.pool_workers) if exe.startswith('python') else None
+    if refusal:
+        parser.error(refusal)
     if (exe.startswith('python') and args.timeout > KERNEL_RUN_S and args.category == 'computation'
             and len(args.kernel_reason.split()) < 6):
         parser.error(f'a Python computation allowed more than {KERNEL_RUN_S} s needs --kernel-reason "..." of at '

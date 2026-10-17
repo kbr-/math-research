@@ -137,12 +137,15 @@ in another; wait on a job's own completion notice.
   for compiled and Python computations of any duration. Parameter series and validation cases belong
   in one series invocation.
 - Budget process counts and library threads together. Across concurrent work, keep worker count
-  times threads per worker within 14; avoid nested thread pools and oversubscription. In computer
-  algebra scripts, prefix custom names to avoid built-in collisions (for example Singular's `test`,
-  or PARI/GP's `eta` and `psi`). Require error-free output and the expected completion counts: a
-  parser error may still return exit zero or reach a later success print. In PARI/GP, put stack-size
-  defaults on separate input lines from thread and seed settings: a stack resize skips the rest of
-  its line. Check effective thread settings before the calculation.
+  times threads per worker within 14 (`compute.sh` refuses a named script that starts a process pool
+  at `--threads` above 1 unless `--pool-workers N` keeps the product within 14, N not below a
+  literal worker count the script writes; it reads only the named files); avoid nested thread pools
+  and oversubscription. In computer algebra scripts, prefix custom names to avoid built-in
+  collisions (for example Singular's `test`, or PARI/GP's `eta` and `psi`). Require error-free
+  output and the expected completion counts: a parser error may still return exit zero or reach a
+  later success print. In PARI/GP, put stack-size defaults on separate input lines from thread and
+  seed settings: a stack resize skips the rest of its line. Check effective thread settings before
+  the calculation.
 - For 14 worker processes, use one numerical-library thread per worker:
 
 ```bash
@@ -344,6 +347,13 @@ unfinished.
   by a factor of 328, and only an end-to-end check made independently showed which was wrong). A
   control prints each tolerance beside the size of the quantity it bounds, and a row counts as a
   check only where the tolerance is the smaller.
+- A spread between seeds taken from one split of them into halves is one draw of that spread: state
+  it as such, and decide a difference by the spread over many random splits or a bootstrap. A sample
+  size (seeds, points, repetitions) changed between the sizes of a series to save time is first
+  checked for what it does to the estimator (its bias, the threshold it reads at), since a change of
+  estimator mimics a change in \(J\) (17 October 2026: a difference resting on one split was called
+  "not growing", and a next attempt cut 512 seeds to 160, which moves a self-standardized tail
+  fraction at 3.3 standard deviations from -3.4% to -10.8% of the Gaussian value).
 - Report the scope of finite checks without treating them as universal proofs. Distinguish new runs
   from archived results; rerun only when the task requires it. A kernel's chosen prime is a
   computational choice, not a theorem's characteristic hypothesis. A certificate lifted to integral

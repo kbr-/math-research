@@ -237,6 +237,23 @@ def unbypassed_checks(added, caller_lines, message):
     return [] if not wired or BYPASS.search(message) else wired
 
 
+REFUSAL_DEF = re.compile(r'^\s*def\s+(\w*(?:error|refus|without|unbypassed|unsourced|unlabelled|offenders'
+                         r'|_with_)\w*)\s*\(')
+
+
+def new_refusal_functions(caller_lines, removed_lines, message):
+    """Refusal functions a commit defines inside a gate (compute.sh, the finisher, the append tool, a hook: the
+    CALLERS and tools/hooks/*.py), by a name of the kinds the gates use (..._error, ...refus..., scripts_without_...,
+    scripts_with_..., ..._offenders), when the message has no "Bypass tried:" line.  unbypassed_checks sees only a
+    new module wired in; on 17 October 2026 a process-pool refusal written as two functions of compute.sh went to
+    review untried against its ways around, and its reviewer found two (python -m and a self-declared worker count),
+    then a third in the fix (Pool(processes=8)).  A function whose name the commit also removes (an edit, a move)
+    is not new.  Not seen: a refusal written inline, or a function named otherwise."""
+    removed = {m.group(1) for line in removed_lines for m in [REFUSAL_DEF.match(line)] if m}
+    found = sorted({m.group(1) for line in caller_lines for m in [REFUSAL_DEF.match(line)] if m} - removed)
+    return [] if not found or BYPASS.search(message) else found
+
+
 def check_staged(message_path):
     message = Path(message_path).read_text(encoding='utf-8', errors='replace')
     paths = git('diff', '--cached', '--name-only').split()
@@ -257,6 +274,15 @@ def check_staged(message_path):
         print(f'commit-msg: the commit wires the new check {module} into a finisher, append tool or hook; add a '
               'line "Bypass tried: ..." naming the cheapest way around it that was tried before the commit and what '
               'it did (AGENTS.md: a check that refuses an action is tried against the cheapest way around it).',
+              file=sys.stderr)
+        status = 1
+    removed_lines = [line[1:] for p in callers for line in git('diff', '--cached', '-U0', '--', p).splitlines()
+                     if line.startswith('-') and not line.startswith('---')]
+    found = new_refusal_functions([line for _, line in caller_lines], removed_lines, message)
+    if found:
+        print('commit-msg: the commit defines the refusal ' + ', '.join(found) + ' in a gate; add a line "Bypass '
+              'tried: ..." naming the cheapest ways around it that were tried before the commit and what each did '
+              '(AGENTS.md: a check that refuses an action is tried against the cheapest way around it).',
               file=sys.stderr)
         status = 1
     for line in unlabelled_scripts(staged_changed, top):
@@ -362,10 +388,31 @@ def replay_bypass(count):
     print(f'{len(revs)} commits read: {refused} would be refused for a new check wired in without "Bypass tried:".')
 
 
+def replay_refusal_defs(count):
+    """The last `count` commits that new_refusal_functions would refuse, against each commit's own diff."""
+    revs = git('log', f'-{count}', '--format=%H').split()
+    refused = 0
+    for rev in revs:
+        changed = git('diff-tree', '--no-commit-id', '-r', '--name-only', rev).split()
+        callers = [p for p in changed if p in CALLERS or (p.startswith('tools/hooks/') and p.endswith('.py'))]
+        if not callers:
+            continue
+        diff = [line for p in callers for line in git('show', '-U0', '--format=', rev, '--', p).splitlines()]
+        added = [line[1:] for line in diff if line.startswith('+') and not line.startswith('+++')]
+        removed = [line[1:] for line in diff if line.startswith('-') and not line.startswith('---')]
+        found = new_refusal_functions(added, removed, git('log', '-1', '--format=%B', rev))
+        if found:
+            refused += 1
+            print(f'{rev[:9]}\t{git("log", "-1", "--format=%s", rev).strip()[:80]}\t' + ', '.join(found))
+    print(f'{len(revs)} commits read: {refused} would be refused for a new refusal function without "Bypass tried:".')
+
+
 if __name__ == '__main__':
     if sys.argv[1:2] == ['--replay']:
         if '--bypass' in sys.argv[3:]:
             replay_bypass(int(sys.argv[2]))
+        elif '--refusal-defs' in sys.argv[3:]:
+            replay_refusal_defs(int(sys.argv[2]))
         else:
             replay(int(sys.argv[2]), scripts_only='--scripts' in sys.argv[3:])
         sys.exit(0)

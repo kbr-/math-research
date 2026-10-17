@@ -138,6 +138,30 @@ class UnlabelledScriptTest(unittest.TestCase):
         self.assertEqual(self.check('research/results/x_20261017/table.py', text), [])
 
 
+class RefusalDefTest(unittest.TestCase):
+    # The exposing case, 17 October 2026: two refusal functions written into compute.sh, quoted from its diff.
+    LINES = ['def scripts_with_process_pool(command):', 'def pool_admission_error(command, threads, pool_workers):',
+             '    refusal = pool_admission_error(command, args.threads, args.pool_workers)']
+    MESSAGE = 'Ultimate matching: ...\n\ncompute.sh refuses a named script that starts a process pool ...\n'
+
+    def test_new_refusal_functions_in_a_gate_need_a_bypass_line(self):
+        self.assertEqual(cmc.new_refusal_functions(self.LINES, [], self.MESSAGE),
+                         ['pool_admission_error', 'scripts_with_process_pool'])
+        named = self.MESSAGE + 'Bypass tried: --pool-workers 1 --threads 14 on the 14-worker script, refused.\n'
+        self.assertEqual(cmc.new_refusal_functions(self.LINES, [], named), [])
+
+    def test_an_edited_or_ordinary_function_is_not_new(self):
+        edited = ['def pool_admission_error(command, threads, pool_workers, extra=None):']
+        removed = ['def pool_admission_error(command, threads, pool_workers):']
+        self.assertEqual(cmc.new_refusal_functions(edited, removed, self.MESSAGE), [])
+        self.assertEqual(cmc.new_refusal_functions(['def render_table(rows):', 'x = error_count + 1'], [],
+                                                   self.MESSAGE), [])
+
+    def test_its_stated_limit_a_function_named_otherwise(self):
+        # The cheapest way around, tried before the commit: a gate function with a neutral name is not seen.
+        self.assertEqual(cmc.new_refusal_functions(['def pool_gate(command):'], [], self.MESSAGE), [])
+
+
 class BypassTest(unittest.TestCase):
     # The exposing commit, 17 October 2026: a new check wired into the finisher, no bypass named in its message.
     ADDED = ['tools/resemblance_coverage.py', 'tools/tests/test_resemblance_coverage.py']
