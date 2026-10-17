@@ -1,0 +1,59 @@
+{
+ "source": {
+  "record": "[Coarse push obstruction](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-partial-restoration)",
+  "label": "Coarse push obstruction",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-17-partial-restoration"
+  ]
+ },
+ "date": "2026-10-17",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "claims": [
+  {
+   "id": "lem:coarse-push-obstruction",
+   "summary": "For N i.i.d. uniform points in [0,1]^2, depth J with kappa log N <= N 4^(-J) <= K log N, j_1 = J - m, m = floor(theta log_2 N), a shift r >= 0 fixed or r = r(N) with j_1 - r >= 0 and r <= (1/2) log_2 ln N, a coordinate k, and a level-by-level field Phi = sum_{j<J} Phi_j (Phi_j measurable with respect to the counts of levels at most j+1; not necessarily a flow) local at level j_1 - r: if for every j_1 <= j < J and every reachable level-(j-r) square P (it and its ancestors down to level j_1 - r hold at least half their mean counts), P(sigma_P |P|^(-1) int_P Phi_{j,k} >= c_N h_r | F_j) >= p, with sigma_P the sign of the running mean of sum_{i<j} Phi_{i,k} over P, h_r = 2^(-r) sqrt(N/32), c_N > 0, p in (0,1], b = theta log_2(4/p) < kappa/8 and 2 theta + 2b < 1, then with u_N = 4 m h_r/(L sqrt(N log N)), int psi_alpha(4|Phi_k|/(L sqrt(N log N))) exceeds every constant with probability tending to one for alpha in (2, infinity) when (c_N u_N)^alpha - b ln N -> infinity, and for alpha = infinity when c_N u_N >= 2 for large N.",
+   "assessment": "Working proof, pending review: the proof of thm:coarse-mean-flow-obstruction with its push step replaced by the hypothesis; the walk keeps the child on the event of a push of the step's own coarse mean, which is local by the field's locality (the theorem's mean condition had made its push event equal such an event); area bound, many squares, Chebyshev and cost step as there.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "The coarse-mean analogue of lem:conditional-push-obstruction, containing thm:coarse-mean-flow-obstruction, thm:square-mean-flow-obstruction, cor:lagged-flow-obstruction and cor:coarse-mean-growing-shift (no field it covers beyond them is exhibited): a field local at level j_1 - r whose cost stays bounded with probability bounded below along a sequence of N must, for each admissible c_N and p, at some step and some reachable square fail to push that square's coarse mean along its sign, at every shift up to r* - O(1).",
+   "next_action": "Build the multi-shift restoring flow, corrections moving coarse means at every shift up to r* - c_0, as a proof object, and decide its legs' pointwise sum.",
+   "novelty": "not_claimed"
+  },
+  {
+   "id": "cor:partial-restoration-obstruction",
+   "summary": "Let Phi satisfy the hypotheses of thm:coarse-mean-flow-obstruction at a shift r (fixed, or r(N) as in lem:coarse-push-obstruction) except its mean condition, and let xi_P = |P|^(-1) sum_{S in P} (rho_j/2) epsilon_S E_k(S) with F_j-measurable signs epsilon_S. If for every j_1 <= j < J, on every reachable level-(j-r) square P and on the event sigma_P xi_P >= h_r, sigma_P |P|^(-1) int_P Phi_{j,k} >= (1 - lambda_N) h_r with lambda_N in [0,1), then int psi_alpha(4|Phi_k|/(L sqrt(N log N))) exceeds every constant with probability tending to one, for alpha in (2, infinity) when ((1 - lambda_N) u_N)^alpha - 770 theta ln N -> infinity (every fixed lambda < 1 at fixed r; at r(N) under cor:coarse-mean-growing-shift's condition with C replaced by (1 - lambda)^alpha C, c_0 by c_0 + log_2(1/(1 - lambda))), and for alpha = infinity when (1 - lambda_N) u_N >= 2. It covers coarse means differing from the dyadic ones by Delta with sigma_P Delta >= -lambda h_r, and Delta = -lambda xi_P.",
+   "assessment": "Working proof, pending review: the theorem's push step gives P(sigma_P xi_P >= h_r | F_j) >= p_0 without locality of the signs; on that event the hypothesis gives lem:coarse-push-obstruction's push with c_N = 1 - lambda_N, p = p_0, b = 770 theta.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Corrections restoring at most a fraction lambda_N of the dyadic coarse push, that is keeping a coarse mean of at least (1 - lambda_N) h_r on the push event, keep the chain; full restoration of the actual push does not meet its hypothesis.",
+   "next_action": "None on its own; the restoring item's next attempt builds corrections that restore more.",
+   "novelty": "not_claimed"
+  },
+  {
+   "id": "lem:boundary-flux-mean-shift",
+   "summary": "For a rectangle B = [x_0, x_0 + a] x [y_0, y_0 + b] and a piecewise C^1 field w near B with continuous normal components across the pieces' interfaces: int_B w_1 = int_dB (x - c) w.n - int_B (x - c) div w for every real c, so |int_B w_1| <= (a/2)(int_dB |w.n| + int_B |div w|), and the same for w_2 with b; in particular a divergence-free w whose mean of w_1 over B is m has int_dB |w.n| >= 2|m| b.",
+   "assessment": "Working proof, pending review: div((x - c) w) = w_1 + (x - c) div w on each piece, the divergence theorem summed over the pieces, c at the centre. Elementary; its identity at c = 0 is written in thm:coarse-mean-flow-obstruction's proof; new are the bound and the absence of lem:sibling-exchange-leg's zero-flux hypothesis.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Prices any mean shift of a square by its boundary flux whatever the flux pattern; at the coarse pushes' sizes the price is of one dyadic step's order, which does not by itself exclude restoring corrections.",
+   "next_action": "None on its own; used by the restoring item's next attempt.",
+   "novelty": "not_claimed"
+  }
+ ],
+ "relationships": [
+  ["lem:coarse-push-obstruction", "refines", "thm:coarse-mean-flow-obstruction", "Implies it: the theorem's mean condition gives the push with c_N = 1, p = p_0, at its constants."],
+  ["lem:coarse-push-obstruction", "refines", "cor:coarse-mean-growing-shift", "Implies it at c_N = 1, p = p_0, since u_N^alpha >= C 2^(alpha(r* - r)) ln N."],
+  ["lem:coarse-push-obstruction", "refines", "thm:square-mean-flow-obstruction", "Implies it at r = 0: its mean condition gives the push with c_N = 1, p = p_0."],
+  ["lem:coarse-push-obstruction", "depends_on", "thm:coarse-mean-flow-obstruction", "Its proof's walk, area bound, many-squares step, Chebyshev and cost step."],
+  ["lem:coarse-push-obstruction", "cites", "lem:conditional-push-obstruction", "Its pointwise counterpart; neither implies the other."],
+  ["lem:coarse-push-obstruction", "cites", "cor:lagged-flow-obstruction", "A case: Delta = 0 at shift 1."],
+  ["lem:coarse-push-obstruction", "cites", "conj:conjugate-class-discrepancy", "Narrows the flows of bounded cost on its primal side; proves no part of it."],
+  ["cor:partial-restoration-obstruction", "depends_on", "lem:coarse-push-obstruction", "Applied with c_N = 1 - lambda_N, p = p_0."],
+  ["cor:partial-restoration-obstruction", "refines", "thm:coarse-mean-flow-obstruction", "Implies it at lambda_N = 0 with the dyadic coarse means."],
+  ["cor:partial-restoration-obstruction", "cites", "cor:coarse-mean-growing-shift", "Its growing-shift condition, with C replaced by (1 - lambda)^alpha C."],
+  ["lem:boundary-flux-mean-shift", "cites", "lem:sibling-exchange-leg", "Its identity without the zero-flux hypothesis; the sibling lemma's constant l/2 is sharper when the flux crosses one segment of length l < a; neither implies the other."]
+ ]
+}

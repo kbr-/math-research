@@ -47,7 +47,12 @@ the entry's General statement and Statement, and report any scope (degree range,
 field, error form) that one states and the other does not. Where a draft calls a step taken from
 elsewhere (a reviewer's suggestion, a recorded reduction, a cited lemma's reason) "checked", look
 for the one case it worked through that step and the citation's own words for the reason; report
-"checked" without them as unsupported. Do not trust summaries in the drafts over the excerpts. Where
+"checked" without them as unsupported. Do not trust summaries in the drafts over the excerpts, nor a
+record's description of itself over its own steps: where a draft relies on what a recorded proof or
+statement says about itself ("used only there", "covers", "elementary", "the same proof"), check
+that description against the steps it describes and report each step it leaves out (17 October
+2026: a record said a condition was used only in one step, and a rerun lost the locality the
+condition also supplied). Where
 a draft claims a property of every member of a family it defines (every error killed, every edge
 admitted), list the members from the family's definition, not from the cases the proof works
 through, and check the proof's step on each kind, the members that coincide with the construction's
