@@ -473,6 +473,27 @@ class PlainestBoundTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'another route'):
             FT.validate_next_step_blocks(bad)
 
+    def test_the_proposed_next_step_books_an_item_to_the_block_of_its_own_route(self):
+        # 17 October 2026: the IPS block's first turn was booked on an item last developed on depth-prime-recurrence.
+        queue = ('<section id="lead-queue"><ul><li data-idea="collapse-item">Collapse.</li>'
+                 '<li data-lead="ips-item">IPS.</li></ul></section>')
+        record = ('<article id="entry-a" data-kind="research" data-route-item="depth-prime-recurrence" '
+                  'data-idea="collapse-item"></article>'
+                  '<article id="entry-b" data-kind="research" data-route-item="ips-direct" data-lead="ips-item">'
+                  '</article>')
+        step = ('<section id="proposed-next-step"><p>The sixth Use IPS directly block, on ips-direct, takes its '
+                'first turn on the queue item %s.</p></section>')
+        living = self.LIVING + queue
+        with self.assertRaisesRegex(ValueError, r'collapse-item, booked to the ips-direct block, last developed in '
+                                                r'#entry-a on route depth-prime-recurrence'):
+            FT.validate_next_step_blocks(living + step % 'collapse-item' + record)
+        FT.validate_next_step_blocks(living + step % 'ips-item' + record)
+        FT.validate_next_step_blocks(living + step % 'an item never developed' + record)
+        # The replay's false hits: an item waiting for a later block, named in another sentence.
+        waiting = step % 'ips-item' + ''
+        waiting = waiting.replace('ips-item.', 'ips-item. The item collapse-item waits for a framework turn.')
+        FT.validate_next_step_blocks(living + waiting + record)
+
     def test_work_of_a_later_turn_is_written_as_planned_not_done(self):
         # 16 October 2026: queued builds were stated as built "in the framework turn right after this review".
         for sentence in ('The two waiting builds are built in the framework turn right after this review.',

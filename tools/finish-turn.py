@@ -1644,6 +1644,44 @@ def validate_next_step_blocks(body):
             wrong.append(f'"{m.group(1).strip()} block" is route {hits[0]}, not {m.group(2)}')
     if wrong:
         raise ValueError('The Proposed next step names a block with another route: ' + '; '.join(wrong))
+    validate_next_step_item_routes(body, section.group(1), plain, routes)
+
+
+QUEUE_ITEM_ATTR = re.compile(r'<li\b[^>]*\bdata-(?:lead|bridge|idea|check|build)="([^"]+)"')
+
+
+def validate_next_step_item_routes(body, section_html, plain, routes):
+    """A queue item that the Proposed next step books as a turn of one route's block was last developed on that
+    route (17 October 2026: a next step booked bkz-collapse-architecture, whose development was tagged
+    depth-prime-recurrence, as the first turn of the IPS block; that entry's reviewer had found the same
+    retagging the day before)."""
+    queue = re.search(r'<section id="lead-queue"[^>]*>(.*?)</section>', body, re.S)
+    queued = set(QUEUE_ITEM_ATTR.findall(queue.group(1))) if queue else set()
+    # An item is booked to a block only in the block's own sentence: a replay over the last 40 next steps found
+    # eight that name a waiting item for a later block in another sentence (next-step-item-route-replay.txt).
+    booked = []
+    for sentence in re.split(r'(?<=\.)\s+(?=[A-Z])', plain):
+        blocks = {m.group(2) for m in NEXT_STEP_BLOCK.finditer(sentence) if m.group(2) in routes}
+        if len(blocks) != 1:
+            continue                            # no block, or several: which one an item is booked to is unclear
+        route = blocks.pop()
+        booked += [(route, i) for i in queued
+                   if re.search(r'(?<![\w-])' + re.escape(i) + r'(?![\w-])', sentence)]
+    wrong = []
+    for route, item in sorted(booked):
+        tags = re.findall(r'<article\b[^>]*\bdata-(?:lead|bridge|idea|check|build)="' + re.escape(item)
+                          + r'(?::s\d+)?"[^>]*>', body)
+        if not tags:
+            continue
+        last = re.search(r'\bdata-route-item="([^"]*)"', tags[-1])
+        anchor = re.search(r'\bid="([^"]*)"', tags[-1])
+        if last and last.group(1) != route:
+            wrong.append(f'{item}, booked to the {route} block, last developed in '
+                         f'#{anchor.group(1) if anchor else "?"} on route {last.group(1)}')
+    if wrong:
+        raise ValueError('The Proposed next step books a block\'s turn on a queue item developed on another route: '
+                         + '; '.join(wrong) + '. Book it to the block of its own route, or to none (it then counts '
+                         'toward no block), or name an item of the block\'s route')
 
 
 def validate_statement_names(text, body):
