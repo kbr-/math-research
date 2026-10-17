@@ -469,7 +469,10 @@ class PlainestBoundTest(unittest.TestCase):
             '<p><strong>Goal progress.</strong> Unchanged. <strong>Bearing.</strong> Its witness is decided by none '
             'of the recorded chain bounds.</p>',
             '<p><strong>Nonvacuity.</strong> The staircase witness. lem:a and lem:b leave a factor of order '
-            '\\((\\log N)^{1/8}\\); neither decides the witness in the limit.</p>']
+            '\\((\\log N)^{1/8}\\); neither decides the witness in the limit.</p>',
+            # the cheapest way around the words: a synonym
+            '<p><strong>Goal progress.</strong> Unchanged. <strong>Bearing.</strong> The witness, which no recorded '
+            'chain bound settles from \\(\\ln N=400\\) on.</p>']
         for paragraph in refused:
             article = '<article id="entry-2026-10-17-x">' + paragraph
             with self.assertRaisesRegex(ValueError, 'One function'):
@@ -482,7 +485,8 @@ class PlainestBoundTest(unittest.TestCase):
         # The phrases in sentences about something other than a witness's decision.
         for sentence in ('a flow on a coarser grid, which no recorded statement gives',
                          'no recorded lemma decides the sign of this flux, so it is left open',
-                         'the case decided by none of its inputs alone is the mixed one'):
+                         'the case decided by none of its inputs alone is the mixed one',
+                         'the sign settled by none of the earlier steps is fixed here'):
             FT.validate_one_function('<article id="entry-2026-10-17-x"><p><strong>Statement.</strong> '
                                      + sentence + '.</p>', {'working_proof'})
 

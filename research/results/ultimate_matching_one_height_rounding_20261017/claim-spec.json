@@ -1,0 +1,60 @@
+{
+ "source": {
+  "record": "[One-height chain reduction](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-one-height-rounding)",
+  "label": "One-height chain reduction",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-17-one-height-rounding"
+  ]
+ },
+ "date": "2026-10-17",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": ["random-matchings"],
+ "relationships": [
+  ["lem:leighton-shor-mesh-averaging", "depends_on", "lem:cut-cell-variance-bound", "Its (a) at W = 2^(-l_1) for part (b)."],
+  ["lem:leighton-shor-mesh-averaging", "cites", "lem:fine-grid-leighton-shor", "Its (c) bounds TV when every increment is 0 or at least y >= 2e^16; part (a) bounds it for every function of the class."],
+  ["lem:leighton-shor-mesh-averaging", "cites", "thm:cell-scale-reduction", "The primal counterpart, flows on coarse cells; the averaging lemma is the dual statement for the discrete class, proved directly."],
+  ["lem:one-height-rounding", "depends_on", "lem:leighton-shor-mesh-averaging", "Its (a) bound on TV for the crossing edges' expected cost."],
+  ["lem:one-height-rounding", "cites", "lem:separated-bundle-chains", "The doubling psi_4^*(2t) <= 7 psi_4^*(t) for t >= e^16 recorded with it."],
+  ["lem:one-height-rounding", "cites", "lem:multilevel-chain-bound", "Its (c) covers functions whose values are 2e^16 delta_0 apart; the rounding reduces every class function to such a function at one height."],
+  ["thm:one-height-chain-reduction", "depends_on", "lem:leighton-shor-mesh-averaging", "Averaging to the mesh 2^(-l_1)."],
+  ["thm:one-height-chain-reduction", "depends_on", "lem:one-height-rounding", "Rounding at the mesh 2^(-l_1), height e^22."],
+  ["lem:leighton-shor-mesh-averaging", "cites", "lem:cost-weighted-slope-bound", "Neither implies the other: that lemma bounds every grid function with the loss W; the averaging moves a function to the coarse mesh without bounding it."],
+  ["lem:one-height-rounding", "cites", "lem:cost-weighted-slope-bound", "Neither implies the other: that lemma's (b) bounds nested chains with a loss; the rounding produces a one-height chain without bounding it."],
+  ["thm:one-height-chain-reduction", "cites", "lem:cost-weighted-slope-bound", "Its (b) applied to the reduced one-height chain decides the class functions whose bundled edges carry cost eta with eta (log(m y*))^(1/4) bounded."],
+  ["thm:one-height-chain-reduction", "cites", "lem:multilevel-chain-bound", "Its (c) applied to the reduced chain decides the class functions whose reduced chain meets its count of layers."],
+  ["lem:leighton-shor-mesh-averaging", "cites", "lem:multilevel-chain-bound", "Different statements on the same meshes: that lemma bounds chains under a count; the averaging bounds TV and the coarse cost of every class function."],
+  ["thm:one-height-chain-reduction", "cites", "conj:conjugate-class-discrepancy", "Reduces its discrete form at (4,4) on dyadic grids to one-height chains at the Leighton-Shor mesh."]
+ ],
+ "claims": [
+  {
+   "id": "lem:leighton-shor-mesh-averaging",
+   "summary": "(a) Deterministically, every grid function g on a mesh delta with 1/delta an integer and discrete cost sum_e delta^2 psi_4^*(|Delta_e g|/(2 delta)) at most M has TV(g) <= T(M) = 4 + 2M/psi_4^*(1), psi_4^*(1) = 0.461650. (c) Deterministically, for meshes delta_0 <= W with W/delta_0 and 1/W integers and any cost sum_e delta_0^2 psi^*(v_e/2) with psi^* convex, nondecreasing and zero at zero (one per direction), the averages E_W g cost on the mesh W at most what g costs. (b) For N large, on the event of lem:cut-cell-variance-bound (a) at kappa = 4, for every dyadic delta_0 in [4 sqrt(log N/N), W], W = 2^(-l_1), and every g on it of cost at most M at (4,4): |D(g) - D(E_W g)| <= c_4 T(M) sqrt(N log N).",
+   "assessment": "Working proof, passed with corrections in two passes of one medium reviewer (research/results/ultimate_matching_one_height_rounding_20261017/review.txt):(a) edges with v < 2 give at most 4, the others delta^2 v <= 2 w_e/psi^*(1) since psi^*(t)/t is nondecreasing; (b) lem:cut-cell-variance-bound (a), (W/delta_0)^2 < sqrt(log N)/4; (c) a coarse increment over W is an average of r^3 fine increments over delta_0 inside the pair of coarse cells, Jensen, and each fine edge's weights over the pairs containing it sum to at most one.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Moves every grid function of the class from any dyadic mesh in range to the single Leighton-Shor mesh at an O(sqrt(N log N)) cost, at no increase of cost.",
+   "next_action": "Used by thm:one-height-chain-reduction.",
+   "novelty": "not_claimed"
+  },
+  {
+   "id": "lem:one-height-rounding",
+   "summary": "On the event that every cell of every dyadic mesh delta >= 4 sqrt(log N/N) has |n_Q - N delta^2| <= C_0 sqrt(N delta^2 log N), C_0 = 15/4, at (4,4), for every such delta, every M > 0, every Y >= 2e^16 and every grid function h on mesh delta with discrete cost at most M, some theta in [0,1) makes r = Y delta(floor(h/(Y delta) + theta) - theta) satisfy 0 <= h - r < Y delta, r - min r a nested chain at the one height Y, cost(r) <= 7M + (psi_4^*(Y/2)/Y) T(M), and |D(h) - D(r)| <= C_0 Y sqrt(N log N).",
+   "assessment": "Working proof, passed with corrections in two passes of one medium reviewer (research/results/ultimate_matching_one_height_rounding_20261017/review.txt):the error by per-cell counts; edges with v >= Y at most double their increment (doubling of psi_4^* at t >= e^16), edges with v < Y cross a level with probability v/Y over a uniform theta, at expected cost (psi^*(Y/2)/Y) TV.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Presents every class function at a given mesh as a one-height chain up to O(sqrt(N log N)), so that the record's chain lemmas apply to the steep part of any class function; functions with close values alone were already bounded by lem:cost-weighted-slope-bound (a).",
+   "next_action": "Used by thm:one-height-chain-reduction.",
+   "novelty": "not_claimed"
+  },
+  {
+   "id": "thm:one-height-chain-reduction",
+   "summary": "At (4,4), with Y = e^22, C1 = 14 + (psi_4^*(Y/2)/Y) T(2) <= 30.18, c = C1/2 and y* = Y/c >= e^19.28 >= 2e^16: if with probability tending to one every nested chain W y* sum_k 1_{A_k} at the one height y* on the mesh W = 2^(-l_1) with discrete cost at most 2 at (4,4) has |D| <= C_2 sqrt(N log N), then with probability tending to one every grid function on a dyadic mesh delta_0 in [4 sqrt(log N/N), W] with discrete cost at most 2 at (4,4) has |D(g)| <= (c_4 T(2) + C_0 Y + c C_2) sqrt(N log N); conversely; since every grid function on the mesh W rounds to such a chain, one height is no restriction there, and the net content is the reduction of the dyadic proxy from every finer mesh to the mesh W.",
+   "assessment": "Working proof, passed with corrections in two passes of one medium reviewer (research/results/ultimate_matching_one_height_rounding_20261017/review.txt):lem:leighton-shor-mesh-averaging at M = 2 (averages of cost at most 2), then lem:one-height-rounding at the mesh W with M = 2, then scaling by 1/c.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Removes the finer meshes from the dyadic proxy of conj:conjugate-class-discrepancy at (4,4), the dual counterpart of thm:cell-scale-reduction, and presents the problem on Leighton-Shor cells as one-height chains, to which the record's chain lemmas apply.",
+   "next_action": "Stacks of coarse lines along finite stretches at the mesh 2^(-l_1), by a band bound for stretches that end inside the square.",
+   "novelty": "not_claimed"
+  }
+ ]
+}

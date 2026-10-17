@@ -1516,8 +1516,9 @@ OWN_FROM = '2026-10-17'
 ONE_FUNCTION_FROM = '2026-10-17'
 # A fixed witness said to escape the record ("decided by none of the recorded chain bounds", "which no recorded
 # bound decides"): 17 October 2026, twice in a row, while Chebyshev on the one function decided it.
-WITNESS_UNDECIDED = re.compile(r'\b(?:decided by none|no recorded (?:\w+ ){0,3}decides|'
-                               r'neither decides the witness|none of the recorded (?:\w+ ){0,3}decides?)\b', re.I)
+WITNESS_UNDECIDED = re.compile(r'\b(?:(?:decided|settled) by none|no recorded (?:\w+ ){0,3}(?:decides|settles)|'
+                               r'neither (?:decides|settles) the witness|'
+                               r'none of the recorded (?:\w+ ){0,3}(?:decides?|settles?))\b', re.I)
 
 
 def validate_one_function(text, statuses=()):
