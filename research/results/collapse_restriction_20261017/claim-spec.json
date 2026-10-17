@@ -1,0 +1,35 @@
+{
+ "source": {
+  "record": "[Restriction degree barrier](https://kbr.is-a.dev/math-research/#entry-2026-10-17-restriction-degree-barrier)",
+  "targets": [
+   "https://kbr.is-a.dev/math-research/#entry-2026-10-17-restriction-degree-barrier"
+  ],
+  "label": "Restriction degree barrier"
+ },
+ "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+ "date": "2026-10-17",
+ "topics": [
+  "method-obstructions",
+  "query-models",
+  "affine-linear-algebra"
+ ],
+ "claims": [
+  {
+   "id": "lem:restriction-degree-barrier",
+   "summary": "Restriction degree barrier, functions on the cube identified with multilinear polynomials. (a) Over any field, for f_1..f_k on {0,1}^n with common zero set Z, any map A: {0,1}^L -> {0,1}^n and T >= 0: if deg(1_Z o A) <= T then A^(-1)(Z) is empty or has at least 2^(L-T) points (over F_2, 1_Z o A = prod_j (1 + f_j o A)). Over F_2: (b) for uniform independent affine forms l_1..l_k and every affine map A whose image has dimension L, the forms restricted to the image are uniform independent, the conjunction indicator has degree equal to the rank of their linear parts when consistent and is 0 otherwise, and Pr[degree <= k - 1] = 1 - prod_(i<k) (1 - 2^(i-L)) <= (2^k - 1) 2^(-L); so for every distribution on affine maps with images of dimension at least L some fixed k forms keep degree k except with that probability. (c) For 1 <= k < L_0 <= n and M >= ((n - L_0)(n + 1) + n)/(L_0 - k), M independent such conjunctions have, except with probability (n - L_0 + 1) 2^(-n), no affine subspace of dimension at least L_0 on which all have degree <= k - 1. (d) A line, a disjunction of r members each a conjunction of k_i >= 1 of K = sum k_i independent uniform affine equations, has falsity indicator prod_i (1 + 1_(Z_i)) of degree exactly K under such A, with no member constant, except with probability (2^K - 1) 2^(-L); (b) and (c) hold for lines with K in place of k. (e) For a CNF F of N clauses of width at most w on n variables and any PCK^1_(F_2) refutation R of size S, weakening and cut give a refutation of size S + O(N M_0 r (w + K n)) in which lines {C, m_1..m_r} on the clauses C that R uses are ancestors of the final line; for M_0 = 1 and every distribution on affine maps with images of dimension at least L >= w + K + 1, some fixed forms leave every padded line below degree K with probability at most (2^K - 1) 2^(-(L-w)); for w + K < L_0 and M_0 >= ((n - L_0)(n + 1) + n)/(L_0 - w - K), except with probability (n - L_0 + 1) 2^(-n), every affine subspace of dimension at least L_0 carries a padded line of degree at least K.",
+   "assessment": "Working proof passed with corrections by a fresh-context medium reviewer in two rounds: (a) by the minimum-distance induction over any field, (b) by surjectivity of B^T and the rank count with averaging over the distribution, (c) by a union over affine subspaces, (d) by expanding the line's falsity into intersection indicators, (e) by weakening and cut (BKZ Definition 11) and a product over disjoint variables. Exact degree on the cube only; modulo the restricted instance's pseudoideal the padded lines are multiples of clause axioms and vanish once their degree is at most the pseudoideal's.",
+   "status": "working_proof",
+   "rationale": "Exact simplification of every line of a collapsed refutation by an affine restriction, oblivious or chosen after the refutation, fails already for lines of affine equations, whose restricted degree is the rank of the restricted forms, and such lines enter any refutation of a CNF at polynomial cost; so in exact degree on the cube that step is at least as strong as the lower bound. Modulo the restricted instance's pseudoideal the padded lines, multiples of clause axioms, vanish once their degree is at most the pseudoideal's, so that reading stays open.",
+   "next_action": null
+  }
+ ],
+ "relationships": [
+  ["lem:restriction-degree-barrier", "cites", "imp:modular-counting-collapse", "The collapsed systems' lines: cedents of conjunctions and disjunctions of polylog-degree F_2 polynomials, whose rules (BKZ Definition 11: weakening, cut) make part (e)'s padding a refutation."],
+  ["lem:restriction-degree-barrier", "cites", "cor:depth-free-modular-target", "The sufficient condition whose proof by exact restriction the lemma blocks."],
+  ["lem:restriction-degree-barrier", "cites", "cor:full-single-row-lowdegree-switching", "Its switching covers rowwise affine predicates below a decision-tree height; the lemma bears only on exact F_2 degree, a measure in which a conjunction of k affine equations has depth at most k."],
+  ["lem:restriction-degree-barrier", "cites", "check:sector-joint-kernel-sizes", "It states the ternary minimum-weight bound, the analogue of part (a)."],
+  ["lem:restriction-degree-barrier", "cites", "prop:paired-restriction-controls", "Its second part is part (b)'s rank computation for one fixed system under a random basis change; (b) takes random systems against every restriction distribution."],
+  ["lem:restriction-degree-barrier", "depends_on", "lem:flat-restriction-dimension", "The degree-preserving affine change of coordinates in part (b)."],
+  ["lem:restriction-degree-barrier", "cites", "lem:pin-degree-two-reduction", "Its statement that the affine degree-2 consequences of FPHP's rows are only their span is the next attempt's quantity at D = 2 for that instance."]
+ ]
+}

@@ -1,0 +1,779 @@
+{
+  "base_sha256": "6ee2f1fa845cc605c9237273d3680ec3a3523f594c7b575453ffb5df2a0ad79d",
+  "provenance": {
+    "revision": "90a444f731083bada685a450ec7fc86d318c0f1e",
+    "date": "2026-10-17",
+    "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent"
+  },
+  "submissions": [
+    {
+      "claim": {
+        "id": "lem:restriction-degree-barrier",
+        "summary": "Restriction degree barrier, functions on the cube identified with multilinear polynomials. (a) Over any field, for f_1..f_k on {0,1}^n with common zero set Z, any map A: {0,1}^L -> {0,1}^n and T >= 0: if deg(1_Z o A) <= T then A^(-1)(Z) is empty or has at least 2^(L-T) points (over F_2, 1_Z o A = prod_j (1 + f_j o A)). Over F_2: (b) for uniform independent affine forms l_1..l_k and every affine map A whose image has dimension L, the forms restricted to the image are uniform independent, the conjunction indicator has degree equal to the rank of their linear parts when consistent and is 0 otherwise, and Pr[degree <= k - 1] = 1 - prod_(i<k) (1 - 2^(i-L)) <= (2^k - 1) 2^(-L); so for every distribution on affine maps with images of dimension at least L some fixed k forms keep degree k except with that probability. (c) For 1 <= k < L_0 <= n and M >= ((n - L_0)(n + 1) + n)/(L_0 - k), M independent such conjunctions have, except with probability (n - L_0 + 1) 2^(-n), no affine subspace of dimension at least L_0 on which all have degree <= k - 1. (d) A line, a disjunction of r members each a conjunction of k_i >= 1 of K = sum k_i independent uniform affine equations, has falsity indicator prod_i (1 + 1_(Z_i)) of degree exactly K under such A, with no member constant, except with probability (2^K - 1) 2^(-L); (b) and (c) hold for lines with K in place of k. (e) For a CNF F of N clauses of width at most w on n variables and any PCK^1_(F_2) refutation R of size S, weakening and cut give a refutation of size S + O(N M_0 r (w + K n)) in which lines {C, m_1..m_r} on the clauses C that R uses are ancestors of the final line; for M_0 = 1 and every distribution on affine maps with images of dimension at least L >= w + K + 1, some fixed forms leave every padded line below degree K with probability at most (2^K - 1) 2^(-(L-w)); for w + K < L_0 and M_0 >= ((n - L_0)(n + 1) + n)/(L_0 - w - K), except with probability (n - L_0 + 1) 2^(-n), every affine subspace of dimension at least L_0 carries a padded line of degree at least K.",
+        "assessment": "Working proof passed with corrections by a fresh-context medium reviewer in two rounds: (a) by the minimum-distance induction over any field, (b) by surjectivity of B^T and the rank count with averaging over the distribution, (c) by a union over affine subspaces, (d) by expanding the line's falsity into intersection indicators, (e) by weakening and cut (BKZ Definition 11) and a product over disjoint variables. Exact degree on the cube only; modulo the restricted instance's pseudoideal the padded lines are multiples of clause axioms and vanish once their degree is at most the pseudoideal's.",
+        "record": "[Restriction degree barrier](https://kbr.is-a.dev/math-research/#entry-2026-10-17-restriction-degree-barrier)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-restriction-degree-barrier"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "method-obstructions",
+          "query-models",
+          "affine-linear-algebra"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Exact simplification of every line of a collapsed refutation by an affine restriction, oblivious or chosen after the refutation, fails already for lines of affine equations, whose restricted degree is the rank of the restricted forms, and such lines enter any refutation of a CNF at polynomial cost; so in exact degree on the cube that step is at least as strong as the lower bound. Modulo the restricted instance's pseudoideal the padded lines, multiples of clause axioms, vanish once their degree is at most the pseudoideal's, so that reading stays open.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-restriction-degree-barrier"
+          ],
+          "next_action": null
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-restriction-degree-barrier"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-restriction-degree-barrier"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-restriction-degree-barrier"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-restriction-degree-barrier"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-restriction-degree-barrier"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "imp:modular-counting-collapse",
+        "summary": "Modular counting collapse (Buss-Kolodziejczyk-Zdanowski, Trans. AMS 367 (2015), Theorems 43 and 45 and Proposition 47, author-hosted journal version): for p prime and a Sigma_3(oplus_p^-) formula phi = OR_k AND_l psi_{k,l} of Sigma-size <= S with a depth-d PK_{oplus_p} proof of size <= S, the cedents of the complements {bar psi_{k,0},...,bar psi_{k,L_k-1}} have a dag-like PCK^1_p refutation of Sigma-size S^(log^e S), e depending only on d; the analogous PCK^1_{F_p} refutation of the polynomial translations is stated after the theorem with its proof left to the reader. Sigma-size S bounds size by S, every conjunction or disjunction of literals by log S literals and every polynomial degree below log S. For Sigma_2 phi there are a term t = O(S^(log^e S)) and a PV_2^{oplus_p P} function f, depending on d, phi and the proof, such that the cedents with axioms {f(u) != v}_{u<t} (v given by 2 log t new variables) have a tree-like PCK^0_p (and PCK^0_{F_p}) refutation of the same Sigma-size. Proposition 47: for unsatisfiable p_1..p_n of degree <= d over F_p and t = t(n, 2^d) quasipolynomial, there is q of degree poly(log n, d) in poly(log n, d) new variables, zero under every old assignment for all but a 1/t fraction of the new assignments, with {p_i} plus q refutable in Nullstellensatz degree poly(log n, d); proof sketched for p = 2, part (d) left to the reader.",
+        "assessment": "Imported established results, read in the author-hosted journal version: Definitions 1-4 and 11-13, Lemma 15, Theorems 25, 26, 42, 43 and 45 with their remarks, the proof of Theorem 46(b), the closing remarks of Section 6 and Proposition 47; the negation bars of Theorem 43 checked on the rendered page. The reflection-principle proofs were not checked. PK_{oplus_p} is the authors' Tait-style system; conversion from other bounded-depth modular Frege presentations is not part of the import. Medium reviewer passed after corrections.",
+        "record": "[Modular collapse target](https://kbr.is-a.dev/math-research/#entry-2026-10-16-modular-collapse-target)",
+        "mathematical_status": "established",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-modular-collapse-target"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "frege-simulation",
+          "nullstellensatz",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Supplies a depth-free proof system for the binary target at quasipolynomial cost, and a barrier: axioms false only on a 1/t fraction of the assignments to polylogarithmically many new variables, for every old assignment, make every unsatisfiable system refutable in polylog Nullstellensatz degree.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-modular-collapse-target"
+          ],
+          "next_action": "Use the depth-free target in the general step: decide whether a two-level exclusion holds at quasipolynomial inventory."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-modular-collapse-target"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-modular-collapse-target"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-modular-collapse-target"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-modular-collapse-target"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Restriction degree barrier: new relationship with lem:restriction-degree-barrier.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-modular-collapse-target"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "cor:depth-free-modular-target",
+        "summary": "Depth-free modular target: let F_N be unsatisfiable CNFs of size N, clauses as cedents of literals, and phi'_N = OR_k AND_l oplus^1_2{neg lit_{k,l}} the CNF-negation tautology with negated literals as one-input oplus_2 formulas. If for every constant c, for all large N, no dag-like PCK^1_{F_2} refutation of F_N has Sigma-size 2^((log N)^c), then for every fixed d and A >= 2, for all large N, phi'_N has no depth-d PK_{oplus_2} proof of size at most N^A. The same holds for tree-like PCK^0_{F_2} if the hypothesis covers refutations of F_N with the axioms {f(u) != v}_{u<t} of every PV_2^{oplus_2 P} function f and every quasipolynomial t. The hypothesis is superquasipolynomial in one fixed system, stronger in size than the goal needs; reaching the goal's Frege presentation needs a conversion not proved here.",
+        "assessment": "Working one-step composition of imp:modular-counting-collapse at p = 2: a size-N^A proof gives Sigma-size 2^((A log N)^(e+1)) < 2^((log N)^(e+2)) once log N > A^(e+1), base-2 logarithms; the complement of a wrapped literal is equivalent to the literal by constant-size proofs. Passed by the medium reviewer after corrections. Conversion from the plain tautology and from the goal's Frege presentation is assumed, not proved; no lower bound for the collapsed systems is known to the record.",
+        "record": "[Modular collapse target](https://kbr.is-a.dev/math-research/#entry-2026-10-16-modular-collapse-target)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-modular-collapse-target"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "frege-simulation",
+          "nullstellensatz",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Replaces the depth-indexed target by one fixed two-level system at the cost of a superquasipolynomial size requirement, with all degrees polylog(N).",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-modular-collapse-target"
+          ],
+          "next_action": "Decide whether a random restriction makes an OR of quasipolynomially many polylog-degree F_2 polynomials exactly low-degree with failure probability below 1/M."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-modular-collapse-target"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-modular-collapse-target"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-modular-collapse-target"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-modular-collapse-target"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Restriction degree barrier: new relationship with lem:restriction-degree-barrier.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-modular-collapse-target"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "cor:full-single-row-lowdegree-switching",
+        "summary": "Full single-tail classes with predicate density >=n^(-1/3), F2 indicator degree <=ell/192 and at most n^c terms switch below height N/8-4 on a suitable polylog compact flat with failure <=10n^(-c-1).",
+        "assessment": "Includes arbitrary class overlap, all tail rows and dense pins. The prior repaired round proof uses predicate cardinality rather than literal coordinates; its 5N/384 slack is checked against floor(N/48) with N>=256. For n^c readers a union gives failure <=10/n. Includes rowwise affine predicates of codimension <=ell/192, not arbitrary cross-row parities or incomplete classes.",
+        "record": "[Statement, full proof and controls](https://kbr.is-a.dev/math-research/#entry-2026-09-20-pin-peeling-composition)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Human proof; finite exact C++ controls cover outside pins and no heavy rounds, not Lean verification or the general probability estimate.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#full-single-row-lowdegree-switching"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "query-models",
+          "affine-linear-algebra",
+          "bit-php"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Composes a previously repaired round estimate with the new decoder to close this explicit reader-class obligation; the actual complete proof-source transfer remains to be audited.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#full-single-row-lowdegree-switching"
+          ],
+          "next_action": null
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Includes arbitrary class overlap, all tail rows and dense pins. The prior repaired round proof uses predicate cardinality rather than literal coordinates; its 5N/384 slack is checked against floor(N/48) with N>=256. For n^c readers a union gives failure <=10/n. Includes rowwise affine predicates of codimension <=ell/192, not arbitrary cross-row parities or incomplete classes.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-09-20-pin-peeling-composition"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "Human proof; finite exact C++ controls cover outside pins and no heavy rounds, not Lean verification or the general probability estimate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-09-20-pin-peeling-composition"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Compact matching query trees, false-pin correction, polynomial-space list bounds and row-predicate switching.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-09-20-pin-peeling-composition"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Composes a previously repaired round estimate with the new decoder to close this explicit reader-class obligation; the actual complete proof-source transfer remains to be audited.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-09-20-pin-peeling-composition"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Added the audited parameter refinement or costed profile application; stated dependencies retain their original scope. Restriction degree barrier: new relationship with lem:restriction-degree-barrier.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-09-20-pin-peeling-composition",
+            "https://kbr.is-a.dev/math-research/#entry-2026-09-20-source-predicate-ledger-audit"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "check:sector-joint-kernel-sizes",
+        "summary": "Sector joint kernel sizes: in sector 0 of the pair characters (degree 2k = junta degree k in the one-hot bits), the exact F_2 joint kernel of V_k for s in {6, 7, 8}, k in {2, 3}, t in {2, 3}, M <= 7 (M <= 5 at s = 8), 156 random dense instances with independent rows and 52 coordinate instances: the parity rule held everywhere; of 132 dense instances with M >= 2, 8 had a nonzero joint kernel, none at M >= 4; the hypothesis that no single-factor affine killer of degree <= k means a zero kernel held on 124 of the 125 instances the bare count did not decide and failed on one, s = 7, k = 2, t = 3, M = 2, whose kernel is the indicator of {chi_0 = 0} intersected with {z_1 + z_4 + z_5 + z_6 = 0}, a union cover of two rows of one product. The minimum-weight bound (a nonzero function of junta degree <= k has >= 3^(s-k) nonzeros) forces the kernel to zero on 64 of the 132 dense instances with M >= 2, none of them nonzero.",
+        "assessment": "Finite check by research/results/pair_joint_kernel_20261017/joint_kernel_check.py, expectations committed before the run, packed F_2 rank cross-checked against tools/f2_span.py on 28 instances; sizes far from the window's proportions, sector 0 only; pending the review of its entry.",
+        "record": "[Affine indicator kernel](https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel)",
+        "mathematical_status": "finite_check",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Evidence on which killers exist when the bare count and the single-factor construction leave the joint kernel undecided.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+          ],
+          "next_action": "Enumerate the affine sets of the one-hot bits at s <= 6 to test whether union covers explain every killer."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Restriction degree barrier: new relationship with lem:restriction-degree-barrier.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:paired-restriction-controls",
+        "summary": "A fixed width-two DNF OR_i(x_i XOR y_i), under equal fixed pairs and b live pairs, has exact parity decision-tree depth b. For r distinct-row constraints A_old(i,1)=0, a uniform GL_N(2) basis change and independently fixed N' live columns leave a consistent raw affine system of rank r and conjunction Boolean degree r except with probability (2^(N-N')-1)/(2^N-1).",
+        "assessment": "Controls for raw formulas fixed before restriction. Neither supplies actual valid-proof defects or asserts rank after all hard-family equations. The one-row PHP specialization has a legal exact row and degree-two companion certificates, so raw switching failure is not source hardness.",
+        "record": "[Source scope review](https://kbr.is-a.dev/math-research/#entry-2026-10-09-source-scope-review)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "../notebook.html#entry-2026-10-09-source-scope-review"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "method-obstructions",
+          "degree-accounting",
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Resolves the universal raw simplification shortcut while preserving the proof-dependent source-law question. Elementary probability and linear algebra, no novelty claim.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "../notebook.html#entry-2026-10-09-source-scope-review"
+          ],
+          "next_action": "Carry out the scheduled fixed-proof paired-restriction architecture test with degree-two gate boundary and actual charged defect loss."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "../notebook.html#entry-2026-10-09-source-scope-review"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "../notebook.html#entry-2026-10-09-source-scope-review"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "../notebook.html#entry-2026-10-09-source-scope-review"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "../notebook.html#entry-2026-10-09-source-scope-review"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Paired affine law: new relationship with lem:paired-affine-law. Restriction degree barrier: new relationship with lem:restriction-degree-barrier.",
+          "targets": [
+            "../notebook.html#entry-2026-10-09-source-scope-review"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:flat-restriction-dimension",
+        "summary": "The restriction of multilinear polynomials of degree <= k to a flat of codimension r has dimension <= sum_{j<=k} C(v-r,j) <= 2 e^{-rk/v} C(v,k) for k <= (v-r)/3",
+        "assessment": "Working elementary proof; replaces the crude C(v-r+k,k) estimate whose threshold r >= k + v ln(8M)/k is never below 2 sqrt(v ln 8M)",
+        "record": "[Lemma](https://kbr.is-a.dev/math-research/#flat-restriction-dimension)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "no_record",
+          "scope": "No explicit per-claim Lean mapping in the index links or the audited claims/ and third-party-claims/ source inventory. This is not a claim that no formal proof or implicit special-case coverage exists elsewhere.",
+          "references": [
+            "results/index_formalization_metadata_20260919/inventory.json"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "ens",
+          "degree-accounting",
+          "substitution"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "Flat-restriction dimension improves the prior crude counting estimate.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#flat-restriction-dimension"
+          ],
+          "next_action": null
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Recorded status and scope: Flat-restriction dimension improves the prior crude counting estimate. Integrated after source-digest/evidence validation; original text and other fields preserved.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#flat-restriction-dimension"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "Mechanical explicit-mapping census only; no inference from mathematical implication or proof nonexistence.",
+          "targets": [
+            "results/index_formalization_metadata_20260919/inventory.json"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topic classification follows the object and method: Flat-restriction dimension improves the prior crude counting estimate. Integrated after source-digest/evidence validation; original text and other fields preserved.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#flat-restriction-dimension"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance is methodological, not a fresh novelty audit: Flat-restriction dimension improves the prior crude counting estimate. Integrated after source-digest/evidence validation; original text and other fields preserved.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#flat-restriction-dimension"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Read complete elementary affine-coordinate dimension proof and binomial ratio estimate; no direct indexed theorem is required. Recorded direct-claim relationships inventoried; no new proof or literature audit. Integrated only after pinned core/source validation. Slot Hilbert entry: new relationship with prop:rank-is-not-slot-loss. Affine annihilator image: new relationship with lem:three-state-flat-image. Independent feature transfer: new relationship with thm:independent-feature-transfer. Disjoint feature transfer: new relationship with thm:disjoint-feature-transfer. Mixed feature transfer: new relationship with thm:mixed-feature-transfer. Refresh citing article evidence after unchanged sibling follow-up declarations; flat count unchanged. Restriction degree barrier: new relationship with lem:restriction-degree-barrier.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#flat-restriction-dimension"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:pin-degree-two-reduction",
+        "summary": "Degree-two pin reduction (a sufficient condition): over any field, n >= 3, for FPHP^m_n plus affine pins L_k = l_k + c_k = q_k, if (i) the linear parts l_k are independent modulo row sums and (ii) the multiplication map V^h -> R_2, (lambda_k) -> sum lambda_k l_k, has only Koszul kernel, where V is the cell space modulo row sums and R_2 is the direct sum over pairs of rows of zero-diagonal n x n matrices modulo row and column sums (dim R_2 = C(m,2)(n^2-3n+1)), then there is no Nullstellensatz refutation of degree 2. The affine degree-2 consequences of the rows are only their span (one relation per pair of rows, n >= 3). Condition (ii) needs hm(n-1) - C(h,2) <= dim R_2, a margin D_1 - h below the model's fill point, so the lemma is sufficient, not necessary; (ii) itself is open.",
+        "assessment": "Working proof of the sufficient condition, after a fresh-context review. Condition (ii) is freeness of the functional top algebra through degree 2 (prop:syzygies-as-tor); on the weak base prop:one-count-by-freeness with thm:general-forms-freeness already gives generic pins PC hardness at every constant degree (pin freeness record entry).",
+        "record": "[Degree-two pin reduction](https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-26-pin-degree-two)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-26-pin-degree-two"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "nullstellensatz",
+          "matching-php"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Degree-2 Nullstellensatz case, on the functional base, of the recorded freeness-to-hardness route; the weak-base PC version at every degree is recorded (prop:one-count-by-freeness).",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-26-pin-degree-two"
+          ],
+          "next_action": null
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-26-pin-degree-two"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-26-pin-degree-two"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-26-pin-degree-two"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-26-pin-degree-two"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Small-width Koszul theorem: new relationship with thm:small-width-pair-koszul. Grouped Koszul theorem: new relationship with thm:grouped-pair-koszul. Pin freeness record: new relationship with prop:one-count-by-freeness, prop:syzygies-as-tor. Restriction degree barrier: new relationship with lem:restriction-degree-barrier.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-26-pin-degree-two"
+          ],
+          "next_action": null
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "lem:restriction-degree-barrier::cites::imp:modular-counting-collapse",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:restriction-degree-barrier",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "imp:modular-counting-collapse",
+        "locator": null
+      },
+      "scope": "The collapsed systems' lines: cedents of conjunctions and disjunctions of polylog-degree F_2 polynomials, whose rules (BKZ Definition 11: weakening, cut) make part (e)'s padding a refutation.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-restriction-degree-barrier"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "90a444f731083bada685a450ec7fc86d318c0f1e",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "The collapsed systems' lines: cedents of conjunctions and disjunctions of polylog-degree F_2 polynomials, whose rules (BKZ Definition 11: weakening, cut) make part (e)'s padding a refutation."
+      }
+    },
+    {
+      "id": "lem:restriction-degree-barrier::cites::cor:depth-free-modular-target",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:restriction-degree-barrier",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "cor:depth-free-modular-target",
+        "locator": null
+      },
+      "scope": "The sufficient condition whose proof by exact restriction the lemma blocks.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-restriction-degree-barrier"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "90a444f731083bada685a450ec7fc86d318c0f1e",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "The sufficient condition whose proof by exact restriction the lemma blocks."
+      }
+    },
+    {
+      "id": "lem:restriction-degree-barrier::cites::cor:full-single-row-lowdegree-switching",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:restriction-degree-barrier",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "cor:full-single-row-lowdegree-switching",
+        "locator": null
+      },
+      "scope": "Its switching covers rowwise affine predicates below a decision-tree height; the lemma bears only on exact F_2 degree, a measure in which a conjunction of k affine equations has depth at most k.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-restriction-degree-barrier"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "90a444f731083bada685a450ec7fc86d318c0f1e",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Its switching covers rowwise affine predicates below a decision-tree height; the lemma bears only on exact F_2 degree, a measure in which a conjunction of k affine equations has depth at most k."
+      }
+    },
+    {
+      "id": "lem:restriction-degree-barrier::cites::check:sector-joint-kernel-sizes",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:restriction-degree-barrier",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "check:sector-joint-kernel-sizes",
+        "locator": null
+      },
+      "scope": "It states the ternary minimum-weight bound, the analogue of part (a).",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-restriction-degree-barrier"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "90a444f731083bada685a450ec7fc86d318c0f1e",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "It states the ternary minimum-weight bound, the analogue of part (a)."
+      }
+    },
+    {
+      "id": "lem:restriction-degree-barrier::cites::prop:paired-restriction-controls",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:restriction-degree-barrier",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:paired-restriction-controls",
+        "locator": null
+      },
+      "scope": "Its second part is part (b)'s rank computation for one fixed system under a random basis change; (b) takes random systems against every restriction distribution.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-restriction-degree-barrier"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "90a444f731083bada685a450ec7fc86d318c0f1e",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Its second part is part (b)'s rank computation for one fixed system under a random basis change; (b) takes random systems against every restriction distribution."
+      }
+    },
+    {
+      "id": "lem:restriction-degree-barrier::depends_on::lem:flat-restriction-dimension",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "lem:restriction-degree-barrier",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:flat-restriction-dimension",
+        "locator": null
+      },
+      "scope": "The degree-preserving affine change of coordinates in part (b).",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-restriction-degree-barrier"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "90a444f731083bada685a450ec7fc86d318c0f1e",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "The degree-preserving affine change of coordinates in part (b)."
+      }
+    },
+    {
+      "id": "lem:restriction-degree-barrier::cites::lem:pin-degree-two-reduction",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:restriction-degree-barrier",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:pin-degree-two-reduction",
+        "locator": null
+      },
+      "scope": "Its statement that the affine degree-2 consequences of FPHP's rows are only their span is the next attempt's quantity at D = 2 for that instance.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-restriction-degree-barrier"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "90a444f731083bada685a450ec7fc86d318c0f1e",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Its statement that the affine degree-2 consequences of FPHP's rows are only their span is the next attempt's quantity at D = 2 for that instance."
+      }
+    }
+  ],
+  "topic_definitions": []
+}
