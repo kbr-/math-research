@@ -396,7 +396,10 @@ AGENTS.md"):
   what the proof's steps use and give, and its witness after that, one on which the step the
   statement adds is used: a statement drafted first carries the instance it was drafted for (17
   October 2026: a duality stated with coercivity and one grid, neither used, an equality summarized
-  where the proof gives one up to constants, and a witness that never used the implication).
+  where the proof gives one up to constants, and a witness that never used the implication). When
+  the proof splits into cases (characteristics, sizes), each hypothesis is stated per case, from the
+  branch that uses it (17 October 2026: a pigeon bound needed in two characteristics was stated for
+  all).
 - Read a rule or a listed record by applying it to the case in hand (the next attempt, the instance,
   the sentence being written) and writing what it gives there, never as seen once read (17 October
   2026: a listed lemma, read, already answered the entry's next attempt). A cited lemma is applied
