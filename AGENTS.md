@@ -414,9 +414,11 @@ AGENTS.md"):
   entry); one whose only source is another agent's report is written as that agent's, or recomputed
   and saved first.
 - A conjecture drawn from a check states the quantity the check computed (its maxima, its field, its
-  representatives); a stronger form is tried first against the system's trivial transformations (16
-  October 2026: a conjecture dropped the check's maximum over representatives and failed on the
-  plainest one).
+  representatives) and the range of sizes it computed; a stronger form, a wider range included, is
+  tried first against the system's trivial transformations and its smallest instances (16 October
+  2026: a conjecture dropped the check's maximum over representatives and failed on the plainest
+  one; 17 October 2026: a conjecture from boards of three to six holes, stated for every size, was
+  false at one and two).
 - Before a script compares two quantities over choices (a maximum or minimum over representatives,
   the side of a bound), derive in its docstring from the containment or inequality which extreme the
   question needs (17 October 2026: a domain saving was taken as a maximum where the bound needs the
