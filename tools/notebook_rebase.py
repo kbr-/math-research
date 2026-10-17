@@ -152,9 +152,20 @@ def main(argv=None):
     commits = merges = 0
     while True:
         names = conflicted()
-        if names and names != [options.file]:
+        others = [name for name in names if name != options.file]
+        if others:
+            # The notebook is still merged by element, so that a tool for the other files (tools/claim_rebase.py
+            # for the registry, which refuses while any other conflict remains) can run next: on 17 October 2026
+            # a commit with a notebook and a registry conflict was refused by both tools in turn.
             where = git("log", "-1", "--format=%h %s", "REBASE_HEAD", check=False).stdout.strip()
-            print(f"Stopped at {where}: conflicts for a person in {', '.join(name for name in names if name != options.file)}")
+            if options.file in names:
+                try:
+                    merges += resolve(options.file)
+                except Refused as refused:
+                    print(f"Stopped at {where}: {options.file} needs a person: {refused}")
+                    break
+                print(f"Resolved {merges} conflicts of {options.file} by element and staged it.")
+            print(f"Stopped at {where}: conflicts for a person in {', '.join(others)}")
             break
         if names:
             try:

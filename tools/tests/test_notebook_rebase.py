@@ -133,12 +133,19 @@ class RebaseTest(unittest.TestCase):
         self.assertEqual(self.git("log", "--format=%s").stdout.split("\n")[:3], ["work: second", "work: first", "main: more"])
         self.assertEqual(self.git("status", "--short").stdout, "")
 
-    def test_a_conflict_in_another_file_stops_it_with_the_notebook_left_for_the_same_run(self):
+    def test_a_conflict_in_another_file_stops_it_with_the_notebook_merged_and_staged(self):
+        # The other file's own tool (tools/claim_rebase.py) refuses while the notebook is conflicted, so the
+        # notebook is merged first: on 17 October 2026 a notebook and a registry conflict were refused by each.
         self.branches(theirs_other="main\n", ours_other="work\n")
         status, said = self.run_tool("--continue")
         self.assertEqual(status, 3)
-        self.assertRegex(said, r"^Stopped at \w+ work: first: conflicts for a person in other.txt\nResolved 0 conflicts of notebook.html by element in 0 commits before that.\n$")
-        self.assertIn("UU notebook.html", self.git("status", "--short").stdout)
+        self.assertRegex(said, r"^Resolved \d+ conflicts of notebook.html by element and staged it.\nStopped at \w+ work: first: conflicts for a person in other.txt\n")
+        self.assertEqual(self.git("diff", "--name-only", "--diff-filter=U").stdout, "other.txt\n")
+        Path("other.txt").write_text("work\n")
+        self.git("add", "other.txt")
+        status, said = self.run_tool("--continue")
+        self.assertEqual(status, 0)
+        self.assertEqual(self.git("status", "--short").stdout, "")
 
     def test_without_the_option_one_stop_is_resolved_and_staged_and_the_rebase_is_left_to_its_caller(self):
         self.branches()
