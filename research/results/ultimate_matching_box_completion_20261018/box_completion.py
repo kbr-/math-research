@@ -30,6 +30,9 @@ certificate must never fire where universal completion holds.
 Refuted by: an instance where the certificate fires and the brute-force check finds completion.
 Possible because: an error in the alternating reachability or in the matchability test would show
 there.
+Forced by counts: on the gadget the counts force only the drop (nu = 1 at radius 1, 2 at e), and on
+the tiny instances only which ones have a drop; whether a test fires depends on which vertices are
+missable, which no count fixes, so neither control is decided by its counts.
 Positive control: the line gadget X = {0, 1.6}, Y = {0.8, 3.5} at radii 1 and e, where universal
 completion fails (research/results/ultimate_matching_local_completion_20261017/gadget.txt); the
 certificate must fire there.
