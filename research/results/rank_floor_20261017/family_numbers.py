@@ -17,7 +17,9 @@ LOG2E = math.log2(math.e)
 
 
 def member(log2n, alpha, m_over, pi_frac, lemma_only=False):
-    """lemma_only: the lemma's own instance, without the review's range, at s = K + t + 1 pairs."""
+    """lemma_only: the lemma's own instance, without the review's range, at s = floor(3K/2) pairs: at
+    s = K + t + 1 the factor 1 - b/(s - K - t + 1) is negative (its first run), the floor needing s - K - t
+    large against b."""
     n = 2.0 ** log2n
     Delta = math.ceil(2 ** (log2n * alpha))
     m = n * Delta * m_over
@@ -29,7 +31,7 @@ def member(log2n, alpha, m_over, pi_frac, lemma_only=False):
     s_max = math.floor(pi * m / (2 * (2 * Delta + 1)))
     lo, hi = max(D // 2 + 1, K + t + 1), min(D - K, s_max)
     if lemma_only:
-        lo = hi = K + t + 1 if K + t + 1 <= s_max else -1
+        lo = hi = 3 * K // 2 if 3 * K // 2 <= s_max else -1
     rows = []
     for s in sorted({lo, hi}) if 0 < lo <= hi else []:
         rho = (eps - 2 * pi) / (2 * (eps - pi))
@@ -61,8 +63,8 @@ if __name__ == '__main__':
                 print(f'log2 n={log2n} alpha={alpha:g} m={m_over:g} n Delta: no s in the range with pi = Delta/16')
             for r in rows:
                 print(r)
-    print('The lemma alone, pi = Delta/10, s = K + t + 1, every edge count:')
+    print('The lemma alone, pi = Delta/10, s = floor(3K/2), every edge count:')
     for log2n, alpha in [(340, 1 / 20), (680, 1 / 40)]:
         for m_over in (1 / 8, 1 / 2, 1):
             rows = member(log2n, alpha, m_over, 1 / 10, lemma_only=True)
-            print(rows[0] if rows else f'log2 n={log2n} alpha={alpha:g} m={m_over:g} n Delta: s = K + t + 1 not reachable')
+            print(rows[0] if rows else f'log2 n={log2n} alpha={alpha:g} m={m_over:g} n Delta: s = 3K/2 not reachable')
