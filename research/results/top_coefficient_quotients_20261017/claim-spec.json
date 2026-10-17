@@ -1,0 +1,71 @@
+{
+ "source": {
+  "record": "[Top coefficient quotients](https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients)",
+  "targets": [
+   "https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients"
+  ],
+  "label": "Top coefficient quotients"
+ },
+ "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+ "date": "2026-10-17",
+ "topics": [
+  "frege-simulation",
+  "method-obstructions"
+ ],
+ "claims": [
+  {
+   "id": "lem:top-coefficient-quotients",
+   "summary": "Top coefficient quotients. Over a commutative ring R, let d in R[z] have degree b and a unit leading coefficient, and f in R[y][z] have z-degree at most b+D. The quotient h of f by d (f = dh + r, deg r < b; h = f/d when d divides f) is h = sum_{j<=D} z^j sum_{i=j}^{D} mu_{i-j} f_{b+i}, with 1/d = sum_rho mu_rho z^(-b-rho): a fixed linear combination of the top D+1 coefficients of f. For f = sum_a prod_{j<=q_a} (u_aj + c_aj z), Z_a the factors with c_aj nonzero, m_a = |Z_a|, f_s = sum_a sum_{T subset Z_a, |T| = s} prod_T c_aj prod_(not T) u_aj, so each h_j is a sum of at most (D+1) p Q^min(E+D, b+D) products of q_a factor formulas, depth delta_0+2, where E = max_a max(0, m_a - b - D) is the excess. For affine u_aj, constant c_aj and d = (z^2+z)^k, mu_rho = (-1)^rho binom(k+rho-1, rho) and each h_j is a Sigma-Pi-Sigma formula of size O((D+1) Q^(E+D) S) at every k, polynomial at bounded E+D; at D <= 1 and E = 0, h_1 = f_{2k+1} and h_0 = f_{2k} - k f_{2k+1}, over F_2 with binary affine factors h_0 = sum_{m_a=2k} U_a + sum_{m_a=2k+1} U_a (e_{1,a} + k), U_a the product of the factors without z.",
+   "assessment": "Working elementary proof passed with corrections by a fresh-context medium reviewer in two rounds: (a) by the quotient as the polynomial part of f/d at infinity, needing only a unit leading coefficient; (b) by expanding the products and counting subsets, N <= (D+1) p Q^min(E+D, b+D); (c) over every commutative ring with mu_rho = (-1)^rho binom(k+rho-1, rho) and the regime formulas, checked by hand on prop:primitive-triple-contact's family at M = 2^t, on f = B^k(z+y) and on the previous entry's k = 1 instance. Part (a) is classical; no lower bound.",
+   "status": "working_proof",
+   "rationale": "It answers the head item's sub-idea for three, or any number of, affine-product dividends at bounded E+D: a polynomial-size depth-three quotient formula at every k, so a hard quotient needs E+D and b+D both growing. Part (a) is the classical quotient-at-infinity observation.",
+   "next_action": "Decide the bounded-D, growing-excess case: three binary affine products with B^k dividing f, k growing, D <= 1, one product with a count not in AC0[2] modulo 3 and its top coefficients cancelled to growing order, through the four-term pointwise relations; then the growing-D case."
+  },
+  {
+   "id": "prop:frobenius-pair-obstruction",
+   "summary": "Frobenius pair obstruction. Let G in F_2[y][z] have a Boolean point where G is 1 at z = 0 and at z = 1, and one where G(y,0) differs from G(y,1). Then no product P of binary affine factors makes G + P divisible by z^2+z (so by (z^2+z)^k, k >= 1): the first point forces P to have no factor carrying z, the second then gives P(y) two values. In particular prod_{i<=n} (z+y_i)^M + z^(nM) + P is never divisible, for every n >= 2 and M >= 1; it fails at n = 1 (P = y_1^M, M a power of two, gives zero) and at M = 0.",
+   "assessment": "Working elementary proof by two evaluations at Boolean points, passed by the same fresh-context medium reviewer in its second round, including the use of n >= 2 and M >= 1 and the n = 1 and M = 0 failures.",
+   "status": "working_proof",
+   "rationale": "It excludes completing the pair prod_i (z+y_i)^M + z^(nM), whose top coefficients cancel to order M when M is a power of two, by one product, and constrains any partner of prod_i (z+y_i)^M in the head item's sub-idea.",
+   "next_action": "Find a partner of prod_i (z+y_i)^M other than z^(nM) whose pair value is divisible by B at all but few Boolean weights, and a third product for those."
+  }
+ ],
+ "relationships": [
+  [
+   "lem:top-coefficient-quotients",
+   "cites",
+   "lem:coefficient-fed-division",
+   "That lemma divides given the complete coefficient list; this one needs only the top D+1 coefficients and computes them from the products, at polynomial size when E+D is bounded."
+  ],
+  [
+   "lem:top-coefficient-quotients",
+   "cites",
+   "lem:extension-field-quotients",
+   "Its (c) groups from the bottom at size binom(q_a, k), polynomial at fixed k; this lemma groups from the top at size binom(m_a, b+i), polynomial at bounded E+D for every k, without an extension field."
+  ],
+  [
+   "lem:top-coefficient-quotients",
+   "cites",
+   "lem:boolean-quotient-residues",
+   "That lemma gives depth-four Boolean-value circuits with counting gates modulo 2^r-1 at every excess (AC0[6] when D <= 1); this one gives formal Sigma-Pi-Sigma quotients at bounded E+D, and decides the regime D <= 1 at E = 0 that its next attempt asked about."
+  ],
+  [
+   "lem:top-coefficient-quotients",
+   "cites",
+   "thm:affine-pair-division",
+   "Two products at every excess at depth twenty; this lemma covers any number of products at bounded E+D at depth three."
+  ],
+  [
+   "lem:top-coefficient-quotients",
+   "cites",
+   "prop:primitive-triple-contact",
+   "Its family is the Nonvacuity witness: k = M growing, D = 2, E = 0, quotient E_y recovered from one product's top three coefficients."
+  ],
+  [
+   "prop:frobenius-pair-obstruction",
+   "cites",
+   "lem:boolean-quotient-residues",
+   "Its proof uses only the elementary Boolean-point form of a binary affine product, chi z^s (1+z)^t with s+t fixed, which that lemma's part (a) also uses; it does not use the lemma's residues."
+  ]
+ ]
+}

@@ -1,0 +1,677 @@
+{
+  "base_sha256": "fd698575e9da687e21d389ceb31051512935244038c4a0617c5af71e6bff5b53",
+  "provenance": {
+    "revision": "551af97057881913c814e43b2fa5832d93f8b7af",
+    "date": "2026-10-17",
+    "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent"
+  },
+  "submissions": [
+    {
+      "claim": {
+        "id": "lem:top-coefficient-quotients",
+        "summary": "Top coefficient quotients. Over a commutative ring R, let d in R[z] have degree b and a unit leading coefficient, and f in R[y][z] have z-degree at most b+D. The quotient h of f by d (f = dh + r, deg r < b; h = f/d when d divides f) is h = sum_{j<=D} z^j sum_{i=j}^{D} mu_{i-j} f_{b+i}, with 1/d = sum_rho mu_rho z^(-b-rho): a fixed linear combination of the top D+1 coefficients of f. For f = sum_a prod_{j<=q_a} (u_aj + c_aj z), Z_a the factors with c_aj nonzero, m_a = |Z_a|, f_s = sum_a sum_{T subset Z_a, |T| = s} prod_T c_aj prod_(not T) u_aj, so each h_j is a sum of at most (D+1) p Q^min(E+D, b+D) products of q_a factor formulas, depth delta_0+2, where E = max_a max(0, m_a - b - D) is the excess. For affine u_aj, constant c_aj and d = (z^2+z)^k, mu_rho = (-1)^rho binom(k+rho-1, rho) and each h_j is a Sigma-Pi-Sigma formula of size O((D+1) Q^(E+D) S) at every k, polynomial at bounded E+D; at D <= 1 and E = 0, h_1 = f_{2k+1} and h_0 = f_{2k} - k f_{2k+1}, over F_2 with binary affine factors h_0 = sum_{m_a=2k} U_a + sum_{m_a=2k+1} U_a (e_{1,a} + k), U_a the product of the factors without z.",
+        "assessment": "Working elementary proof passed with corrections by a fresh-context medium reviewer in two rounds: (a) by the quotient as the polynomial part of f/d at infinity, needing only a unit leading coefficient; (b) by expanding the products and counting subsets, N <= (D+1) p Q^min(E+D, b+D); (c) over every commutative ring with mu_rho = (-1)^rho binom(k+rho-1, rho) and the regime formulas, checked by hand on prop:primitive-triple-contact's family at M = 2^t, on f = B^k(z+y) and on the previous entry's k = 1 instance. Part (a) is classical; no lower bound.",
+        "record": "[Top coefficient quotients](https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "frege-simulation",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "It answers the head item's sub-idea for three, or any number of, affine-product dividends at bounded E+D: a polynomial-size depth-three quotient formula at every k, so a hard quotient needs E+D and b+D both growing. Part (a) is the classical quotient-at-infinity observation.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients"
+          ],
+          "next_action": "Decide the bounded-D, growing-excess case: three binary affine products with B^k dividing f, k growing, D <= 1, one product with a count not in AC0[2] modulo 3 and its top coefficients cancelled to growing order, through the four-term pointwise relations; then the growing-D case."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:frobenius-pair-obstruction",
+        "summary": "Frobenius pair obstruction. Let G in F_2[y][z] have a Boolean point where G is 1 at z = 0 and at z = 1, and one where G(y,0) differs from G(y,1). Then no product P of binary affine factors makes G + P divisible by z^2+z (so by (z^2+z)^k, k >= 1): the first point forces P to have no factor carrying z, the second then gives P(y) two values. In particular prod_{i<=n} (z+y_i)^M + z^(nM) + P is never divisible, for every n >= 2 and M >= 1; it fails at n = 1 (P = y_1^M, M a power of two, gives zero) and at M = 0.",
+        "assessment": "Working elementary proof by two evaluations at Boolean points, passed by the same fresh-context medium reviewer in its second round, including the use of n >= 2 and M >= 1 and the n = 1 and M = 0 failures.",
+        "record": "[Top coefficient quotients](https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "frege-simulation",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "It excludes completing the pair prod_i (z+y_i)^M + z^(nM), whose top coefficients cancel to order M when M is a power of two, by one product, and constrains any partner of prod_i (z+y_i)^M in the head item's sub-idea.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients"
+          ],
+          "next_action": "Find a partner of prod_i (z+y_i)^M other than z^(nM) whose pair value is divisible by B at all but few Boolean weights, and a third product for those."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:coefficient-fed-division",
+        "summary": "Fix a binary monic d(z) of degree b>=0 and nu>=b. Given a shared binary division-free unbounded-fanin circuit, gate/wire size S and depth delta, for the COMPLETE coefficient list a0(y),...,a_nu(y) of g=sum a_i z^i, with d|g in F2[y,z], h=g/d has circuit size O(S+(nu+1)^2), depth<=delta+3. Put u=nu-b,d*=t^b d(1/t), and let c_l be the t^l coefficient of 1/d* for l<=u, fixed binary constants; h_j=sum_(l<=u-j)c_l a_(b+j+l), reconstruct h=sum h_j z^j using ordinary power wires. Nonzero g has actual joint degree deg h=deg g-b. Fixed nonuniform divisor and degree parameters, not variable inputs. No coefficient access from an implicit g circuit, PC-degree transfer, proof-image inclusion, binary general quotient algorithm or Frege advance is supplied.",
+        "assessment": "Sole medium reviewer passed reversal indices, padding, fixed constants, shared size, depth including delta0, joint degree, nonvacuity/degeneracies and native symbolic controls. Same reviewer reread source-scope, zero-case and disposition corrections and approved the narrow audit completion. Classical fixed-monic division; no coefficient availability from the actual dividend, new factor theorem, binary extractor or goal advance. No independent novelty claimed.",
+        "record": "[Coefficient-fed division](https://kbr.is-a.dev/math-research/#entry-2026-10-15-gcd-interface-test)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "../notebook.html#entry-2026-10-15-gcd-interface-test"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "nullstellensatz",
+          "frege-simulation",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Separates the easy binary fixed-divisor operation on supplied coefficients from the unpaid coefficient-input interface of the actual reciprocal-probe dividend and GCD source.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "../notebook.html#entry-2026-10-15-gcd-interface-test"
+          ],
+          "next_action": "Do not assume supplied coefficients; test exact source-image extension-point normalization as a different mechanism, retaining the formal quotient question."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-gcd-interface-test"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-gcd-interface-test"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-gcd-interface-test"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-gcd-interface-test"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Extension-field quotients: new relationship with lem:extension-field-quotients. Top coefficient quotients: new relationship with lem:top-coefficient-quotients.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-gcd-interface-test"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:extension-field-quotients",
+        "summary": "Extension-field quotients: over a field K, for f in K[y][z] of z-degree at most nu computed by a circuit of size S (gates and wires) and depth delta>=1, and a nonzero d(z) of degree b dividing f, h = f/d equals sum over alpha in A of d(alpha)^(-1) f(alpha,y) times the Lagrange basis in z, for any nu-b+1 points A of an extension E off the roots of d (existing when |E| >= nu-b+1 plus the number of distinct roots of d in E): a circuit over E of size O((nu-b+1)(S+nu-b+1)) and depth at most delta+2, a formula when f's is. For f a supplied sum of products of factors u+cz with u, c in K[y] given by formulas of depth delta_0 (binary affine factors: delta_0<=1, c constant), total size S, factor counts q_a, Q = max q_a: (b) for K=F2 and d=(z^2+z)^k, E = F_(2^r) with 2^r >= nu-2k+1+2[k>=1] gives a formula of size O((nu-2k+1)(S+nu)) and depth delta_0+6, five for binary affine factors, every k; (c) for d = prod_i (z-s_i)^(k_i) with distinct s_i in K, h has a formula over K of size O(sum_i sum_a binom(q_a,k_i) S_a + sum_i k_i^2) and depth delta_0+6, by grouping each product's terms by their first k_i chosen indices and partial fractions (for z^k(z+1)^k and binary affine factors the construction of the axiom repetition syzygy entry's sub-idea item); (d) for K=F2 and every k, balanced convolution of the factors' coefficient lists with lem:coefficient-fed-division gives a binary circuit of size O(S + sum_a q_a^2 + nu^2) and depth delta_0 + 2 ceil(log2 Q) + 4, and the regular representation of F_(2^r) gives the same depth up to three at a size larger by r^3. Constant-depth binary descent of (b)'s summands one by one fails at fixed r>=2 by thm:finite-algebra-evaluation; descent of their binary sum is open.",
+        "assessment": "Working elementary interpolation, term-grouping and composition proof, passed by the sole fresh-context medium reviewer with corrections. No lower bound; for the invariant-probe mechanism, a probe value giving a lower bound must be hard at constant depth over F2 as a formal polynomial while cheap over an extension and cheap as a Boolean function.",
+        "record": "[Extension-field quotients](https://kbr.is-a.dev/math-research/#entry-2026-10-17-extension-field-quotients)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-extension-field-quotients"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "frege-simulation",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Develops the head item's sub-idea on three-product dividends: a new operation (evaluation where the divisor is a unit, with interpolation) gives every exact quotient at constant depth over an extension, and the sub-idea's binary growing-k case at constant depth is reduced to the descent of an interpolation sum.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-extension-field-quotients"
+          ],
+          "next_action": "The regime nu <= 2k+1, where h's coefficients are f's middle coefficients and F4 suffices: whether three binary affine products with B^k | f, k growing, can have a middle coefficient whose Boolean function is a weight bit."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-extension-field-quotients"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-extension-field-quotients"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-extension-field-quotients"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-extension-field-quotients"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Boolean quotient residues: new relationship with lem:boolean-quotient-residues. Top coefficient quotients: new relationship with lem:top-coefficient-quotients.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-extension-field-quotients"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:boolean-quotient-residues",
+        "summary": "Boolean quotient residues: let f = sum_(a<=p) prod_j (u_aj + c_aj z) over F2[y][z] with affine u_aj and constant c_aj in {0,1}, description size S, and let (z^2+z)^k, k>=0, divide f with quotient h of z-degree D. At a Boolean point y, with chi_a the product of the c=0 factors' bits, m_a the number of c=1 factors of product a and t_a(y) the number of those with u_aj(y)=1: (a) for every alpha in F_(2^r) off {0,1}, h(y,alpha) = (alpha^2+alpha)^(-k) sum_a chi_a alpha^(m_a) ((1+alpha)/alpha)^(t_a); (b) with 2^r >= D+3 and N = 2^r-1, each coefficient h_i(y) = sum_a chi_a psi_(i,a)(t_a mod N) for fixed functions psi, so each h_i as a Boolean function has a depth-four circuit of size O(NS + pN^2) with XOR, AND and counting-mod-N gates (output one when the input sum is 0 mod N); (c) when D <= 1, h_0 + h_1 omega = sum_a chi_a omega^((m_a + t_a) mod 3) over F4, so h_0 and h_1 lie in depth-four AC0[6] of size O(S + p). Without divisibility the coefficient read off the expansion, h_0 = sum_a chi_a binom(t_a, m_a - k) mod 2, is by Lucas an AND of weight bits of orders up to m_a - k.",
+        "assessment": "Working elementary evaluation and inverse-Vandermonde proof, passed by the sole fresh-context medium reviewer with corrections. No lower bound; in the linear regime a constant-depth binary quotient fails, if at all, through a modulo-three pattern of the products' counts that the divisibility allows.",
+        "record": "[Boolean quotient residues](https://kbr.is-a.dev/math-research/#entry-2026-10-17-boolean-quotient-residues)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-boolean-quotient-residues"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "frege-simulation",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Develops the head item's sub-idea on three-product quotients: the coefficient read off the expansion is an AND of weight bits of orders up to m_a-k, and divisibility replaces it by a residue modulo 2^r-1 fixed by the quotient's degree, three in the linear regime.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-boolean-quotient-residues"
+          ],
+          "next_action": "Classify the relations of at most four terms z^s(1+z)^t over F2 and decide whether at points where h is nonzero the counts t_a are pinned to constants, so that h_0 is a sum of exact-count indicators, and whether one can be a growing slice."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-boolean-quotient-residues"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-boolean-quotient-residues"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-boolean-quotient-residues"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-boolean-quotient-residues"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Top coefficient quotients: new relationship with lem:top-coefficient-quotients, prop:frobenius-pair-obstruction.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-boolean-quotient-residues"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "thm:affine-pair-division",
+        "summary": "Over F2[z,y_1,...,y_v], v>=0, let g=P0+P1 with Pi explicitly supplied products of binary affine polynomials, zero factors and empty products allowed, and S>=2 counting gates and wires including repeated factors. If (z^2+z)^k divides g for any k>=0, its formal quotient has a division-free unbounded-fanin binary circuit of size O((S+1)^4) and depth at most20 independent of k. After cancelling the common affine-factor product, a nonzero reduced pair has root order zero or q at each binary root, where q is the largest common power of2 in all remaining full-factor multiplicities. Matching specializations and distinct simple poles prove primitive contact order1. Dividing the deflated sum at each needed root at most once, then taking the paid qth power and retaining root/common factors, gives the quotient. Pure products and zero sums are handled directly. This is a supplied two-product representation theorem, not generic factorization or arbitrary reciprocal-dividend coverage.",
+        "assessment": "Working binary affine factor-contact and exact quotient construction passed by the sole fresh-context medium reviewer, including corrected both-zero preprocessing. It preserves original power wires and isolates a strict representation premise; no proof-size lower bound or literature novelty is claimed.",
+        "record": "[Affine pair division](https://kbr.is-a.dev/math-research/#entry-2026-10-14-affine-pair-division)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "../notebook.html#entry-2026-10-14-affine-pair-division"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "nullstellensatz",
+          "degree-accounting",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Repairs the growing known-split-denominator step for a nonvacuous supplied two-product class without requesting hard generic intermediate coefficients.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "../notebook.html#entry-2026-10-14-affine-pair-division"
+          ],
+          "next_action": "Test a distinct regrouping mechanism for three affine-product dividends, retaining the growing primitive-contact control and avoiding the already false pair-contact classification."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-affine-pair-division"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-affine-pair-division"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-affine-pair-division"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-affine-pair-division"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Pair merging gap: new relationship with prop:pair-merging-gap. Quotient restriction data: new relationship with lem:quotient-restriction-data. Extension-field quotients: new relationship with lem:extension-field-quotients. Top coefficient quotients: new relationship with lem:top-coefficient-quotients.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-affine-pair-division"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:primitive-triple-contact",
+        "summary": "Over F2[z,y], let E=(z+y)(z+y+1), C=y(y+1), B=z(z+1). For every M=2^t,t>=1, the three binary affine products E^(M+1), C^(M+1), B C^M sum to B^M E. Their common gcd and largest common Frobenius power in full-factor multiplicities are both1, while the sum has exact root order M at both0,1. Thus primitive triple contact is unbounded in a polynomial-size description and global common-power deflation followed by a fixed number of elementary root divisions does not suffice. The quotient is the cheap product E, obtained by regrouping C^(M+1)+B C^M=C^M E and applying Frobenius. H=E(F dot Z)^M for a nonempty unit class containing B has this as an actual reciprocal dividend. The control limits that tactic, not arbitrary regrouping, exact division or Frege proofs.",
+        "assessment": "All-parameter source-compatible control suggested by the sole medium reviewer, verified by the author by the displayed formal identities, then passed by that same reviewer. Formal root orders and original power wires are retained; the final quotient is explicitly cheap.",
+        "record": "[Affine pair division](https://kbr.is-a.dev/math-research/#entry-2026-10-14-affine-pair-division)",
+        "mathematical_status": "refutation",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "../notebook.html#entry-2026-10-14-affine-pair-division"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "nullstellensatz",
+          "degree-accounting",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Refutes a constant primitive-contact extension of the pair argument while exhibiting a legal cheap regrouping, so it identifies the needed operation without alleging quotient hardness.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "../notebook.html#entry-2026-10-14-affine-pair-division"
+          ],
+          "next_action": "A three-product division mechanism must pass this growing primitive control, not only the earlier globally powered cube control."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-affine-pair-division"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-affine-pair-division"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-affine-pair-division"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-affine-pair-division"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Pair merging gap: new relationship with prop:pair-merging-gap. Primitive merger gap: new relationship with prop:primitive-merger-gap. Extension-field quotients: new relationship with lem:extension-field-quotients. Top coefficient quotients: new relationship with lem:top-coefficient-quotients.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-affine-pair-division"
+          ],
+          "next_action": null
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "lem:top-coefficient-quotients::cites::lem:coefficient-fed-division",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:top-coefficient-quotients",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:coefficient-fed-division",
+        "locator": null
+      },
+      "scope": "That lemma divides given the complete coefficient list; this one needs only the top D+1 coefficients and computes them from the products, at polynomial size when E+D is bounded.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "551af97057881913c814e43b2fa5832d93f8b7af",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "That lemma divides given the complete coefficient list; this one needs only the top D+1 coefficients and computes them from the products, at polynomial size when E+D is bounded."
+      }
+    },
+    {
+      "id": "lem:top-coefficient-quotients::cites::lem:extension-field-quotients",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:top-coefficient-quotients",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:extension-field-quotients",
+        "locator": null
+      },
+      "scope": "Its (c) groups from the bottom at size binom(q_a, k), polynomial at fixed k; this lemma groups from the top at size binom(m_a, b+i), polynomial at bounded E+D for every k, without an extension field.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "551af97057881913c814e43b2fa5832d93f8b7af",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Its (c) groups from the bottom at size binom(q_a, k), polynomial at fixed k; this lemma groups from the top at size binom(m_a, b+i), polynomial at bounded E+D for every k, without an extension field."
+      }
+    },
+    {
+      "id": "lem:top-coefficient-quotients::cites::lem:boolean-quotient-residues",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:top-coefficient-quotients",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:boolean-quotient-residues",
+        "locator": null
+      },
+      "scope": "That lemma gives depth-four Boolean-value circuits with counting gates modulo 2^r-1 at every excess (AC0[6] when D <= 1); this one gives formal Sigma-Pi-Sigma quotients at bounded E+D, and decides the regime D <= 1 at E = 0 that its next attempt asked about.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "551af97057881913c814e43b2fa5832d93f8b7af",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "That lemma gives depth-four Boolean-value circuits with counting gates modulo 2^r-1 at every excess (AC0[6] when D <= 1); this one gives formal Sigma-Pi-Sigma quotients at bounded E+D, and decides the regime D <= 1 at E = 0 that its next attempt asked about."
+      }
+    },
+    {
+      "id": "lem:top-coefficient-quotients::cites::thm:affine-pair-division",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:top-coefficient-quotients",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "thm:affine-pair-division",
+        "locator": null
+      },
+      "scope": "Two products at every excess at depth twenty; this lemma covers any number of products at bounded E+D at depth three.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "551af97057881913c814e43b2fa5832d93f8b7af",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Two products at every excess at depth twenty; this lemma covers any number of products at bounded E+D at depth three."
+      }
+    },
+    {
+      "id": "lem:top-coefficient-quotients::cites::prop:primitive-triple-contact",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:top-coefficient-quotients",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:primitive-triple-contact",
+        "locator": null
+      },
+      "scope": "Its family is the Nonvacuity witness: k = M growing, D = 2, E = 0, quotient E_y recovered from one product's top three coefficients.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "551af97057881913c814e43b2fa5832d93f8b7af",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Its family is the Nonvacuity witness: k = M growing, D = 2, E = 0, quotient E_y recovered from one product's top three coefficients."
+      }
+    },
+    {
+      "id": "prop:frobenius-pair-obstruction::cites::lem:boolean-quotient-residues",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "prop:frobenius-pair-obstruction",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:boolean-quotient-residues",
+        "locator": null
+      },
+      "scope": "Its proof uses only the elementary Boolean-point form of a binary affine product, chi z^s (1+z)^t with s+t fixed, which that lemma's part (a) also uses; it does not use the lemma's residues.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-top-coefficient-quotients"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "551af97057881913c814e43b2fa5832d93f8b7af",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Its proof uses only the elementary Boolean-point form of a binary affine product, chi z^s (1+z)^t with s+t fixed, which that lemma's part (a) also uses; it does not use the lemma's residues."
+      }
+    }
+  ],
+  "topic_definitions": []
+}
