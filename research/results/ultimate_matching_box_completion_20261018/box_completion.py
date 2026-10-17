@@ -135,81 +135,6 @@ def certificate(Ak, Ak1):
                     cert=bool(nuBX == BX.sum() or nuBY == BY.sum()))
 
 
-def brute_universal(adj_k, adj_k1, n):
-    """Universal completion at one level by enumerating every maximum matching (tiny n)."""
-    def matchings(adj):
-        edges = [(i, j) for i in range(n) for j in range(n) if adj[i][j]]
-        best, found = 0, [()]
-        for size in range(1, n + 1):
-            cur = [c for c in itertools.combinations(edges, size)
-                   if len({e[0] for e in c}) == size and len({e[1] for e in c}) == size]
-            if not cur:
-                break
-            best, found = size, cur
-        return best, found
-    nu_k, maxk = matchings(adj_k)
-    nu_k1, _ = matchings(adj_k1)
-    d = nu_k1 - nu_k
-    for M in maxk:
-        ux = [i for i in range(n) if i not in {e[0] for e in M}]
-        uy = [j for j in range(n) if j not in {e[1] for e in M}]
-        sub = [[adj_k1[i][j] for j in uy] for i in ux]
-        best = 0
-        for size in range(1, min(len(ux), len(uy)) + 1):
-            if any(all(sub[a][b] for a, b in zip(rows, cols))
-                   for rows in itertools.combinations(range(len(ux)), size)
-                   for cols in itertools.permutations(range(len(uy)), size)):
-                best = size
-        if best < d:
-            return False
-    return True
-
-
-def line_instance(x, y, radii):
-    X = np.column_stack([x, np.zeros(len(x))])
-    Y = np.column_stack([y, np.zeros(len(y))])
-    return [graph(X, Y, r) for r in radii]
-
-
-def controls(rng):
-    out = {}
-    gk, gk1 = line_instance([0, 1.6], [0.8, 3.5], [1.0, math.e])
-    nu, det = certificate(gk, gk1)
-    out['gadget'] = dict(nu_k=nu, **det)
-    sound = dict(instances=0, drops=0, universal_fails=0, cert_fires=0, cert_fires_where_holds=0,
-                 nuD_fires=0, nuD_fires_where_holds=0)
-    for n, reps in ((4, 1500), (5, 300)):
-        for _ in range(reps):
-            x, y = rng.uniform(0, n, n), rng.uniform(0, n, n)
-            gk, gk1 = line_instance(x, y, [1.0, math.e])
-            nu_k, det = certificate(gk, gk1)
-            nu_k1 = int((maximum_bipartite_matching(gk1, perm_type='column') >= 0).sum())
-            sound['instances'] += 1
-            if nu_k1 == nu_k:
-                continue
-            sound['drops'] += 1
-            ak = (gk.toarray() > 0).tolist()
-            ak1 = (gk1.toarray() > 0).tolist()
-            holds = brute_universal(ak, ak1, n)
-            sound['universal_fails'] += (not holds)
-            sound['cert_fires'] += det['cert']
-            sound['cert_fires_where_holds'] += (det['cert'] and holds)
-            nuD = det['nuD'] < nu_k1 - nu_k
-            sound['nuD_fires'] += nuD
-            sound['nuD_fires_where_holds'] += (nuD and holds)
-    out['soundness'] = sound
-    import networkx as nx
-    agree = 0
-    for rep in range(200):
-        n = int(rng.integers(20, 200))
-        A = csr_matrix((rng.random((n, n)) < rng.uniform(0.005, 0.05)).astype(np.int8))
-        G = nx.algorithms.bipartite.from_biadjacency_matrix(A)
-        ref = len(nx.bipartite.maximum_matching(G, top_nodes=range(n))) // 2
-        agree += int((maximum_bipartite_matching(A) >= 0).sum()) == ref
-    out['kernel_against_networkx'] = dict(graphs=200, agree=agree)
-    return out
-
-
 def sample(N, L, seed):
     rng = np.random.default_rng(seed)
     X = rng.uniform(0, 1, (N, 2))
@@ -244,30 +169,22 @@ def main():
     ap.add_argument('--out', required=True)
     ap.add_argument('--sizes', type=int, nargs='+', default=[4096, 16384, 65536])
     args = ap.parse_args()
-    result = dict(controls=controls(np.random.default_rng(20261018)), samples=[])
-    c = result['controls']
-    assert c['gadget']['cert'], c['gadget']
-    assert c['soundness']['cert_fires_where_holds'] == 0, c['soundness']
-    assert c['soundness']['nuD_fires_where_holds'] == 0, c['soundness']
-    assert c['kernel_against_networkx']['agree'] == 200, c['kernel_against_networkx']
-    print('controls', json.dumps(c))
+    # The controls run on their own (box_controls.py, seconds), so this run holds no brute-force loop.
+    result = dict(controls='box_controls.py', samples=[])
     jobs = [(N, L, seed) for N in args.sizes for L in (0.5, 1.0) for seed in range(3)]
     from multiprocessing import Pool
     with Pool(min(WORKERS, len(jobs))) as pool:
         runs = pool.starmap(sample, [(N, L, 1000 * N + 10 * int(2 * L) + seed) for N, L, seed in jobs])
     for (N, L, seed), lv in zip(jobs, runs):
-        if True:
-            if True:
-                drops = [v for v in lv if 'cert' in v]
-                rec = dict(N=N, L=L, seed=seed, levels=lv,
-                           drop_levels=len(drops),
-                           cert_levels=sum(v['cert'] for v in drops),
-                           nuD_levels=sum(v['nuD_below_drop'] for v in drops))
-                result['samples'].append(rec)
-                print(N, L, seed, 'm by level', [v['m'] for v in lv], 'drops', rec['drop_levels'],
-                      'certified', rec['cert_levels'], 'nuD test', rec['nuD_levels'], flush=True)
-                with open(args.out, 'w') as f:
-                    json.dump(result, f, indent=1)
+        drops = [v for v in lv if 'cert' in v]
+        rec = dict(N=N, L=L, seed=seed, levels=lv, drop_levels=len(drops),
+                   cert_levels=sum(v['cert'] for v in drops),
+                   nuD_levels=sum(v['nuD_below_drop'] for v in drops))
+        result['samples'].append(rec)
+        print(N, L, seed, 'm by level', [v['m'] for v in lv], 'drops', rec['drop_levels'],
+              'certified', rec['cert_levels'], 'nuD test', rec['nuD_levels'], flush=True)
+    with open(args.out, 'w') as f:
+        json.dump(result, f, indent=1)
 
 
 if __name__ == '__main__':
