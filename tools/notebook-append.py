@@ -679,6 +679,13 @@ def refuse_unanswered(entry, answers):
     who is given the file."""
     import draft_claim_sentences
     rows = draft_claim_sentences.summing_up(entry)
+    instance_rows = draft_claim_sentences.hypothesis_rows(entry)
+    if instance_rows:           # a cited claim evaluated at an instance, its hypotheses checked there
+        unchecked = draft_claim_sentences.unchecked_hypotheses(entry, answers or '')
+        if unchecked:
+            raise ValueError(draft_claim_sentences.unchecked_hypotheses_report(unchecked)
+                             + ('\n(pass the answers with --answers FILE; tools/draft_claim_sentences.py DRAFT '
+                                '--answers FILE writes the form)' if answers is None else ''))
     if not rows:
         refuse_unbounded(entry, answers)
         return

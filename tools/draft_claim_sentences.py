@@ -636,12 +636,16 @@ ANSWER_WORDS = 4
 def answers_template(draft, summaries=None):
     domain = {row[0]: row for row in domain_rows(draft, summaries or {})}
     extreme = {row[0] for row in extreme_rows(draft)}
+    hypothesis = {row[0] for row in hypothesis_rows(draft)}
     form = ''.join(f'{key} [{where}] {sentence}\n  rests on: \n' + ('  within: \n' if key in domain else '')
-                   + ('  extreme: \n' if key in extreme else '')
+                   + ('  extreme: \n' if key in extreme else '') + ('  hypotheses: \n' if key in hypothesis else '')
                    for key, where, sentence in summing_up(draft))
     asked = {key for key, _, _ in summing_up(draft)}
-    return form + ''.join(f'{key} [{where}] {sentence}\n  within: \n'
-                          for key, (_, where, sentence, _, _) in domain.items() if key not in asked)
+    form += ''.join(f'{key} [{where}] {sentence}\n  within: \n'
+                    for key, (_, where, sentence, _, _) in domain.items() if key not in asked)
+    asked |= set(domain)
+    return form + ''.join(f'{key} [{where}] {sentence}\n  hypotheses: \n'
+                          for key, where, sentence in hypothesis_rows(draft) if key not in asked)
 
 
 # A summing-up sentence that cites a registered claim while its paragraph leaves some of the claim's symbols
@@ -678,6 +682,48 @@ def unextreme_report(rows):
                       '"extreme:" answer: name the extreme member of the construction the sentence was tried on '
                       '(members that coincide, one that covers another, the largest family) and what it gave:']
                      + [f'{key} [{where}] {sentence[:160]}\n  extreme: ' for key, where, sentence in rows])
+
+
+# A sentence that evaluates a cited claim at an instance (a Falsification attempt, an Instance check, a Power or
+# Trivial cases paragraph, a Nonvacuity) is answered on a line "hypotheses:", the claim's hypotheses checked at
+# that instance with its numbers.  On 17 October 2026 a review evaluated four lemmas at N = 10^12, y = 763, while
+# each needs y >= 2e^16 (and a grid side its instance did not have), copying the previous review's instance; the
+# listing had set each sentence beside the lemma's statement.
+HYPOTHESES = re.compile(r'^([0-9a-f]{8})\b[^\n]*\n(?:[ \t]*(?:rests on|within|extreme):[^\n]*\n)*'
+                        r'[ \t]*hypotheses:[ \t]*([^\n]*)$', re.M)
+INSTANCE_LABELS = re.compile(r'^(?:Falsification attempt|Instance check|Power|Trivial cases|Nonvacuity)$', re.I)
+
+
+def hypothesis_rows(draft):
+    """[(key, section label, sentence)] for the sentences under an instance label that cite a claim, each once.
+    The label is the latest bold label before the sentence within its paragraph: a review's Instance check, Power
+    and Trivial cases stand inside its Decisive test paragraph (the exposing case of 17 October 2026 did)."""
+    found = {}
+    for tag, body in BLOCK.findall(draft):
+        if tag in ('h3', 'h4'):
+            continue
+        where = ''
+        for sentence in sentences(body):
+            inline = LABEL.match(sentence)
+            if inline:
+                where = inline.group(1)
+            if INSTANCE_LABELS.match(where) and cited(sentence):
+                plain = text(sentence)
+                found.setdefault(hashlib.sha1(plain.encode()).hexdigest()[:8], (where, plain))
+    return [(key, where, sentence) for key, (where, sentence) in found.items()]
+
+
+def unchecked_hypotheses(draft, answers):
+    """The rows of hypothesis_rows(draft) whose answer has no "hypotheses:" line of at least ANSWER_WORDS words."""
+    given = {key: answer for key, answer in HYPOTHESES.findall(answers or '')}
+    return [row for row in hypothesis_rows(draft) if len(given.get(row[0], '').split()) < ANSWER_WORDS]
+
+
+def unchecked_hypotheses_report(rows):
+    return '\n'.join([f'{len(rows)} sentences evaluate a cited claim at an instance and have no "hypotheses:" '
+                      'answer: name each hypothesis of the claim (levels, grid sides, ranges) and its value at the '
+                      'instance, with numbers:']
+                     + [f'{key} [{where}] {sentence[:160]}\n  hypotheses: ' for key, where, sentence in rows])
 
 
 def domain_rows(draft, summaries):
@@ -1455,6 +1501,10 @@ def main():
             if untried:
                 print(unextreme_report(untried))
                 open_rows = open_rows + untried
+            unchecked = unchecked_hypotheses(draft, answers.read_text())
+            if unchecked:
+                print(unchecked_hypotheses_report(unchecked))
+                open_rows = open_rows + unchecked
     return 1 if unregistered or missing or open_rows else 0
 
 

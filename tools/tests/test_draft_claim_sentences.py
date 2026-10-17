@@ -603,6 +603,22 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
         filled = form.replace('extreme: \n', 'extreme: a translate that covers back edges lowers it\n')
         self.assertEqual(dcs.unextreme(draft, filled), [])
 
+    def test_a_claim_evaluated_at_an_instance_needs_a_hypotheses_answer(self):
+        # 17 October 2026: four lemmas needing y >= 2e^16 were evaluated at y = 763, an instance copied from a review.
+        draft = ('<article id="x"><p><strong>Instance check.</strong> At \\(N=10^{12}\\), lem:cut-cell-variance-bound '
+                 '(d) needs \\(K\\le N^{1/7}=52\\), and \\(426&gt;52\\).</p><p><strong>Decision.</strong> '
+                 'lem:cut-cell-variance-bound stays as it is.</p></article>')
+        self.assertEqual([where for _, where, _ in dcs.hypothesis_rows(draft)], ['Instance check'])  # Decision: not asked
+        form = dcs.answers_template(draft)
+        self.assertIn('  hypotheses: \n', form)
+        self.assertEqual(len(dcs.unchecked_hypotheses(draft, form)), 1)
+        filled = form.replace('hypotheses: \n', 'hypotheses: y >= 2e^16 fails, y = 763 at this N\n')
+        self.assertEqual(dcs.unchecked_hypotheses(draft, filled), [])
+        inline = ('<p><strong>Decisive test.</strong> <strong>Test disposition.</strong> Retained, see '
+                  'lem:guided-chain-bound. <strong>Instance check.</strong> At \\(N=10^{12}\\), '
+                  'lem:cut-cell-variance-bound (d) needs \\(K\\le52\\).</p>')     # the exposing case's own form
+        self.assertEqual([where for _, where, _ in dcs.hypothesis_rows(inline)], ['Instance check'])
+
     def test_a_sentence_using_a_declared_part_by_letter_is_listed_under_the_declared_claim(self):
         # 17 October 2026: "by (a) no fixed-kernel sandpile adds one" dropped the statement's reversibility and was
         # never set beside the statement, naming no claim.
