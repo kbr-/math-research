@@ -220,7 +220,11 @@ growing checklists or one-off setup narratives.
   count: read each beside the saved output the count came from. A property of a recorded
   construction that a proof step uses (what its terms contain, where a factor sits, what it
   specializes to) is quoted from that construction's record, with its anchor, in the step: a
-  property written from the agent's picture of the construction is an untested hypothesis.
+  property written from the agent's picture of the construction is an untested hypothesis. So is a
+  modelling choice behind a computed figure (an area, a weight, the step a correction is assigned
+  to): it is written with its derivation before the figure it feeds, since checking the figure
+  checks only its last step (17 October 2026: a leg's area was halved in a smallest case, and a
+  theorem's step decomposition was not tried before a docstring said the theorem did not apply).
 - Once the question, argument and evidence are stable, make one focused correctness review of every
   new mathematical lemma, theorem, rule or encoding before assigning its status. Run the exhaustive
   checker for any rule, tree or encoding change before relying on it. Near the end of the cycle, use
