@@ -921,8 +921,9 @@ def answers_template(draft, summaries=None):
     form += ''.join(f'{key} [{where}] {sentence}\n  within: \n'
                     for key, (_, where, sentence, _, _) in domain.items() if key not in asked)
     asked |= set(domain)
-    return form + ''.join(f'{key} [{where}] {sentence}\n  hypotheses: \n'
-                          for key, where, sentence in hypothesis_rows(draft) if key not in asked)
+    form += ''.join(f'{key} [{where}] {sentence}\n  hypotheses: \n'
+                    for key, where, sentence in hypothesis_rows(draft) if key not in asked)
+    return form + ''.join(f'{key} [{where}] {sentence}\n  converse: \n' for key, where, sentence in converse_rows(draft))
 
 
 # A summing-up sentence that cites a registered claim while its paragraph leaves some of the claim's symbols
@@ -988,6 +989,61 @@ def hypothesis_rows(draft):
                 plain = text(sentence)
                 found.setdefault(hashlib.sha1(plain.encode()).hexdigest()[:8], (where, plain))
     return [(key, where, sentence) for key, (where, sentence) in found.items()]
+
+
+# A sentence outside the statements and proofs that says a condition is exact ("exactly when", "only if", "if and
+# only if") is answered on a line "converse:": which direction its source proves, and the step that gives the other
+# one, or the sentence is rewritten as a sufficient (or necessary) condition.  On 17 October 2026 a review's
+# Prediction said a proof holds "exactly while" a growth condition held, where the cost step needed only a fixed
+# offset, and a Falsification attempt said a discrepancy identity holds "only when" a field is a gradient, true for
+# every field; the listing of exactness words had printed both and was read past.
+CONVERSE = re.compile(r'\b(?:exactly (?:when|while|if)|only (?:when|if|while)|if and only if|iff|'
+                      r'necessary and sufficient)\b', re.I)
+# Asked only of the paragraphs that sum up or pose a test, where the two exposing sentences stood: on all 2550 past
+# articles every paragraph would ask 872 of them (research/provenance/framework/converse-rows-replay-20261017.txt),
+# most in questions, statements and proofs, where "only if" is the mathematics itself.
+CONVERSE_LABELS = re.compile(r'^(?:New mathematics|Goal progress|Bearing|Not covered|Assessment of this line|Obstacle|'
+                             r'Decision|Decisive test|Operation|Prediction|Trivial cases|Power|Instance check|Attempt|'
+                             r'Falsification attempt|Extra requirements|Necessary target|Downstream)$', re.I)
+CONVERSE_ANSWER = re.compile(r'^([0-9a-f]{8})\b[^\n]*\n(?:[ \t]*(?:rests on|within|extreme|hypotheses):[^\n]*\n)*'
+                             r'[ \t]*converse:[ \t]*([^\n]*)$', re.M)
+
+
+def converse_rows(draft):
+    """[(key, section label, sentence)] for the sentences outside statements and proofs whose prose (formulas and
+    code removed) holds a word of CONVERSE, each once."""
+    found, heading = {}, ''
+    for tag, body in BLOCK.findall(STATUS_LINE.sub('', draft)):
+        if tag in ('h3', 'h4'):
+            heading = text(body) if tag == 'h4' else ''
+            continue
+        label = LABEL.match(body)
+        where = label.group(1) if label else heading
+        if STATEMENT.match(where):
+            continue
+        for sentence in sentences(body):
+            inline = LABEL.match(sentence)
+            if inline:
+                where = inline.group(1)
+            bare = re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]|<code>.*?</code>|"[^"]*"|&quot;.*?&quot;', ' ', sentence,
+                          flags=re.S)
+            if CONVERSE_LABELS.match(where) and CONVERSE.search(text(bare)):
+                plain = text(sentence)
+                found.setdefault(hashlib.sha1(plain.encode()).hexdigest()[:8], (where, plain))
+    return [(key, where, sentence) for key, (where, sentence) in found.items()]
+
+
+def unconversed(draft, answers):
+    """The rows of converse_rows(draft) whose answer has no "converse:" line of at least ANSWER_WORDS words."""
+    given = {key: answer for key, answer in CONVERSE_ANSWER.findall(answers or '')}
+    return [row for row in converse_rows(draft) if len(given.get(row[0], '').split()) < ANSWER_WORDS]
+
+
+def unconversed_report(rows):
+    return '\n'.join([f'{len(rows)} sentences call a condition exact (exactly when, only if, if and only if) and have '
+                      'no "converse:" answer: say which direction the source proves and the step that gives the other, '
+                      'or rewrite the sentence as a one-sided condition:']
+                     + [f'{key} [{where}] {sentence[:160]}\n  converse: ' for key, where, sentence in rows])
 
 
 def unchecked_hypotheses(draft, answers):

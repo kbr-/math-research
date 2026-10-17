@@ -691,6 +691,23 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
                   'lem:cut-cell-variance-bound (d) needs \\(K\\le52\\).</p>')     # the exposing case's own form
         self.assertEqual([where for _, where, _ in dcs.hypothesis_rows(inline)], ['Instance check'])
 
+    def test_a_condition_called_exact_needs_a_converse_answer(self):
+        # 17 October 2026: a Prediction said a proof holds "exactly while" a growth condition held, where a fixed
+        # offset sufficed, and a Falsification attempt said an identity holds "only when" a field is a gradient.
+        draft = ('<article id="x"><p><strong>Decisive test.</strong> <strong>Prediction.</strong> (A) The proof '
+                 'holds exactly while \\(\\alpha(r^*-r)\\to\\infty\\).</p><p><strong>Falsification attempt.</strong> '
+                 'The identity is the same for every flow only when the field is a gradient.</p>'
+                 '<p><strong>Question.</strong> Does it hold if and only if the field is a gradient?</p>'
+                 '<p><strong>Proof.</strong> It holds only if \\(a&gt;0\\).</p>'
+                 '<p><strong>New mathematics.</strong> The bound was tested exactly for \\(m\\le10\\); the quoted '
+                 '"only if" is the source\'s.</p></article>')
+        self.assertEqual([where for _, where, _ in dcs.converse_rows(draft)], ['Decisive test', 'Falsification attempt'])
+        form = dcs.answers_template(draft)
+        self.assertEqual(form.count('  converse: \n'), 2)
+        self.assertEqual(len(dcs.unconversed(draft, form)), 2)
+        filled = form.replace('converse: \n', 'converse: sufficient only; the cost step needs a fixed offset\n')
+        self.assertEqual(dcs.unconversed(draft, filled), [])
+
     def test_a_sentence_using_a_declared_part_by_letter_is_listed_under_the_declared_claim(self):
         # 17 October 2026: "by (a) no fixed-kernel sandpile adds one" dropped the statement's reversibility and was
         # never set beside the statement, naming no claim.
