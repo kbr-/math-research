@@ -379,8 +379,11 @@ AGENTS.md"):
   check, a reviewer) is settled in the turn it recurs, by correcting the work, the living section it
   reads or the check, or by filing the choice in `user_requests` with its default; sending it to a
   later review is no disposition (17 October 2026: a judge's repeated verdict was deferred to the
-  next review by a rule that does not exist) (17 October 2026: a "disregard" note went to a reviewer
-  that had been sent nothing).
+  next review by a rule that does not exist). A paragraph assembled from parts written at different
+  times (a reviewer's lead, an instance check, a plan) is reread whole before it is sent, each claim
+  it makes against each of its own qualifiers (17 October 2026: a review's Decision named a tail
+  test, from its reviewer's lead, and ended with its own finding that no reachable size decides it)
+  (17 October 2026: a "disregard" note went to a reviewer that had been sent nothing).
 - A property of a family (nested, disjoint, packed, few per point) enters a proof only after it is
   checked on the family's extreme members: boundaries that coincide, many members through one point.
 - A sentence that gives a decision its reason (dropping, choosing, calling a case decided) names its

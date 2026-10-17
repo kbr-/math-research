@@ -202,6 +202,26 @@ class ChecksNote(unittest.TestCase):
         self.assertEqual(FT.checks_note(FT.CHECKS_WARN_S / 4), '')
 
 
+class DecisionTestPower(unittest.TestCase):
+    """A computational test named in a review's Decision says what can decide it (17 October 2026: the tenth
+    ultimate-matching review named a tail test while its own text said no reachable size decides)."""
+
+    def test_a_tail_test_without_what_decides_it_is_listed(self):
+        tenth = ('The construction the entries after it build and test: a flow on the grid of those cells, first the '
+                 'cells\' dyadic flow corrected at every coarser level, its test the tails of its normalized per-edge '
+                 'loads against \\(\\psi_4\\) at scale \\(s\\).')
+        self.assertEqual(len(FT.decision_unpowered_tests(tenth)), 1)
+
+    def test_proof_questions_and_powered_runs_pass(self):
+        for value in ('Test whether the lemma holds for every chain.',
+                      'The stronger shared-survivor simulation is retained.',
+                      'Build the flow and measure the tails of its loads at J = 6 to 8 as an existence check, whose '
+                      'outcome decides nothing about the limit.',
+                      'Its test the tails of its loads, decided by proof, not by a run at reachable sizes.'):
+            with self.subTest(value=value):
+                self.assertEqual(FT.decision_unpowered_tests(value), [])
+
+
 
 class AssessmentAfterReview(unittest.TestCase):
     """A Process assessment reporting no mistake beside a gate listing reviewer corrections is refused."""

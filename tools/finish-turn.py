@@ -576,6 +576,25 @@ def validate_test_disposition(body, article, value):
                          'another representation alone does not make it a new decisive operation')
 
 
+# A test named in a review's Decision outside its Decisive test escapes the Power paragraph. The tenth
+# ultimate-matching review (17 October 2026) named "its test the tails of its normalized per-edge loads against
+# psi_4 at scale s" while the same paragraph said "no computation at reachable sizes bears on the shift threshold".
+DECISION_POWER_FROM = '2026-10-17'
+# Computations only: a test that is a proof question ("test whether the lemma holds") has no sizes to state.
+# "Simulation" is left out: in proof complexity it names a proof relation (a p-simulation), not a run.
+DECISION_TEST = re.compile(r'\b(?:the tails of|tails? (?:of|against)|measur(?:e|es|ed|ing) (?:the|its)|'
+                           r'(?:a|the|its) run\b|exceedances?|per-point loads?|per-edge loads?)\b', re.I)
+DECISION_POWER = re.compile(r'\breachable\b|\bby (?:a )?proof\b|\bdecides? nothing\b|\bexistence check\b|'
+                            r'\bat (?:the )?sizes?\b|\bsizes? (?:run|reached)\b|\bPower\b', re.I)
+
+
+def decision_unpowered_tests(value):
+    """The sentences of a review's Decision that name a test and say nothing of what can decide it."""
+    plain = ' '.join(html.unescape(strip_tags(value)).split())
+    return [s for s in re.split(r'(?<=[.;])\s+(?=[A-Z])', plain)
+            if DECISION_TEST.search(s) and not DECISION_POWER.search(s)]
+
+
 def report_paragraph(text, label):
     found = re.search(r'<p\b[^>]*>\s*<strong>' + re.escape(label) + r'\.</strong>(.*?)</p>',
                       text, re.S)
@@ -2193,6 +2212,15 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
                                      'evaluated through the proved downstream statements, citing their claim '
                                      'IDs, with the explicit consequence and whether it is the goal or weaker '
                                      '(AGENTS.md, Necessary target)')
+            dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})', text)
+            if label == 'Decision' and dated and dated.group(1) >= DECISION_POWER_FROM:
+                unpowered = decision_unpowered_tests(value)
+                if unpowered:
+                    raise ValueError('Decision names a test without what can decide it: "' + unpowered[0][:200]
+                                     + '". Say in that sentence at which sizes its outcomes differ, or that it '
+                                     'is decided by proof, or that its run decides nothing and is an existence '
+                                     'check; a review whose Decision names a test that its own text says no '
+                                     'reachable size decides contradicts itself (AGENTS.md, Decisive test)')
             if label == 'Decisive test':
                 validate_test_disposition(body, article, value)
                 searched = re.search(r'<strong>Record search\.</strong>(.*)', value, re.S)

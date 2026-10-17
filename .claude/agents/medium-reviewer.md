@@ -76,6 +76,12 @@ answer is often already there (17 October 2026: a review asked whether two certi
 small certificate, while a lemma its cited result cites already stated the needed certificate
 property).
 
+Where the brief sends a decision paragraph (a review's Decision, a next step), read it whole against
+the rest of the draft for sentences that undo each other: each test it names, against every sentence
+of the draft on what can decide such a test (17 October 2026: a Decision named a tail test while its
+own last sentence said no computation at reachable sizes bears on the question, and its reviewer
+passed it).
+
 After the correctness check, and never in place of it, help with what the brief names as the cycle's
 open point: for a failed proof attempt, an adjustment that gets past the failing step or a reason
 none exists; for an unproved expectation, a proof or a counterexample; for a new bound, whether it
@@ -127,13 +133,13 @@ its run on the case that exposed it and a count of its false refusals over past 
 also a direct path the draft implies but never names (a mechanism it calls needed, a construction
 its obstructions point to) left unnamed as a next step: an unnamed path is orbiting too. When the
 brief lists rules committed during the cycle, apply each to the draft and report every place it
-breaks one: a rule committed after a mistake is first tested on the next text the author writes,
-and the author does not see its own lapses (17 October 2026: a rule on rereading corrected drafts at
+breaks one: a rule committed after a mistake is first tested on the next text the author writes, and
+the author does not see its own lapses (17 October 2026: a rule on rereading corrected drafts at
 both ends of each free parameter, committed that day, was broken by the next corrected draft at the
-boundary step of a range). Give each
-finding with its location, or write "no findings". End the audit with "Strength count: N", the
-number of sentences outside the proofs (title, status, bearing, decision, follow-up, commit message)
-whose claim is stronger than its source in the draft, so that the pattern is counted per entry.
+boundary step of a range). Give each finding with its location, or write "no findings". End the
+audit with "Strength count: N", the number of sentences outside the proofs (title, status, bearing,
+decision, follow-up, commit message) whose claim is stronger than its source in the draft, so that
+the pattern is counted per entry.
 
 Report a verdict (pass, pass with corrections, or fail) followed by short bullets: each concrete gap
 or error with the exact location and the change required, and each unused hypothesis. Then, under a
