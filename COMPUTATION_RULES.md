@@ -473,6 +473,21 @@ It verifies that exclusive categories sum to the total and omits zero-duration c
 session must have no unfinished commands. Do not invent categories or backfill unmeasured time.
 Operations after the final snapshot are outside its measured interval.
 
+The export also records the cycle's model use, in the summary JSON (`model_use`) and, after the
+timing table, as a **Model use** table (tokens by model and reasoning effort, and their cost at the
+API list prices of [tools/model_prices.json](tools/model_prices.json)), with one sentence in the
+note giving its share of the weekly limit. [tools/model_usage.py](tools/model_usage.py) reads it
+from the transcripts of the harness session that runs the export (Claude Code or Codex), its
+subagents and the framework's judge calls; it records totals only, never the session's id. The share
+is the limit's movement over the cycle, split between this machine's sessions on the same plan by
+their use at API prices, so parallel cycles share it and use elsewhere is counted against them.
+Claude's limit is read from `USAGE_LOG_DIR/claude.jsonl`, which a Claude Code status-line command
+writes: one JSON line (`at`, `week`, `week_resets_at`) whenever the `rate_limits.seven_day` its
+input reports changes. Codex's limit is read from its rollouts; `USAGE_LOG_DIR/plans.json` gives
+each plan's monthly price for dollars. When the model use can't be measured, the export says why on
+stderr and the fragment keeps only the timing table; when only the share can't, the note says why. A
+model the price table lacks is shown unpriced: add its official prices, with their date.
+
 Operational `research/logs/` are ignored. Archiving preserves the journal, summary, and complete
 command outputs in `research/provenance/session-records/`. Inspect the evidence for credentials and
 unrelated/private runtime state before committing it. Promote any other essential scratch results to

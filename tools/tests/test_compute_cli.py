@@ -391,6 +391,81 @@ class RunnerChecks(unittest.TestCase):
             self.assertNotIn('Pure reasoning time', output.read_text())
 
 
+class ModelUseExport(unittest.TestCase):
+    """The timing export with the cycle's model use (tools/model_usage.py), through compute.sh itself."""
+
+    def setUp(self):
+        self.name = 'cli_test_' + uuid.uuid4().hex[:12]
+        self.dir = Path(tempfile.mkdtemp(prefix='model-use-'))
+        self.addCleanup(shutil.rmtree, self.dir, True)
+        self.env = {**os.environ, 'MATH_AGENT': 'Claude Code', 'CLAUDE_CONFIG_DIR': str(self.dir / 'claude')}
+        for name in ('CLAUDE_CODE_SESSION_ID', 'USAGE_LOG_DIR', 'CODEX_THREAD_ID'):
+            self.env.pop(name, None)
+        started = call('start', self.name, '--model', 'unit test, no reasoning', '--no-guidance', env=self.env)
+        self.assertEqual(started.returncode, 0, started.stderr)
+        self.addCleanup(call, 'report', self.name, '--stop')
+
+    def transcript(self, session):
+        """A message of the session stamped now: 1000 cache reads and 10 output tokens of Opus 5.5 at high
+        effort, $0.0002 + $0.0002 at list prices."""
+        from datetime import datetime, timezone
+        stamp = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'  # after the start
+        path = self.dir / 'claude' / 'projects' / 'project' / f'{session}.jsonl'
+        path.parent.mkdir(parents=True)
+        path.write_text(json.dumps({'type': 'api-request', 'timestamp': stamp, 'params': {
+            'betas': ['oauth-2025-04-20'], 'output_config': {'effort': 'high'}}}, separators=(',', ':')) + '\n'
+            + json.dumps({'type': 'assistant', 'timestamp': stamp, 'message': {
+                'id': 'm', 'model': 'claude-opus-5-5', 'usage': {'input_tokens': 0, 'cache_read_input_tokens': 1000,
+                                                                  'output_tokens': 10}}}, separators=(',', ':')) + '\n')
+
+    def export(self, env):
+        output = self.dir / 'timing.html'
+        report = call('report', self.name, '--stop', '--html-out', str(output), env=env)
+        self.assertEqual(report.returncode, 0, report.stderr)
+        summary = json.loads((ROOT / 'research/logs' / f'{self.name}.summary.json').read_text())
+        return output.read_text(), report.stderr, summary
+
+    def test_a_measured_cycle_shows_its_model_use_inside_the_timing_report(self):
+        self.transcript('session-under-test')
+        fragment, stderr, summary = self.export({**self.env, 'CLAUDE_CODE_SESSION_ID': 'session-under-test'})
+        self.assertEqual(summary['model_use']['usd'], 0.0004)
+        self.assertNotIn('session-under-test', json.dumps(summary))
+        table = fragment.index('<caption>Model use</caption>')
+        self.assertLess(fragment.index('<caption>Measured timing</caption>'), table)
+        self.assertLess(table, fragment.index('<p class="timing-note">'))
+        self.assertIn('<td>claude-opus-5-5, high</td><td class="elapsed">1 k</td><td class="elapsed">&lt;$0.01</td>',
+                      fragment)
+        self.assertIn('Share of the weekly limit not measured: USAGE_LOG_DIR is not set', fragment)
+        self.assertIn('its share of the weekly limit not: USAGE_LOG_DIR is not set', stderr)
+        # notebook-excerpt's pattern for a timing report still spans the whole div, the second table included.
+        excerpt = importlib.machinery.SourceFileLoader('excerpt', str(ROOT / 'tools/notebook-excerpt.py')).load_module()
+        self.assertEqual(excerpt.TIMING.search(fragment).group(0), fragment.strip())
+
+    def test_a_failed_measurement_is_reported_and_the_export_goes_on(self):
+        def broken(events, root):
+            raise OSError('disk gone')
+        stderr = __import__('io').StringIO()
+        with unittest.mock.patch('model_usage.cycle', broken), \
+                unittest.mock.patch('sys.stderr', stderr):
+            use = compute.cycle_model_use([])
+        self.assertEqual(use, {'measured': False, 'reason': 'the measurement failed: OSError: disk gone'})
+        self.assertIn('Model use not measured: the measurement failed: OSError: disk gone', stderr.getvalue())
+
+    def test_the_note_sentence_is_escaped(self):
+        data = {'total_instrumented_s': 1.0, 'exclusive_categories_s': {'preparation': 1.0},
+                'failed_or_timed_out_commands': 0, 'unfinished_commands': 0,
+                'model_use': {'measured': True, 'billing': 'API key', 'usd': 0.004, 'limit': {'measured': False},
+                              'rows': [{'model': 'm', 'effort': 'e', 'total_tokens': 5, 'usd': 0.004,
+                                        'unpriced_tokens': 0}]}}
+        self.assertIn('Model use billed to an API key at &lt;$0.01.</p>', compute.timing_html(data, 's'))
+
+    def test_an_unmeasured_cycle_keeps_the_plain_timing_report_and_says_why(self):
+        fragment, stderr, summary = self.export(self.env)
+        self.assertNotIn('Model use', fragment)
+        self.assertEqual(summary['model_use']['measured'], False)
+        self.assertIn('Model use not measured: CLAUDE_CODE_SESSION_ID is not set', stderr)
+
+
 class RecordedKernelReasonTest(unittest.TestCase):
     def test_a_refused_launch_is_shown_the_reason_recorded_for_code_it_shares(self):
         # 17 October 2026: two launches in a row lacked the kernel reason a run of the same imported flows had

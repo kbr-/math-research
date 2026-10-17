@@ -150,6 +150,27 @@ class ClaudeCycleTest(Fixture):
         self.assertFalse(use['limit']['measured'])
         self.assertEqual(mu.note_text(use), 'Model use billed to an API key at $200.00.')
 
+    def test_a_session_without_request_records_uses_its_environment(self):
+        # An interactive Claude Code session writes no api-request records (checked on this machine, 17 October
+        # 2026): its effort is the session's setting and its billing is told by an API key in its environment.
+        self.build()
+        projects = self.dir / 'claude' / 'projects' / 'project'
+        write(projects / 'session-i.jsonl', [message(20, 'i1', 'claude-opus-5-5', {'input_tokens': 1000,
+                                                                                    'output_tokens': 0})])
+        write(projects / 'session-j.jsonl', [message(20, 'j1', 'claude-opus-5-5', {'input_tokens': 1000,
+                                                                                    'output_tokens': 0})])
+        env = {'CLAUDE_CODE_SESSION_ID': 'session-i', 'USAGE_LOG_DIR': str(self.logs), 'CLAUDE_EFFORT': 'medium'}
+        use = mu.cycle(journal('Claude Code'), root=self.root, env=env, prices=self.prices, claude=self.dir / 'claude')
+        self.assertEqual([(row['model'], row['effort']) for row in use['rows']],
+                         [('claude-opus-5-5', 'medium (session setting)')])
+        self.assertEqual(use['billing'], 'plan')
+        # another session without request records counts as plan use: 0.004 of S's 0.44344, the other
+        # session's 0.8, the judges' 0.015334 and these two sessions' 0.004 each.
+        self.assertAlmostEqual(use['limit']['fraction_of_machine_use'], 0.004 / 1.266774, places=6)
+        keyed = mu.cycle(journal('Claude Code'), root=self.root, env={**env, 'ANTHROPIC_API_KEY': 'k'},
+                         prices=self.prices, claude=self.dir / 'claude')
+        self.assertEqual(keyed['billing'], 'API key')
+
     def test_table_and_note(self):
         use = self.run_cycle()
         table = mu.table_html(use)

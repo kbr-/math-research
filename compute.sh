@@ -345,8 +345,30 @@ def timing_html(data, session):
         note += f" Failed/timed-out commands: {int(data['failed_or_timed_out_commands'])}."
     if data['unfinished_commands']:
         note += f" Unfinished commands: {int(data['unfinished_commands'])}."
-    result += ['</tbody></table>', f'<p class="timing-note">{note}</p>', '</div>']
+    result.append('</tbody></table>')
+    use = data.get('model_use') or {}
+    if use.get('measured'):
+        import model_usage
+        # Inside the timing div, before its note: readers that skip the generated div skip this table too.
+        result.append(model_usage.table_html(use))
+        note += ' ' + html.escape(model_usage.note_text(use))
+    result += [f'<p class="timing-note">{note}</p>', '</div>']
     return '\n'.join(result) + '\n'
+
+
+def cycle_model_use(events):
+    """The finished cycle's model use (tools/model_usage.py); a measurement that fails says why on stderr and
+    never stops the timing export."""
+    try:
+        import model_usage  # imported here: a copy of the launcher without it still exports its timing
+        use = model_usage.cycle(events, root=ROOT)
+    except Exception as error:  # noqa: BLE001 -- any failure is reported, the export goes on
+        use = {'measured': False, 'reason': f'the measurement failed: {type(error).__name__}: {error}'}
+    if not use.get('measured'):
+        print(f"Model use not measured: {use['reason']}.", file=sys.stderr)
+    elif not (use.get('limit') or {}).get('measured'):
+        print(f"Model use measured; its share of the weekly limit not: {use['limit']['reason']}.", file=sys.stderr)
+    return use
 
 
 def show_status():
@@ -1282,6 +1304,16 @@ def main():
                         raise ValueError('Use --stop to finalize the session before exporting its timing table')
                     data = summary(events, stop['monotonic_s'] if stop else time.monotonic())
                     recovery_summary(data, path, stop['unix_s'] if stop else time.time())
+                    if args.html_out:
+                        data['model_use'] = cycle_model_use(events)
+                    elif stop:
+                        # A later report of the finished cycle keeps the model use its export recorded.
+                        try:
+                            recorded = json.loads(path.with_suffix('.summary.json').read_text()).get('model_use')
+                        except (OSError, ValueError):
+                            recorded = None
+                        if recorded is not None:
+                            data['model_use'] = recorded
                     path.with_suffix('.summary.json').write_text(json.dumps(data, indent=2) + '\n')
                     if args.html_out:
                         args.html_out.parent.mkdir(parents=True, exist_ok=True)

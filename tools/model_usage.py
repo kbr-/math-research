@@ -222,9 +222,11 @@ def claude_tokens(usage):
             'output': usage.get('output_tokens', 0) or 0}
 
 
-def claude_file(path, low, high, prices):
-    """(tally, billed to a plan) of one Claude Code transcript's messages stamped in [low, high]."""
-    tally, effort, oauth, seen = Tally(prices), None, None, set()
+def claude_file(path, low, high, prices, effort=None):
+    """(tally, whether the session is billed to a plan, or None when no request record says) of one Claude Code
+    transcript's messages stamped in [low, high]. An interactive session writes no `api-request` records: its
+    messages get `effort`, the session's setting, if given."""
+    tally, oauth, seen = Tally(prices), None, set()
     for record in records(path, low, high, (ASSISTANT, API_REQUEST), before=(API_REQUEST,)):
         if record.get('type') == 'api-request':
             params = record.get('params') or {}
@@ -241,7 +243,7 @@ def claude_file(path, low, high, prices):
         tokens = claude_tokens(usage)
         prompt = tokens['input'] + tokens['cache_write_5m'] + tokens['cache_write_1h'] + tokens['cache_read']
         tally.add(message.get('model'), effort, tokens, prompt, usage.get('speed') == 'fast')
-    return tally, oauth is not False
+    return tally, oauth
 
 
 def claude_home():
@@ -445,9 +447,13 @@ def cycle(events, root=ROOT, env=None, prices=None, claude=None, codex=None, now
         mine = set(claude_session_files(home, session))
         if not mine:
             return {'measured': False, 'reason': 'no transcript of the Claude Code session was found'}
+        setting = env.get('CLAUDE_EFFORT')
         for path in recent((home / 'projects').rglob('*.jsonl'), low):
-            tally, plan = claude_file(path, low, high, prices)
-            if path in mine:
+            ours = path in mine
+            tally, plan = claude_file(path, low, high, prices, f'{setting} (session setting)' if ours and setting else None)
+            if plan is None:  # no request record: this session by its environment, another one by the default
+                plan = not env.get('ANTHROPIC_API_KEY') if ours else True
+            if ours:
                 own.merge(tally)
                 billed = plan if billed is None else billed or plan
             if plan:
@@ -530,14 +536,14 @@ def table_html(use):
     from html import escape
     rows = [f'<tr><td>{escape(row["model"])}, {escape(row["effort"])}</td><td class="elapsed">'
             f'{tokens_text(row["total_tokens"])}</td><td class="elapsed">'
-            + ('unpriced' if row['unpriced_tokens'] and not row['usd'] else usd_text(row['usd']))
+            + escape('unpriced' if row['unpriced_tokens'] and not row['usd'] else usd_text(row['usd']))
             + '</td></tr>' for row in use['rows']]
     total = sum(row['total_tokens'] for row in use['rows'])
     return '\n'.join(['<table class="timing-table model-use-table">', '<caption>Model use</caption>',
                       '<thead><tr><th scope="col">Model and effort</th><th scope="col">Tokens</th>'
                       '<th scope="col">At API prices</th></tr></thead>', '<tbody>',
                       f'<tr><th scope="row">Total</th><td class="elapsed"><strong>{tokens_text(total)}</strong></td>'
-                      f'<td class="elapsed"><strong>{usd_text(use["usd"])}</strong></td></tr>', *rows,
+                      f'<td class="elapsed"><strong>{escape(usd_text(use["usd"]))}</strong></td></tr>', *rows,
                       '</tbody></table>'])
 
 

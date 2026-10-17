@@ -914,14 +914,15 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   evidence and fills the unique `<!-- TIMING TURN -->` marker. For continuous research add `--next
   NEXT` to start the next clock immediately; subsequent checkpoint work is preparation. Each entry
   ends with a generated two-column **Measured category / Elapsed** table and bold total instrumented
-  interval (`compute.sh report TURN --stop --html-out PATH`). Use actual measured categories, count
-  overlap once, and distinguish tool failures/timeouts from failed mathematics. Keep its footnote
-  one short sentence plus exceptional limitations; do not repeat the methodology or backfill
-  unmeasured time. Commit the entry, fragment, archive and supporting results together. After the
-  finisher, only stage, commit and perform any authorized push. If an edit is necessary, rerun the
-  finisher's checks, including `tools/notebook_context.py --all` and the claim checks, before
-  committing; its earlier checks validate only the earlier snapshot. The checked push rejects hard
-  context-budget excesses.
+  interval (`compute.sh report TURN --stop --html-out PATH`), followed by the cycle's generated
+  **Model use** table when the finisher runs in the cycle's Claude Code or Codex session. Use actual
+  measured categories, count overlap once, and distinguish tool failures/timeouts from failed
+  mathematics. Keep its footnote one short sentence plus exceptional limitations; do not repeat the
+  methodology or backfill unmeasured time. Commit the entry, fragment, archive and supporting
+  results together. After the finisher, only stage, commit and perform any authorized push. If an
+  edit is necessary, rerun the finisher's checks, including `tools/notebook_context.py --all` and
+  the claim checks, before committing; its earlier checks validate only the earlier snapshot. The
+  checked push rejects hard context-budget excesses.
 
 ## Framework maintenance and interaction
 
