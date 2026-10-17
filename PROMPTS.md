@@ -237,16 +237,20 @@ So perform the following, in a loop:
   it). Draft a queue item's Follow-up as Continuing, and change it to Closed or Developed only after
   the review has read the run's figures and the readings: a loop that wants the queue drained
   otherwise writes the closure first and reads the figures as its support (17 October 2026: an item
-  was closed on a run whose own kurtosis pointed against the closure). Before a step, name what the
-  setting it runs in brings with it (the files beside it, the form the problem is computed in, the
-  previous entry's framing) and remove or translate what the step must not carry (17 October 2026: a
-  blind reviewer's brief sat beside the route it was blind to, and a primal computation was searched
-  only in its primal form). A figure the entry interprets is read by [the ratio
-  rule](COMPUTATION_RULES.md#numerical-verification) before the interpretation is written. A next
-  attempt is planned only after [the order of work's line on what the entry has already
-  computed](AGENTS.md#order-of-work) is applied to it. The closing paragraphs (Nonvacuity,
-  Degenerate cases, Instance check, the claim spec's notes) are worked before the brief as
-  computations of their own, each number in exact arithmetic beside its formula and each case run
+  was closed on a run whose own kurtosis pointed against the closure). Likewise a review's Decision
+  is written after its Falsification attempt and Attempt are finished and reread, from what they
+  found: a Decision drafted first is supported afterwards, each reason checked against it rather
+  than derived toward it (17 October 2026: a review drafted "the line must now build", then a test
+  whose only deciding outcome was an exclusion, and a falsification that called a fatal case
+  harmless). Before a step, name what the setting it runs in brings with it (the files beside it,
+  the form the problem is computed in, the previous entry's framing) and remove or translate what
+  the step must not carry (17 October 2026: a blind reviewer's brief sat beside the route it was
+  blind to, and a primal computation was searched only in its primal form). A figure the entry
+  interprets is read by [the ratio rule](COMPUTATION_RULES.md#numerical-verification) before the
+  interpretation is written. A next attempt is planned only after [the order of work's line on what
+  the entry has already computed](AGENTS.md#order-of-work) is applied to it. The closing paragraphs
+  (Nonvacuity, Degenerate cases, Instance check, the claim spec's notes) are worked before the brief
+  as computations of their own, each number in exact arithmetic beside its formula and each case run
   through the proof's steps, not written after the proof from the result's shape (17 October 2026: a
   witness's constant from a floating-point ceiling, two degenerate cases never run, a spec's scope
   wider than its entry, and a stationary variance off by two, all in one entry's closing text). A
