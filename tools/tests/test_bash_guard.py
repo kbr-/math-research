@@ -553,6 +553,21 @@ class SharedRunFileTest(unittest.TestCase):
                 self.assertIsNone(guard.shared_run_file_write(command))
 
 
+class SubagentTranscriptTest(unittest.TestCase):
+    # 17 October 2026: a needless cp of a subagent transcript to /dev/null prompted the user.
+    def test_commands_on_subagent_transcripts_are_refused(self):
+        for command in ('cp /tmp/claude-1000/-home-u-repo/c0de/x/a4c2.output /dev/null 2>&1',
+                        'tail -5 /tmp/claude-1000/x/y/abc.output'):
+            with self.subTest(command=command):
+                self.assertIn('message', guard.subagent_transcript(command))
+
+    def test_other_paths_pass(self):
+        for command in ('ls /tmp/claude-1000/', 'cat research/logs/run.output.txt',
+                        'python3 tools/lead_queue.py head notebook.html'):
+            with self.subTest(command=command):
+                self.assertIsNone(guard.subagent_transcript(command))
+
+
 class StagingSilencedTest(unittest.TestCase):
     def test_git_add_and_commit_keep_their_errors(self):
         for command in ('git add a b 2>/dev/null && git commit -m x',

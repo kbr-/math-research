@@ -368,6 +368,19 @@ def shared_run_file_write(command: str):
     return None
 
 
+SUBAGENT_TRANSCRIPT = re.compile(r"/tmp/claude-\d+/\S+\.output\b")
+
+
+def subagent_transcript(command: str):
+    """A shell command naming a subagent's transcript under /tmp/claude-UID/ (a .output file): it lies outside
+    the worktree, the harness says never to read it by shell, and on 17 October 2026 a needless cp of one to
+    /dev/null put the user in front of a permission prompt. A reviewer's report arrives as its message."""
+    if SUBAGENT_TRANSCRIPT.search(command):
+        return ("a shell command on a subagent's transcript under /tmp/claude-UID/ leaves the worktree and prompts "
+                "the user; read the agent's report from its message")
+    return None
+
+
 def blocked(command: str):
     """Return the reason for the first filtered must-read command, or None."""
     for segment in SEPARATOR.split(shell_code(command)):
@@ -692,6 +705,7 @@ def check() -> int:
         return 2
     reason = (unchained_heredoc(command) or adhoc_replace_helper(command) or tool_removed(command) or sed_in_place(command)
               or sed_ampersand(command) or staging_silenced(command) or shared_run_file_write(command)
+              or subagent_transcript(command)
               or existing_result_folder(command, payload.get("cwd") or os.getcwd())
               or stale_branch(command, payload.get("cwd") or os.getcwd(), time.time()))
     if reason:
