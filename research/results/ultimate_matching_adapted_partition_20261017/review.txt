@@ -1,0 +1,40 @@
+Review of entry-2026-10-17-adapted-partition-obstruction (thm:adapted-partition-obstruction), ultimate-matching,
+17 October 2026: one medium reviewer, given the draft, its commit message and the dependency excerpts
+(lem:block-lower-tail's statement; thm:square-mean-flow-obstruction's statement and proof). Condensed in its
+own terms.
+
+First pass. Verdict: pass with corrections. The theorem's proof holds; every step checked against the
+excerpts, no gap: conditional uniformity (order-statistic factorisation, r_C measurable, the pivot's other
+coordinate handled); the walk (both child-centre differences recomputed, xi the area-weighted mean increment,
+the choice of C_* measurable with sigma delta >= 0 since |eta| < 1/2); the push (event equivalence; deviation
+<= (A+1/2) sqrt n for n >= 16; variance >= 3/16; x_A, m_A <= n and c^2 <= s^2/(2m) once n >= 32 m_A/3; the
+other sign; l' >= sqrt(2^-j) at both parities, h = 1/(9 sqrt N)); counts (beta(n) right; gamma_N constants
+conservative, 9.66 for 9.7 and 4 where 8 is used; child counts measurable, no exceptional events;
+V_{j0} >= 1 - 1/(kappa log N)); locality and Chebyshev (V(T) a function of G_{j0} and T's points; exponent
+right); transfer to points, Chernoff, m h - m/(18 sqrt N), u_N, alpha = infinity. No unused hypothesis.
+Required changes: Nonvacuity x_1^2 = 12 exactly, m_1 = 1536, lambda_1 = 9218 (not 9224, a floating-point
+ceiling), theta < 1/18438; Degenerate cases: P(eta = 0) = 0 for every n; A = 0 is vacuous at depth >= 2 (the
+children of r = n/2 have n/2 - 1 and n/2 points); Setting and Degenerate cases must agree on 1/(2 sqrt n_C);
+the Statement's U-rule sentence must repeat the spread condition; the error-bound sentence garbled; Own
+statements must label the growing-cap sketch a sketch, (log N)^(1/8) being where the proof stops. Record
+searches "order statistic median cut cell transport displacement" and "steering rank running displacement
+drift partition": nothing bears on the theorem. Suggestions (unverified): steering with a constant offset A
+is a reflected walk with drift-to-noise ratio 2A and tail e^(-cAx), so uniform caps should fail up to
+(log N)^(1/4) at alpha = 4; the counts side may be the real constraint (final-cell counts off by about
+A sqrt(log N)). Process audit: no title yet, proposed "Adapted partitions fail above exponent two"; the claim
+spec's status and reviewer ahead of the gate; its rationale stronger than the Not covered list; next_action
+and the commit message state the window without saying its lower end is the proof's limit; a constant
+computed in floating point unchecked; two degenerate sentences not worked through. Strength count 3.
+
+Second pass (corrections and the proportional-steering paragraph written after the first pass). Verdict: pass
+with corrections; all earlier corrections in place. The proportional-steering derivation right up to
+constants and stated with the right scope (this proof's chain fails, not that the rule escapes); a push needs
+about 2 kappa' t/9 standard deviations, not kappa' t/9; the upper tail is Hoeffding's, not
+lem:block-lower-tail's. Required: cap the offset (it exceeds n/2 once t > 4.5 sqrt n/kappa', about
+sqrt(log N)); a Smallest case for the proportional rule; name Hoeffding. Suggestion (unverified): with a pull
+proportional to U the walk is an Ornstein-Uhlenbeck process with Gaussian stationary law of variance of
+order 1/(kappa' N); typical offsets O(sqrt n); only rare cells steer harder. Strength count 0.
+
+Third pass (the rewritten Smallest case, gate, title and status): verdict pass. The mean step -kappa' U/2 (sqrt 2 times it in coordinate 2; kappa' < sqrt 2 avoids overshoot), the relative surplus 2 kappa'|U| sqrt N/sqrt n, its sum dominated by the finest steps and about sqrt(kappa' n) points per final cell checked as order-of-magnitude heuristics; the stationary size 1/sqrt(kappa') rests on the reviewer's unverified autoregressive heuristic and is to be labelled; the gate, title ('Adapted partitions fail above exponent two') and status line credit the reviewer with no more than its reports said. Strength count 0.
+
+Fourth pass (the 'Suggestion checked' paragraph and the Smallest case's Plainest bound and Tried clauses, written after the third pass): verdict pass. The cross term vanishes (zeta a martingale difference, U measurable); fixed point v/(2a - a^2) = 1/(16 kappa' N (1 - kappa'/4)) right; about J >> 1/a k-steps, so the size is reached; the unchecked parts listed honestly. Advisable: the constants are coordinate 1's; in coordinate 2, a = kappa'/sqrt 2, v about 1/(8N), the same order. Plainest bound and Tried clauses correct. Strength count 0.

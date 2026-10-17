@@ -402,16 +402,16 @@ AGENTS.md"):
   before it is used (17 October 2026: a seed count cut for time moved an estimator's bias, a
   launcher check covered only the command that prompted it, and "Gaussian by the theorem" stood for
   a lower bound).
-- Write every summary (title, New mathematics, Bearing, commit message, report) last, from the final
-  statement with its hypotheses and qualifiers; relay what a reviewer, agent or tool found from its
-  source, with its qualifiers word for word, and explain a failing check only by quoting the lines
-  of its output that show the cause. A shorthand coined while drafting (a name for a class of
-  objects) is a new statement, not a name for the hypotheses: a sentence using a result says its
-  hypotheses in the statement's own words (17 October 2026: a shorthand stood for "one reversible
-  rule" in five sentences, which lost reversibility). A summary of a result's reach (a Bearing, a
-  living-section clause, a review's Decision, a reply) names the class its hypotheses cover, never
-  the class its mechanism suggests (17 October 2026: "no rule can change the square means" was
-  summed up as "no flow", in an entry and then in the review after it).
+- Write every summary (title, New mathematics, Bearing, commit message, a claim spec's rationale and
+  next action, report) last, from the final statement with its hypotheses and qualifiers; relay what
+  a reviewer, agent or tool found from its source, with its qualifiers word for word, and explain a
+  failing check only by quoting the lines of its output that show the cause. A shorthand coined
+  while drafting (a name for a class of objects) is a new statement, not a name for the hypotheses:
+  a sentence using a result says its hypotheses in the statement's own words (17 October 2026: a
+  shorthand stood for "one reversible rule" in five sentences, which lost reversibility). A summary
+  of a result's reach (a Bearing, a living-section clause, a review's Decision, a reply) names the
+  class its hypotheses cover, never the class its mechanism suggests (17 October 2026: "no rule can
+  change the square means" was summed up as "no flow", in an entry and then in the review after it).
 - When a computation agrees with what was expected, write next what it does not show, and read each
   of its figures for what it says against the conclusion (a statistic on the far side of a bound the
   conclusion assumes), before the sentence that concludes from it (17 October 2026: a closure read a

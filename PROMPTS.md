@@ -244,7 +244,12 @@ So perform the following, in a loop:
   only in its primal form). A figure the entry interprets is read by [the ratio
   rule](COMPUTATION_RULES.md#numerical-verification) before the interpretation is written. A next
   attempt is planned only after [the order of work's line on what the entry has already
-  computed](AGENTS.md#order-of-work) is applied to it.
+  computed](AGENTS.md#order-of-work) is applied to it. The closing paragraphs (Nonvacuity,
+  Degenerate cases, Instance check, the claim spec's notes) are worked before the brief as
+  computations of their own, each number in exact arithmetic beside its formula and each case run
+  through the proof's steps, not written after the proof from the result's shape (17 October 2026: a
+  witness's constant from a floating-point ceiling, two degenerate cases never run, a spec's scope
+  wider than its entry, and a stationary variance off by two, all in one entry's closing text).
 - update the notebook as usual
 - Apply the [cheap significance check](research/claims/README.md#significance-check-and-attention)
   through claim metadata and the finalizer; surface new/reopened candidates without rerunning a

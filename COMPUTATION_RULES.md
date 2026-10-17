@@ -293,7 +293,10 @@ unfinished.
 ## Numerical verification
 
 - Use exact modular arithmetic for finite-field calculations, never floating-point rank; guard
-  integer overflow in vectorized/compiled kernels.
+  integer overflow in vectorized/compiled kernels. A floor, ceiling or comparison of a constant that
+  may be an integer or a boundary is computed exactly (Python's `fractions`, or integer arithmetic),
+  never on a floating-point value (17 October 2026: \(\lceil128\cdot12\rceil\) computed from
+  \((4\cdot1.5/\sqrt3)^2\) gave 1537 for 1536).
 - Match the intended field, encoding, parameters, and degree conventions. Use targeted checks
   capable of falsifying the claim, with nonvacuous cases and negative controls. A negative control
   is applied only to cases where the altered statement differs from the true one, and the script

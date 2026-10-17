@@ -1,0 +1,40 @@
+{
+ "source": {
+  "record": "[Adapted partition obstruction](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-adapted-partition-obstruction)",
+  "label": "Adapted partition obstruction",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-17-adapted-partition-obstruction"
+  ]
+ },
+ "date": "2026-10-17",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "claims": [
+  {
+   "id": "thm:adapted-partition-obstruction",
+   "summary": "For X_1..X_N i.i.d. uniform on [0,1]^2, depth 2J with kappa log N <= N 4^(-J) <= K log N, an adapted partition cutting each cell alternately in coordinates 1 and 2 through the point of rank r_C among its n_C interior points, r_C a function of the earlier cuts with |r_C - n_C/2| <= A sqrt(n_C) for a fixed A > 0, local at step j_0 = 2J - 2m (ranks of finer cells depend on the cuts before j_0 and those inside their step-j_0 ancestor), with dyadic targets and transport T mapping each final cell affinely onto its target, m = floor(theta log_2 N), 0 < theta < 1/(2 + 2 lambda_A), lambda_A = 2 + 6 ceil(128 x_A^2), x_A = 4(A + 1/2)/sqrt 3: for every L, M > 0, coordinate k and alpha in (2, infinity], with probability tending to one every permutation pi and points Y with |Y^k_pi(i) - T^k(X_i)| <= m/(18 sqrt N) for the interior points have sum_i psi_alpha(|X_i^k - Y^k_pi(i)|/s) >= MN, s = L sqrt(log N/N) (for alpha = infinity a displacement beyond s). Covers the equal-count partition and rules steering the cut's rank against the running displacement by up to A sqrt(n) points; at every pair of the curve such matchings fail the conjecture's conclusion for every L.",
+   "assessment": "Working proof: the cell means of the running displacement are differences of centres and walk with a common push -eta l'/2 and a deviation whose sign is known before the cut, so a chain follows a predictable child; the median offset eta exceeds 1/(4 sqrt n) in each sign with conditional probability at least 64^(-m_A) by lem:block-lower-tail, the interior points being i.i.d. uniform in their cells given the earlier cuts; count weights, Chebyshev over the step-j_0 cells by locality, and the affine symmetry of the displacement on a final cell carry the walk to the sample points; the chain, Chebyshev and push steps are those of thm:square-mean-flow-obstruction on other cells.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Closes, at every pair of the curve, the matchings that follow, up to m/(18 sqrt N), the transport of a hierarchical partition cut alternately near the median (ranks within a fixed multiple of sqrt(n)) by a rule local at the fine steps, steering by up to A sqrt(n) points included; not covered: larger rank offsets (steering in proportion to the running displacement among them), non-local rules, schedules without enough fine steps in the coordinate, partitions applied to both samples, matchings farther from the transport, and flows or matchings not built from such partitions.",
+   "next_action": "Proportional steering (rank offsets in proportion to the running displacement), which the theorem's chain argument does not reach: whether its count imbalance, carried to the children, keeps the matching within the budget or recreates the walk.",
+   "novelty": "not_claimed"
+  }
+ ],
+ "relationships": [
+  [
+   "thm:adapted-partition-obstruction",
+   "depends_on",
+   "lem:block-lower-tail",
+   "The push of the median cut."
+  ],
+  [
+   "thm:adapted-partition-obstruction",
+   "cites",
+   "thm:square-mean-flow-obstruction",
+   "Its chain, Chebyshev and push steps, run on adapted cells; neither implies the other."
+  ]
+ ]
+}
