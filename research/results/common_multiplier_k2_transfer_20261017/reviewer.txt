@@ -1,0 +1,142 @@
+**Verdict: pass with corrections.** Parts (a), (b) and (c) are correct as stated. I found one gap in a proof step (the gluing), one hypothesis stated more narrowly than the proof needs, and a counterexample that settles the m = 4 sub-idea in characteristic 3. I edited nothing.
+
+**What I checked and found correct**
+- **(a):** The monomials of each error are x_e, x_e x_α, x_e x_β. I redid the ballot counts from rank 0 (4 ≤ N/2), rank 1 (3 ≤ (N−1)/2), rank 2 (3 ≤ (N−2)/2) and ranks r ≥ 3 (one hole needs r ≤ N−2, two need r ≤ N−4). The only failure is t with holes at ranks {N−3, N−2}. Such a t dances only when p (at N−2) moves before p' (at N−3). The direct dance for t ∪ E' is valid in every interleaving of E''s pigeons: ranks 3..N−4 are untouched by t, N−6 ≥ 2, and every move goes up into a free hole, as the dance definition requires.
+- **(b):** The case split on q(σ), the triangularity argument and the translation into coefficients of u are all correct. The characteristic-2 codim formula agrees with every saved dims_A_e. I recomputed it at (m,N) = (5,8): 346; (4,8): 240; (4,9): 298; (10,9): 1312.
+- **Step 1:** The form of W_2's quadratic part, b_gg' = ν(g,k') + ν(g',k), is right with its signs over a general field. The converse, the uniqueness up to F+t, G−t, and connectivity when |L|, |R| ≥ 3 all hold. The case split over pairs of rows is right, including the four cells left on the mixed pairs in characteristic 2. The needed error rows exist when m ≥ 5.
+- **Step 2:** Every edge g = (2,h), h ∉ {0,1,j}, is compatible with e = (3,j), α_1 and β_1. The three symmetric uses check out (s_2 = s_4, s_1 = s_2, s_3 = s_4).
+- **Step 3:** The cited corollary's hypotheses (m ≥ 4, N ≥ 6, 3 ≤ D ≤ ⌈N/2⌉, the eight errors in the family) are all met.
+- **Nonvacuity and computation:** Every inequality in the Nonvacuity paragraph holds at N = 8, m = 5, D = 4. Every figure in the Computation paragraph matches k2_kernel.json and k2_kernel_n9.json: the J dimensions 95…550 and 107…776, family-1 domain kernels from 37 to 88, and dim J = m at K = 1.
+
+**Required changes**
+- **Gluing paragraph.** "By uniqueness on P_j ∩ P_j' any two then agree" does not follow as written. Uniqueness only gives F_j − F_j' = t on P_j ∩ P_j'. To get t = 0 you need a hole where both already agree with F_{j0}, that is, a pair in P_j ∩ P_j' ∩ P_{j0}. Add that hypothesis (the triple intersection is nonempty). It holds in every use here, since a pair avoiding three holes exists once N ≥ 5.
+- **Setting.** The quoted sentence gives only C∩V_2 ⊆ H∩V_2 + W_2. Say separately that W_2 ⊆ C because Q_i and x_f Q_i are axiom multiples of degree ≤ 2 ≤ D. Also note that x_f Q_i with f at the top hole is not in B, but lies in C anyway.
+- **The m ≥ 5 hypothesis is only needed in characteristics 2 and 3.**
+  - Outside characteristics 2 and 3, (b) gives ρ_e(u − w_e) = 0, so all the α/β cells and γ are fixed too. Then rows {0,1} are covered by family 1 with i ∈ {2,3}, and rows {2,3} by family 2 with i ∈ {0,1}. So (c) holds at m = 4 by the same proof.
+  - In characteristic 3 at m = 4, (c) is false. x00x11 kills every error: for family 1, x00x11(1+x00+x11)x_e = 3x00x11x_e = 0; for family 2, every error sits in row 0 or 1, so the product is non-matching and lies in H. But x00x11 is not in C∩V_2: its quadratic part on rows {0,1} is not separable, because F(0)+G(2) = F(3)+G(1) = F(3)+G(2) = 0 forces F(0)+G(1) = 0, not 1. The same holds for x22x33.
+  - Restate the m bullet accordingly: m = 4 proved outside characteristics 2 and 3, false in characteristic 3, open in characteristic 2 (agrees with the F_2 runs). Restrict the Sub-idea to characteristic 2. Reword "the computation found the same kernel at m = 4" as F_2 only.
+- **Hypotheses bullet on N = 7.** The claim that ⋂(A_e+W_2) = W_2 ⊕ ⟨q1q2⟩ holds at N = 7 is a separate statement proved only in a parenthesis. Either mark it as a side claim with its steps, or drop it. Also, (a) is unproved at N = 7, not shown to fail: the ballot condition is sufficient, not necessary.
+- **Degenerate cases, "all 20 runs".** The two K = 2 runs on each board share the same A_e values (the script records the set of distinct A_e dimensions over all errors, and it is a single value). So there are 10 independent (m,N) checks. Say 10 boards.
+- **Unused hypotheses.** None beyond the m ≥ 5 point above. N ≥ 8 is used only in (a); D ≥ 4 is the degree condition D − K ≥ 2; D ≤ ⌈N/2⌉ is the lemma's range.
+
+**Open point** (all of this is unverified sketch)
+- **Per-error transfer at K = 3, N ≥ 10.** It works by a split dance. Two facts carry it:
+  - A sub-matching of a dancing matching dances: removing pigeons only frees holes.
+  - Two parts whose hole sets stay disjoint during their moves can be interleaved in any pigeon order.
+  
+  Ballot fails only if (i) two of t's holes are at {N−3, N−2}, or (ii) all three are in [N−5, N−2]. In case (i), cut at N−3: the low part (E' plus any third t edge at rank ≤ N−5) satisfies ballot inside ranks [0, N−4], since 3 ≤ (N−3)/2 and the rank-1 count is 2. If the third edge is at N−4, that is case (ii). In case (ii), E' alone moves into [3, N−6], which has N−8 ≥ 2 holes; t's part dances by itself. So the "direct dance must be redone" in the Smallest case paragraph is a few lines, a lemma for the next entry. The general version (cut at the failing segment) looks like it extends to every K with N ≥ 2K+4.
+- **Induction on K.** The top part of C∩V_K mod H has the analogous form. From x_S Q_i, top coefficients are b(T) = Σ over rows k of T of ν_k(T minus its row-k edge), a sum over rows of functions that do not depend on that row's hole.
+  - The gluing step is where it may break. The ambiguity is no longer one constant t; at K = 3 it is functions of one hole (F_1 += A(h2)+B(h3), and so on). So gluing needs the overlap ambiguities to fit together across overlaps (a cocycle condition); I did not check it.
+  - Before the induction, test the candidate against products z1·q2, z1 in family 1's own kernel in V_2. Each such product kills both families at K = 3 (needs D ≥ 5). If family 1's kernel in V_2 exceeds q1·V_1 + C∩V_2, the form C∩V_3 + q1q2V_1 fails. The F_2 runs show family 1 alone has 28 dimensions beyond C at m = 4, N = 8 (122 − 94). Whether those are all q1·V_1 is not computed.
+- **m = 4 through the b_eg conditions.** In characteristic 2 this looks feasible.
+  - For e = (2,j), condition a_g + b_eg = 0 at g = (3,h') gives b^u_23(j,h') = −a^u_(3,h') + Φ_e(h') + c_e.
+  - Φ_e comes from w_e's μ_{0,·}, μ_{1,·} and λ_3, which Step 1 pins on rows {0,3} and {1,3} up to constants. So b^u on rows {2,3} is separable for j ∈ J_1, and symmetrically from e = (3,j).
+  - Family 2 covers the cells avoiding (2,2) and (3,3), and the union covers every cell.
+  
+  The consistency of the overlaps is not checked. In characteristic 3 it must fail, by the counterexample above.
+
+**Suggestions (unverified)**
+- Register the split-dance fact as a lemma: a sub-matching of a dancing matching dances, and a low part that satisfies ballot inside a window below the high part's lowest hole interleaves with it. That closes per-error transfer at K = 3, N ≥ 10 without a case list.
+- Record the characteristic-3, m = 4 killer x00x11 as a refutation. It shows m ≥ 5 is needed in characteristic 3, not just bookkeeping.
+- Compute family 1's own kernel in V_2 against q1·V_1 + W_2 (already within reach of k2_kernel.py) before the K = 3 attempt.
+
+**Process audit**
+- **Title and status.** Proposed title: "Quadratic separated-family kernels: q1q2 the only extra joint killer in characteristic 2". Proposed status: "Working proof, N ≥ 8 and m ≥ 5". The body supports both.
+- **Statements that drop qualifiers.** These omit m ≥ 5 and N ≥ 8, and two of them also "characteristic 2"; m ≥ 5 is real in characteristic 3:
+  - Goal progress: "the survival test's family has only C∩V_2 and … q1q2".
+  - Follow-up s2: "that product is the only joint killer beyond C at K=2".
+  - Final Follow-up: "for the separated family it is now …".
+  - claim-spec rationale: "at every N ≥ 8" (no m).
+- **Smallest case.** "needs the ballot count 5 ≤ N/2, so N ≥ 10" is the bound's own threshold, not shown to be the object's. The Tried clause computes a threshold but makes no attempt at the dance, which a few lines decide (above).
+- **Owed attempt.** The reason given ("bounds a stacked rank from above, where the route needs survival") argues for dropping the mixed bound, yet the entry defers it a second time. Drop it now with that reason, or give a reason to keep it.
+- **Review paragraph:**
+  - (1): "9 of 12 registry-changing commits would have been refused". It does not say how many of the 9 are legitimate messages, so the check's false refusals are not counted.
+  - (2)(3): answered by the existing AGENTS.md rule plus a queued build, with no "Not built in the turn:" reason. The rule is the one that failed, so this does not do the job of a prevention.
+  - (4): one match, "the exposing case". There is no sign another wording of the admission was tried, so the pattern may be fitted to one sentence.
+  - (5): 13 hits in turns without a search, with no word on whether those are true positives.
+- **Meta.** It does name a way of working (treating an objection as an obstacle), which is right. But its change is the existing AGENTS.md line plus the three checks, which restates the Prevention. AGENTS.md asks for a check when a written rule lets the same mistake through twice.
+- **Hypotheses paragraph.** The m ≥ 5 bullet is copied from the characteristic-2 case and not read off the proof per characteristic, which is the AGENTS.md "Hypotheses, each with its step" failure.
+- **Listing tool.** k2-sentences.txt reports "No statement of the draft's own", although the draft has a "Statement. Corollary" paragraph. The tool's statement detection missed it, so no summary was compared with the Statement mechanically.
+- **Record search.** One search of mine (dance sub-matching union) found no recorded split-dance lemma.
+
+Strength count: 5
+
+Files: /home/kbr/.claude/jobs/354c41d4/tmp/k2-draft.html, /home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/research/results/common_multiplier_k2_transfer_20261017/k2_kernel.json, k2_kernel_n9.json, claim-spec.json in the same folder.
+
+=====
+
+**Follow-up verdict: pass with corrections.** The four new items are correct in substance. The proof needs two scope fixes, and two sentences say more than the computation does. I edited nothing.
+
+**(1) m ≥ 4 outside characteristics 2 and 3: correct.**
+- At m = 4, (b) gives ρ_e(u−w_e) = 0, so every cell is fixed, the α/β cells and γ included.
+- Rows {0,1} are covered by family 1 with i ∈ {2,3}, and rows {2,3} by family 2 with i ∈ {0,1}.
+- I checked each mixed pair at m = 4: {0,2} uses i = 3, {0,3} uses i = 2, {1,2} uses i = 3, {1,3} uses i = 2.
+- Step 3 needs m ≥ 4, which holds.
+
+**(2) Part (d): correct.**
+- In characteristic 3, x00x11 times each family-1 error is 3x00x11x_e = 0.
+- At m = 4 every family-2 error lies in row 0 or 1, so x00x11 times it is non-matching and lies in H. Both products have degree 4 ≤ D.
+- The separability contradiction is valid: it uses holes 0, 1, 2 and 3.
+- The Goal progress sentence on (d) is accurate, and "not assessed" is said plainly.
+
+**(3) The Smallest case test: the script computes the right quantity, but the reading is too strong.**
+- The script lines (k2_kernel.py, family-1 branch) are right. They build q1 times each monomial of degree ≤ 1, constant included. They assert that this lies in Z_1, then compute dim span(q1V1 + W_2) and subtract it from dim(Z_1+W_2). The difference is therefore ≥ 0.
+- Using Z_1 + W_2 for family 1's C-kernel in V_2 is justified: the family-1 runs give J_1 = Z_1 + W_2 (excess 0).
+- The json figures match the draft: 188/188, 271/271 and 369/369 at m = 5, 6, 7; 122 against 120 at m = 4.
+- The overstatement: "the candidate needs that kernel to lie in q1V_1+W_2" is not right. The containment is sufficient: if z1 ∈ q1V_1 + W_2, then z1q2 ∈ q1q2V_1 + C, since W_2·q2 ⊆ C at degree 3 ≤ D. It is not necessary: a z1 outside q1V_1 + W_2 can still give a z1q2 inside C∩V_3 + q1q2V_1.
+- So the m = 4 excess of 2 decides nothing about the candidate, and "m = 4 differs again" should say that.
+
+**(4) Owed attempt and Meta.**
+- The deferral now gives an ordering reason. That is acceptable for a second deferral.
+- The Meta does name a way of working and catches it recurring in the answers to the review. Its change, though, is again a queued build, not a change in how the agent works.
+- I confirmed both builds are queued with their "not built" reasons: replay-false-refusals and retry-quotes-rule.
+
+**Required changes**
+- **Statement scope.** The m conditions belong to (c) only. As written, the hypothesis line "m ≥ 5 in characteristics 2 and 3" contradicts (d), which is at m = 4 in characteristic 3. Use m ≥ 4 for (a), (b) and (d); (a) and (b) use no m at all.
+- **Step 1.** Qualify "(one exists, |P_1| = m−2 ≥ 3)" with "at m ≥ 5", or point to the m = 4 paragraph.
+- **Baseline.** "at every N ≥ 8, m ≥ 5, over every field" is now out of date. It should read: m ≥ 5 in characteristics 2 and 3, m ≥ 4 otherwise.
+- **Smallest case, Tried.** Replace "needs" with "is sufficient for the candidate on these products". Add that the m = 4 excess leaves the candidate undecided there. Add what the test does not show:
+  - only N = 8 over F_2;
+  - only the z1q2 products: q1z2 follows by the symmetry swapping 0↔2 and 1↔3, but other joint killers are untested;
+  - the expectation was not committed before the run (the docstring says "Not predicted; reported as found").
+- **Hypotheses, N bullet.** "Steps 1 to 3 use smaller N only" should give the range those steps actually need, or be dropped.
+- **Review (1) and (5).** The false refusals are still described as "a few" and "at least three", among 9 and 22 cases. Labelling 31 cases by hand is cheap enough to do now. As it stands the answer takes the cheapest form, which the Meta itself names.
+
+Strength count: 2 (the "needs" sentence in Tried; the out-of-date Baseline scope).
+
+Files: /home/kbr/.claude/jobs/354c41d4/tmp/k2-draft.html, /home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/research/results/common_multiplier_k2_transfer_20261017/k2_family1.json, k2_kernel.py in the same folder.
+
+=====
+
+**Second follow-up verdict: pass with corrections.** The Smallest case claim is correct. Two of the hand labels are wrong, and the Review sentences that cite them need fixing. I edited nothing.
+
+**Smallest case claim: correct.** Write z1 = q1ℓ + w + h, with ℓ in V_1, w in W_2 and h in H∩V_2.
+- w·q2 is a sum of Q_i multiples of degree at most 3 ≤ D, so it lies in C.
+- h·q2 is still made of non-matching monomials of degree at most 3, so it lies in H, which is inside C.
+- So z1q2 lies in q1q2V_1 + C∩V_3. "Sufficient, not necessary" is right.
+- The symmetry used to cover q1z2 holds: swapping pigeons and holes 0↔2 and 1↔3 exchanges q1 with q2, P_1 with P_2 and J_1 with J_2.
+- The test used family 1's domain kernel Z_1. That equals its C-kernel J_1 = Z_1 + W_2 in those runs, so the conclusion carries to the C-kernel.
+
+**Labels for record-absence-replay.txt.**
+- The counts check out: 22 sentences listed, 13 refused (file lines 2, 3, 4, 5, 7, 9, 10, 11, 12, 14, 17, 20, 23), and every refused line is labelled exactly once.
+- Line 10 is mislabelled. It reads "The draws pause instead because the record has no idea source left to draw from". That is a claim about the research record's idea sources, not an idiom about estimating. The idiom is line 11 (Kelly rule, "no honest way to estimate").
+- Line 10 reads as a catch. That makes the totals 9 catches and 4 false refusals: lines 11, 12, 14 and 23.
+- If you keep line 10 as a false refusal, give it a reason of its own. The Review's list "an idiom, a quotation and other projects' records" does not cover it.
+
+**Labels for condition-confirm-replay.txt.**
+- These counts check out: 9 commits would be refused, 21 conditions are listed, and d290af075 is the only commit whose conditions are all fragments.
+- "5 of the 21 are fragments (lines 1, 3, 4, 23, 24)" is an undercount. These lines are also truncated fragments:
+  - line 9: "when none is below) has a net flow…", which starts mid-sentence;
+  - line 19: "for every beta > 0 and w in [2^(-l_1)";
+  - line 20: "at most 2 has |D| <= …".
+- Lines 5 and 14 carry a dangling ")" just like line 1. Either count them as fragments too, or say why line 1 is one and they are not.
+- So the fragment count is at least 8, and 10 under line 1's standard. Recount, and correct both replay-labels.txt and the Review (1) sentence.
+
+**Required changes**
+- Review (5): change "8 catches and 5 false refusals" to 9 and 4, or justify line 10's label. Correct line 10's description in replay-labels.txt.
+- Review (1) and replay-labels.txt: recount the fragment conditions to at least 8 of 21 (lines 1, 3, 4, 9, 19, 20, 23, 24), and decide lines 5 and 14 by one stated rule.
+- Review (1): the label file says honestly that the commit messages were not read, so the false refusals of the commit check are still not counted. The Review sentence should say that too, in the label file's words, rather than only "real-looking".
+
+Strength count: 1 (the Review (5) totals).
+
+Files: /home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/research/results/framework-builds-20261017/replay-labels.txt, record-absence-replay.txt and condition-confirm-replay.txt in the same folder; /home/kbr/.claude/jobs/354c41d4/tmp/k2-draft.html.
