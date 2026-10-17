@@ -536,7 +536,11 @@ Fold an `<h4>Architecture review</h4>` section into each scheduled review, with 
   the current one against the comparison. A decision that moves cycles away from an order the user
   set for the goal's statements says so in the notebook's Route decisions and in the next report to
   the user, as the agent's decision the user may reverse (16 October 2026: a review switched
-  priorities by its own rule and the user had to ask).
+  priorities by its own rule and the user had to ask). A branch written before a run names what
+  would make its outcome an artefact of the instance (odd or even sizes, one size, one input form);
+  a Decision drawn from a run that departs from the earlier ones first runs the cheap control those
+  data suggest, or states its measured cost (17 October 2026: a review left a testbed on one even
+  board after odd ones, and the even control, run in a second, reversed it).
 - **Decisive test.** Name the next cycle's concrete test and the outcomes that would change the
   required implication or the chosen route. State **Test disposition.** New operation or Retained
   exploratory. A new operation states **Operation.** and **Prediction.**: the actual operation or
