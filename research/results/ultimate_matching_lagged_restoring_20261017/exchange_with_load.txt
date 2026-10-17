@@ -1,0 +1,13 @@
+# command: python3 -c 
+import numpy as np
+print('Smallest case of the next attempt: cost 2(1-m)^4 + (B+2m)^4 per child area (R = 1, leg 2m added to the other coordinate load B)')
+ms=np.linspace(-1,2,300001)
+for B in (-2/3,0,2/3,-2,2):
+  f=2*(1-ms)**4+(B+2*ms)**4; print('B=%+.3f argmin m=%.4f cost %.4f (cost at m=0: %.4f)'%(B,ms[f.argmin()],f.min(),2+B**4))
+# run 127080d6c6, session um-lagged; full output
+Smallest case of the next attempt: cost 2(1-m)^4 + (B+2m)^4 per child area (R = 1, leg 2m added to the other coordinate load B)
+B=-0.667 argmin m=0.5556 cost 0.1171 (cost at m=0: 2.1975)
+B=+0.000 argmin m=0.3333 cost 0.5926 (cost at m=0: 2.0000)
+B=+0.667 argmin m=0.1111 cost 1.8729 (cost at m=0: 2.1975)
+B=-2.000 argmin m=1.0000 cost 0.0000 (cost at m=0: 18.0000)
+B=+2.000 argmin m=-0.3333 cost 9.4815 (cost at m=0: 18.0000)

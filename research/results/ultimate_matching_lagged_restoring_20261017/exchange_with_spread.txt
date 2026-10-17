@@ -1,0 +1,21 @@
+# command: python3 -c 
+import numpy as np
+print('Smallest nontrivial case: children with two positions each, values R+d, R-d and -R+d, -R-d; uniform shift m on each child; leg 2m on one child area (B = 0).')
+print('cost per two positions: (R+d-m)^4+(R-d-m)^4 for each child (by symmetry twice) + 2*(2m)^4; linear rule R/3')
+ms=np.linspace(-1,3,400001)
+for R in (0.25,1.0,2.0):
+  for d in (0.0,1.0,2.0):
+    f=2*((R+d-ms)**4+(R-d-ms)**4)+2*(2*ms)**4
+    print('R=%.2f d=%.1f argmin m=%.4f  R/3=%.4f  ratio m/(R/3)=%.3f'%(R,d,ms[f.argmin()],R/3,ms[f.argmin()]/(R/3)))
+# run 3cd15c6172, session um-lagged; full output
+Smallest nontrivial case: children with two positions each, values R+d, R-d and -R+d, -R-d; uniform shift m on each child; leg 2m on one child area (B = 0).
+cost per two positions: (R+d-m)^4+(R-d-m)^4 for each child (by symmetry twice) + 2*(2m)^4; linear rule R/3
+R=0.25 d=0.0 argmin m=0.0833  R/3=0.0833  ratio m/(R/3)=1.000
+R=0.25 d=1.0 argmin m=0.2212  R/3=0.0833  ratio m/(R/3)=2.654
+R=0.25 d=2.0 argmin m=0.2407  R/3=0.0833  ratio m/(R/3)=2.888
+R=1.00 d=0.0 argmin m=0.3333  R/3=0.3333  ratio m/(R/3)=1.000
+R=1.00 d=1.0 argmin m=0.5600  R/3=0.3333  ratio m/(R/3)=1.680
+R=1.00 d=2.0 argmin m=0.7359  R/3=0.3333  ratio m/(R/3)=2.208
+R=2.00 d=0.0 argmin m=0.6667  R/3=0.6667  ratio m/(R/3)=1.000
+R=2.00 d=1.0 argmin m=0.8524  R/3=0.6667  ratio m/(R/3)=1.279
+R=2.00 d=2.0 argmin m=1.1200  R/3=0.6667  ratio m/(R/3)=1.680
