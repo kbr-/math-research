@@ -54,8 +54,28 @@ def start(payload, root, now=time.time):
         if now() - old.stat().st_mtime > STALE_S:
             old.unlink(missing_ok=True)
     mark_path(root, payload['session_id']).write_text('compaction\n')
-    print(json.dumps({'hookSpecificOutput': {'hookEventName': 'SessionStart', 'additionalContext': CONTEXT}}))
+    context = CONTEXT
+    notice = watchdog_notice(root)
+    if notice:
+        context += ' ' + notice
+    print(json.dumps({'hookSpecificOutput': {'hookEventName': 'SessionStart', 'additionalContext': context}}))
     return 0
+
+
+def watchdog_notice(root):
+    """The session watchdog's notice when the user chose to run it and it is down (tools/session_watchdog.py)."""
+    path = Path(__file__).resolve().parent.parent / 'session_watchdog.py'
+    if not path.exists():
+        return None
+    try:
+        spec = importlib.util.spec_from_file_location('session_watchdog', path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        common = module.git_common(root)
+        runtime = Path(common).parent / '.resource-runtime' if common else Path(root) / '.resource-runtime'
+        return module.service_notice(runtime)
+    except Exception as error:  # the gate's own duty must not fail on this notice
+        return f'Session watchdog check failed: {error}'
 
 
 def pre(payload, root):

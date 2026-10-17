@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Recreate all math computation resource controls. No external Python packages."""
 
+import json
 import os
 from pathlib import Path
 import shutil
 import subprocess
 import sys
+import time
 
 C_SOURCE = r'''#define _POSIX_C_SOURCE 200809L
 #include <errno.h>
@@ -170,7 +172,78 @@ def runtime_directory(project):
     return project / '.resource-runtime'
 
 
+SESSION_UNIT = 'mathsession-watchdog.service'
+WANTED_FILE = 'mathsession-watchdog.wanted'
+
+
+def session_watchdog_unit(checkout, claude, actions):
+    """Unit text of the session watchdog (tools/session_watchdog.py), polling every 45 s.
+
+    `actions` lists the watchdog's enabled actions, of 'notify' and 'wake'; without them it only
+    logs what it would do. The claude CLI's directory goes on PATH, which a user service lacks.
+    """
+    flags = ''.join(f' --{a}' for a in actions)
+    script = checkout / 'tools' / 'session_watchdog.py'
+    return ('[Unit]\nDescription=Session watchdog: wakes stalled looping sessions, flags prompt waits\n\n'
+            '[Service]\nType=simple\n'
+            f'WorkingDirectory={unit_quote(checkout)}\n'
+            f'Environment={unit_quote("PATH=" + str(Path(claude).parent) + ":/usr/local/bin:/usr/bin:/bin")}\n'
+            f'ExecStart={unit_quote(sys.executable)} {unit_quote(script)} run --interval 45{flags}\n'
+            'Restart=on-failure\nRestartSec=30s\nCPUAffinity=0-13\n'
+            'MemoryMax=512M\nMemorySwapMax=64M\n')
+
+
+def install_session_watchdog(build, start, actions, stop=False):
+    """Write and link the session watchdog's unit; start it only when asked, or when asked before.
+
+    It is a second long-running service beside the memory watchdog, so it runs only by an explicit
+    choice: `--start-session-watchdog` starts it and records the choice, with its actions, in
+    WANTED_FILE, so that a rerun after a reboot starts it again with the same actions;
+    `--stop-session-watchdog` stops it and removes the record.
+    """
+    wanted = build / WANTED_FILE
+    if stop:
+        run('systemctl', '--user', 'stop', SESSION_UNIT)
+        wanted.unlink(missing_ok=True)
+        print(f'{SESSION_UNIT} stopped; it will not be started again by setup.', flush=True)
+        return
+    claude = shutil.which('claude')
+    if claude is None:
+        print(f'{SESSION_UNIT}: claude CLI not found; not installed.', flush=True)
+        return
+    if start:
+        wanted.write_text(json.dumps(dict(date=time.strftime('%Y-%m-%d %H:%M'), actions=actions)) + '\n')
+    elif wanted.exists():
+        actions, start = json.loads(wanted.read_text()).get('actions', []), True
+    unit = build / SESSION_UNIT
+    unit.write_text(session_watchdog_unit(build.parent, claude, actions))
+    run('systemctl', '--user', 'link', '--force', str(unit))
+    run('systemctl', '--user', 'daemon-reload')
+    if not start:
+        print(f'{SESSION_UNIT} installed, not started; start it with '
+              f'python3 resource-controls/setup.py --start-session-watchdog [--session-watchdog-actions notify,wake].',
+              flush=True)
+        return
+    run('systemctl', '--user', 'restart', SESSION_UNIT)
+    status = run('systemctl', '--user', 'show', SESSION_UNIT, '--property=ActiveState', capture=True).stdout
+    if 'ActiveState=active' not in status:
+        raise RuntimeError(f'{SESSION_UNIT} did not start')
+    print(f'{SESSION_UNIT} running; actions: {", ".join(actions) or "log only"}.', flush=True)
+
+
 def main():
+    import argparse
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument('--start-session-watchdog', action='store_true',
+                    help=f'also start {SESSION_UNIT} (installed but stopped otherwise)')
+    ap.add_argument('--session-watchdog-actions', default='',
+                    help='comma-separated actions of the session watchdog: notify, wake (default: log only)')
+    ap.add_argument('--stop-session-watchdog', action='store_true',
+                    help=f'stop {SESSION_UNIT} and forget the choice to run it')
+    args = ap.parse_args()
+    actions = [a for a in args.session_watchdog_actions.split(',') if a]
+    if set(actions) - {'notify', 'wake'}:
+        raise RuntimeError('session watchdog actions are notify and wake')
     project = Path(__file__).resolve().parent.parent
     build = runtime_directory(project)
     for program in ('cc', 'systemctl', 'systemd-run'):
@@ -229,6 +302,7 @@ def main():
         raise RuntimeError('Combined memory watchdog did not become ready')
     print('Ready: 10 GB combined RAM + swap; no fixed split; CPUs 0-13.', flush=True)
     print('The combined watchdog polls every 2 ms; short overshoots are possible.', flush=True)
+    install_session_watchdog(build, args.start_session_watchdog, actions, stop=args.stop_session_watchdog)
     if (project / 'compute.sh').exists():
         run(str(project / 'compute.sh'), '--status')
 
