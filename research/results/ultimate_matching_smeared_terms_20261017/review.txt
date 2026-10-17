@@ -1,0 +1,57 @@
+Review record of entry-2026-10-17-smeared-y-term, 17 October 2026, one fresh-context Claude Code
+medium-reviewer. Condensed in layout only.
+
+First pass. Verdict: pass with corrections; (a), (b), (c), the Smallest case's arithmetic and the
+spec's relations check out; (d) holds but its reason for Lambda_delta <= 4 Lambda_j was wrong.
+Confirmed: in (a) each move crosses at most one vertical and one horizontal edge, the flux strips,
+the net-inflow identity, the summation by parts, the sweep, 80; in (b) psi*_alpha(t) >= t - (e-1),
+psi*_inf(t) = t for t <= N, ||grad G||_1 <= 2e, |sup(a-b) - sup a| <= sup|b|, and delta >= 20/sqrt N
+on the reduction's grid; in (c) Chernoff, the cell count, the oscillation and the constant; in (d)
+kappa = L/33, c_kappa = e^2, N delta <= Ns/32; the Smallest case's Bernstein constant, 2N^(-2), the
+shared-edge convexity step and y delta_0 (b_1 + b_2) <= 2 sqrt 2 (log(y/2))^(-1/4); the case is
+decided for y <= N^(1-epsilon), since y delta_0^2 is bounded; the previous entry's Smallest case was
+wrong as stated. Required: Lambda_delta <= 4 Lambda_j by (1 + 2 delta 2^j)^2 with j <= l_1, not by
+the cell union (which gives 9); drop 2^(-j) >= delta, add 1 <= j; state (a) for W^(1,1) and relax
+delta >= 20/sqrt N or say why not; the Smallest case's range; the Bearing's constant against L/2
+(about 1.31 L Lambda_j, so Lambda_j below about 0.38; met on the Leighton-Shor witness); "from both
+sides" overstated, the lower bound being for the supremum; N a perfect square in (a)'s witness; Own
+statements omitted lem:mesh-function-discrepancy (a), lem:loglog-mesh-deviation and
+lem:tube-localized-discrepancy (a), which charge closed lattice curves. Open point (unverified): a
+nested pair is its inner layer at level 2y plus a band of width sigma; the pair is never better than
+the inner layer; retarget to the single wiggly layer at level y with perimeter about 1/(y delta_0).
+Process audit: title suggested "Smeared Y-term is O(sqrt N) across the class"; the correction's
+level range dropped in the commit message and New mathematics; Bearing without L/2; Nonvacuity
+overstated; Own statements without the curve records; the first search found nothing missed, the
+second surfaced lem:mesh-function-discrepancy and lem:loglog-mesh-deviation under "closed lattice
+curves"; the AGENTS.md rule's diff not read; strength count 4. Suggestions: the decomposition as the
+next lemma; a lower-bound check on single layers of saturating perimeter first.
+
+Follow-up. Verdict: pass with corrections. Checked: the general (a) for W^(1,1) and every delta (row
+moves cross a vertical edge only within 10/sqrt N of it, flux 20 delta sqrt N for every delta;
+column moves 20 sqrt N (delta + 20/sqrt N)); the Lambda comparison through delta 2^j <= (L/32)(log
+N)^(-1/4); the Smallest case's range via y delta_0^2 <= 2 sqrt 2. Required: the Bearing's threshold
+contradicted its displayed bound (1.31 L multiplied the 1 as well): the smearing coefficient is
+about 0.33 L, the threshold about 1.5, the witness constant about 97, and the threshold comes from
+the bookkeeping; the coarse averages are cell functions, needing tube-localized (b), extra term 8P;
+W = max(1/P, 2^(-l_1)) and the factor through log max(1, 2^(l_1)/P); P as the sum of the blocks'
+perimeters; its heuristic to be labelled unverified; stale scope after the generalization in Target
+form, Conclusions, Baseline, New mathematics; the Architecture test and Not covered to be aligned
+with the Follow-up. Strength count 3.
+
+Second follow-up. Verdict: pass with corrections. It conceded that its saturating perimeter dropped
+a factor 1/y; checked the (d) constants (0.327, 97, threshold about 1.5), tube-localized (b)'s extra
+term at most 8P in both regimes, the unverified labels and the scope sentences. Required: the
+constant 8 sqrt 2, not 4 sqrt 2, in P_sat; the bound 2^(l_1)/P <= y (log y)^(1/4) holds at P_sat
+only, so the monotonicity step belongs in the paragraph; delta_0 2^(l_1) <= 1, not -> 0; the case P
+< 1; 'unverified' in the Architecture test; 'every grid' to say 1/delta an integer. Strength
+count 1.
+
+Fourth pass. Verdict: pass with corrections. Checked correct: the monotonicity step (derivative
+b^(-1/4)(b - 3/(2 ln 2)), positive as b >= 5; linear where the max is 1) and P_sat = 8 sqrt 2/(y
+delta_0 (log(y/2))^(1/4)) with 2^(l_1)/P_sat <= y (log y)^(1/4). Required: the P < 1 sentence, in
+both versions sent, used tube-localized (b) with W = 1, whose extra term is a constant up to 8, as
+if proportional to P, and its first version's 'which the cost keeps small' was unsupported; cite
+lem:fine-grid-leighton-shor (a) directly, giving L sqrt N (log N)^(3/4) min{y delta_0, 8 sqrt 2
+(log(y/2))^(-1/4)}, at most of order sqrt(N log N) when y delta_0 <= (log N)^(-1/4) and o(sqrt(N log
+N)) at polylogarithmic y; the gate's pass count and verdict words. Title and status match the body.
+Strength count 1.
