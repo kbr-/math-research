@@ -8,7 +8,7 @@ any rho with sum zero,
   (b) the lowest-order Raviart-Thomas field of an edge flow (first component affine in x on each cell through the two
       vertical-edge fluxes divided by delta, second affine in y), has int_Q psi(|Phi^1|/lam) + psi(|Phi^2|/lam) at most
       the edge cost delta^2 sum_e psi(|theta_e|/(delta lam)), with the boundary fluxes zero.
-The primal is computed with SLSQP over theta under the linear constraint, the dual with BFGS over u (one value
+The primal is computed with BFGS over the circulations added to one flow of divergence rho, the dual with BFGS over u (one value
 fixed, the dual being invariant under constants since sum rho = 0), psi^* by bounded scalar maximization; the two
 are independent computations sharing only psi.
 
@@ -34,6 +34,7 @@ import argparse
 import json
 
 import numpy as np
+from scipy.linalg import null_space
 from scipy.optimize import minimize, minimize_scalar
 
 
@@ -76,11 +77,14 @@ def primal(k, rho, A, B, psi):
     D = incidence(k, edges)
     Be = np.where(kinds == 0, B[0], B[1])
     theta0 = np.linalg.lstsq(D, rho, rcond=None)[0]
-    cost = lambda th: A * np.sum(psi(th / Be))
-    res = minimize(cost, theta0, constraints=[{'type': 'eq', 'fun': lambda th: D @ th - rho}], method='SLSQP',
-                   options={'ftol': 1e-14, 'maxiter': 2000})
-    assert res.success, res.message
-    return res.fun, res.x
+    # The flows of divergence rho are theta0 + Z c, Z a basis of the circulations (the null space of D); a first
+    # version minimized under the constraint with SLSQP and stopped above the minimum (the control caught it).
+    Z = null_space(D)
+    cost = lambda c: A * np.sum(psi((theta0 + Z @ c) / Be))
+    res = minimize(cost, np.zeros(Z.shape[1]), method='BFGS', options={'gtol': 1e-12, 'maxiter': 5000})
+    theta = theta0 + Z @ res.x
+    assert np.allclose(D @ theta, rho, atol=1e-10)
+    return float(cost(res.x)), theta
 
 
 def dual(k, rho, A, B, psi, scale_conjugate=True):
