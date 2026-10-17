@@ -1,0 +1,58 @@
+{
+ "source": {
+  "record": "[Restoring flow built](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-restoring-flow-build)",
+  "label": "Restoring flow built",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-17-restoring-flow-build"
+  ]
+ },
+ "date": "2026-10-17",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "claims": [
+  {
+   "id": "ex:restoring-flow-tails",
+   "summary": "Simulation, N = 16*4^J uniform points, J = 6, 7, 8, 512 seeds each: the dyadic flow corrected after the step of each level j by exchanges between sibling level-(j - r0) squares inside their parents (r0 = 1, 2; the lagged flow's unit circulations, coordinate 1 then coordinate 2) with amplitude -gain R/2, R the pair's running mean difference in the exchanged coordinate. At gain 1 the correction is unstable: restoring a unit mean difference on one pair seeds differences 1, 1, 3, 3 on four pairs one level finer in the other coordinate (a one-chain model's threshold, gain 1/3, is unverified, the measured growth being slower than its rate) (spread ratio to the dyadic flow 8.3, 12.6, 23.4 in coordinate 1 at J = 6, 7, 8, shift 1). At gains 0.1 and 0.25 it is stable, and its per-point law is Gaussian in shape per position in both coordinates (per-position standardized exceedance ratios to the dyadic flow 0.97 to 1.02 at 2.2 and 3.3 and 0.95 to 1.10 at 3.8 standard deviations, fourth moments 2.98 to 3.04), coordinate 1's variance 0.855 to 0.942 of the dyadic flow's. The committed prediction (coordinate-1 ratio at least 0.7 at the largest threshold in both normalizations) is refuted in the analytic normalization by the variance change alone, which the data in hand before it already decided. The construction's limit is decided by thm:coarse-mean-flow-obstruction at r = r0 + 1.",
+   "assessment": "Finite check, expectations committed before the run (the gains chosen after a smoke run at gain 1 and a spread diagnostic, both recorded); controls passed: gain 0 reproduces the dyadic field exactly, the correction is divergence-free in weak form (ratios at most 8.3e-8, flipped legs up to 0.172), restoration leaves zero residual at gain 1, a planted lighter law is seen; the seeding of one restored unit pair computed exactly (feedback_factor.txt: seeds 1, 1, 3, 3, L2 gain 4.47). Decides nothing beyond 4 standard deviations or in the limit, which thm:coarse-mean-flow-obstruction decides.",
+   "status": "finite_check",
+   "category": "route_specific",
+   "rationale": "The restoring design the tenth review named, built at the user's choice: the record's coarse-mean theorem already excludes it in the limit at every gain, since its corrections have zero mean on every parent; the build shows that full restoration is unstable, each restoration seeding finer differences of up to three times its size through its leg, and that stable restoration leaves the per-point law Gaussian in shape with a smaller variance in coordinate 1.",
+   "next_action": "The oscillation-chain theorem for the class thm:coarse-mean-flow-obstruction leaves open, corrections that move coarser squares' means at every shift and exceed half the push somewhere (lem:conditional-push-obstruction's witness covers those bounded by half the push).",
+   "novelty": "not_claimed"
+  }
+ ],
+ "relationships": [
+  [
+   "ex:restoring-flow-tails",
+   "cites",
+   "ex:lagged-restoring-tails",
+   "The same unit circulations, amplitudes from restoration instead of quartic descent."
+  ],
+  [
+   "ex:restoring-flow-tails",
+   "cites",
+   "lem:conditional-push-obstruction",
+   "The theorem the next attempt feeds; the check measures the shape it predicts at small sizes."
+  ],
+  [
+   "ex:restoring-flow-tails",
+   "cites",
+   "lem:restoring-drift-tail",
+   "The drift form d(R) = gain R used by the exchanges."
+  ],
+  [
+   "ex:restoring-flow-tails",
+   "cites",
+   "cor:lagged-flow-obstruction",
+   "Its assessment quotes the unit circulations' zero sum over each sibling pair, so the corrections vanish in mean on every parent."
+  ],
+  [
+   "ex:restoring-flow-tails",
+   "cites",
+   "thm:coarse-mean-flow-obstruction",
+   "Covers the construction at r = r0 + 1 at every gain: its corrections have zero coordinate-k mean on every level-(j - r) square."
+  ]
+ ]
+}
