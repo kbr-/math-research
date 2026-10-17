@@ -1,0 +1,102 @@
+{
+ "source": {
+  "record": "[Box-level completion](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-18-box-level-completion)",
+  "label": "Box-level completion",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-18-box-level-completion"
+  ]
+ },
+ "date": "2026-10-18",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "relationships": [
+  [
+   "prop:universal-completion-sufficiency",
+   "depends_on",
+   "thm:local-completion-dichotomy",
+   "Its (f) glues at constant one where universal completion holds."
+  ],
+  [
+   "prop:universal-completion-sufficiency",
+   "depends_on",
+   "thm:per-level-count-matchings",
+   "Its proof's expectation bound at the doubled level 2k gives the deficiency sum O(N)."
+  ],
+  [
+   "prop:universal-completion-sufficiency",
+   "depends_on",
+   "thm:maximum-displacement-curve-threshold",
+   "Gives m_k = 0 at the levels k >= log N/8."
+  ],
+  [
+   "prop:universal-completion-sufficiency",
+   "cites",
+   "conj:ultimate-matching",
+   "Gives it at the finite pairs of the curve from universal completion at the box levels."
+  ],
+  [
+   "prop:universal-completion-sufficiency",
+   "cites",
+   "cor:coarse-discrete-sufficiency",
+   "Another sufficient statement for the goal, on the dual side; neither implies the other."
+  ],
+  [
+   "prop:universal-completion-sufficiency",
+   "cites",
+   "thm:low-level-mixed-counts",
+   "Different statements: that theorem gives one matching at two low levels unconditionally; the proposition gives every level from universal completion."
+  ],
+  [
+   "lem:completion-failure-certificate",
+   "depends_on",
+   "thm:universal-completion-criterion",
+   "Refines its particular case by finding the pair spanning no edge through matroid extension."
+  ],
+  [
+   "ex:box-completion-failures",
+   "depends_on",
+   "lem:completion-failure-certificate",
+   "The certificate computed at the box levels."
+  ],
+  [
+   "ex:box-completion-failures",
+   "cites",
+   "prop:universal-completion-sufficiency",
+   "Tests its hypothesis at reachable sizes: failing at L = 1/2, vacuous at L = 1."
+  ]
+ ],
+ "claims": [
+  {
+   "id": "prop:universal-completion-sufficiency",
+   "summary": "For alpha_1, alpha_2 in [1, infinity] with 1/alpha_1 + 1/alpha_2 >= 1/2, X and Y independent samples of N uniform points of [0,1]^2, s_1 = sqrt(log N/N), c >= 2, integer levels 1 = k_1 < ... < k_I with k_(i+1) <= (c-1) k_i + 1 and k_I >= log N/(4c), L'' >= max(c^(max beta) L_1, (4c)^(max beta) K_0) (L_1 the constant of thm:per-level-count-matchings, K_0 that of thm:maximum-displacement-curve-threshold) and G_i the pairs with |X^j - Y^j| <= L'' k_i^(beta_j) s_1 for j = 1, 2, G_(I+1) complete: if with probability tending to one every maximum matching of every G_i has a matching of G_(i+1) inside its leftover with m_i - m_(i+1) edges, then with probability tending to one some matching meets the conjecture's condition at alpha with the constant 2 L'' (on the curve, conj:ultimate-matching at alpha); the integer levels are c = 2.",
+   "assessment": "Working proof of a conditional statement, passed with corrections in two passes of one medium reviewer (research/results/ultimate_matching_box_completion_20261018/review.txt): the levels with k_i >= log N/(4c) have m_i = 0 on the event of thm:maximum-displacement-curve-threshold; below, m_i <= V_(c k_i) with E V_t <= delta_N 2N e^(-t) from the proof of thm:per-level-count-matchings, so the deficiency sum with weights e^(k_(i+1)) - e^(k_i) is o(N) in mean and at most N with probability tending to one; thm:local-completion-dichotomy (f)'s proof gives a perfect matching with |P - G_i| <= m_i, then sum e^(k_i*) <= (1+e)N and Jensen at constant 2L''.",
+   "status": "conditional",
+   "category": "route_specific",
+   "rationale": "Makes universal completion at box levels of bounded ratio the whole question on the gluing route: the conjecture at every pair of the curve follows from it.",
+   "next_action": "Prove that, for every fixed L'' and ratio, the failure certificate fires with probability bounded below along a subsequence, which would close the gluing route through (f).",
+   "novelty": "not_claimed"
+  },
+  {
+   "id": "lem:completion-failure-certificate",
+   "summary": "For nested bipartite graphs G <= G' with nu(G') > nu(G), D_Y (D_X) the Y- (X-) vertices missed by some maximum matching of G, B_X the X-vertices with a G'-neighbour in D_Y and B_Y the Y-vertices with a G'-neighbour in D_X: if B_X or B_Y is matchable in G, some maximum matching of G has a leftover spanning no edge of G', so universal completion with C = 1 fails; if nu(G'[D_X u D_Y]) < nu(G') - nu(G), completion with C = 1 fails for every maximum matching.",
+   "assessment": "Working proof, passed in two passes of one medium reviewer: a matchable B_X extends to a basis of the transversal matroid, the X-cover of a maximum matching, whose Y-leftover lies in D_Y; every leftover lies in D_X u D_Y.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "A polynomial certificate that a gluing hypothesis fails on a given instance.",
+   "next_action": "Its asymptotics at the goal's box levels, the item's next attempt.",
+   "novelty": "not_claimed"
+  },
+  {
+   "id": "ex:box-completion-failures",
+   "summary": "At (4,4), X uniform and Y evenly spread, box graphs at L k^(1/4) sqrt(log N/N): at L = 1/2, in nine of nine samples of N = 4096, 16384 and 65536 points, the level-1 graph is deficient (m_1 from 56 to 430) and the failure certificate fires at level 1, so universal completion fails there (in one sample completion fails for every maximum matching); between levels 1 and c in {2, 4, 8, 16}, in 24 of 24 cases at N = 4096 and 16384; at L = 1 the level-1 graph has a perfect matching in nine of nine samples and no level drops.",
+   "assessment": "Finite check, passed with corrections in two passes of one medium reviewer: compiled Hopcroft-Karp kernel checked against networkx on 200 graphs; certificate sound on 1800 tiny instances checked by brute force (research/results/ultimate_matching_box_completion_20261018/); the level-ratio run exploratory.",
+   "status": "finite_check",
+   "category": "route_specific",
+   "rationale": "Tests the sufficiency's hypothesis at reachable sizes: it fails at a small constant and is vacuous at L = 1.",
+   "next_action": "None at larger sizes: the asymptotic question goes by proof.",
+   "novelty": "not_claimed"
+  }
+ ]
+}

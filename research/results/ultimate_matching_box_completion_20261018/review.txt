@@ -1,0 +1,43 @@
+Review record: entry-2026-10-18-box-level-completion, one fresh-context medium reviewer, 18 October 2026.
+Reports as returned, layout abridged.
+
+=== First pass: pass with corrections ===
+Checked, correct: (i) top levels (L'' k^beta s_1 >= 8^beta K_0 (log N/8)^beta s_1 = K_0 (log N)^beta s_1);
+(ii) the level-2k box inside G_k, m_k <= V_2k with a matching per level (m_k does not depend on it), the per-level
+mean bound uniform for t in [1, log N/4) (its three terms reread), the sum 2 delta_N N and Markov; (iii) (f)
+applies at levels 1..K, sum_i e^(k_i) <= (1+e)N, |P - G_K| = 0, u <= k_i (simpler: (f)'s proof gives
+|P - G_k| <= m_k); (iv) (1+e)^(1/4) < 2. Lemma: matroid extension, Y-leftover in D_Y, spans no edge; the second
+test stronger than stated (every maximum matching fails, so the existential reading too). Code: alternating BFS
+and the D_X call with swapped mates, B_X, B_Y, the matchability tests, nuD; Hopcroft-Karp kernel correct (free
+columns accepted at any layer, efficiency only; paths vertex-disjoint); controls able to fail and sound; stopping
+rule; counts at 16384 and 65536 agree with the draft. Could not verify the 4096 figures or the commit before the run.
+Required: scope (i),(ii) need only beta_1 + beta_2 >= 1/2; (iv) needs alpha_j >= 0.93; the endpoint (2, infinity)
+covered by the same proof, the stated reason for excluding it false; "the doubled level brings S to O(N)"
+overstated, the mean bound gives E S about 1.2N already, doubling gives probability tending to one; Nonvacuity: a
+conditional reduction, hypothesis not known to hold; new as a proof of the masking entry's Bearing sentence, soften
+"omits"; the degenerate case B_X empty is vacuous (D_Y isolated in G', no drop); the Smallest case compares a cell
+with itself (two counts of equal mean), repair with cells of side w/2 and the 3x3 block; report the existential
+failure at 16384 seed 1.
+Suggestions (unverified): coarser geometric levels keep S = o(N) and make completion easier, a construction-side
+next attempt; the certificate fires iff some co-basis lies more than the next box from D_Y, Leighton-Shor
+boundaries (log N)^(1/4)/L'' boxes thick, Hall for bands by a union over lattice animals; refuting the hypothesis
+needs failure with probability bounded below along a subsequence only; a partial certificate suffices for large
+drops; no reason found that completion could hold.
+Process audit: title "fails at a small constant" general from nine evenly spread samples at L = 1/2; Goal
+progress applies the check to the proposition's hypothesis (other constant and setting); New mathematics omits
+evenly spread Y; the doubled level credited with O(N); statement narrowed below its proof, endpoint excluded with a
+wrong reason; Not covered "a coarser sequence makes S larger" without an attempt, contradicted; unasked existential
+failure; vacuous degenerate case; Smallest case called decided by a failing argument; orbiting (an exclusion named
+next while coarser levels, a construction, went unnamed). Strength count 4.
+
+=== Second pass, on draft-v2: pass with corrections ===
+Checked: the general version step by step ((i) threshold, at beta_j = 0 only L'' >= K_0; (ii) t = c k_i < log N/4,
+the box inside G_i, above the curve the per-level reduction only shrinks the box; the sum 2e delta_N N/(e-1); (iii)
+(f)'s proof bound; (iv) (1+e)^(1/2) about 1.928; c = 2 the integer levels); the degenerate case B_X empty; the
+Smallest case (cells of side w/2, 3x3 block); the 4096 figures (m_1 56, 71, 64; m_2 12, 15, 25; second test not
+firing); the level-ratio run (24 of 24, m_c = 0 for c >= 4, B_X 1065 to 5391 at c = 16); the summaries.
+Required: "with probability tending to one" in the conclusion and the commit message; delta_N written as
+(2 sqrt 2 + o(1))/log N, not a lower bound; the level-ratio run's script named and its samples said to be new
+draws; pairs above the curve with an exponent below 1 under Not covered; the status line after this pass; a
+measured reason for the deferred prevention or the build.
+Strength count 1 (the status line's "reviewed").
