@@ -261,7 +261,12 @@ So perform the following, in a loop:
   point, a range) is written after the quantity is computed at the instance: a crossing point is
   solved for, not read between two grid values, and a range is the object's only when no step of the
   proof's accounting set it (17 October 2026: a ratio called at most one from its factors' look, a
-  threshold read off two grid points, and a range set by a corner-area bound, in one draft).
+  threshold read off two grid points, and a range set by a corner-area bound, in one draft). Words
+  received from elsewhere (a reviewer's required change, a source's sentence, a tool's message) are
+  read as a claim to check, not as text to insert: each is first restated as the property it asserts
+  and checked on the instance, at both ends of every range it names, before any wording is written,
+  and the entry's sentence is then written from that check (17 October 2026: a window copied as
+  "one-sided" from a reviewer's report was false inside the window).
 - update the notebook as usual
 - Apply the [cheap significance check](research/claims/README.md#significance-check-and-attention)
   through claim metadata and the finalizer; surface new/reopened candidates without rerunning a
