@@ -1,0 +1,75 @@
+Blind stage of the twelfth route review, ultimate-matching, 18 October 2026: one fresh-context medium
+reviewer, given blind-stage-brief.md and statements.txt (30 registered statements) only. Report as
+returned, layout abridged.
+
+Claim searches: "generic chaining gamma_2 Gaussian majorizing measure" (nothing on chaining in this
+thread; ex:restoring-flow-tails, ex:simultaneous-rule-exceedances, ex:exceedance-curve-slopes);
+"optimal matching computed assignment exponential cost samples smallest constant"
+(lem:two-graph-chain-duality, absent from statements.txt). No computations; hand estimates marked.
+
+1. Which sufficient statement. cor:coarse-discrete-sufficiency at (4,4) through (b), one-height nested
+chains on the mesh W: set families with many points per cell (at least (log N)^(3/2) expected), an
+exact convex min-cost-flow dual (lem:grid-flow-duality (d)), and lemmas covering parts of the class
+(lem:multilevel-chain-bound up to e^((log N)^(2/3)) layers, lem:separated-bundle-chains and
+lem:staircase-bundle-chains for straight and monotone bundles, lem:cost-weighted-slope-bound (b) for
+the rest); the remaining case is a one-height chain whose edges of multiplicity m_e > M carry cost
+much above (log N)^(-1/4) outside bundles meeting (B1)-(B4). First lemma, a bundling lemma: every
+one-height chain of cost <= 2 splits its edges of multiplicity > M into disjoint monotone staircase
+bundles meeting (B1)-(B4) plus a remainder of cost O((log N)^(-1/4)); non-monotone parts pay for
+their turning edges, layers too thin for (B2) go to lem:multilevel-chain-bound's small cases. Likely
+breaks: interleaved thin layers violating (B2), wiggly piles whose turning edges carry a constant
+share of the cost. conj:conjugate-class-discrepancy less tractable (whole curve, endpoints; at
+(2,infinity) the continuous counterpart of Research Problem 17.2.2; part (a) of the corollary reaches
+only exponents in (3,6) on the curve). prop:universal-completion-sufficiency least tractable; its
+hypothesis likely false (judgement, untested).
+
+2. Constraints. The curve is exact (thm:below-curve-matching-exclusion,
+thm:maximum-displacement-curve-threshold) and lem:leighton-shor-class-lower-bound gives D_N >=
+sqrt(N log N)/(4 L_1) away from the endpoints: no slack in the order. Flow exclusions: fields
+linear in the counts, and adapted local level-by-level fields whose square means carry the dyadic
+push; a flow must be nonlinear and break adaptedness, locality or the dyadic mean condition.
+Gluing: only the universal C = 1 form gives Gamma = S. Implied but stated by no entry: for every
+fixed L'', the level-1 box graph is deficient with probability tending to one
+(thm:maximum-displacement-curve-threshold (ii) at beta = (0,0)), in both settings; every level with
+k below about log N/L''^4 is deficient (by hand); expects failure at level 1, the certificate the tool.
+
+3. Materially different approach: none it could support. (a) Anticipating construction: for div
+Phi = mu_X - Leb, int_S Phi_k = int_{boundary S} x_k Phi.n - int_S x_k d(mu_X - Leb); the push is
+intrinsic and only the boundary flux's x_k-moment can cancel it; choose each level's boundary-flux
+profile from finer counts (lookahead), outside the obstructions' measurability; break: the profile
+must have the size of the future pushes, about sqrt((J - j)N), possibly a restatement. (b)
+Bednorz-Latala decomposition (recalled, not read): after symmetrization and concentration the dual
+bound is equivalent up to constants to F inside F_1 + F_2 with gamma_2(F_1) <~ sqrt(N log N) and
+N int |f| <~ sqrt(N log N) on F_2; break: steep large-support parts cannot go to F_2; a method
+inside the dual family. Excluded: stable allocation (heavy tails in 2D), gravitational allocation (a
+linear field, under thm:linear-flow-obstruction), bottom-up hierarchical matching (sqrt(N) log N
+for the linear cost), composition through an intermediate set (per coordinate).
+
+4. First test. Power: below about N = 3e10 (by hand) the one-height class at y* >= e^19.28 holds
+only the zero chain (one cell costs 4 W^2 psi_4^*(y*/2) > 2); thresholds v_e >= 2e^16 need N above
+about 1e14; box levels at the proposition's constants are not deficient at reachable N. First test
+a proof: the certificate at level 1 for fixed L''. Computation: the exact min-cost flow of
+lem:grid-flow-duality (d) on mesh W at (4,4), N from 1e4 to 1e8, recording D/sqrt(N log N) and the
+maximizer's multiplicity profile; changes answer 1 if most piled cost sits on non-monotone or
+interleaved piles; weak power (a (log N)^(1/4) ratio moves by about 1.19 over that range).
+
+Possibly wrong or misread: the conjecture's assessment "(alpha,infinity) for alpha<1/2 (Theorem
+17.1.3)" (the curve's point is alpha = 2; check the monograph); "(2,2) only with probability 9/10"
+out of date beside the record's own (2,2) result; thm:cell-scale-reduction's summary has nu_X^l -
+N Leb, its record statement nu_X^l - nu_Y; cor:coarse-discrete-sufficiency (a)'s L = max(260, 4C)
+needs C uniform in alpha for one L on the curve; ex:box-completion-failures' L = 1 perfect matchings
+a finite-size effect, not support for completion. Checked consistent: the Gamma/S asymptotics of
+thm:local-completion-dichotomy (c), the corollary's scaling, L >= 128 in lem:grid-flow-duality (c),
+beta < 1 at (4,4).
+
+Process audit: Q1 presupposes one listed statement worth trying with a first lemma; Q4 presupposes
+a computational test; Q2 and Q3 open. The preamble names the route families and singles out the two
+conditional reductions (route leakage). Missing excerpts: lem:two-sample-matching-transfer,
+thm:dyadic-flow-square-exponential, lem:discrete-flow-bound, lem:cut-cell-variance-bound,
+lem:fine-grid-leighton-shor, lem:two-graph-chain-duality, the restoring-flow records. Several record
+statements truncated or another claim's; lem:local-event-push-obstruction has none. The preamble's
+"exclusions of ... the gluing condition at small constants" overstates a nine-sample finite check.
+Strength count 1. Verdict: pass with corrections for statements.txt as an excerpt set.
+
+Suggestions (unverified): the certificate at level 1 for every fixed L''; the bundling lemma; the
+anticipating boundary-flux design; the Bednorz-Latala decomposition.
