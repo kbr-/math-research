@@ -274,7 +274,11 @@ So perform the following, in a loop:
   clause written for \(L\ge128\) stayed after \(L\) was freed). A file built by a tool for a
   reviewer (an excerpt, a results list) is read before it is sent, at least the first lines of each
   block, for what the tool attached to each item (17 October 2026: a blind stage's excerpt gave a
-  conjecture another claim's lemma as its record statement).
+  conjecture another claim's lemma as its record statement). Each sentence that draws a figure or a
+  verdict from a model or a recorded statement is reread from its first step, not its last: the
+  choice the figure rests on (an area, a weight, how a theorem's steps may be assigned) is checked
+  before the arithmetic after it (17 October 2026: a minimum was computed correctly from a leg's
+  halved area, and a theorem's wording was checked while its step decomposition was not).
 - update the notebook as usual
 - Apply the [cheap significance check](research/claims/README.md#significance-check-and-attention)
   through claim metadata and the finalizer; surface new/reopened candidates without rerunning a
