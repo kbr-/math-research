@@ -13,6 +13,9 @@ The extreme the question needs: m_min is a minimum over choices of functionals, 
 gives an upper bound and the lower bound is the ratio; the script reports the least number of random functionals
 that detected, over seeds (the minimum over seeds is the upper bound used), beside the lower bound.
 Expected: the least number equals the lower bound in both models on every board run.
+Added after the review, with --holes 7 at two pigeons (the board of three pigeons and eight holes at D = 4):
+there the disjointness graph K_2 x K_7 is bipartite and point evaluations at partial matchings need 5 against
+the ratio 4 in the H-model; whether general functionals reach 4 is not predicted, and is reported as found.
 Refuted by: on some board and model, no seed detecting with as many functionals as the lower bound.
 Possible because: rectangle forms of one functional are structured (one functional's map A_2 -> A_1^* need not
 have full rank, and the maps of several functionals can share kernel), as lem:native-functional-growth shows on
@@ -97,9 +100,9 @@ class Board:
         return gens
 
 
-def run(m, seeds, extra):
+def run(m, seeds, extra, holes=6):
     t0 = time.time()
-    b = Board(m, 6)
+    b = Board(m, holes)
     n1, n2, n3 = (len(b.upto[k]) for k in (1, 2, 3))
     W1, W2, W3 = (Span(b.W(k)) for k in (1, 2, 3))
     A1, A2 = n1 - len(W1), n2 - len(W2)
@@ -123,7 +126,7 @@ def run(m, seeds, extra):
             images[low.bit_length() - 1] |= 1 << g
             bits ^= low
     perp = kernel(n3, images)
-    out = {'pigeons': m, 'holes': 6, 'dim_V1': n1, 'dim_V2': n2, 'dim_V3': n3, 'dim_W1': len(W1),
+    out = {'pigeons': m, 'holes': holes, 'dim_V1': n1, 'dim_V2': n2, 'dim_V3': n3, 'dim_W1': len(W1),
            'dim_W2': len(W2), 'dim_W3': len(W3), 'dim_perp_W3': len(perp)}
     assert len(perp) == n3 - len(W3)
     for model, (target, dimA1, draw) in {
@@ -162,13 +165,14 @@ def main():
     ap.add_argument('--pigeons', default='3,4,5')
     ap.add_argument('--seeds', type=int, default=5)
     ap.add_argument('--extra', type=int, default=12)
+    ap.add_argument('--holes', type=int, default=6)
     args = ap.parse_args()
     res = []
     for m in [int(t) for t in args.pigeons.split(',')]:
-        res.append(run(m, args.seeds, args.extra))
+        res.append(run(m, args.seeds, args.extra, args.holes))
         print(json.dumps(res[-1]), flush=True)
         pathlib.Path(args.out).write_text(json.dumps(res, indent=1) + '\n')
-    if res and res[-1]['pigeons'] == 7:
+    if res and res[-1]['pigeons'] == 7 and args.holes == 6:
         assert res[-1]['C']['dim_A2'] == 435 and res[-1]['C']['dim_A1'] == 36, 'hand counts of dancing matchings'
 
 
