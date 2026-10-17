@@ -439,7 +439,11 @@ AGENTS.md"):
   ballot count at \(K=1\) was carried to \(K=2\), where a two-pigeon pair breaks it).
 - Before listing a hypothesis (a field, a characteristic, a closure type, a size), redo the step it
   is listed for without it, with signs or general coefficients, and list it only if that fails (17
-  October 2026: an identity valid over every field was listed as needing characteristic 2).
+  October 2026: an identity valid over every field was listed as needing characteristic 2). A
+  hypothesis that the step uses only to say what the conclusion is (a zero set, a value, a formula),
+  not for the conclusion to hold, is not a hypothesis: the statement gives the conclusion per case
+  instead (17 October 2026: a result stated outside characteristic 2 because a set it named read
+  differently there).
 - Write a statement's hypotheses, scope and qualifiers ("exactly", "every") after its proof, from
   what the proof's steps use and give, and its witness after that, one on which the step the
   statement adds is used: a statement drafted first carries the instance it was drafted for (17

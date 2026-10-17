@@ -1,0 +1,74 @@
+Fresh-context medium reviewer, first pass, on the draft of #entry-2026-10-17-partition-kernels-every-field
+(17 October 2026). Its findings, condensed from the report as received.
+
+Verdict: pass with corrections. The proofs of (a), (b) and (c) are correct; the errors are in the sentences
+interpreting the result against the record, one Nonvacuity sentence, two Record-comparison relations and the
+living-section sentence. One claim search: "characteristic two monomial killer partition errors separated
+holes intersection of annihilator sums" (cor:separated-family-kernels, cor:quadratic-separated-kernels,
+prop:partition-common-kernels, thm:partition-killer-degree and four others; none classifies the
+characteristic-2 monomial killers).
+
+Checked and correct: (a)'s zero sets per characteristic and the field-free evaluation step, the corollary's
+clause over any field; (b)'s four rooms; (c)'s identity, the two-way kernel equality, the products and
+survival of x_1a x_2b; the Degenerate cases; the Nonvacuity arithmetic, both characteristic-2-only branches
+exercised; the rooms 1,1,1,1 and 1,0,2,2; the Review paragraph's five dispositions against
+20261017T080924.json, the queue IDs and the commit cited.
+
+Required changes:
+- "lies where all four rooms are below rho, as (a) requires" is wrong: (a) allows survivors inside a room
+  (the Nonvacuity witness has room 4 and J != W). The corollary rules out dim J > a inside a room; the
+  orbits with J > a are four, five and six pigeons, seven having J = a. The test can fail only for the
+  corollary, since no recorded board has room; rewrite the test, Goal progress, Bearing, the spec's
+  rationale and relationship note in those terms.
+- The test list omits the four-pigeon board while saying "every survivor"; the six-pigeon orbit labels are
+  not in the dependency excerpts (quote them from the json); (2,3,0) at N = 5 is a complementary pair.
+- Nonvacuity: "prop:partition-common-kernels ... does not cover this pair" is false for J != W, its (c)
+  giving x_1,5 x_2,0 there; what the witness adds is the exact J and the characteristic-2-only killer
+  x_1,0 x_2,5; "it survives" needs its citation; (c) does not apply, B minus A being empty.
+- Record comparison: thm:partition-killer-degree (a) is not a special case (no room, survival asserted):
+  neither. (a) is the corollary's clause with Ann_H evaluated by prop:partition-common-kernels' first step:
+  a refinement, and the spec's relation to that claim depends_on.
+- The previous entry's merged Record comparison: "The theorem's (c) is the case r = 1, K = 1 of (a) and (b)"
+  should read "follows from" (Z at r = 1 is nonempty, and Phi in H at K = 1 needs an evaluation using
+  |A| >= 2); its other relation words check out.
+- Smallest case overstated ("the one case ... left open"): also open are disjoint pairs at N < 2 rho - 1
+  with neither room outside characteristic 2, meeting pairs covering the holes with |I| < rho outside
+  characteristic 2, and r >= 3. Own statements misses that the single-error clause applies to each error
+  at the seven-pigeon instance.
+- Living-section edit: "The first statement holds in every field" refers back to a sentence false in
+  characteristic 2; rewrite it.
+- Proof of (b): U^c undefined in the Setting.
+
+Open point (unverified sketch): every combination alpha E_A + beta E_B + gamma Q_1 + delta Q_2 has
+coefficients constant on the blocks A, B, U^c; with room only the three single-block forms remain. J lies in
+(Phi_A + W) cap (Phi_B + W) cap (Phi_F + W), the zero sets pairwise disjoint, so J = W asks whether this
+intersection of sums equals the sum of intersections modulo W; outside characteristic 3 Phi_F is in H. Cheap
+check: the three-way intersection over F_3 at N = 6 with basis_kernels.py's spanning set.
+
+Suggestion (unverified): modulo H, x_1h x_2j E_A = ([h in A] + [j not in A]) x_1h x_2j, so in characteristic
+2, from K >= 2, x_1h x_2j is a common killer exactly when every A_i separates h and j; every pair of nonempty
+proper sets has one; this strictly contains (c).
+
+Process audit: title pending, proposed "Partition kernels with room in every field"; the spec assessment was
+pre-written before review, and the placeholder check cannot catch a pre-filled verdict; the record test could
+not fail for the new claim but was quoted as a test; the hypothesis rule let the same mistake through a
+second time and the answer was a queued build, against the order of work; the 542-spec figure had no saved
+output; the general version was again left incomplete for r; Own statements said "None decides it" without
+applying the single-error clause. Strength count: 9.
+
+Second pass, on the corrected draft (its findings, condensed).
+Verdict: pass with corrections. Part (d) is correct, the nested-set case and h != j included: in
+x_1h x_2j E_A the first-sum terms with k != h hold x_1h x_1k (the term k = j also the hole monomial
+x_1j x_2j), the second-sum terms with k != j hold x_2j x_2k, so the coefficient is [h in A] + [j not in A];
+its zero cases per characteristic are right, degree 3 <= D. Missing: the "only if" of "exactly when" (a nonzero
+coefficient c gives x_1h x_2j E_A = c x_1h x_2j modulo H, in C only if the monomial is, against survival).
+Nonvacuity, Against the record (every figure against orbit_rooms.txt), the Smallest case's F = E_A + E_B + Q_1
++ Q_2 = E_U + 1 + Q_1 with room 4 and pairwise disjoint zero sets, and the previous entry's "follows from" are
+right. Required: the four-pigeon exclusion is false, mixing_pairs.json holding partition pairs (E_{2}, E_{1})
+among other errors, with no room at N = 3 anyway; say the six-pigeon orbits are ordered and include
+complements; "Outside characteristic 3 ... closes it" holds only outside characteristics 2 and 3; F is not a
+partition error, so name lem:low-hole-linear-transfer for it; (d) implies the earlier (c) in every
+characteristic; the spec's x_1a x_2b is stale; the replay counts skipped files in 596. Process audit: title
+fits (a) and undersells (d); Bearing's scope to be repeated in its sentence; the AGENTS.md change is a rule
+not a check, which the Process assessment should say; orbit_rooms.py's docstring carried the false
+exclusion. Strength count: 2.
