@@ -439,6 +439,10 @@ AGENTS.md"):
   of a result's reach (a Bearing, a living-section clause, a review's Decision, a reply) names the
   class its hypotheses cover, never the class its mechanism suggests (17 October 2026: "no rule can
   change the square means" was summed up as "no flow", in an entry and then in the review after it).
+  An outcome names the quantity its bound is about, and a scope sentence (Bearing, Not covered) is
+  evaluated at each end of the parameter ranges of the results it summarizes before it is written
+  (17 October 2026: a bound on a correction alone was summed up as "does not lower the cost" of the
+  whole field, and a Not covered list named an endpoint the theorem covers).
 - When a computation agrees with what was expected, write next what it does not show, and read each
   of its figures for what it says against the conclusion (a statistic on the far side of a bound the
   conclusion assumes), before the sentence that concludes from it (17 October 2026: a closure read a
