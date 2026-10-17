@@ -1161,7 +1161,8 @@ def figure_block(reply):
     if not found:
         return None
     return {'decision': 'block', 'reason': (
-        f'A figure without its source: "{found[0][:160]}". Each count, ratio or percentage in a reply stands beside '
+        f'A figure without its source ("{REPLY_FIGURE.search(found[0]).group(0)}"): "{found[0][:160]}". Each count, '
+        'ratio or percentage in a reply stands beside '
         'the saved output it came from (a research/results path), a named agent\'s report or a proof in the entry '
         '(AGENTS.md, order of work); save the output first, or drop the figure.')}
 

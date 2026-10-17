@@ -373,6 +373,10 @@ class UncheckedClaimTest(HookFixture):
                       'No proof yet: it held in 333 of 340.'):                     # a bare word (reviewer)
             with self.subTest(reply=reply):
                 self.assertIn('A figure without its source', hook.figure_block(reply)['reason'])
+        # The block names the figure it matched, not only the paragraph's opening (17 October 2026).
+        late = 'When it returns I apply its corrections, append and commit the entry, sync local main, and open the ' \
+               'next cycle and then the one after it, which runs the scan of 544 entries.'
+        self.assertIn('("544 entries")', hook.figure_block(late)['reason'])
         for reply in ('It was exact in 333 of 340 instances (research/results/x/run.txt).',
                       'The reviewer found 3 of 4 claims overstated.',
                       'The scan listed 3 of 544 entries (scan-block-route.txt).',

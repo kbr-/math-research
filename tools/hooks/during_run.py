@@ -59,7 +59,9 @@ def written_since(transcript, offset):
         if entry_texts:
             # What the assistant said to the user, as opposed to what it thought.
             said.extend(block.get('text') or '' for block in entry['message']['content'] if block.get('type') == 'text')
-    return calls, texts, '\n'.join(said), offset + end
+    # Each text is its own paragraph: joined by one newline, a figure in one reply was charged to the paragraph of
+    # the reply before it, whose opening the block quoted (17 October 2026).
+    return calls, texts, '\n\n'.join(said), offset + end
 
 
 def commit(data, directory=None):

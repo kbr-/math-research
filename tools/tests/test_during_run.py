@@ -73,6 +73,12 @@ class DuringRunTest(unittest.TestCase):
         message, asked = after(said('`rewrap_md.py` nested the list wrongly, so I fixed the lines by hand.', 'thinking'))
         self.assertIn("A tool's fault, worked around: ", message)
         self.assertEqual(asked, [])
+        # A figure with its source in its own reply is not charged to the reply before it (17 October 2026).
+        message, _ = after(said('Next I open the cycle on the lagged flow.'),
+                           said('The scan listed 3 of 544 entries (scan-block-route.txt).'))
+        self.assertIsNone(message)
+        message, _ = after(said('The scan listed 3 of 544 entries.'))
+        self.assertIn('A figure without its source', message)
         # A gap declared to the user; one in thinking alone is none, and the judge is asked about what was said.
         message, _ = after(said('The wrapper with an error really pending is not verified.'))
         self.assertIn('A declared gap: "The wrapper with an error really pending is not verified"', message)
