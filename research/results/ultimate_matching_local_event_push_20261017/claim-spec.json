@@ -1,0 +1,98 @@
+{
+ "source": {
+  "record": "[Push obstruction on local events](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-local-event-push)",
+  "label": "Push obstruction on local events",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-17-local-event-push"
+  ]
+ },
+ "date": "2026-10-17",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "claims": [
+  {
+   "id": "lem:local-event-push-obstruction",
+   "summary": "For N i.i.d. uniform points in [0,1]^2, depth J with kappa log N <= N 4^(-J) <= K log N, j_1 = J - m, m = floor(theta log_2 N), a level-by-level field Phi = sum_{j<J} Phi_j (Phi_j measurable with respect to the counts of levels at most j+1; not necessarily a flow) local at level j_1 - r for some r >= 0 with j_1 - r >= 0, a coordinate k, R_j = sum_{i<j} Phi_{i,k}, sigma_j its sign (+1 where R_j = 0), B_j(x) the event that the squares S_i(x), i <= j, hold at least half their mean counts: if G_N has measure at least N^(-gamma) and for x in G_N and j_1 <= j <= J events A_j(x) in F_j, jointly measurable in (x, omega), not necessarily local, satisfy, for every x in G_N and j_1 <= j < J, P({sigma_j(x) Phi_{j,k}(x) >= h} and A_{j+1}(x) | F_j) >= p on A_j(x) and B_j(x), and with probability tending to one A_{j_1}(x) fails on measure at most lambda(G_N)/4, then with a = theta log_2(1/p) + gamma, theta log_2(1/p) < kappa/8, 4^r K log N N^(2 theta - 1 + 2a) -> 0 (at r = 0 or 4^r = N^(o(1)): 2a < 1 - 2 theta) and u_N = 4mh/(L sqrt(N log N)), int psi_alpha(4|Phi_k|/(L sqrt(N log N))) exceeds every constant with probability tending to one for finite alpha > 2 with u_N^alpha - a ln N -> infinity, and for alpha = infinity with u_N >= 2.",
+   "assessment": "Working proof, passed three passes of one medium reviewer (research/results/ultimate_matching_local_event_push_20261017/review.txt): the proof of lem:conditional-push-obstruction with the run's events H_{j+1} = H_j and P_j and A_{j+1} and B_{j+1} in the chain rule; the events enter only the conditional expectation of the area of the set D where |Phi_k| >= mh, which the field's locality at level j_1 - r makes a sum of 4^(j_1 - r) conditionally independent terms; exceptional counts at mu/8 and Chebyshev at mu/16 with the factor 4^r.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Extends lem:conditional-push-obstruction to fields whose steps push along the running sign only on events paid for by their probability along the run, as the eleventh route review's decisive test asks for the multi-shift restoring flow; it covers fields the earlier lemma covers at no p and h (the entry's witness).",
+   "next_action": "Decide whether the multi-shift restoring flow meets its hypothesis at small gain, with A_j the event that the correction's part read before the step is at most a quarter of the push along runs.",
+   "novelty": "not_claimed"
+  },
+  {
+   "id": "lem:restoring-step-part-tail",
+   "summary": "For N i.i.d. uniform points in [0,1]^2, dyadic squares of side rho_i = 2^(-i), F_j the counts of levels at most j, a level j, 1 <= R <= j, gamma > 0, b > 0: for s <= R and c in {1,2} let Q_{s,c} be a union of at most two level-(j-s) squares, epsilon_z in {-1,0,1} F_j-measurable and constant on level-j squares, xi_{s,c} = (2 4^s rho_j)^(-1) sum_{z in Q_{s,c}} epsilon_z (1{z in the lower (c = 1) or left (c = 2) half of its level-j square} - 1/2), and weights b_{s,c} >= 0, any random variables, with b_{s,1} + b_{s,2} <= b; on the event that every level-(j-s) square, s <= R, holds at most twice its mean count, P(gamma sum_{s,c} b_{s,c} |xi_{s,c}| >= t | F_j) <= 4R exp(-2t^2/(gamma^2 b^2 N)) for every t > 0; hence for every F_{j+1}-event E with P(E | F_j) >= p, P(E and gamma sum b_{s,c}|xi_{s,c}| <= h/4 | F_j) >= p - 4R exp(-h^2/(8 gamma^2 b^2 N)), at least p/2 when gamma <= h/(b sqrt(8 N ln(8R/p))).",
+   "assessment": "Working proof, passed three passes of one medium reviewer (research/results/ultimate_matching_local_event_push_20261017/review.txt): given F_j the points are i.i.d. uniform in their level-j squares, so each xi_{s,c} is a sum of at most 4N 4^s rho_j^2 independent centred terms of range at most 1 over 2 4^s rho_j, Hoeffding; the sum split as t 2^(-s) b_{s,c}/b and a union over the 2R pairs; the joint bound by P(E and B) >= P(E) - P(B^c).",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Bounds the part of a restoring correction that reads the step's own coarse pushes, jointly with the dyadic push however the two correlate, at gains below h/(b sqrt(8N ln(8R/p))), with any random weights; with the conditional push witness's pointwise push h = sqrt(N/128) at p_0 = 2^(-768) and b = 6 that is 0.000225 at one shift.",
+   "next_action": "Bound the correction's part read before the step, the coarse running means along a run of pushes, so that lem:local-event-push-obstruction applies to the multi-shift restoring flow at small gain.",
+   "novelty": "not_claimed"
+  }
+ ],
+ "relationships": [
+  [
+   "lem:local-event-push-obstruction",
+   "refines",
+   "lem:conditional-push-obstruction",
+   "Implies it: with A_j the sure event the joint hypothesis is its push hypothesis on B_j(x) and A_{j_1} never fails, same depth, theta, locality, G_N, p, h and exponent conditions."
+  ],
+  [
+   "lem:local-event-push-obstruction",
+   "depends_on",
+   "lem:conditional-push-obstruction",
+   "Its proof's chain rule, exceptional counts, many-points step, Chebyshev and cost step."
+  ],
+  [
+   "lem:local-event-push-obstruction",
+   "cites",
+   "lem:coarse-push-obstruction",
+   "Its coarse-mean counterpart, which carries no events; neither implies the other."
+  ],
+  [
+   "lem:local-event-push-obstruction",
+   "cites",
+   "thm:square-mean-flow-obstruction",
+   "Pushes level-j square means by its mean condition, with no events; neither implies the other."
+  ],
+  [
+   "lem:local-event-push-obstruction",
+   "cites",
+   "thm:coarse-mean-flow-obstruction",
+   "Pushes coarse means at a shift r, with no events; neither implies the other; its locality at level j_1 - r is the form the local-event lemma's Chebyshev step now allows."
+  ],
+  [
+   "lem:local-event-push-obstruction",
+   "cites",
+   "cor:partial-restoration-obstruction",
+   "A coarse-mean push surviving partial restoration, with no events; neither implies the other."
+  ],
+  [
+   "lem:local-event-push-obstruction",
+   "cites",
+   "conj:conjugate-class-discrepancy",
+   "Narrows the flows of bounded cost on its primal side; proves no part of it."
+  ],
+  [
+   "lem:restoring-step-part-tail",
+   "cites",
+   "thm:coarse-mean-flow-obstruction",
+   "Its push step's terms, the half-indicators of points in their level-j squares, are the terms bounded here, from above."
+  ],
+  [
+   "lem:restoring-step-part-tail",
+   "cites",
+   "lem:conditional-push-obstruction",
+   "Supplies, with lem:local-event-push-obstruction, part of the joint hypothesis for a restoring correction; a tail bound, not an obstruction; neither implies the other."
+  ],
+  [
+   "lem:restoring-step-part-tail",
+   "cites",
+   "lem:block-lower-tail",
+   "Its lower-tail counterpart for sums of independent pushes; neither implies the other."
+  ]
+ ]
+}
