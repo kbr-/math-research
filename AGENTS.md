@@ -474,12 +474,14 @@ AGENTS.md"):
 - Count a step done only when its effect is seen, not when its command was issued: read the written
   file's new content or the tool's own report of the write, the commit's subject in the log, a mark
   matching on the case it is for (17 October 2026: an excerpt refused behind a silenced error, a
-  stale commit subject printed and not read, and a word mark that matched a path). A check's
-  refusing test cases are the sentences that prompted it, quoted before its pattern is written, and
-  a scan count of zero is reported beside the listing of what the check reads
-  (`tools/record_scan.py` block-counts): a pattern fitted to a paraphrase matches nothing and its
-  zero looks like a clean record (17 October 2026: a block-count check missed every form the record
-  writes).
+  stale commit subject printed and not read, and a word mark that matched a path). A reply or entry
+  that says a comparison or check was made (summaries against statements, a draft against a rule)
+  quotes one line of what was compared, its outcome beside it (17 October 2026: a flag certifying a
+  comparison was passed on a reply that showed none). A check's refusing test cases are the
+  sentences that prompted it, quoted before its pattern is written, and a scan count of zero is
+  reported beside the listing of what the check reads (`tools/record_scan.py` block-counts): a
+  pattern fitted to a paraphrase matches nothing and its zero looks like a clean record (17 October
+  2026: a block-count check missed every form the record writes).
 - Before writing a script for an attempt, run the attempt by hand on its smallest nontrivial
   instance and write the outcome down; a script is written only for what that hand step leaves open,
   and each of its controls is first tried on an input where it must fail (17 October 2026: a routing
