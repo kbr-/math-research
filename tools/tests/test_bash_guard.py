@@ -304,7 +304,10 @@ class BashGuardTest(unittest.TestCase):
                 heredoc.format("import re\np = Path('x.md'); p.write_text(re.sub('a', 'b', p.read_text()))"),
                 "python3 -I - <<'EOF' && echo done\ns = open('x.md').read().replace('a', 'b')\n"
                 "with open('x.md', 'w') as f:\n    print(s, file=f)\nEOF",
-                heredoc.format("p = Path('x.bin'); p.write_bytes(p.read_bytes().replace(b'a', b'b'))")):
+                heredoc.format("p = Path('x.bin'); p.write_bytes(p.read_bytes().replace(b'a', b'b'))"),
+                # an argument between "-" and the heredoc (17 October 2026: three message edits passed this way)
+                "python3 - /tmp/m.txt <<'EOF'\nimport sys\np=sys.argv[1]; s=open(p).read()\n"
+                "s=s.replace('a','b')\nopen(p,'w').write(s)\nEOF"):
             with self.subTest(script=script):
                 result = run(script)
                 self.assertEqual(result.returncode, 2)

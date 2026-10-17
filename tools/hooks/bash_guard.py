@@ -115,7 +115,9 @@ def unchained_heredoc(command: str):
 # matches a passage's words across any whitespace. tools/replace_text.py is the committed, tested one.
 ADHOC_REPLACE = re.compile(r"def\s+\w+\s*\(\s*(?:\w+\s*,\s*)?old\s*,\s*new\b|\.join\(\s*map\(\s*re\.escape")
 # An inline Python script, from a heredoc or -c, that changes text and writes a file: a replace in place.
-INLINE_PYTHON = re.compile(r"\bpython3?\s+(?:-I\s+)?(?:-\s*<<|-c\s)")
+# Arguments may stand between "-" and the heredoc: "python3 - FILE <<'EOF'" passed the first form on 17 October
+# 2026, and three scripted replaces in a commit message missed silently.
+INLINE_PYTHON = re.compile(r"\bpython3?\s+(?:-I\s+)?(?:-(?:\s+[^\s<|;&]+)*\s*<<|-c\s)")
 CHANGES_TEXT = re.compile(r"\.replace\(|\bre\.sub\(")
 WRITES_FILE = re.compile(r"\.write_(?:text|bytes)\(|\bopen\([^)]*['\"][wa]")
 
