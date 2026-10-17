@@ -82,6 +82,35 @@ def row(args):
     return best, list(total.basis.values())
 
 
+def joined(parts, W):
+    return tq.Space([x for _, vecs in parts for x in vecs]) + W
+
+
+def summed(spaces, W):
+    total = tq.Space() + W
+    for x in spaces:
+        total = total + x
+    return total
+
+
+def measure_orbit(pool, key, A, B):
+    st = setup()
+    cC, monos, W = st['cC'], st['monos'], st['W']
+    t0 = time.time()
+    E1, E2 = error(A), error(B)
+    J = dl.ann_poly(cC, monos, E1) & dl.ann_poly(cC, monos, E2)
+    h1s, h2s = domain_kernels(E1), domain_kernels(E2)
+    parts = pool.map(row, [(h1, h2s, W) for h1 in h1s])
+    a = max(p[0] for p in parts)
+    total = joined(parts, W)
+    I = summed(h1s, W) & summed(h2s, W)
+    r = {'sizes_and_overlap': key, 'A': A, 'B': B, 'J': len(J), 'a': a, 'b': len(total), 'I': len(I),
+         'seconds': round(time.time() - t0, 1)}
+    assert r['a'] <= r['b'] <= r['I'] <= r['J'], f'containments {r}'
+    assert r['J'] == r['I'], f'J = I expected from rep_sum.json and symmetry: {r}'
+    return r
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', required=True)
@@ -102,23 +131,7 @@ def main():
     out = {'dim_W': len(W), 'single_C_side': len(single), 'orbits': []}
     with multiprocessing.Pool(14) as pool:
         for key, (A, B) in sorted(orbits.items()):
-            t0 = time.time()
-            E1, E2 = error(A), error(B)
-            J = dl.ann_poly(cC, monos, E1) & dl.ann_poly(cC, monos, E2)
-            h1s, h2s = domain_kernels(E1), domain_kernels(E2)
-            parts = pool.map(row, [(h1, h2s, W) for h1 in h1s])
-            a = max(p[0] for p in parts)
-            total = tq.Space([x for _, vecs in parts for x in vecs]) + W
-            S1, S2 = tq.Space() + W, tq.Space() + W
-            for x in h1s:
-                S1 = S1 + x
-            for y in h2s:
-                S2 = S2 + y
-            I = S1 & S2
-            r = {'sizes_and_overlap': key, 'A': A, 'B': B, 'J': len(J), 'a': a, 'b': len(total), 'I': len(I),
-                 'seconds': round(time.time() - t0, 1)}
-            assert r['a'] <= r['b'] <= r['I'] <= r['J'], f'containments {r}'
-            assert r['J'] == r['I'], f'J = I expected from rep_sum.json and symmetry: {r}'
+            r = measure_orbit(pool, key, A, B)
             out['orbits'].append(r)
             print(json.dumps(r), flush=True)
             pathlib.Path(args.out).write_text(json.dumps(out, indent=1) + '\n')
