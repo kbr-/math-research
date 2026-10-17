@@ -1,0 +1,57 @@
+Review of entry-2026-10-17-electrical-flow-obstruction (thm:electrical-flow-obstruction), ultimate-matching,
+17 October 2026: one medium reviewer, given the draft, the spec, spectral_check.py with its output, and the
+registered statements of lem:grid-flow-duality, lem:idle-slack-sandpile, lem:balanced-sandpile-flow,
+thm:dyadic-flow-obstruction, thm:square-mean-flow-obstruction and lem:straight-cut-forced-flux. Condensed in its
+own terms.
+
+First pass. Verdict: pass with corrections; the proof correct. Re-derived: theta_e an i.i.d. sum, |w_e| <= 1 - k^-2
+by the path decomposition, E|g|^3 <= E g^2; the path eigenpairs and b_e . phi_ab; the mean bound (energy identity,
+sin x >= 2x/pi, sum over 1 <= b <= a); the maximum bound, pi^4/24 + pi^3/16 = 5.9966 <= 6.0, tight but true; the
+good-edge count and p_k -> 8/pi^7; sigma_e, the Berry-Esseen ratio 1/sqrt(n M_e), reverse Markov; the factor 4 in
+the choice of u; "for all large N" right since u is fixed from (C, L, K', alpha); the sandpile clause against both
+statements; Nonvacuity numbers (u > 3685 at K' = 2, sigma 1.92e-4, N delta^2 about 17.02 log N); the check's
+figures; the spec.
+Required: sigma_N -> sigma_inf also uses ln k <= (1/2) ln N; write liminf, and say log is natural; the grid
+hypotheses understate the proof: any delta <= N^-eps with n -> infinity gives sigma >= sqrt(eps/(2 pi^4))/(K' L);
+the alpha = 2 clause: the product tends to 0 since 2 pi^4 K'^2 L^2 > 1; the degenerate case's "astronomically
+large N" needs its figure (q(u) about e^(-1.9e14) at K' = 2); thm:dyadic-flow-obstruction's record names
+lambda' = N/4, take K' = 4; two more reasons the square-mean theorem excludes the electrical flow (not local at
+j_1, not a level-by-level field); the Smallest case assumes the divergence is the change of the smeared counts, a
+position-dependent divergence is another reading; "superseded" is the wrong relation; identically uniform is used
+in E g = 0.
+Open point: from the statement alone, measurability looks load-bearing in the square-mean proof (the running
+mean on a child includes earlier steps' integrals); unverified without the proof.
+Suggestions (unverified): thm:split-matched-transport-obstruction handles hierarchical transports cutting through
+rank-chosen interior points, position-dependent, with a predictable common step; cast nearest-side exits in that
+form; lem:conditional-push-obstruction is a cheaper read; the constants 8/pi^7 and 1/pi^4 are the bookkeeping's
+(every edge good, max/mean about 1.75, measured slope about 0.07).
+Process audit: status line before the review; title matches the theorem, omitting the probability bounded below
+and the grid restriction, acceptable, no overstatement; a negative sentence without an attempt in the Review
+paragraph; Own statements and Record search only in the draft's words; lambda' = N/2 set from one record while
+another says N/4. Its search "harmonic potential Green function least squares flow variance edge" found no claim
+on the electrical flow's tails. Strength count 1.
+
+Second pass. Verdict: pass with corrections. Correct: the widened grids (ln k >= eps ln N gives sigma >=
+sqrt(eps/(2 pi^4))/(K' L); n >= 1 gives eta_N <= (eps ln N/(2 pi^4))^(-1/2)); Nonvacuity figures 5.43e7, u > 7.37e3,
+spread 9.59e-5, u/sigma 7.68e7, q about e^(-2.95e15), n M_e > e^(5.9e15); the added Record-comparison reasons.
+Required: the degenerate case's k >= 32/s now k >= N^eps; the status line and New mathematics understate the
+proof; the figures are liminf values (the reduction's grid has eps < 1/2), and the widened part needs a witness;
+the alpha = 2 clause is false once L is free (pi^4 K'^2 L^2/eps < 1 for L < sqrt(eps)/(pi^2 K'), where the
+argument covers alpha = 2); the Smallest case is wrong: nearest-midline exits are a median cut (r = n/2), not a
+cut at r = n_lower, which moves no point, so condition (i) holds with A = 1/2 and the class is the tau = 1/2 class
+of thm:adapted-partition-obstruction; the claim that (i) fails must be withdrawn from four places; the open step is
+whether the exit matching stays within m/(18 sqrt(Gamma N)) of T, which stretches every point by about |c - 1/2| l
+per level; the Review paragraph's "states its sizes" unsupported; the gate must record this pass; the
+split-matched lead needs its own suggestion item; the Meta names a commit made before this review; the
+Prevention's "cannot judge whose words it uses" a negative sentence without an attempt. Process audit: the
+next-attempt claim drafted from the picture of a cut, not a numeric case (n = 10, n_lower = 7: two points cross, a
+rank-7 cut moves none), carried into four places; a widening without rechecking the clause relying on L >= 128;
+title fine, status scope understates. Strength count 1.
+
+Third pass. Verdict: pass with corrections. Correct: the widened-grid witness (sigma 0.0358 at eps = 1/4, L = 1,
+K' = 1; L = 0.02 < 0.0507 for alpha = 2); the alpha = 2 step; the n = 10 crossing sets; the displacement bound
+x|1/(2c) - 1| <= |c - 1/2| l; the gate's account; the cited commits exist. Required: under the exits eight points
+stay (ranks 1-5 and 8-10), not five, since T moves the upper part too; the crossing points' destinations are
+unspecified. Optional: "a negative power of N" in the status line; the alpha = 2 case in New mathematics. Not
+checked by it: the figure 19 of 68. Process audit: the error again came from reasoning from the construction's
+picture, in the same turn as the rule against it. Strength count 0.

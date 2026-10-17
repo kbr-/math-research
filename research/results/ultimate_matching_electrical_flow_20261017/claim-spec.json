@@ -1,0 +1,52 @@
+{
+ "source": {
+  "record": "[The electrical flow fails above exponent two](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-electrical-flow-obstruction)",
+  "label": "The electrical flow fails above exponent two",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-17-electrical-flow-obstruction"
+  ]
+ },
+ "date": "2026-10-17",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "claims": [
+  {
+   "id": "thm:electrical-flow-obstruction",
+   "summary": "For L > 0, s = L sqrt(log N/N), eps in (0, 1/2], grids of k x k cells of side delta = 1/k with delta <= N^(-eps) and N delta^2 >= 1 (the reduction's grids, delta <= s/32 and N delta^2 >= 16 log N, among them for every eps < 1/2), X_1..X_N i.i.d. uniform with cell counts n_Q, the electrical flow theta (least squares, unit conductances on the cell graph, outflow n_Q - N delta^2), K' >= 1, lambda' in [N/K', K'N] and a coordinate j with alpha_j in (2, infinity], or alpha_j = 2 when L < sqrt(eps)/(pi^2 K') (logarithms natural): for every C > 0 there is c(C, L, K', eps, alpha_j) > 0 with P(lambda' delta^2 sum over edges e of coordinate j of psi_alpha_j(|theta_e|/(delta lambda' s)) > C N) >= c for all large N. So the electrical flow's flow-bound value is not O(N) with probability tending to one at any pair of the curve, nor is that of any finite sequence of divisible-sandpile stages with equal splitting on the cell graph carrying the counts to N delta^2, which is the same flow. Per-edge variance: N delta^2 ||w_e||^2 with ||w_e||^2 >= ln k/(2 pi^4) on a fraction about 8/pi^7 of the edges (free-boundary spectral sum). Uses the imported Berry-Esseen theorem.",
+   "assessment": "Working proof: theta_e is an i.i.d. sum of w_e(Q(X_i)) with |w_e| <= 1 (acyclic unit flows); an exact free-boundary spectral sum bounds the mean of ||w_e||^2 over edges below by ln k/pi^4 and every one above by (pi^3/16) ln k + 6; Berry-Esseen gives each good edge a Gaussian tail of normalized spread at least sqrt(eps/(2 pi^4))/(K' L); a reverse Markov step on the exceeding fraction gives probability bounded below; psi_alpha with alpha > 2 beats the Gaussian tail. A numerical check of the spectral bounds at k = 8..128 is in research/results/ultimate_matching_electrical_flow_20261017/spectral-check.txt.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Excludes the electrical flow, and through lem:idle-slack-sandpile and lem:balanced-sandpile-flow every equal-splitting sandpile sequence, from the flow route at every pair of the curve; the cheapest flow, flows with circulations added and state-dependent sandpiles are not covered.",
+   "next_action": "Nearest-midline exits are median cuts with target 1/2, in the class of thm:split-matched-transport-obstruction with A = 1/2; decide whether the exit matching, which moves only the crossing points, stays within m/(18 sqrt(Gamma N)) of the transport T, which stretches every point by about |c - 1/2| l per level, or whether the theorem's walk tolerates that predictable difference.",
+   "novelty": "not_claimed"
+  }
+ ],
+ "relationships": [
+  [
+   "thm:electrical-flow-obstruction",
+   "depends_on",
+   "lem:idle-slack-sandpile",
+   "Its sandpile clause identifies the sandpile sequences' net flow with the electrical flow."
+  ],
+  [
+   "thm:electrical-flow-obstruction",
+   "depends_on",
+   "lem:balanced-sandpile-flow",
+   "Equal splitting on the cell grid gives unit conductances, so the sandpile flow is this electrical flow."
+  ],
+  [
+   "thm:electrical-flow-obstruction",
+   "cites",
+   "thm:dyadic-flow-obstruction",
+   "The same failure for the dyadic flow, with probability tending to one; its proof does not apply to the electrical flow."
+  ],
+  [
+   "thm:electrical-flow-obstruction",
+   "cites",
+   "lem:grid-flow-duality",
+   "Its part (c) supplies the grids and the flow-bound value."
+  ]
+ ]
+}
