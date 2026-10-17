@@ -1,0 +1,190 @@
+{
+  "source": {
+    "record": "[Low-hole transfer](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-low-hole-transfer)",
+    "label": "Low-hole transfer",
+    "targets": [
+      "branches/common-multiplier/notebook.html#entry-2026-10-17-low-hole-transfer"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "polynomial-calculus"
+  ],
+  "claims": [
+    {
+      "id": "lem:low-hole-linear-transfer",
+      "summary": "Low-hole linear transfer: over any field, on the functional pigeonhole system (Booleanity, hole and functionality axioms, pigeon axioms Q_i = 1 - sum_h x_ih, multilinear ring) with any number of pigeons and N holes, for D <= ceil(N/2) and K + 1 <= D, a set F of polynomials of degree <= 1 whose edges lie in a set L of holes and on a set P of pigeons with N - |L| >= max(2K - 1, K + 1 + min(K, |P| - 1)) has its common kernel in V_K modulo the degree-D closure C equal to its common kernel modulo the hole and functionality closure H plus C cap V_K; in particular N - |L| >= 2K + 1 suffices for every P, and max(2K - 1, K + 2) for edges on two pigeons. Proof: lem:polynomial-numbering-transfer with L's holes ranked lowest and P's pigeons last; for an edge (p, j) and a matching t with a dance, p moves at its turn to a hole above j holding no pigeon and no target of t's dance (at most K + min(K, |P| - 1) excluded), and the one pigeon of t targeting j, if it moves before p, is re-targeted (at most 2K - 1 excluded). With an arbitrary pigeon order the construction needs 2K + 1, exactly. At K = 1 it contains cor:linear-error-transfer's in-particular clause.",
+      "assessment": "Working proof passed by the sole fresh-context medium reviewer; its pigeons-last room is the reviewer's suggestion, its count and exactness checked in the reviewer's follow-up.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Extends the K = 1 linear transfer to every K, so linear errors with edges in few holes, and sets of them, carry no closure killer beyond their representatives.",
+      "next_action": "The re-target bound 2K - 1 at K >= 4, by an augmenting-chain dance.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "cor:partition-transfer-every-k",
+      "summary": "Partition transfer at every K: on the functional pigeonhole system over any field, with two distinct pigeons 1, 2 among any number, N holes, D <= ceil(N/2), 1 <= K <= D - 1 and rho = max(2K - 1, K + 2): if N - |A| >= rho, Ann_C(E_A) cap V_K = Ann_H(E_A + Q_2) cap V_K + C cap V_K, and if |A| >= rho the same with E_A + Q_1, so the single excess of E_A is 0; for partition errors E_{A_1}..E_{A_r} with representatives R_i = E_{A_i} + Q_2 or + Q_1 (edges in L_i = A_i or its complement) and N - |L_1 cup ... cup L_r| >= rho, the common kernel modulo C is the intersection of the Ann_H(R_i) cap V_K plus C cap V_K, so dim J = a, a the largest over choices of one representative per error of their domain common kernel plus C cap V_K. At the top degree D = ceil(N/2) = K + 1 with N <= 8, every E_A with |A| <= floor(N/2) - 1 or |A| >= ceil(N/2) + 1 has single excess 0. Proof: E_A - (E_A + Q_2) is a pigeon axiom, and lem:low-hole-linear-transfer with P = {1, 2}.",
+      "assessment": "Working proof passed by the sole fresh-context medium reviewer with corrections (pair remark, top-degree labels, the a <= dim J step); its top-degree reading and board checks at n = 3 to 6 confirmed in a follow-up.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Proves the single-error side of the window comparison at every K for partition errors away from the middle, dim J = a for sets of them with few holes in all, and the only-if direction of conj:partition-excess-middle at n <= 8.",
+      "next_action": "The remaining pair orbits at seven pigeons with a zero-excess member, outside its range there.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "ex:middle-excess-small-boards",
+      "summary": "Refutation of conj:partition-excess-middle at n = 1 and n = 2: over every field, on the functional pigeonhole system with n + 1 pigeons and n holes, D = ceil(n/2) = 1, K = 0, the closure C is the span of the pigeon axioms and C cap V_0 = 0; at n = 1 the middle size |A| = 0 has E_A = 1 - Q_2 and closure kernel 0, at n = 2 the middle size |A| = 1 has E_A + Q_2 = 1 + x_1a - x_2a, and c(1 + x_1a - x_2a) in span{Q_i} forces c = 0 by the coefficients of the variables at the other hole; so both have single excess 0, where the conjecture asserts it positive.",
+      "assessment": "Refutation found by the sole fresh-context medium reviewer; its direct proof checked in a third pass, one hole label corrected.",
+      "status": "refutation",
+      "category": "route_specific",
+      "rationale": "Removes the conjecture's two smallest boards, outside its evidence.",
+      "next_action": null,
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "conj:middle-excess-from-three",
+      "summary": "Conjecture (middle excess from three holes): over F_2, on the functional pigeonhole system with n + 1 pigeons and n holes, n >= 3, at D = ceil(n/2), K = D - 1, the partition error E_A has positive single excess (closure kernel above every linear representative's domain side plus C cap V_K) exactly when |A| is floor(n/2) or ceil(n/2). Evidence: check:top-degree-partition-kernels and check:partition-sizes-seven-pigeons (n = 3 to 6); its only-if direction is proved at n <= 8 over every field by cor:partition-transfer-every-k. conj:partition-excess-middle without n >= 3, refuted at n = 1, 2 by ex:middle-excess-small-boards.",
+      "assessment": "Conjecture from exact F_2 computations at n = 3 to 6; its only-if direction proved at n <= 8 by cor:partition-transfer-every-k.",
+      "status": "conjecture",
+      "category": "route_specific",
+      "rationale": "The middle-size conjecture in the range of its evidence.",
+      "next_action": "The if direction at n = 7 and 8, by computation or a proof of a kernel beyond representatives at the middle.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:low-hole-linear-transfer",
+      "depends_on",
+      "lem:polynomial-numbering-transfer",
+      "The reduction to a dance for every matching monomial."
+    ],
+    [
+      "lem:low-hole-linear-transfer",
+      "cites",
+      "cor:linear-error-transfer",
+      "Generalizes its in-particular clause (an edge set missing three holes) to every K; that corollary's exact criterion at K = 1 is stronger there, so neither implies the other."
+    ],
+    [
+      "lem:low-hole-linear-transfer",
+      "cites",
+      "lem:functional-killer-transfer",
+      "Its nested-hole corollary's order (error pigeons last) and bookkeeping of current positions and targets."
+    ],
+    [
+      "lem:low-hole-linear-transfer",
+      "cites",
+      "cor:quadratic-separated-kernels",
+      "A K = 2 dance moving an error's pigeons into middle holes, for errors of degree 2."
+    ],
+    [
+      "lem:low-hole-linear-transfer",
+      "cites",
+      "lem:admissible-numbering-transfer",
+      "The basis B_D and the dance property, for monomial errors; the lemma is for linear polynomials, through its polynomial form."
+    ],
+    [
+      "lem:low-hole-linear-transfer",
+      "cites",
+      "cor:separated-family-kernels",
+      "Neither more general nor a special case: that corollary's errors (1+q_nu)x_e have degree 2, at K = 1."
+    ],
+    [
+      "cor:partition-transfer-every-k",
+      "cites",
+      "cor:two-factor-kernels",
+      "Neither more general nor a special case: that corollary concerns the factors 1+q_nu of Pang-form errors at K = 1."
+    ],
+    [
+      "cor:partition-transfer-every-k",
+      "depends_on",
+      "lem:low-hole-linear-transfer",
+      "Applied to E_A + Q_2 or E_A + Q_1, with P = {1, 2}."
+    ],
+    [
+      "cor:partition-transfer-every-k",
+      "cites",
+      "cor:partition-error-transfer",
+      "Generalizes its part (a) to every K; it does not give that corollary's part (b), so neither implies the other."
+    ],
+    [
+      "cor:partition-transfer-every-k",
+      "cites",
+      "conj:partition-excess-middle",
+      "Proves its only-if direction at n <= 8, over every field and pigeon count; at n >= 9 only |A| <= N - 2D + 3 or |A| >= 2D - 3."
+    ],
+    [
+      "cor:partition-transfer-every-k",
+      "cites",
+      "check:partition-sizes-seven-pigeons",
+      "Excess 0 at |A| = 1, 2 there is the corollary's case N = 6, K = 2."
+    ],
+    [
+      "cor:partition-transfer-every-k",
+      "cites",
+      "check:representative-intersection-kernels",
+      "The window comparison's quantities J and a."
+    ],
+    [
+      "ex:middle-excess-small-boards",
+      "corrects",
+      "conj:partition-excess-middle",
+      "False at n = 1 and n = 2, where a middle-size partition error has excess 0; the conjecture's evidence is n = 3 to 6."
+    ],
+    [
+      "conj:middle-excess-from-three",
+      "cites",
+      "conj:partition-excess-middle",
+      "Its statement restricted to n >= 3, the range of its evidence."
+    ],
+    [
+      "conj:middle-excess-from-three",
+      "cites",
+      "cor:partition-transfer-every-k",
+      "Proves its only-if direction at n <= 8."
+    ],
+    [
+      "conj:middle-excess-from-three",
+      "cites",
+      "check:partition-sizes-seven-pigeons",
+      "Evidence at n = 6."
+    ],
+    [
+      "conj:middle-excess-from-three",
+      "cites",
+      "check:top-degree-partition-kernels",
+      "Evidence at n = 3 to 6."
+    ],
+    [
+      "conj:middle-excess-from-three",
+      "cites",
+      "conj:representative-sum-transfer",
+      "That conjecture gives a single error's closure kernel as its representative sum; this one says for which partition errors the sum exceeds every single representative."
+    ],
+    [
+      "conj:middle-excess-from-three",
+      "cites",
+      "conj:linear-kernel-transfer",
+      "Its largest-single-representative form fails exactly where the excess is positive, at the middle sizes this conjecture names."
+    ],
+    [
+      "cor:partition-transfer-every-k",
+      "cites",
+      "conj:linear-kernel-transfer",
+      "Proves its largest-single-representative form, dim J = a, for sets of partition errors whose chosen representatives' edges lie in at most N - rho holes; that conjecture fails elsewhere (ex:top-degree-linear-killer)."
+    ],
+    [
+      "lem:low-hole-linear-transfer",
+      "cites",
+      "cor:two-factor-kernels",
+      "Neither more general nor a special case: that corollary concerns the degree-2 factors 1+q_nu at K = 1."
+    ],
+    [
+      "cor:partition-transfer-every-k",
+      "cites",
+      "conj:representative-sum-transfer",
+      "In its range the closure kernel is one representative's domain side plus C cap V_K, so that conjecture's sum form holds there for these errors."
+    ]
+  ]
+}
