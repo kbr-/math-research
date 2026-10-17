@@ -225,6 +225,11 @@ growing checklists or one-off setup narratives.
   to): it is written with its derivation before the figure it feeds, since checking the figure
   checks only its last step (17 October 2026: a leg's area was halved in a smallest case, and a
   theorem's step decomposition was not tried before a docstring said the theorem did not apply).
+  Evidence for a property of the object at hand (a construction's map, a flow's dependence on the
+  counts) is computed on that object, in the variables the property is stated in; a result on a
+  model, or on inputs the object never receives, is written as the model's (17 October 2026: a
+  nonlinearity in the counts was first shown on a two-value model, then on fields no counts produce,
+  before the counts themselves were tried).
 - Once the question, argument and evidence are stable, make one focused correctness review of every
   new mathematical lemma, theorem, rule or encoding before assigning its status. Run the exhaustive
   checker for any rule, tree or encoding change before relying on it. Near the end of the cycle, use
