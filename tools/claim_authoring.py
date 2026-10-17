@@ -280,6 +280,27 @@ def source_notebook(target, root=ROOT):
     return (root / 'research/branches' / side.group(1) / 'notebook.html' if side else root / 'notebook.html'), anchor
 
 
+def refines_report(spec, registry, width=300):
+    """Lines that show each refines edge of the spec beside both statements and the registry's rule, which records
+    refines only when one version implies the other. A word check would not do: of the registry's 861 refines
+    scopes, 754 say "strengthens", "extends" or "sharpens" and no form of "implies"
+    (research/results/framework-builds-20261017/refines-scope-replay.txt). 17 October 2026: two refines edges went
+    to review where neither statement implied the other, a lemma at K = 1 being only the in-particular clause of
+    the claim it named."""
+    summaries = {c['id']: c.get('summary', '') for c in registry.get('claims', [])}
+    summaries.update({c['id']: c.get('summary', '') for c in spec.get('claims', [])})
+    short = lambda text: text if len(text) <= width else text[:width] + '…'
+    lines = []
+    for src, kind, tgt, scope in spec.get('relationships', []):
+        if kind == 'refines':
+            lines += [f'refines {src} -> {tgt}: recorded only when one implies the other (AGENTS.md); check it on '
+                      'the two statements, or use cites with the scope:',
+                      f'  {src}: {short(summaries.get(src, "(not found)"))}',
+                      f'  {tgt}: {short(summaries.get(tgt, "(not found)"))}',
+                      f'  scope: {scope}']
+    return lines
+
+
 def statement_drift(spec, spec_path, root=ROOT):
     """Lines that show each new claim's summary beside its source entry's statement paragraphs, and whether the
     entry's notebook changed after the spec was last edited.
@@ -346,7 +367,7 @@ def main():
         revision = args.revision or subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
         compact = read_json(args.spec)
         lines, newer = statement_drift(compact, args.spec)
-        print('\n'.join(lines))
+        print('\n'.join(lines + refines_report(compact, data)))
         require(not (newer and args.proposal and not args.summaries_checked),
                 'The source notebook changed after the spec was last edited: compare each summary above with the '
                 'entry statements beside it, correct the spec if they differ, then rerun with --summaries-checked')

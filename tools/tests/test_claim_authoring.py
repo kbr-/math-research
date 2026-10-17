@@ -183,6 +183,19 @@ class BuildTest(unittest.TestCase):
     def item(self, cid):
         return {'id': cid, 'summary': 'Scoped fixture claim ' + cid, 'assessment': 'Working proof',
                 'status': 'working_proof', 'rationale': 'Fixture bridge.', 'next_action': None}
+    def test_a_refines_edge_is_shown_beside_both_statements(self):
+        # 17 October 2026: refines edges went to review where neither statement implied the other
+        from claim_authoring import refines_report
+        spec = self.spec([dict(self.item('lem:a'), summary='At every K, room 2K+1.')])
+        spec['relationships'] = [['lem:a', 'refines', 'cor:old', 'its K = 1 clause'],
+                                 ['lem:a', 'cites', 'cor:other', 'neither']]
+        registry = {'claims': [{'id': 'cor:old', 'summary': 'At K = 1, an exact criterion.'}]}
+        lines = refines_report(spec, registry)
+        self.assertEqual(len(lines), 4)
+        self.assertIn('refines lem:a -> cor:old', lines[0])
+        self.assertIn('At every K, room 2K+1.', lines[1])
+        self.assertIn('At K = 1, an exact criterion.', lines[2])
+        self.assertEqual(refines_report(dict(spec, relationships=spec['relationships'][1:]), registry), [])
     def test_build_new_claim_prepares(self):
         from claim_authoring import build
         request = build(self.empty, self.spec([self.item('lem:a')]), 'a' * 40)
