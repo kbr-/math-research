@@ -121,12 +121,14 @@ Obstacle, a Proposed next step, a queued item) and keeps doing work around the g
 more exclusion, a side lemma, a stronger convenience) without a concrete reason that work must come
 first. Exploring the field is legitimate while no direct path is known; once one is named, say so
 under "Orbiting" with the path's location and what the draft did instead (user, 17 October 2026).
-Report also a direct path the draft implies but never names (a mechanism it calls needed, a
-construction its obstructions point to) left unnamed as a next step: an unnamed path is orbiting
-too. Give each finding with its location, or write "no findings". End the audit with "Strength
-count: N", the number of sentences outside the proofs (title, status, bearing, decision, follow-up,
-commit message) whose claim is stronger than its source in the draft, so that the pattern is counted
-per entry.
+Report also a check, judge or prevention the draft calls in force without beside it the output of
+its run on the case that exposed it and a count of its false refusals over past records (17 October
+2026: a judge was reported in force after replaying 8 entries against today's record only). Report
+also a direct path the draft implies but never names (a mechanism it calls needed, a construction
+its obstructions point to) left unnamed as a next step: an unnamed path is orbiting too. Give each
+finding with its location, or write "no findings". End the audit with "Strength count: N", the
+number of sentences outside the proofs (title, status, bearing, decision, follow-up, commit message)
+whose claim is stronger than its source in the draft, so that the pattern is counted per entry.
 
 Report a verdict (pass, pass with corrections, or fail) followed by short bullets: each concrete gap
 or error with the exact location and the change required, and each unused hypothesis. Then, under a
