@@ -138,5 +138,31 @@ class UnlabelledScriptTest(unittest.TestCase):
         self.assertEqual(self.check('research/results/x_20261017/table.py', text), [])
 
 
+class BypassTest(unittest.TestCase):
+    # The exposing commit, 17 October 2026: a new check wired into the finisher, no bypass named in its message.
+    ADDED = ['tools/resemblance_coverage.py', 'tools/tests/test_resemblance_coverage.py']
+    LINES = ['    import resemblance_coverage   # tools/resemblance_coverage.py says why; it also requires the paragraph',
+             '    resemblance_coverage.validate(entry, root)']
+    MESSAGE = 'Exposed degree occupancy: exposed vertices with margins cost no factor three each\n\nFramework: ...\n'
+
+    def test_a_new_check_wired_in_without_a_bypass_line_is_refused(self):
+        self.assertEqual(cmc.unbypassed_checks(self.ADDED, self.LINES, self.MESSAGE), ['resemblance_coverage'])
+
+    def test_a_bypass_line_or_an_unwired_tool_passes(self):
+        named = self.MESSAGE + 'Bypass tried: a cites edge in the spec, and an entry without the paragraph; both refused.\n'
+        self.assertEqual(cmc.unbypassed_checks(self.ADDED, self.LINES, named), [])
+        self.assertEqual(cmc.unbypassed_checks(self.ADDED, ['    x = 1'], self.MESSAGE), [])
+        self.assertEqual(cmc.unbypassed_checks(['tools/hooks/new_hook.py'], ['import new_hook'], self.MESSAGE), [])
+        short = self.MESSAGE + 'Bypass tried: none.\n'
+        self.assertEqual(cmc.unbypassed_checks(self.ADDED, self.LINES, short), ['resemblance_coverage'])
+
+    def test_the_cheapest_ways_around_are_caught(self):
+        for line in ('from resemblance_coverage import validate',
+                     "spec = importlib.util.spec_from_file_location('m', ROOT / 'tools/resemblance_coverage.py')"):
+            self.assertEqual(cmc.unbypassed_checks(self.ADDED, [line], self.MESSAGE), ['resemblance_coverage'], line)
+        self.assertIn('compute.sh', cmc.CALLERS)
+        self.assertEqual(cmc.unbypassed_checks(self.ADDED, ['import resemblance_coverage_extra'], self.MESSAGE), [])
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -199,6 +199,26 @@ def unconfirmed(message, dropped):
             if not re.search(r'(?<![\w:-])' + re.escape(ident) + r'(?![\w-])', confirmed)]
 
 
+CALLERS = ('tools/finish-turn.py', 'tools/notebook-append.py', 'compute.sh', 'tools/check-claims.py',
+           'tools/commit_message_checks.py')   # and tools/hooks/*.py: the gates a refusing check is wired into
+BYPASS = re.compile(r'^Bypass tried:(?:\s+\S+){5,}', re.M)
+
+
+def unbypassed_checks(added, caller_lines, message):
+    """The new tools/ modules a commit wires into the finisher, the append tool or a hook (an added line of one of
+    them imports or calls the module) when the message has no line "Bypass tried: ..." of at least five words naming
+    the cheapest way around the new check that was tried and what it did.  17 October 2026: a coverage check went
+    into the finisher with two ways around it (a citation edge, a missing paragraph) that its reviewer, not the
+    agent, found; AGENTS.md's rule to try the cheapest way around a refusing check before its commit let it through.
+    `added`: paths the commit adds; `caller_lines`: the lines the commit adds to the callers."""
+    modules = [Path(p).stem for p in added
+               if p.startswith('tools/') and p.endswith('.py') and '/tests/' not in p and not p.startswith('tools/hooks/')]
+    # Any mention in an added caller line: "import m", "from m import f", "m.f(" and a load by the path "tools/m.py"
+    # (the three ways around a narrower pattern, tried before this check's commit).
+    wired = sorted({m for m in modules for line in caller_lines if re.search(r'(?<![\w-])' + re.escape(m) + r'(?![\w-])', line)})
+    return [] if not wired or BYPASS.search(message) else wired
+
+
 def check_staged(message_path):
     message = Path(message_path).read_text(encoding='utf-8', errors='replace')
     paths = git('diff', '--cached', '--name-only').split()
@@ -210,6 +230,16 @@ def check_staged(message_path):
         print(refusal, file=sys.stderr)
         status = 1
     staged_changed = git('diff', '--cached', '--name-only', '--diff-filter=AM').split()
+    callers = [p for p in paths if p in CALLERS or (p.startswith('tools/hooks/') and p.endswith('.py'))]
+    caller_lines = [line[1:] for p in callers for line in git('diff', '--cached', '-U0', '--', p).splitlines()
+                    if line.startswith('+') and not line.startswith('+++')]
+    for module in unbypassed_checks(git('diff', '--cached', '--name-only', '--diff-filter=A').split(), caller_lines,
+                                    message):
+        print(f'commit-msg: the commit wires the new check {module} into a finisher, append tool or hook; add a '
+              'line "Bypass tried: ..." naming the cheapest way around it that was tried before the commit and what '
+              'it did (AGENTS.md: a check that refuses an action is tried against the cheapest way around it).',
+              file=sys.stderr)
+        status = 1
     for line in unlabelled_scripts(staged_changed, top):
         print(f'commit-msg: {line}, which compute.sh asks of a script it runs under research/results; a script '
               'run elsewhere and copied in gets the same lines before its commit (COMPUTATION_RULES.md).',
@@ -292,8 +322,30 @@ def replay(count, scripts_only=False):
     scratch.cleanup()
 
 
+def replay_bypass(count):
+    """The last `count` commits that would be refused by unbypassed_checks, against each commit's own diff."""
+    revs = git('log', f'-{count}', '--format=%H').split()
+    refused = 0
+    for rev in revs:
+        added = git('diff-tree', '--no-commit-id', '-r', '--name-only', '--diff-filter=A', rev).split()
+        if not any(p.startswith('tools/') and p.endswith('.py') for p in added):
+            continue
+        changed = git('diff-tree', '--no-commit-id', '-r', '--name-only', rev).split()
+        callers = [p for p in changed if p in CALLERS or (p.startswith('tools/hooks/') and p.endswith('.py'))]
+        lines = [line[1:] for p in callers for line in git('show', '-U0', '--format=', rev, '--', p).splitlines()
+                 if line.startswith('+') and not line.startswith('+++')]
+        wired = unbypassed_checks(added, lines, git('log', '-1', '--format=%B', rev))
+        if wired:
+            refused += 1
+            print(f'{rev[:9]}\t{git("log", "-1", "--format=%s", rev).strip()[:80]}\t' + ', '.join(wired))
+    print(f'{len(revs)} commits read: {refused} would be refused for a new check wired in without "Bypass tried:".')
+
+
 if __name__ == '__main__':
     if sys.argv[1:2] == ['--replay']:
-        replay(int(sys.argv[2]), scripts_only='--scripts' in sys.argv[3:])
+        if '--bypass' in sys.argv[3:]:
+            replay_bypass(int(sys.argv[2]))
+        else:
+            replay(int(sys.argv[2]), scripts_only='--scripts' in sys.argv[3:])
         sys.exit(0)
     sys.exit(check_staged(sys.argv[1]))

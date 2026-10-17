@@ -121,19 +121,35 @@ FEEDBACK = 'Stop hook feedback:'
 CLASSIFIER_REFUSAL = 'Permission for this action was denied'
 
 
+def last_turn(path, block=1 << 20):
+    """The transcript's entries since its last prompt, in order, read backwards from the end in blocks: an 818 MB
+    session transcript took seconds to parse whole at every stop (`--time-turn TRANSCRIPT` times both ways;
+    research/results/exposed_degree_occupancy_20261017/last-turn-timing.txt)."""
+    entries, rest = [], b''
+    with open(path, 'rb') as f:
+        f.seek(0, 2)
+        end = f.tell()
+        while end > 0:
+            start = max(0, end - block)
+            f.seek(start)
+            lines = (f.read(end - start) + rest).split(b'\n')
+            rest = lines[0] if start > 0 else b''
+            for line in reversed(lines[1:] if start > 0 else lines):
+                try:
+                    entry = json.loads(line.decode('utf-8', 'replace'))
+                except ValueError:
+                    continue
+                if is_prompt(entry):
+                    return list(reversed(entries))
+                entries.append(entry)
+            end = start
+    return list(reversed(entries))
+
+
 def turn_refusals(path):
     """The commands or tools whose calls the permission classifier refused since the transcript's last prompt."""
     refused, names = [], {}
-    entries = []
-    with open(path, errors='replace') as f:
-        for line in f:
-            try:
-                entries.append(json.loads(line))
-            except ValueError:
-                continue
-    for entry in reversed(entries):
-        if is_prompt(entry):
-            break
+    for entry in reversed(last_turn(path)):
         content = (entry.get('message') or {}).get('content')
         if not isinstance(content, list):
             continue
@@ -1190,6 +1206,23 @@ def main(argv):
 if __name__ == '__main__':
     # The branch's own module asks for this one by name; it gets this copy, not a second one.
     sys.modules.setdefault('stop_checks', sys.modules['__main__'])
+    if sys.argv[1:2] == ['--time-turn']:
+        import time
+        for transcript in sys.argv[2:]:
+            began = time.time()
+            whole = []
+            with open(transcript, errors='replace') as f:     # the former way: parse every line
+                for line in f:
+                    try:
+                        whole.append(json.loads(line))
+                    except ValueError:
+                        continue
+            middle = time.time()
+            turn = last_turn(transcript)
+            done = time.time()
+            print(f'{transcript}: {os.path.getsize(transcript) / 1e6:.0f} MB, {len(whole)} lines; whole parse '
+                  f'{middle - began:.2f} s, last_turn {done - middle:.2f} s for its {len(turn)} entries')
+        sys.exit(0)
     if sys.argv[1:2] == ['--replay-idle']:
         replay_idle(sys.argv[2:])
         sys.exit(0)

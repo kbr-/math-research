@@ -69,6 +69,16 @@ class ClaimReads(unittest.TestCase):
         self.assertEqual(claim_reads.CLAIM_ID.findall('and imp:binary-algebraic-CNF-IPS-transfer, concern'),
                          ['imp:binary-algebraic-CNF-IPS-transfer'])
 
+    def test_every_registered_identifier_matches_whole(self):
+        # 17 October 2026: the prefix list was taken from a truncated listing and missed "draft"; a prefix the
+        # registry gains later fails here, not in a finisher refusal of a read claim.
+        import json
+        registry = Path(__file__).resolve().parents[2] / 'research/claims/index.json'
+        if not registry.exists():
+            self.skipTest('no registry in this checkout')
+        ids = [claim['id'] for claim in json.loads(registry.read_text())['claims']]
+        self.assertEqual([i for i in ids if not claim_reads.CLAIM_ID.fullmatch(i)], [])
+
 
 if __name__ == '__main__':
     unittest.main()

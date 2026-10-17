@@ -14,9 +14,10 @@ so that leaving it out does not skip the check (both from its reviewer, 17 Octob
 research entries with claims and a Record comparison paragraph, each against the claims registered before it
 (research/results/exposed_degree_occupancy_20261017/coverage-replay.txt): at AT = 0.3 it would refuse 9 with 28
 unnamed claims, at 0.4 3 with 5; 0.4 would miss the exposing case, whose score was 0.37 (coverage-exposing-case.txt
-there: refused at 0.3 on cor:star-closure-ratio, the corrected draft passes).  Of the 28 one was judged, a real
-omission (thm:conjunction-quotient-rank, which defines the count the pin transfer entry studies and which that entry
-cites three times, but not in its comparison); the other 27 were not judged.  One finisher-path run on the corrected
+there: refused at 0.3 on cor:star-closure-ratio, the corrected draft passes).  All 28 were judged from their
+summaries beside the entries' own claims (coverage-judgement.txt there, a judgement): 20 real omissions, 6 of them
+claims the entry names elsewhere but not in its comparison, and 8 false refusals, all from setting words shared
+across one theorem family (the majority transfers) without a shared statement.  One finisher-path run on the corrected
 draft took 0.37 s (coverage-timing.txt there).  An entry declaring data-claims="none" is not checked here; the
 claim inventory check refuses one whose registered claims do not match its declaration.
 
@@ -136,8 +137,16 @@ def replay(notebook, limit, root=ROOT):
         print(f'threshold {at}: {len(refused)} of {len(chosen)} research entries with claims would be refused, '
               f'{sum(len(g) for _, g in refused)} unnamed claims')
         if at == AT:
+            # An unnamed claim the entry cites elsewhere was in use there and left out of the comparison; one it
+            # never cites needs reading to tell a miss from a false refusal.
+            body = {re.search(r'id="([^"]+)"', a).group(1): set(CLAIM_ID.findall(notebook_math.strip_tags(a)))
+                    for a in chosen}
             for ident, gaps in refused:
-                print('  ' + ident + ': ' + ', '.join(f'{o} {s:.2f}' for _, s, o in gaps))
+                print('  ' + ident + ': ' + ', '.join(f'{o} {s:.2f} ({"cited elsewhere" if o in body[ident] else "not cited"})'
+                                                      for _, s, o in gaps))
+            flat = [o in body[ident] for ident, gaps in refused for _, _, o in gaps]
+            print(f'  of the {len(flat)} unnamed claims, {sum(flat)} are cited elsewhere in their entry and '
+                  f'{len(flat) - sum(flat)} are not cited there')
     print(f'{len(claims)} registered claims, {len(chosen)} entries, {time.time() - start:.1f} s')
 
 
