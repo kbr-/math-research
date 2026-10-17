@@ -34,6 +34,9 @@ Possible because: a return flow that does not close inside its parent leaks a ne
 Control: the dyadic fractions are within a factor 1.5 of the Gaussian erfc(t/sqrt 2) at t = 2.5, 3.0, 3.5.
 Refuted by: a dyadic fraction outside a factor 1.5 of the Gaussian value at one of these t.
 Possible because: positions of one seed are correlated and the analytic sigma is the dyadic flow's own.
+Forced by counts: the kappa = 0 control is forced by the formula (d = 0 gives m = 0) and tests only the code's
+routine; the global-average control is forced by the zero parent means up to the cumulative matrix's end term,
+so it tests the return flow's closure; the dyadic Gaussian control is forced by nothing in the instance's sizes.
 Positive control: the planted field sign(D)|D|^0.8 (D the dyadic values over sigma), a fixed lighter law, has
 ratios to the dyadic below 1 decreasing in t, as the Prediction requires of the drift flow.
 Refuted by: a planted ratio at 3.5 not below the planted ratio at 2.5.
