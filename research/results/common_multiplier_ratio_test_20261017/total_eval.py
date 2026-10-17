@@ -13,6 +13,8 @@ pigeon-axiom multiples of degree K.
 Control: the rank never exceeds dim A_K, asserted, since W_K vanishes on the total matchings.
 Refuted by: a rank above dim A_K, which would mean W_K or the evaluation is built wrongly.
 Possible because: a sign or row error in the generators would break their vanishing.
+Forced by counts: nothing forces it, the points (336, 1680) outnumber dim V_2 (193, 369), so the rank could exceed
+dim A_2 if W_2 were wrong.
 No positive control: no board is known here where the rank falls short; the control above is the one that can fail.
 Baseline: the count of total matchings (336 and 1680) bounds the rank from above and decides nothing about it.
 Record checked: lem:native-restriction (A_k), check:native-ratio-counts (the dimensions 145, 275); none gives
