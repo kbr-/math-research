@@ -196,6 +196,42 @@ class BuildTest(unittest.TestCase):
         self.assertIn('At every K, room 2K+1.', lines[1])
         self.assertIn('At K = 1, an exact criterion.', lines[2])
         self.assertEqual(refines_report(dict(spec, relationships=spec['relationships'][1:]), registry), [])
+    def test_a_refines_edge_needs_a_refinement_checked_paragraph(self):
+        # 17 October 2026: a spec declared refines where the new theorem's constants were narrower than the old
+        # one's, so neither implied the other; the entry must set the two side by side before the edge registers
+        import tempfile
+        from claim_authoring import unchecked_refines
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'research/branches/b').mkdir(parents=True)
+            book = root / 'research/branches/b/notebook.html'
+            spec = self.spec([self.item('thm:new')])
+            spec['source']['targets'] = ['branches/b/notebook.html#entry-x']
+            spec['relationships'] = [['thm:new', 'refines', 'thm:old', 'the case tau = 1/2'],
+                                     ['thm:new', 'cites', 'lem:tool', 'a step']]
+            book.write_text('<article id="entry-x"><p><strong>Statement.</strong> thm:new ...</p></article>')
+            self.assertEqual(unchecked_refines(spec, root), [('thm:new', 'thm:old')])
+            book.write_text('<article id="entry-x"><p><strong>Refinement checked.</strong> thm:new at '
+                            '\\(\\tau=\\frac12\\) gives thm:old with its error bound \\(m/(18\\sqrt N)\\) and its '
+                            '\\(\\theta\\) range, both set beside the other statement\'s own.</p></article>')
+            self.assertEqual(unchecked_refines(spec, root), [])
+            book.write_text('<article id="entry-x"><p><strong>Refinement checked.</strong> thm:new only.</p>'
+                            '</article>')                                                # both claims named
+            self.assertEqual(unchecked_refines(spec, root), [('thm:new', 'thm:old')])
+            book.write_text('<article id="entry-x"><p><strong>Refinement checked.</strong> thm:new thm:old</p>'
+                            '</article>')                    # names only, no constants: the bypass tried first
+            self.assertEqual(unchecked_refines(spec, root), [('thm:new', 'thm:old')])
+            spec['relationships'] = spec['relationships'][1:]                             # no refines edge
+            self.assertEqual(unchecked_refines(spec, root), [])
+            # an entry already committed is not held to the paragraph (a rebuild of a recorded spec)
+            import subprocess
+            spec['relationships'] = [['thm:new', 'refines', 'thm:old', 'the case tau = 1/2']]
+            book.write_text('<article id="entry-x"><p><strong>Statement.</strong> thm:new ...</p></article>')
+            git = lambda *a: subprocess.run(['git', *a], cwd=root, capture_output=True, check=True)  # noqa: E731
+            git('init', '-q')
+            git('add', '.')
+            git('-c', 'user.name=t', '-c', 'user.email=t@t', 'commit', '-q', '-m', 'x', '--no-verify')
+            self.assertEqual(unchecked_refines(spec, root), [])
     def test_build_new_claim_prepares(self):
         from claim_authoring import build
         request = build(self.empty, self.spec([self.item('lem:a')]), 'a' * 40)

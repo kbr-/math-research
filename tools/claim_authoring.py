@@ -310,6 +310,40 @@ def refines_report(spec, registry, width=300):
     return lines
 
 
+REFINEMENT_CHECKED = re.compile(r'<strong>Refinement checked\.</strong>(.*?)</p>', re.S)
+
+
+def unchecked_refines(spec, root=ROOT):
+    """The refines edges of SPEC whose source entry has no "Refinement checked." paragraph naming both claims.
+    The report above shows the two statements; on 17 October 2026 a spec still declared refines where the new
+    theorem's error bound and parameter range were narrower than the older one's, so neither implied the other, a
+    relation written from the shape of the result for the second time in two cycles.  The paragraph is where the
+    entry sets the two statements' constants side by side before the edge is registered.  Only an entry not yet
+    committed is held to it: all 64 recorded specs with a refines edge predate the paragraph, and a rebuild of
+    one (claim_refresh.py, claim_rebase.py) would otherwise be refused
+    (research/provenance/framework/refinement-checked-replay-20261017.txt)."""
+    import subprocess
+    texts, new = [], False
+    for target in spec.get('source', {}).get('targets', []):
+        path, anchor = source_notebook(target, root)
+        if path is None or not path.exists():
+            continue
+        committed = subprocess.run(['git', 'show', f'HEAD:{path.relative_to(root)}'], cwd=root,
+                                   capture_output=True, text=True).stdout
+        new = new or f'<article id="{anchor}"' not in committed
+        text = path.read_text(encoding='utf-8')
+        start = text.find(f'<article id="{anchor}"')
+        if start >= 0:
+            texts.append(text[start:text.find('</article>', start)])
+    if not new:
+        return []
+    # a comparison of constants writes them: a paragraph naming both claims and nothing else passed the bypass try
+    checked = ' '.join(m.group(1) for article in texts for m in REFINEMENT_CHECKED.finditer(article)
+                       if '\\(' in m.group(1) and len(m.group(1).split()) >= 20)
+    return [(src, tgt) for src, kind, tgt, _ in spec.get('relationships', [])
+            if kind == 'refines' and not (src in checked and tgt in checked)]
+
+
 def statement_drift(spec, spec_path, root=ROOT):
     """Lines that show each new claim's summary beside its source entry's statement paragraphs, and whether the
     entry's notebook changed after the spec was last edited.
@@ -377,6 +411,12 @@ def main():
         compact = read_json(args.spec)
         lines, newer = statement_drift(compact, args.spec)
         print('\n'.join(lines + refines_report(compact, data)))
+        unchecked = unchecked_refines(compact)
+        require(not (unchecked and args.proposal),
+                'A refines edge is registered only when one statement implies the other (AGENTS.md); the source entry '
+                'needs a paragraph <p><strong>Refinement checked.</strong> ...</p> naming both claims and setting their '
+                'constants and hypotheses side by side, or the edge becomes cites: '
+                + ', '.join(f'{s} -> {t}' for s, t in unchecked))
         require(not (newer and args.proposal and not args.summaries_checked),
                 'The source notebook changed after the spec was last edited: compare each summary above with the '
                 'entry statements beside it, correct the spec if they differ, then rerun with --summaries-checked')
