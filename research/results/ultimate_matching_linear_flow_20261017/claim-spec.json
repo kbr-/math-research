@@ -1,0 +1,52 @@
+{
+ "source": {
+  "record": "[Linear flow rules fail when both exponents exceed two](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-linear-flow-obstruction)",
+  "label": "Linear flow rules fail when both exponents exceed two",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-17-linear-flow-obstruction"
+  ]
+ },
+ "date": "2026-10-17",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "claims": [
+  {
+   "id": "thm:linear-flow-obstruction",
+   "summary": "For L > 0, s = L sqrt(log N/N) (logarithms natural), K' >= 1, eps in (0, 1/2), exponents alpha_1, alpha_2 in (2, infinity), grids of k x k cells of side delta = 1/k with delta <= N^(-eps) and N delta^2 -> infinity, X_1..X_N i.i.d. uniform with cell counts n_Q, lambda' in [N/K', K'N], and every linear flow rule W (a linear map from mean-zero cell vectors rho to edge flows with div W rho = rho, fixed before the points, possibly depending on N and the grid), with flow theta = W(n - N delta^2): for every C > 0 there is c(C, L, K', eps, alpha_1, alpha_2) > 0 with P(lambda' delta^2 sum_e psi_alpha_d(e)(|theta_e|/(delta lambda' s)) > C N) >= c for all N beyond a threshold depending only on the grid sequence and these constants, c and the threshold uniform in W. So no linear rule has flow-bound value O(N) with probability tending to one at any pair of the curve other than its endpoints; the electrical flow, the equal-splitting sandpile sequences and, on grids with k a power of two and dyadic depth at least log_2 k, the dyadic flow written as grid fluxes are such rules. Uses the imported Berry-Esseen theorem.",
+   "assessment": "Working proof: theta_e is an i.i.d. sum of W_e(Q(X_i)); Thomson's principle per column bounds the total second moment below by the electrical one, at least 2k(k-1) ln k/pi^4 by thm:electrical-flow-obstruction's spectral sum; a coordinate carrying half and its edges with M_e >= ln k/(2 pi^4); the Berry-Esseen ratio is at most 1/sqrt(N delta^2) for every rule since max |W_e| <= ||W_e||; weighted thresholds u sqrt(r_e) with psi_alpha(u sqrt r) >= r psi_alpha(u); a weighted reverse Markov step.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Excludes every flow rule linear in the counts from the flow route at the interior pairs of the curve, so a flow of flow-bound value O(N), if one exists there, is not given by a linear rule; the endpoints, rules depending on the points nonlinearly and grids with bounded N delta^2 are not covered.",
+   "next_action": "Build a flow nonlinear in the counts whose fine levels correct the coarse ones (the queued restoring-drift-construction) and test its per-point tails; on this item, decide whether a nearest-midline exit matching stays within thm:split-matched-transport-obstruction's tolerance of its transport.",
+   "novelty": "not_claimed"
+  }
+ ],
+ "relationships": [
+  [
+   "thm:linear-flow-obstruction",
+   "depends_on",
+   "thm:electrical-flow-obstruction",
+   "Its spectral sum gives the electrical rule's total second moment, which Thomson's principle carries to every linear rule."
+  ],
+  [
+   "thm:linear-flow-obstruction",
+   "cites",
+   "thm:dyadic-flow-obstruction",
+   "The dyadic flow written as grid fluxes is a linear rule; on it the earlier theorem is stronger (probability tending to one)."
+  ],
+  [
+   "thm:linear-flow-obstruction",
+   "cites",
+   "lem:sequential-rules-dyadic",
+   "Its part (a) writes the dyadic flow's square fields from the count excesses, which makes the dyadic flow a linear rule on dyadic grids."
+  ],
+  [
+   "thm:linear-flow-obstruction",
+   "cites",
+   "lem:grid-flow-duality",
+   "Its part (c) supplies the grids and the flow-bound value."
+  ]
+ ]
+}
