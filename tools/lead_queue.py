@@ -87,6 +87,9 @@ finish-turn.py against HEAD:
 
 Usage: lead_queue.py init NOTEBOOK.html  (adds the section, oldest items first, if it is absent)
        lead_queue.py head NOTEBOOK.html  (the first HEAD_READ items, as restoration prints them)
+       lead_queue.py list NOTEBOOK.html [--after ANCHOR]  (every top-level item: position, KIND:ID, the entry it
+                                            was stamped after, its sub-idea count, its text's start; with --after,
+                                            only items stamped after that entry or later)
        lead_queue.py history NOTEBOOK.html ID [--status]  (group history; --status gives the latest
                                             development and computed current spell before planning; ID is
                                             KIND:ID, as lead:REVIEW:1, where two kinds share an identifier)
@@ -2473,7 +2476,48 @@ def untracked(root, path):
     return git('ls-files', '--error-unmatch', '--', str(path)) != 0
 
 
+def listing(body, after=None):
+    """Lines listing the queue's top-level items in order: position, KIND:ID, the entry the item was stamped
+    after (data-after), its number of sub-ideas and the start of its text; with `after`, only the items stamped
+    after that entry or a later one.  On 17 October 2026 a review read the section's HTML by hand to find the
+    builds of its period, the tool having no listing (the stand-in review's objection)."""
+    found = parse_tree(body)
+    if found is None:
+        return []
+    order = [m.group(1) for m in re.finditer(r'<article id="([^"]+)"', body)]
+    rank = {anchor: i for i, anchor in enumerate(order)}
+    # An unknown anchor printed an empty list that read as "nothing stamped" (its reviewer, 17 October 2026).
+    if after is not None and after not in rank:
+        raise ValueError(f'no entry {after} in the record')
+    lines, unstamped = [], 0
+    for position, node in enumerate(found[1], 1):
+        stamp = re.search(r'data-after="([^"]*)"', node.attrs)
+        stamp = stamp.group(1) if stamp else ''
+        if after is not None and stamp not in rank:
+            unstamped += 1
+            continue
+        if after is not None and rank[stamp] < rank[after]:
+            continue
+        text = ' '.join(strip_tags_tight(node.text).split())[:100]
+        lines.append(f'{position}\t{node.kind}:{node.ident}\t{stamp or "-"}\t{len(node.children)}\t{text}')
+    if unstamped:
+        lines.append(f'({unstamped} items carry no stamp of a known entry and are not listed with --after)')
+    return lines
+
+
 def main(argv):
+    if len(argv) >= 2 and argv[1] == 'list':
+        if len(argv) not in (3, 5) or (len(argv) == 5 and argv[3] != '--after'):
+            print('usage: lead_queue.py list NOTEBOOK.html [--after ANCHOR]', file=sys.stderr)
+            return 2
+        try:
+            lines = listing(Path(argv[2]).read_text(), argv[4] if len(argv) == 5 else None)
+        except ValueError as error:
+            print(f'lead_queue.py list: {error}', file=sys.stderr)
+            return 1
+        for line in lines:
+            print(line)
+        return 0
     if len(argv) in (2, 3) and argv[1] == 'built':
         print('\n'.join(built(Path.cwd(), argv[2] if len(argv) == 3 else 'HEAD')), end='')
         return 0

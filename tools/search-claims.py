@@ -45,10 +45,22 @@ def search(data, words, *, status=None, kind=None, topic=None, formalization=Non
     query = stems(' '.join(words))
     claims = data['claims']
     tokens = [stems(c['id'] + ' ' + c['summary'] + ' ' + c['assessment']) for c in claims]
-    count = {q: sum(any(t.startswith(q) or q.startswith(t) for t in s) for s in tokens) for q in query}
+    # The prefix test once per distinct word, then an index to the claims: the same matches as testing every
+    # claim's words, which took 11.1 s for a queue item's text on 17 October 2026 (research/provenance/framework/
+    # registry-match-timing-20261017.txt).
+    posting = {}
+    for index, token_set in enumerate(tokens):
+        for token in token_set:
+            posting.setdefault(token, []).append(index)
+    matching = {q: set() for q in query}
+    for token, indices in posting.items():
+        for q in query:
+            if token.startswith(q) or q.startswith(token):
+                matching[q].update(indices)
+    count = {q: len(matching[q]) for q in query}
     weights = {q: math.log((len(claims) + 1) / (count[q] + 1)) for q in query}
     result = []
-    for c, token_set in zip(claims, tokens):
+    for index, (c, token_set) in enumerate(zip(claims, tokens)):
         if status and status.casefold() not in c['assessment'].casefold():
             continue
         if kind and (c['mathematical_status'] or 'unknown') != kind:
@@ -59,7 +71,7 @@ def search(data, words, *, status=None, kind=None, topic=None, formalization=Non
             continue
         if has_lean and not any('.lean' in r['target'] for r in references(c)):
             continue
-        hits = [q for q in query if any(t.startswith(q) or q.startswith(t) for t in token_set)]
+        hits = [q for q in query if index in matching[q]]
         if query and not hits:
             continue
         result.append((sum(weights[q] for q in hits),

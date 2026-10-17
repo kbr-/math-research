@@ -310,7 +310,23 @@ def require_named_item(source, next_html):
                      'it asks from its queued text (tools/lead_queue.py history NOTEBOOK ID --status)')
 
 
+_MATCH_CACHE = {}
+
+
 def registry_matches(text, limit=3, data=None, home=None):
+    """Cached by its arguments when the registry is read here (data None): the append's check of unapplied matches
+    and its printed listing ask for the same item's matches; on 17 October 2026 one search took 5.93 s, and 11.14 s
+    for the queue item's text and follow-up, before the index of tools/search-claims.py brought the latter to
+    0.88 s (research/provenance/framework/registry-match-timing-20261017.txt)."""
+    if data is None:
+        key = (text, limit, home)
+        if key not in _MATCH_CACHE:
+            _MATCH_CACHE[key] = _registry_matches(text, limit, None, home)
+        return _MATCH_CACHE[key]
+    return _registry_matches(text, limit, data, home)
+
+
+def _registry_matches(text, limit=3, data=None, home=None):
     """The registered claims nearest to a queued item's text, as (identifier, start of summary), best first;
     an empty list where the registry cannot be read.
 

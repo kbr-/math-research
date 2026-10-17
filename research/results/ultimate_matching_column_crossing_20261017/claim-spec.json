@@ -1,0 +1,62 @@
+{
+  "source": {
+    "record": "[Column crossing obstruction](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-column-crossing-obstruction)",
+    "label": "Column crossing obstruction",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-17-column-crossing-obstruction"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "lem:column-crossing-count",
+      "summary": "For points X_1..X_N, Y_1..Y_N of [0,1]^2, U(x) = #{X^1 <= x} - #{Y^1 <= x} and Omega_w = sup over |x-x'| <= 2w of |U(x)-U(x')|: for every D >= 0, w in (0,1/2), family of vertical lines with consecutive gaps (and gaps to 0 and 1) at most w, and matching, with A the pairs with |Delta^1| <= D crossing a line of the family and B the pairs with |Delta^1| > D, (D+w)|A| + (1+w)|B| >= (1/2) int_0^1 |U| - Omega_w.",
+      "assessment": "Working proof, deterministic: the crossing identity |U(x)| <= pairs crossing x, a subfamily with gaps in [w, 2w], a Riemann comparison with Omega_w, and the count of lines a pair of extent delta crosses (at most delta/w + 1).",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "The deterministic core of the column crossing obstruction: the first-coordinate strip discrepancy must be carried across every fine family of vertical lines.",
+      "next_action": "Applied in thm:column-crossing-obstruction; horizontal lines and curves, unverified suggestions of its reviewer, give nothing new at low second levels.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "thm:column-crossing-obstruction",
+      "summary": "For alpha_1, alpha_2 in (0,infinity], L > 0, D_j = L sqrt(log N/N) t_j^(1/alpha_j), levels t_1, t_2 in [1, log N] and w with N e^(-t_1) = o(sqrt N), e^(-t_2)(sqrt(N) w + L sqrt(log N) t_1^(1/alpha_1)) -> 0 and w log N -> 0, X, Y independent uniform samples of size N in [0,1]^2: with probability tending to one, for every family of vertical lines with gaps at most w (chosen after the samples), every matching with at most 2N e^(-t_1) pairs beyond D_1 in the first coordinate and at most 2N e^(-t_2) beyond D_2 in the second has at least eps_N sqrt N/(8(D_1+w)) pairs inside both boxes crossing a line of the family, for some eps_N -> 0. At (4,4), t_1 = log N, t_2 = sqrt(log N), columns of width o(e^(sqrt(log N))/sqrt N) must be crossed by pairs inside both boxes.",
+      "assessment": "Working proof: lem:column-crossing-count with D = D_1, Donsker for int |U| >= eps_N sqrt N, and Bernstein over grid intervals for Omega_w = o(sqrt N), with eps_N = 4 max(sqrt eta_N, sqrt theta_N, N^(-1/8)).",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "At mixed levels with a small second allowance, a construction must carry the strip discrepancy across fine columns through pairs inside both boxes; a scheme counting every pair that crosses its column lines as an exception, as the windowed construction does, cannot meet the both-high instance with columns finer than o(e^(sqrt(log N))/sqrt N).",
+      "next_action": "The cycle repair of the per-level matching at the both-high instance, whose cells escape the theorem by a factor log N, with the repaired pairs carrying the strip discrepancy at the cell boundaries.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "thm:column-crossing-obstruction",
+      "depends_on",
+      "lem:column-crossing-count",
+      "Its corollary at mixed levels."
+    ],
+    [
+      "thm:column-crossing-obstruction",
+      "cites",
+      "thm:windowed-mixed-counts",
+      "A scheme counting every pair that crosses its column lines as an exception, as that theorem's construction does, cannot meet the both-high instance with columns of width o(e^(sqrt(log N))/sqrt N); the construction itself is not in the theorem's hypotheses."
+    ],
+    [
+      "thm:column-crossing-obstruction",
+      "cites",
+      "thm:low-level-mixed-counts",
+      "Its construction uses the strip discrepancy bounded above by Doob; here it is bounded below and counted in crossings. That theorem does not reach t_2 = sqrt(log N); a scheme counting every pair that crosses its column lines as an exception cannot meet the both-high instance with columns that fine."
+    ],
+    [
+      "thm:column-crossing-obstruction",
+      "cites",
+      "thm:position-blind-cell-exits",
+      "The nearest exclusion: square cells and position-blind exits there, any rule and a family of vertical lines here, at mixed levels."
+    ]
+  ]
+}

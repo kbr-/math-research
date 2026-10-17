@@ -48,6 +48,26 @@ class RankedSearchTest(unittest.TestCase):
         self.assertEqual([claim['id'] for _, claim in ranked],
                          ['lem:complete', 'lem:partial'])
 
+    def test_the_index_matches_prefixes_in_both_directions_as_the_pairwise_test_did(self):
+        # 17 October 2026: the search moved from testing every claim's words to an index of distinct words; the
+        # prefix relation must still run both ways (query stem "cross" against "crossing", and "crossings"
+        # against "cross"), with the same scores as the pairwise test.
+        data = {'claims': [
+            {'id': 'lem:long', 'summary': 'Pairs crossing a line', 'assessment': ''},
+            {'id': 'lem:short', 'summary': 'A cross count', 'assessment': ''},
+            {'id': 'lem:none', 'summary': 'Unrelated geometry', 'assessment': ''},
+        ]}
+        def pairwise(words):
+            query = search_claims.stems(' '.join(words))
+            tokens = [search_claims.stems(c['id'] + ' ' + c['summary'] + ' ' + c['assessment']) for c in data['claims']]
+            return [c['id'] for c, s in zip(data['claims'], tokens)
+                    if any(t.startswith(q) or q.startswith(t) for q in query for t in s)]
+        for words in (['cross'], ['crossings'], ['pairs', 'cross']):
+            found = [claim['id'] for _, claim in search_claims.search(data, words)]
+            self.assertEqual(sorted(found), sorted(pairwise(words)), words)
+        self.assertEqual(sorted(c['id'] for _, c in search_claims.search(data, ['cross'])), ['lem:long', 'lem:short'])
+        self.assertEqual(sorted(c['id'] for _, c in search_claims.search(data, ['crossings'])), ['lem:long', 'lem:short'])
+
 
 class UnvalidatedReadTest(unittest.TestCase):
     """A search answers from the registry as written; it is validated only to say why it cannot be read."""

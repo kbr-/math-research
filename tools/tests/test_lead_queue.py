@@ -1756,6 +1756,28 @@ class LeadQueueTest(unittest.TestCase):
 
 
 
+class ListingTest(unittest.TestCase):
+    # 17 October 2026: a review read the queue's HTML by hand to find the builds stamped in its period.
+    def test_items_are_listed_in_order_and_filtered_by_their_stamp(self):
+        body = ('<section id="lead-queue"><ol>'
+                '<li data-build="old-one" data-source="x" data-after="entry-a">Build the <b>old</b> thing.</li>'
+                '<li data-check="new-one" data-source="x" data-after="entry-c">Check the new thing.</li>'
+                '</ol></section><section id="research-record"><article id="entry-a"></article>'
+                '<article id="entry-b"></article><article id="entry-c"></article></section>')
+        lines = lq.listing(body)
+        self.assertEqual([line.split('\t')[:3] for line in lines],
+                         [['1', 'build:old-one', 'entry-a'], ['2', 'check:new-one', 'entry-c']])
+        self.assertIn('Build the old thing.', lines[0])
+        self.assertEqual([line.split('\t')[1] for line in lq.listing(body, 'entry-b')], ['check:new-one'])
+        self.assertEqual(lq.listing('<p>no queue</p>'), [])
+        # Its reviewer's cases: an unknown anchor is an error, and an unstamped item is counted, not dropped.
+        with self.assertRaises(ValueError):
+            lq.listing(body, 'entry-typo')
+        unstamped = body.replace(' data-after="entry-a"', '')
+        self.assertIn('1 items carry no stamp', lq.listing(unstamped, 'entry-b')[-1])
+        self.assertEqual(lq.main(['lead_queue.py', 'list', 'x.html', '--after']), 2)
+
+
 class OwnFollowUpsTest(unittest.TestCase):
     def test_a_follow_up_inside_another_paragraph_is_read(self):
         # 16 October 2026: a Follow-up after an Owed attempt in one paragraph read as empty to the history.
