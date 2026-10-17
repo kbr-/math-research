@@ -96,13 +96,30 @@ def tokens(text):
             or w in '<>='}
 
 
+def clauses(text):
+    """The text split after each full stop, and after each semicolon outside parentheses: a semicolon inside a
+    parenthesis that follows a claim belongs to that claim's clause (17 October 2026: "conj:X (... n = 3 to 6; its
+    only-if direction at K = 1 ...)" was refused). Splitting at full stops only lost 10 of 59 catches over 300
+    commits, in long sentences whose parts (a), (b) stand between semicolons
+    (research/results/framework-builds-20261017/condition-split-replay-after.txt)."""
+    out, start, depth = [], 0, 0
+    for i, ch in enumerate(text):
+        depth += (ch == '(') - (ch == ')')
+        nxt = text[i + 1:i + 2]
+        if (ch == '.' or (ch == ';' and depth <= 0)) and (nxt == '' or nxt.isspace()):
+            out.append(text[start:i + 1].strip())
+            start = i + 1
+    rest = text[start:].strip()
+    return out + ([rest] if rest else [])
+
+
 def dropped_conditions(message, new_claims, windows_only=False):
     """(claim, condition) for each condition of a newly registered claim's summary that the message's sentences
     naming the claim carry fewer than half of the words of. With windows_only, only a condition that is an
     inequality on one variable ("If D >= l+1") is checked, by whether the sentences compare that variable: an
     entry's General statement, counted over the record's 2132, met the word rule in 1387 (17 October 2026)."""
     found = []
-    sentences = re.split(r'(?<=[.;])\s+', ' '.join(message.split()))
+    sentences = clauses(' '.join(message.split()))
     for ident, summary in new_claims:
         about = ' '.join(s for s in sentences if ident in s)
         if not about:
@@ -384,6 +401,15 @@ def replay(count, scripts_only=False):
     scratch.cleanup()
 
 
+def diff_lines(rev, paths):
+    """(path, line) for each line of commit `rev`'s zero-context diff of each of `paths` (a helper, so that the
+    replays below nest two loops, not three, which compute.sh refuses)."""
+    out = []
+    for p in paths:
+        out += [(p, line) for line in git('show', '-U0', '--format=', rev, '--', p).splitlines()]
+    return out
+
+
 def replay_bypass(count):
     """The last `count` commits that would be refused by unbypassed_checks, against each commit's own diff."""
     revs = git('log', f'-{count}', '--format=%H').split()
@@ -396,7 +422,7 @@ def replay_bypass(count):
             continue
         changed = git('diff-tree', '--no-commit-id', '-r', '--name-only', rev).split()
         callers = [p for p in changed if p in CALLERS or (p.startswith('tools/hooks/') and p.endswith('.py'))]
-        lines = [(p, line[1:]) for p in callers for line in git('show', '-U0', '--format=', rev, '--', p).splitlines()
+        lines = [(p, line[1:]) for p, line in diff_lines(rev, callers)
                  if line.startswith('+') and not line.startswith('+++')]
         wired = unbypassed_checks(added, lines, git('log', '-1', '--format=%B', rev))
         if wired:
@@ -414,7 +440,7 @@ def replay_refusal_defs(count):
         callers = [p for p in changed if p in CALLERS or (p.startswith('tools/hooks/') and p.endswith('.py'))]
         if not callers:
             continue
-        diff = [line for p in callers for line in git('show', '-U0', '--format=', rev, '--', p).splitlines()]
+        diff = [line for _, line in diff_lines(rev, callers)]
         added = [line[1:] for line in diff if line.startswith('+') and not line.startswith('+++')]
         removed = [line[1:] for line in diff if line.startswith('-') and not line.startswith('---')]
         found = new_refusal_functions(added, removed, git('log', '-1', '--format=%B', rev))

@@ -51,6 +51,14 @@ class ConditionTest(unittest.TestCase):
         self.assertEqual(cmc.dropped_conditions(full, claims), [])
         self.assertEqual(cmc.dropped_conditions('A message that names no claim.', claims), [])
 
+    def test_a_condition_after_a_semicolon_belongs_to_the_claim_the_sentence_names(self):
+        # 17 October 2026: the condition stood after a semicolon of the sentence naming the claim and was refused
+        claims = [('conj:x', 'Conjecture: excess at the middle sizes; the only-if direction at K = 1 (n <= 4) is '
+                             'cor:y.')]
+        message = ('Registers conj:x (positive excess at the middle sizes, checked at n = 3 to 6; its only-if '
+                   'direction at K = 1 (n <= 4) is cor:y) and check:z.')
+        self.assertEqual(cmc.dropped_conditions(message, claims), [])
+
     def test_a_dropped_condition_needs_a_confirmation_line(self):
         # 17 October 2026: a flagged message was committed unchanged.
         dropped = [('cor:linear-error-transfer', 'when S misses three holes')]
