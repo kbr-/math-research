@@ -73,6 +73,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--holes', type=int, required=True)
     ap.add_argument('--out', required=True)
+    ap.add_argument('--known', type=int, default=None,
+                    help='a size whose pairs with itself were already computed (mixing_pairs_76.json: 3 at n = 6)')
     args = ap.parse_args()
     n = args.holes
     mp.N, mp.D = n, math.ceil(n / 2)
@@ -91,6 +93,8 @@ def main():
     positive = [r['size'] for r in out['singles'] if r['excess'] > 0]
     with multiprocessing.Pool(14) as pool:
         for key, (A, B) in sorted(orbits(positive, n).items()):
+            if args.known is not None and key[0] == key[1] == args.known:
+                continue
             r = mp.measure_orbit(pool, key, A, B)
             out['pairs'].append(r)
             print(json.dumps(r), flush=True)
