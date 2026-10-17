@@ -85,6 +85,7 @@ class SuiteAfterTest(unittest.TestCase):
             (top / 'tools/by-path.py').write_text('w = 1\n')
             (top / 'tools/loader.py').write_text("spec = load(ROOT / 'tools/by-path.py')\n")
             self.assertEqual(cmc.shared_code(['tools/by-path.py'], top), ['tools/by-path.py'])   # loaded by path
+            self.assertEqual(cmc.shared_code(['AGENTS.md', 'notes.md'], top), ['AGENTS.md'])   # read by a test
             self.assertEqual(cmc.shared_code(['tools/hooks/guard.py', 'tools/shared.py', 'tools/alone.py',
                                               'tools/tests/test_alone.py', 'compute.sh'], top),
                              ['tools/hooks/guard.py', 'tools/shared.py', 'compute.sh'])

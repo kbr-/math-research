@@ -1613,8 +1613,11 @@ def validate_unexamined_closure(text):
             continue
         plain = html.unescape(strip_tags(unit))
         left = LEFT_OPEN.search(plain)
-        if left and not re.search(r'\b(?:stands without|covered|does not need|not needed|carried by|queued|'
-                                  r'does not rest on|transferred|destination|dropped|discarded|retained|belongs to)\b',
+        # Phrases that keep the open part somewhere, never bare words that also describe dropping it (the stand-in
+        # review of 17 October 2026: "dropped" would have let "this part is dropped" through).
+        if left and not re.search(r'\b(?:stands without|is covered by|does not need|not needed|carried by|queued as|'
+                                  r'does not rest on|transferred to|in the destination|not dropped|neither is dropped|'
+                                  r'not discarded|retained at|belongs to the parent|moves? to|moved to)\b',
                                   left.group(1) + ' ' + plain[left.end():left.end() + 200], re.I):
             raise ValueError(f'A follow-up says {CLOSING.search(unit).group(1)} while its Not examined names a part '
                              f'left open ("{left.group(1)[:120]}"): an item with a named part unexamined is '

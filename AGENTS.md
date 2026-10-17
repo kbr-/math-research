@@ -381,8 +381,8 @@ AGENTS.md"):
   2026: a corollary covered the reading the draft had defined, and two other readings of the item
   were listed as covered without an attempt).
 - Before calling a question decided, write the class its words range over (all forms, all closures,
-  all errors, every value of a cutoff it states as an inequality) beside the class the argument
-  covers; it is decided only where the two agree (17 October 2026: a cutoff stated as an inequality
+  all errors, every value of a parameter it bounds by an inequality) beside the class the argument
+  covers; it is decided only where the two agree (17 October 2026: a bound stated as an inequality
   was decided at its equality, and "forms" were read as the ones the argument built).
 - Put a new rule or check where the file that owns its kind says it belongs, read before writing,
   not beside the lines last added (17 October 2026: two days of rules went into CLAUDE.md, which

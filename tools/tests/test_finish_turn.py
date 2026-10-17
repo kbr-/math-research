@@ -241,6 +241,10 @@ class UnexaminedClosure(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Continuing'):
             FT.validate_unexamined_closure('<li data-check="x:s1">Asked. Not examined: forms not built from E u '
                                            'in the window. <strong>Follow-up.</strong> Developed.</li>')
+        # the way around the first exception list: a clause that drops the part in words the list accepted
+        with self.assertRaisesRegex(ValueError, 'Continuing'):
+            FT.validate_unexamined_closure('<li data-check="x:s1">Asked. Not examined: the cubic case, which is '
+                                           'dropped. <strong>Follow-up.</strong> Closed: done.</li>')
 
     def test_legitimate_uses_pass(self):
         for item in ('Done. Not examined. Nothing the sub-idea names is left. <strong>Follow-up.</strong> Developed.',

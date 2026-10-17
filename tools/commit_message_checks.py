@@ -118,7 +118,10 @@ def shared_code(paths, top):
              + [p for p in (top / 'tools').glob('git-hooks*/*') if p.is_file()])
     found = []
     for path in paths:
-        if path == 'compute.sh' or path.startswith('tools/hooks/') or path.startswith('tools/git-hooks'):
+        # AGENTS.md is read by tools/tests/test_agents_scope.py (17 October 2026: a rule with a goal word was
+        # committed without the suite, which that test fails on).
+        if (path in ('compute.sh', 'AGENTS.md') or path.startswith('tools/hooks/')
+                or path.startswith('tools/git-hooks')):
             found.append(path)
         elif path.startswith('tools/') and path.endswith('.py') and not path.startswith('tools/tests/test_'):
             stem = Path(path).stem
