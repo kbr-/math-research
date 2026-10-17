@@ -1,0 +1,90 @@
+{
+ "source": {
+  "record": "[Pair product rank floor](https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor)",
+  "targets": [
+   "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+  ],
+  "label": "Pair product rank floor"
+ },
+ "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+ "date": "2026-10-17",
+ "topics": [
+  "polynomial-calculus",
+  "method-obstructions"
+ ],
+ "claims": [
+  {
+   "id": "lem:pair-product-rank-floor",
+   "summary": "Pair product rank floor: in the charged character window (over F containing F_4, multigraphs included), for s pairwise disjoint edge pairs with psi_i of support exactly the pair, pi the largest number of paired edges at a vertex, a binary t-by-s matrix C, q_j = sum_i C_ji m_(psi_i) and P = prod_(j<=t)(1 + q_j), with K >= 1, K + 2t <= D, pi < epsilon/2, rho = (epsilon - 2pi)/(2(epsilon - pi)), beta = (eK/(rho(m - 2s)))^rho < 1 and eta = (1 + 2 beta^(epsilon - pi))^n - 1, the rank c_P(K) of f -> R_D(P f) on degree <= K satisfies: (a) if C has rank t, c_P(K) >= (1 - eta) B_(m-2t)(K) >= (1 - eta)(1 - 2t/(m - K))^K B_m(K); (b) if s >= K + t, with zeta_C = sum over nonzero lambda in F_2^t of (2K/m)^|lambda^T C|, then for every b with 0 < b < s - K - t + 1, c_P(K) >= (1 - b/(s - K - t + 1))^t (1 - eta - zeta_C - s(K/m)^2/b) B_m(K). P's top part is sum over t-sets T of det(C_T) m_(psi_T) (a binary permanent is a determinant in characteristic two); for each character alpha of a good frame whose touched pairs leave C of rank t and whose psi-valued pairs avoid a pivot set T_0, alpha + psi_(T_0) is the leading class of P m_alpha in an order by support, frame and lex with T_0 first, and these classes are distinct and good; (a) uses one pivot set in every frame.",
+   "assessment": "Working proof by a leading-term triangularity, a frame-wise good-character union bound adapted from lem:pair-occupancy and a Markov bound on the psi-valued pairs, passed by a fresh-context medium reviewer after it found the first statement false for b >= s - K - t + 1; part (a), the reviewer's fixed-pivot suggestion, verified against the proof. The triangularity checked exactly in the cut-free model on 15 small instances with a zero-determinant control.",
+   "status": "working_proof",
+   "rationale": "The first lower bound on the rank of an approximator product of pair-linear factors inside the charged window at every level K; it decides the rate scale review's decisive test against its yes outcome for rank-t products on the members computed.",
+   "next_action": "Whether M such products, each above the floor, can still share a common kernel element: the degree-K functions vanishing on the union of their nonzero sets."
+  },
+  {
+   "id": "cor:pair-product-ratio-bound",
+   "summary": "Pair product ratio bound: under lem:pair-product-rank-floor's hypotheses, with L_a = (1 - eta)(1 - 2t/(m - K))^K for C of rank t and L_b = (1 - b/(s - K - t + 1))^t (1 - eta - zeta_C - s(K/m)^2/b) under part (b)'s, L_b > 0 forces rank C = t; for C of rank t, deg P = 2t and, L the larger applicable factor, c_P(K - d)/c_P(K) <= q^d/L for 0 <= d <= K, q = K/(2(m - K + 1)). On simple members of the power-growing charged family with m = n Delta and pairs of largest paired degree Delta/16 (a Vizing pairing), at the accuracy t = ceil(Delta ln n), log2 L_a = -1.7442 * 10^5 and log2 L_b >= -907.1 (log2 n = 340, alpha = 1/20, every s of D/2 < s <= D - K), and the bound at d = 2t is at most 2^(-6.1745 * 10^8): the decisive test's yes outcome, a ratio of order ln M / t, fails for every rank-t product there; the excess over canonical, up to 1/L, is not shown to stay within N^(O(1)) as n grows.",
+   "assessment": "Working composition of the lemma with the ball's term ratios; family figures computed by research/results/rank_floor_20261017/family_numbers.py, recomputed by the reviewer.",
+   "status": "working_proof",
+   "rationale": "Answers the rate scale review's decisive test for dense pair products: their guarantee at the second layer's gap is ambient-like, and a survival argument summing per-component ranks cannot certify more than 1/L of them.",
+   "next_action": "The joint kernel of many such products, which a survival argument for more than 1/L of them needs."
+  }
+ ],
+ "relationships": [
+  [
+   "lem:pair-product-rank-floor",
+   "cites",
+   "lem:pair-occupancy",
+   "Its good-character union bound and the count of a cut's unpaired edges, run here on the leading vectors."
+  ],
+  [
+   "lem:pair-product-rank-floor",
+   "cites",
+   "cor:pair-sector-bounds",
+   "W meeting the cut space only in 0, and R_D of a character a multiple of its class vector."
+  ],
+  [
+   "lem:pair-product-rank-floor",
+   "cites",
+   "lem:cut-code-classes",
+   "Distinct classes within degree D are independent."
+  ],
+  [
+   "lem:pair-product-rank-floor",
+   "cites",
+   "prop:quadratic-code-rank",
+   "Its degree-two antecedent: products over pair products keep rank at domain degree two."
+  ],
+  [
+   "lem:pair-product-rank-floor",
+   "cites",
+   "lem:sparse-weight-survival",
+   "The plainest bound, h(K)/s_P, vacuous for these products."
+  ],
+  [
+   "cor:pair-product-ratio-bound",
+   "cites",
+   "lem:pair-product-rank-floor",
+   "The floor at level K."
+  ],
+  [
+   "cor:pair-product-ratio-bound",
+   "cites",
+   "cor:pair-sector-bounds",
+   "Its two ratio bounds, superpolynomial over canonical, which this replaces for these products."
+  ],
+  [
+   "cor:pair-product-ratio-bound",
+   "cites",
+   "thm:binary-approximator-rank",
+   "Its gain step, the half ratio per factor that ratio repair's guarantee uses."
+  ],
+  [
+   "cor:pair-product-ratio-bound",
+   "cites",
+   "prop:charge-affine-rank-gap",
+   "The power-growing family's parameters."
+  ]
+ ],
+ "overrides": {}
+}

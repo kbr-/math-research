@@ -1,0 +1,51 @@
+Reviewer record, pair product rank floor entry (entry-2026-10-17-pair-product-rank-floor), 17 October 2026.
+One fresh-context medium reviewer (Claude Code medium-reviewer agent). Its two reports, from its hand-back
+messages, condensed to their findings and verdicts in its own words where quoted.
+
+First report. Verdict: "fail as drafted. It passes with corrections once the lemma takes on one more
+hypothesis; the rest of the proof holds."
+Required changes:
+- lem:pair-product-rank-floor false as stated "for every real b>0": the per-frame step needs
+  1-b/(s-K-t+1) >= 0; for even t and b > 2(s-K-t+1) the right side exceeds B_m(K) >= c_P(K). The draft's own
+  s=K+t+1 on the first member (t=30889744, even) is such a case: "false there, not empty". Fix: add
+  0<b<s-K-t+1.
+- cor:pair-product-ratio-bound, "L>0 forces rank C=t", fails without that bound on b (t odd, two negative
+  factors); holds with it.
+- Ledger: "reachable at m=nDelta and not at m=nDelta/8 or nDelta/2" is a property of the 2Delta+1-colour
+  construction, not of the members; at m=nDelta/8 the degree bounds force Delta/4-regularity; m is fixed by
+  the member's graph; Vizing needs a simple graph (Shannon's 3Delta colours otherwise).
+- Architecture test, Baseline, Bearing: "2^907.1 ... superpolynomial in N" - on that member 2^907 <= N^0.007
+  under log2 N >= Delta; superpolynomiality is only asymptotic.
+- Architecture test "Decided": restate the class; add the monotonicity in s between the computed ends;
+  sparse C give zeta_C >= t*2K/m >> 1.
+- Plainest bound and Baseline: the record bound's exponent drops (1-eta_occ)(1-q); write "about".
+- Title and commit message stronger than the body.
+Checked and found correct: top part (permanent = det C_T in characteristic two), frames and leading terms,
+lambda injective, goodness (x >= rho u_b, event depends on alpha_U alone, binomial estimate, union giving eta),
+independence (goodness of lambda(alpha') suffices; distinct classes using 4t <= 2D), the zeta_C union bound,
+the Markov bound, B_m(k-1) <= q B_m(k), no need for s <= D or 4K < m-s, the family figures recomputed by hand,
+A=3 since 3*357 > 907, the Smallest case and M <= K/6.
+Suggestions (its own, unverified): the fixed-pivot pick (one pivot set T* in every frame, giving
+(1-eta)B_{m-2t}(K) for every rank-t C); the per-factor loss of (b) already of order q^2 (about 21 q^2 here),
+a Chernoff bound bringing log2 L to about -227; for the next attempt, a common kernel element is a function of
+bounded pair-junta degree supported on Z of density >= 1-M(3/4)^t, lem:quiet-members' inequality holds
+trivially, the question is the Hilbert function of the union V of the nonzero sets, and no deciding argument
+was found. Searches: lem:sparse-mask-survival bears on the next attempt but does not apply as stated;
+historical:thm:columnbarrier and historical:lem:emptyrowsupport share its shape; none contradicts the draft.
+Not checked: the toy script's code, the rate scale review beyond its decisive test, which members exist.
+Process audit: title, status line and commit message stronger than the body; "Decided" without its class;
+"not reachable" said of members; "superpolynomial" beside N^0.007; "empty" without the parity of t; no
+Baseline against the fixed-pivot pick. Strength count: 5.
+
+Second report, on the corrections. Verdict: "pass with corrections. The corrections hold up; two small
+changes remain."
+Checked: part (a)'s pivot choice, counted characters, bad proportion, and the ratio bound (each factor in
+[0,1] since 2t <= 2s < m-K); part (b)'s range and the nonnegativity sentence; the corollary's rank claim and
+"L the larger of the applicable factors"; every part (a) figure against family-numbers-pick.txt, -1.7442e5
+recomputed by hand; N^2.55 and N^0.007.
+Required: (1) Architecture test: for the class decided by (a), the excess is up to 1/L_a = 2^(1.7442e5),
+N^489 with N >= m alone and N^1.33 under log2 N >= Delta; add it beside (b)'s 2^907.1. (2) Ledger: L_a
+depends on s only through 1-eta, at least 1-2^-48254 over the range.
+Process audit: the title "now matches the body"; the commit message "says no more than the entry"; strength
+count 1, the excess sentence of item (1).
+Both changes were made in its wording.

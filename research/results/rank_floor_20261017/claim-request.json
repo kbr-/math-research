@@ -1,0 +1,907 @@
+{
+  "base_sha256": "486325cddc0bfa66e2412db9d259768b23a3038f746462f9648740d7e77b2c04",
+  "provenance": {
+    "revision": "33a393b92b5dd4cca72579c08382558be12c3e6e",
+    "date": "2026-10-17",
+    "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent"
+  },
+  "submissions": [
+    {
+      "claim": {
+        "id": "lem:pair-product-rank-floor",
+        "summary": "Pair product rank floor: in the charged character window (over F containing F_4, multigraphs included), for s pairwise disjoint edge pairs with psi_i of support exactly the pair, pi the largest number of paired edges at a vertex, a binary t-by-s matrix C, q_j = sum_i C_ji m_(psi_i) and P = prod_(j<=t)(1 + q_j), with K >= 1, K + 2t <= D, pi < epsilon/2, rho = (epsilon - 2pi)/(2(epsilon - pi)), beta = (eK/(rho(m - 2s)))^rho < 1 and eta = (1 + 2 beta^(epsilon - pi))^n - 1, the rank c_P(K) of f -> R_D(P f) on degree <= K satisfies: (a) if C has rank t, c_P(K) >= (1 - eta) B_(m-2t)(K) >= (1 - eta)(1 - 2t/(m - K))^K B_m(K); (b) if s >= K + t, with zeta_C = sum over nonzero lambda in F_2^t of (2K/m)^|lambda^T C|, then for every b with 0 < b < s - K - t + 1, c_P(K) >= (1 - b/(s - K - t + 1))^t (1 - eta - zeta_C - s(K/m)^2/b) B_m(K). P's top part is sum over t-sets T of det(C_T) m_(psi_T) (a binary permanent is a determinant in characteristic two); for each character alpha of a good frame whose touched pairs leave C of rank t and whose psi-valued pairs avoid a pivot set T_0, alpha + psi_(T_0) is the leading class of P m_alpha in an order by support, frame and lex with T_0 first, and these classes are distinct and good; (a) uses one pivot set in every frame.",
+        "assessment": "Working proof by a leading-term triangularity, a frame-wise good-character union bound adapted from lem:pair-occupancy and a Markov bound on the psi-valued pairs, passed by a fresh-context medium reviewer after it found the first statement false for b >= s - K - t + 1; part (a), the reviewer's fixed-pivot suggestion, verified against the proof. The triangularity checked exactly in the cut-free model on 15 small instances with a zero-determinant control.",
+        "record": "[Pair product rank floor](https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "The first lower bound on the rank of an approximator product of pair-linear factors inside the charged window at every level K; it decides the rate scale review's decisive test against its yes outcome for rank-t products on the members computed.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+          ],
+          "next_action": "Whether M such products, each above the floor, can still share a common kernel element: the degree-K functions vanishing on the union of their nonzero sets."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "cor:pair-product-ratio-bound",
+        "summary": "Pair product ratio bound: under lem:pair-product-rank-floor's hypotheses, with L_a = (1 - eta)(1 - 2t/(m - K))^K for C of rank t and L_b = (1 - b/(s - K - t + 1))^t (1 - eta - zeta_C - s(K/m)^2/b) under part (b)'s, L_b > 0 forces rank C = t; for C of rank t, deg P = 2t and, L the larger applicable factor, c_P(K - d)/c_P(K) <= q^d/L for 0 <= d <= K, q = K/(2(m - K + 1)). On simple members of the power-growing charged family with m = n Delta and pairs of largest paired degree Delta/16 (a Vizing pairing), at the accuracy t = ceil(Delta ln n), log2 L_a = -1.7442 * 10^5 and log2 L_b >= -907.1 (log2 n = 340, alpha = 1/20, every s of D/2 < s <= D - K), and the bound at d = 2t is at most 2^(-6.1745 * 10^8): the decisive test's yes outcome, a ratio of order ln M / t, fails for every rank-t product there; the excess over canonical, up to 1/L, is not shown to stay within N^(O(1)) as n grows.",
+        "assessment": "Working composition of the lemma with the ball's term ratios; family figures computed by research/results/rank_floor_20261017/family_numbers.py, recomputed by the reviewer.",
+        "record": "[Pair product rank floor](https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Answers the rate scale review's decisive test for dense pair products: their guarantee at the second layer's gap is ambient-like, and a survival argument summing per-component ranks cannot certify more than 1/L of them.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+          ],
+          "next_action": "The joint kernel of many such products, which a survival argument for more than 1/L of them needs."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:pair-occupancy",
+        "summary": "Pair occupancy: in the charged character window (any graph, multigraphs included), for s vectors psi_i of support exactly two on pairwise disjoint edge pairs, W their span, pi the largest number of paired edges at a vertex, beta_W = 2 sqrt(K/(m - s)) and eta_W = (1 + 2 beta_W^(epsilon - pi))^n - 1, if 2K + 2s <= 2D and 4K < m - s then the number q_W(K) of cosets of the cut space plus W met by the support-K ball satisfies (1 - eta_W) B_(m-s)(K) <= q_W(K) <= B_(m-s)(K): each pair is one merged coordinate of the quotient by W, whose nonzero classes have representatives of support one, and the cut of a small potential keeps at least (epsilon - pi) times its support of unpaired edges, so good classes lie in distinct cosets.",
+        "assessment": "Working proof by the good-character union bound of lem:high-incidence-occupancy run on the classes of the quotient by W, the paired edges discarded.",
+        "record": "[Pair occupancy](https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "The per-pair occupancy at which the approximator product goal review's decisive test stopped; it refines the edge-set counts, B_(m-2s), to B_(m-s) for pair spans beyond lem:local-tuple-ratio's window.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+          ],
+          "next_action": "The rank profile of the products inside one sector, starting with sectors whose good representative touches no pair."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Pair product rank floor: new relationship with lem:pair-product-rank-floor.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "cor:pair-sector-bounds",
+        "summary": "Pair sector bounds: in lem:pair-occupancy's setting with pi < epsilon, for a nonzero P in the span of the characters of W of support at most e, K + e <= D, with c(k) the rank of f -> R_D(P f) on degree <= k and c_C(k) that rank on the characters of support <= k of a coset C of B + W: (i) c(k) = sum_C c_C(k) (lem:cut-code-sectors with S = (W+B)/B); (ii) 1 <= c_C(k) <= min(n_C(k), 3^s), W meeting B only in 0, so q_W(k) <= c(k) <= min(h(k), 3^s q_W(k)) for k <= K; (iii) the two ratio bounds these give, 3^s q_W(K-d)/q_W(K) and h(K-d)/q_W(K), exceed h(K-d)/h(K) by at least 3^s (1 - eta_W)(1 - eta_occ) and (1 - eta_occ)(1 - q) e^(sK/m), q = K/(2(m-s-K+1)), using that ball ratios B_n'(k-d)/B_n'(k) do not fall when coordinates are removed. (i) and (ii) need only K + e <= D, s <= D and pi < epsilon; (iii) also needs the lemma's hypotheses at levels K-d and K and eta_occ < 1. On the power-growing charged family, for D/2 < s <= D - K and pi <= Delta/8, both factors are N^(Omega(n)), so these two bounds built from c_C >= 1 cannot give the decisive test's yes outcome; a block form combining the counts with the ranks of P inside the sectors is not covered.",
+        "assessment": "Working composition of lem:cut-code-sectors, lem:cut-code-classes, the new lemma and lem:cut-ball-occupancy, with an elementary ball-ratio monotonicity.",
+        "record": "[Pair occupancy](https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Shows that the two ratio bounds built from c_C >= 1 and the coset counts, now sharp up to 1 - eta_W, cannot give the yes outcome of the decisive test in the stated range, so a yes needs bounds on the ranks of the products inside the sectors.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+          ],
+          "next_action": "The rank profile of P inside the sectors whose good representative touches no pair, a question in the group algebra of F_3^s."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Pair product rank floor: new relationship with cor:pair-product-ratio-bound, lem:pair-product-rank-floor.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:cut-code-classes",
+        "summary": "In the ternary Tseitin character-pseudoideal window, characters of degree<=D share a quotient coordinate iff their exponents are in the same ternary cut-code coset. Thus h(K) counts cut-code cosets meeting the support-K ball. The relative charged phases remain truncated, not a global evaluation map.",
+        "assessment": "Working all-parameter majority-level-set proof, passed the sole medium reviewer.",
+        "record": "[Cut-code rank normalization](https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "affine-linear-algebra",
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Identifies the exact unweighted filtered domain; a representation, not a lower-bound advance.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": "Test actual Frege gate representations and updated-weight support against the strict removal inequality; retain full original degree costs."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Matching flat width: new relationship with thm:matching-flat-conjunction-width. Cut-code sectors: new relationship with lem:cut-code-sectors. Algebraic syndrome packing: new relationship with lem:character-syndrome-packing. Degree-weighted conditioning: new relationship with prop:charged-star-kernel. Cut-code ball growth: new relationship with cor:charged-growth-budget. Bounded weighted magnification: new relationship with cor:weighted-growth-floor. Chosen error sectors: new relationship with prop:prefix-sector-collapse. Actual-error goal review: new relationship with cor:charged-magnification-window. Source coverage review: new relationship with prop:compressed-character-commutator. Affine annihilator image: new relationship with lem:cut-ball-occupancy. Exposed reader cleanup: new relationship with thm:exposed-reader-cleanup. Independent feature transfer: new relationship with thm:independent-feature-transfer. Three-state coded batches: new relationship with lem:cut-collision-bound. Dense monomial profile: new relationship with prop:dense-monomial-error-profile. Extraction goal review: new relationship with prop:charged-thin-tail-obstruction. Integral source test: new relationship with cor:charged-matching-saturation. Minor pairing test: new relationship with cor:layered-translation-capacity. Paid reference rows: new relationship with thm:paid-reference-row-law. Charge affine gap: new relationship with prop:charge-affine-rank-gap. Disjoint feature transfer: new relationship with thm:disjoint-feature-transfer. Mixed feature transfer: new relationship with thm:mixed-feature-transfer. Refresh citing article evidence after unchanged sibling follow-up declarations; quotient scope unchanged. Cut support transfer: new relationship with thm:cut-support-transfer. Affine majority transfer: new relationship with thm:affine-majority-transfer. Weighted majority transfer: new relationship with thm:weighted-majority-transfer. Tree weight transport: new relationship with thm:tree-weight-transport. Leaf weight cleanup: new relationship with cor:leaf-weight-cleanup. Incidence weight cleanup: new relationship with thm:incidence-weight-cleanup. Local tuple ratio: new relationship with lem:local-tuple-ratio. Pin transfer cost: new relationship with cor:pin-transfer-cost. Coset ratio reduction: new relationship with lem:coset-ratio-reduction. Pair occupancy: new relationship with cor:pair-sector-bounds. Pair product rank floor: new relationship with lem:pair-product-rank-floor.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:quadratic-code-rank",
+        "summary": "Over F2 on the full Boolean function model in2q variables X_i,Y_i, put z_i=X_iY_i and P_C=product_(u<=k)(1+(Cz)_u) for any k-by-q binary matrix C,k>=0,q>=k+3,D>=2k+4. On multilinear degree<=2 domain B_2, the error map f->(P_C z_i f) has kernel exactly span of the row polynomials(Cz)_u and rank N_(2q)(2)-rankC. Ordinary raw V_2 also has its Boolean relations in the kernel. Mixed differences on nonzero patterns of kerC with two selected zero coordinates kill all cross-pair quadratic coefficients; single-pair variations kill linear coefficients; the remaining affine function in z lies in rowspanC. Boolean row annihilation pays2k+4. For k>=1 residual rank>=N_(2q)(2)-k>N_(2q)(2)/2, refuting a universal2^-k moving-current-image bound under averaging too. With D>=2k+6,0<=j<k and preceding j-row rank r,current selected image dimension c=N_(2q)(2)-r has fresh-row mean net loss1-2^(r-q)<=1. Generic multiplication is injective on its nonzero-z support, so E multiplication rank>=c/2 and the paid escape identity gives E returned rank>=c/2-1+2^(r-q). The same exact formula holds on the selected degree2 subdomain of independent off-tree-edge label indicators in the actual descended charged quotient. At m>=4n,q=floor((m-n+1)/2),6<=k<=q-3 and proper D also paying2k+4, full-domain residualrank>=m^2/9 while initial full-domain c0<=N_(3m)(2)<=6m^2; thus residualrank>=c0/54>2^-k c0. This is a K=2 calibration, not an obstruction at goalK=floor(D/8), sampler failure or all-weight hardness. Genuine affine-bottom product realization, original accuracy and raw charges remain unchanged.",
+        "assessment": "Passed the sole medium reviewer for the degree2 kernel classification, exact code-rank gain, returned-image comparison and charged local-domain transfer. The moving-rank shortcut was already known to require enlargement; this gives an exact structured refinement. No finite sweep or numerical rank calculation is used.",
+        "record": "[Partial shared cleanup](https://kbr.is-a.dev/math-research/#entry-2026-10-14-partial-shared-cleanup)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "../notebook.html#entry-2026-10-14-partial-shared-cleanup"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "ens",
+          "polynomial-calculus",
+          "affine-linear-algebra",
+          "degree-accounting",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Quantifies the return cost of a naive fixed-space shortening transfer without treating its failed sufficient bound as source hardness.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "../notebook.html#entry-2026-10-14-partial-shared-cleanup"
+          ],
+          "next_action": "Use as a closed analytic calibration in the scheduled review; do not rerun larger cases or infer the required goal-cutoff residual bound."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-partial-shared-cleanup"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-partial-shared-cleanup"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-partial-shared-cleanup"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-partial-shared-cleanup"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Pair product rank floor: new relationship with lem:pair-product-rank-floor.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-partial-shared-cleanup"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:sparse-weight-survival",
+        "summary": "In that quotient, if deg(w)<=b, w survives, and b+K<=D, with s nonzero coordinates in R_D(w), then rank(f->R_D(wf), f in V_K)>=h(K)/s. Also s<=h(b)<=sum_{j<=b}binom(m,j)2^j and log2(s)<=b log2(2m+1) for b>=1.",
+        "assessment": "Working sparse-row proof passed the sole medium reviewer: every column has exactly s nonzeros and each row at most s.",
+        "record": "[Cut-code rank normalization](https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "affine-linear-algebra",
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Controls extra weighted dimension loss in the actual quotient, while later multiplier support is not maintained.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": "Test actual Frege gate representations and updated-weight support against the strict removal inequality; retain full original degree costs."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Algebraic syndrome packing: new relationship with lem:character-syndrome-packing. Rank-retaining weights: new relationship with cor:repeated-conjunction-cleanup. Cut-code ball growth: new relationship with cor:charged-growth-budget. Bounded weighted magnification: new relationship with cor:weighted-growth-floor. Chosen error sectors: new relationship with prop:weighted-sector-opening. Actual-error goal review: new relationship with cor:charged-magnification-window. Circulation conjunction cost: new relationship with thm:cycle-conjunction-cost. Weighted circulation test: new relationship with prop:orbit-kernel-saturation. Actual tuple budget gap: new relationship with prop:actual-tuple-budget-gap. Circulation compression: new relationship with lem:circulation-compression-cost. Tuple magnification: new relationship with lem:tuple-growth-floor. Growing expansion flats: new relationship with cor:growing-expansion-flat-removal. Integral source test: new relationship with cor:charged-matching-saturation. Minor pairing test: new relationship with cor:layered-translation-capacity. Sparse mask survival: new relationship with lem:sparse-mask-survival. Sparse weights keep the thin tail: new relationship with cor:sparse-weight-thin-tail, prop:character-error-thin-tail. Edge-supported error ratio: new relationship with cor:edge-supported-error-ratio. Star closure ratio: new relationship with cor:star-closure-ratio. Pair product rank floor: new relationship with lem:pair-product-rank-floor.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "thm:binary-approximator-rank",
+        "summary": "Over F_2: for 1 <= d <= K <= n, t >= 1, dt + K + d <= D and any family g_1..g_s of degree <= d there is P = prod_{j<=t}(1 + q_j), q_j in span{g_i}, with c_P(K) <= h_K (1 - N_n(K-d)/(2 N_n(K)))^t, h_K = dim V_K/(C_D ∩ V_K), n the free dimension.",
+        "assessment": "Working self-contained proof; it is the first part of Theorem 4.3 of arXiv:2610.00837v1 at p = 2 with the free dimension. Passed by the sole medium reviewer as a proof.",
+        "record": "[Statements and proofs](https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-binary-approximator-rank)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-binary-approximator-rank",
+            "results/near-half-binary-rank-20261009/review.txt"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "The statement previously imported by lem:leveled-common-multiplier and thm:bounded-depth-degree-transfer.",
+          "novelty": "known",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-binary-approximator-rank",
+            "results/near-half-binary-rank-20261009/review.txt"
+          ],
+          "next_action": null
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-binary-approximator-rank",
+            "results/near-half-binary-rank-20261009/review.txt"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-binary-approximator-rank",
+            "results/near-half-binary-rank-20261009/review.txt"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-binary-approximator-rank",
+            "results/near-half-binary-rank-20261009/review.txt"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-binary-approximator-rank",
+            "results/near-half-binary-rank-20261009/review.txt"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Level-size transfer entry: new relationship with thm:level-size-degree-transfer. Engine colon families entry: new relationship with lem:engine-colon-families. Plateau between cubes entry: new relationship with lem:derived-affine-dimension. Rank theorem comparison entry: new relationship with cor:weighted-binary-approximation. Rank engine records entry: new relationship with lem:leveled-common-multiplier. Pang observation calibration: new relationship with cor:pang-observation-calibration. Pair product rank floor: new relationship with cor:pair-product-ratio-bound.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-binary-approximator-rank",
+            "results/near-half-binary-rank-20261009/review.txt"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:charge-affine-rank-gap",
+        "summary": "On the fixed binary charged power-growing family Delta=ceil(n^alpha), ell>=2, 0<alpha<min(1/17,1/ell), nDelta/8<=m<=nDelta, min degree>=Delta/4,max<=2Delta, expansion>=Delta/4, D=floor(nDelta/64),K=floor(D/8),h=ceil(Delta log n),B=ceil(h^ell log n),log N=Theta(Delta), choose q=floor(n/(64Delta)) disjoint vertex stars and q private edges outside them. Let a_i be each binary local charge-violation indicator, z_i the private edge nonzero-state indicator, g_i=z_i+a_i. Eventually h<q. For every constant h-by-q binary C, P_C=product_u(1+(Cg)_u), the full local error rank on the SAME V_K is at least (1-q(15/16)^floor(Delta/8))B_m(K)=(1-o(1))B_m(K). Both fibers of g_i inject through degree floor(Delta/8)-1 by ternary hyperplane character independence and private-state conditioning; tensor injection gives the floor. Yet 1,[g_i] are charged-quotient independent and g_i have no nonzero local affine combination, while the supported choice C=(I_h 0) has charged rank/H<=exp(-h/3072), H=dim[V_K]>0, and surviving kernel f=z_1. Paid reference g_i=z_i modulo J turns its prefix into a length-h private-edge conjunction; exact puncturing gives the bound. Complete literal pattern bottoms realize the tuple with all companions/fields, written added size<=N^9 eventually, original ceilings 2h+1 and 2h^2+3h and sampled replay K+RB<=D,R<=2Delta. Refutes a uniform positive constant normalized local-to-charged lower comparison based on fiber immunity plus surviving independent inputs. Does not refute a majority-specific transfer or optimized source maps; this source has explicit supported cleanup. Arbitrary-source Frege implication unchanged.",
+        "assessment": "The sole fresh-context medium reviewer passed after deletion of an unsupported positive-rank assertion; the charged rank may be zero and only its upper bound is used. All fiber, tensor, source, same-domain and original-budget arguments passed, with no unused substantive hypothesis. A scoped application/control of recorded engines; no new removal mechanism or literature novelty claimed.",
+        "record": "[Charge affine gap](https://kbr.is-a.dev/math-research/#entry-2026-10-15-charge-affine-gap)",
+        "mathematical_status": "refutation",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "../notebook.html#entry-2026-10-15-charge-affine-gap"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "degree-accounting",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Tests the proposed actual-image transfer in the original hard quotient, keeping every input class independent and pairing the local floor with a supported successful map; identifies the missing affine-reference normalization.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "../notebook.html#entry-2026-10-15-charge-affine-gap"
+          ],
+          "next_action": "Normalize paid old affine references before seeking a charged comparison for actual residual images; the majority-specific problem and arbitrary common-error control remain open."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-charge-affine-gap"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-charge-affine-gap"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-charge-affine-gap"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-charge-affine-gap"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Disjoint feature transfer: new relationship with thm:disjoint-feature-transfer. Nonlinear charge gap: new relationship with prop:nonlinear-charge-gap. Local tuple ratio: new relationship with cor:star-local-tuple-ratio. Star closure ratio: new relationship with cor:star-closure-ratio. Affine gap ratio: new relationship with cor:affine-gap-error-ratio. Exposed degree occupancy: new relationship with cor:exposed-degree-tuple-ratio. Pair occupancy: new relationship with cor:pair-sector-bounds. Pair product rank floor: new relationship with cor:pair-product-ratio-bound.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-charge-affine-gap"
+          ],
+          "next_action": null
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "lem:pair-product-rank-floor::cites::lem:pair-occupancy",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:pair-product-rank-floor",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:pair-occupancy",
+        "locator": null
+      },
+      "scope": "Its good-character union bound and the count of a cut's unpaired edges, run here on the leading vectors.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "33a393b92b5dd4cca72579c08382558be12c3e6e",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Its good-character union bound and the count of a cut's unpaired edges, run here on the leading vectors."
+      }
+    },
+    {
+      "id": "lem:pair-product-rank-floor::cites::cor:pair-sector-bounds",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:pair-product-rank-floor",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "cor:pair-sector-bounds",
+        "locator": null
+      },
+      "scope": "W meeting the cut space only in 0, and R_D of a character a multiple of its class vector.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "33a393b92b5dd4cca72579c08382558be12c3e6e",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "W meeting the cut space only in 0, and R_D of a character a multiple of its class vector."
+      }
+    },
+    {
+      "id": "lem:pair-product-rank-floor::cites::lem:cut-code-classes",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:pair-product-rank-floor",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:cut-code-classes",
+        "locator": null
+      },
+      "scope": "Distinct classes within degree D are independent.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "33a393b92b5dd4cca72579c08382558be12c3e6e",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Distinct classes within degree D are independent."
+      }
+    },
+    {
+      "id": "lem:pair-product-rank-floor::cites::prop:quadratic-code-rank",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:pair-product-rank-floor",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:quadratic-code-rank",
+        "locator": null
+      },
+      "scope": "Its degree-two antecedent: products over pair products keep rank at domain degree two.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "33a393b92b5dd4cca72579c08382558be12c3e6e",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Its degree-two antecedent: products over pair products keep rank at domain degree two."
+      }
+    },
+    {
+      "id": "lem:pair-product-rank-floor::cites::lem:sparse-weight-survival",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:pair-product-rank-floor",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:sparse-weight-survival",
+        "locator": null
+      },
+      "scope": "The plainest bound, h(K)/s_P, vacuous for these products.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "33a393b92b5dd4cca72579c08382558be12c3e6e",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "The plainest bound, h(K)/s_P, vacuous for these products."
+      }
+    },
+    {
+      "id": "cor:pair-product-ratio-bound::cites::lem:pair-product-rank-floor",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "cor:pair-product-ratio-bound",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:pair-product-rank-floor",
+        "locator": null
+      },
+      "scope": "The floor at level K.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "33a393b92b5dd4cca72579c08382558be12c3e6e",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "The floor at level K."
+      }
+    },
+    {
+      "id": "cor:pair-product-ratio-bound::cites::cor:pair-sector-bounds",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "cor:pair-product-ratio-bound",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "cor:pair-sector-bounds",
+        "locator": null
+      },
+      "scope": "Its two ratio bounds, superpolynomial over canonical, which this replaces for these products.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "33a393b92b5dd4cca72579c08382558be12c3e6e",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Its two ratio bounds, superpolynomial over canonical, which this replaces for these products."
+      }
+    },
+    {
+      "id": "cor:pair-product-ratio-bound::cites::thm:binary-approximator-rank",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "cor:pair-product-ratio-bound",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "thm:binary-approximator-rank",
+        "locator": null
+      },
+      "scope": "Its gain step, the half ratio per factor that ratio repair's guarantee uses.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "33a393b92b5dd4cca72579c08382558be12c3e6e",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Its gain step, the half ratio per factor that ratio repair's guarantee uses."
+      }
+    },
+    {
+      "id": "cor:pair-product-ratio-bound::cites::prop:charge-affine-rank-gap",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "cor:pair-product-ratio-bound",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:charge-affine-rank-gap",
+        "locator": null
+      },
+      "scope": "The power-growing family's parameters.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "33a393b92b5dd4cca72579c08382558be12c3e6e",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "The power-growing family's parameters."
+      }
+    }
+  ],
+  "topic_definitions": []
+}
