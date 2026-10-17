@@ -132,7 +132,9 @@ def rewrap(text: str, width: int = 100, base: str | None = None) -> str:
             # A line without the marker ends the quote's paragraph: it is not drawn into it.
             flush()
             quoting = None
-        if not stripped or _HEADING.match(line) or stripped.startswith("|") or _TRAILER.match(line):
+        # A bar opens a table row, except inside a paragraph on a line that does not end in one (an absolute value).
+        row = stripped.startswith("|") and (not block or stripped.endswith("|"))
+        if not stripped or _HEADING.match(line) or row or _TRAILER.match(line):
             flush()
             out.append(line)
             continue

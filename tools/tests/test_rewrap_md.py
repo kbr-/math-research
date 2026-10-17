@@ -170,6 +170,14 @@ class RewrapMdTest(unittest.TestCase):
         text = "# Title\n\n| column one | column two |\n|---|---|\n\n```\n- not   an item\n  kept   as is\n```\npara\n"
         self.assertEqual(rewrap_md.rewrap(text, width=10), text)
 
+    def test_a_bar_opening_a_paragraph_line_is_prose_unless_the_line_is_a_row(self):
+        # 18 October 2026: an absolute value opened a commit message's line and the line stayed too long.
+        text = "if every G has\n|D(G)| <= C sqrt(N log N), then the goal holds\n"
+        self.assertEqual(rewrap_md.rewrap(text, width=30),
+                         "if every G has |D(G)| <= C\nsqrt(N log N), then the goal\nholds\n")
+        table = "para\n| a | b |\n|---|---|\n"
+        self.assertEqual(rewrap_md.rewrap(table, width=10), table)
+
     def test_a_long_word_is_never_broken(self):
         url = "https://example.com/" + "x" * 80
         self.assertEqual(rewrap_md.rewrap(f"see {url} here", width=30), f"see\n{url}\nhere")
