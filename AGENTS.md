@@ -317,7 +317,11 @@ AGENTS.md"):
   turn). Before a second attempt at a refused step, write in the reply the line of the refusal that
   names its rule and what in the input broke it; an input changed until a gate passes, without that
   line, is the same route (17 October 2026: a launcher's five-word line rule and a qualifier gate
-  were each answered by edits before their cause was read). Before an action meant to undo or
+  were each answered by edits before their cause was read). A refusal that names no rule (a bare git
+  error) has its cause found by changing one suspected factor and rerunning the same step; a cause
+  not so shown is written as a guess, and no other route is taken on it (17 October 2026: a rebase's
+  refusal was put down to a commit hook, a hand commit took its place and wrote git's conflict
+  comments into the message, and the cause was unstaged files). Before an action meant to undo or
   forestall something (a correction, a retraction, a note to an agent), read the record showing that
   the thing happened and quote it in the reply (17 October 2026: a "disregard" note went to a
   reviewer that had been sent nothing).
