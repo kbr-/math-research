@@ -375,8 +375,12 @@ AGENTS.md"):
   refusal was put down to a commit hook, a hand commit took its place and wrote git's conflict
   comments into the message, and the cause was unstaged files). Before an action meant to undo or
   forestall something (a correction, a retraction, a note to an agent), read the record showing that
-  the thing happened and quote it in the reply (17 October 2026: a "disregard" note went to a
-  reviewer that had been sent nothing).
+  the thing happened and quote it in the reply. A verdict that recurs against the work (a judge, a
+  check, a reviewer) is settled in the turn it recurs, by correcting the work, the living section it
+  reads or the check, or by filing the choice in `user_requests` with its default; sending it to a
+  later review is no disposition (17 October 2026: a judge's repeated verdict was deferred to the
+  next review by a rule that does not exist) (17 October 2026: a "disregard" note went to a reviewer
+  that had been sent nothing).
 - A property of a family (nested, disjoint, packed, few per point) enters a proof only after it is
   checked on the family's extreme members: boundaries that coincide, many members through one point.
 - A sentence that gives a decision its reason (dropping, choosing, calling a case decided) names its

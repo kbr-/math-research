@@ -386,6 +386,17 @@ class UncheckedClaimTest(HookFixture):
             with self.subTest(reply=reply):
                 self.assertIsNone(hook.figure_block(reply))
 
+    def test_a_repetition_count_in_words_is_a_figure(self):
+        # 17 October 2026: a judge's four verdicts were reported from memory as "has now three times named".
+        for reply in ('Appended. The route judge has now three times named building the restoring flow.',
+                      'The judge flagged them four times so far.', 'It refused twice in a row.'):
+            with self.subTest(reply=reply):
+                self.assertIn('A figure without its source', hook.figure_block(reply)['reason'])
+        for reply in ('The cost on bundled edges is twice the cost of a layer, three times larger at the end.',
+                      'The route judge has now three times named it (research/logs/route-judge.jsonl).'):
+            with self.subTest(reply=reply):
+                self.assertIsNone(hook.figure_block(reply))
+
     def test_a_narrowing_reported_without_its_scopes_blocks(self):
         # 16 October 2026: "its corrections narrowed the scope sentences" named neither scope.
         for reply in ('The bound passed review; its corrections narrowed the scope sentences.',

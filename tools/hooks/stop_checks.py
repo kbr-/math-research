@@ -1079,7 +1079,12 @@ def unreviewed_block(path, reply, root):
 REPLY_FIGURE = re.compile(r'(?<!turn )(?<!block )\b\d+(?:\.\d+)? (?:of|in) \d+\b|\b\d+ tests\b|\b\d+(?:\.\d+)?%'
                           r'|\bcount of \d+|\b\d{2,}(?:,\d{3})* (?:cases|instances|matches|entries|sentences|refusals|'
                           r'failures|paragraphs|texts|commits|briefs|commands|calls|flags|findings|conditions|'
-                          r'listings|defects)\b')
+                          r'listings|defects)\b'
+                          # a repetition count written in words ("has now three times named", 17 October 2026: a
+                          # judge's four verdicts were reported from memory as three)
+                          r'|\b(?:has|have|had)(?: now)? (?:twice|(?:two|three|four|five|six|seven|eight|nine|ten|'
+                          r'\d+) times)\b|\b(?:twice|(?:two|three|four|five|six|seven|eight|nine|ten|\d+) times) '
+                          r'(?:now|so far|in a row|in this session)\b')
 FIGURE_SOURCE = re.compile(r'research/(?:results|provenance|logs)/|[\w-]\.(?:txt|json|jsonl|html|py|md|csv)\b|'
                            r'\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,12}\b|\bentry-20\d\d-|'
                            r"\b(?:reviewer|agent)'s (?:report|reply|count|run)\b|\b(?:the|its|a) reviewer "
