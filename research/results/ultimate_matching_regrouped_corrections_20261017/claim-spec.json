@@ -1,0 +1,68 @@
+{
+ "source": {
+  "record": "[Coarse-mean flow obstruction](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-regrouped-corrections)",
+  "label": "Coarse-mean flow obstruction",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-17-regrouped-corrections"
+  ]
+ },
+ "date": "2026-10-17",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "claims": [
+  {
+   "id": "thm:coarse-mean-flow-obstruction",
+   "summary": "For N i.i.d. uniform points in [0,1]^2, depth J with kappa log N <= N 4^(-J) <= K log N, j_1 = J - floor(theta log_2 N) with 0 < theta < min(1/1542, kappa/6160), a fixed integer r >= 0 and a coordinate k: every level-by-level field Phi = sum_{j<J} Phi_j (Phi_j measurable with respect to the counts of levels at most j+1; not necessarily a flow), local at level j_1 - r (for every level-(j_1 - r) square T' and j >= j_1, Phi_j on T' a function of F_(j_1) and the points in T'), such that for every j_1 <= j < J and every level-(j-r) square P, int_P Phi_{j,k} = sum over the level-j squares S in P of (rho_j/2) epsilon_S E_k(S), with F_j-measurable signs epsilon_S, has, for every L > 0 and alpha in (2, infinity], int psi_alpha(4|Phi_k|/(L sqrt(N log N))) exceeding every constant with probability tending to one. At r = 0 it is thm:square-mean-flow-obstruction; the condition holds when each step is a step meeting that theorem's mean condition plus a correction, F_(j+1)-measurable and local, with zero coordinate-k mean on every level-(j-r) square (for instance divergence-free there with zero normal flux), whatever it does to finer means.",
+   "assessment": "Working proof: the proof of thm:square-mean-flow-obstruction on squares r levels coarser: given F_j the sum of epsilon_S E_k(S) over a level-(j-r) square is a sum of n_P i.i.d. symmetric +-1/2 terms whatever the signs, so lem:block-lower-tail gives a push 2^(-r) sqrt(N/32) with probability at least 2^(-768); the chain of squares starts at the good level-(j_1 - r) squares at step j_1, so locality at level j_1 - r gives conditional independence (Chebyshev variance 4^(r - j_1)/4); Chebyshev; Jensen on the last squares.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Extends the square-mean obstruction to fields whose steps keep only the dyadic means of squares a fixed number of levels coarser, so corrections confined to coarser squares cannot escape it at any amplitude; a construction must change the means of squares unboundedly many levels coarser than the counts it reads.",
+   "next_action": "Build and test a coarse-restoring correction that shifts the means of squares an unbounded number of levels coarser, its legs priced by lem:sibling-exchange-leg.",
+   "novelty": "not_claimed"
+  },
+  {
+   "id": "cor:lagged-flow-obstruction",
+   "summary": "The lagged restoring flow of ex:lagged-restoring-tails in its continuous form (the dyadic flow, and after the step of each level j >= 1 the correction a (main, other) on each pair of sibling level-j squares inside their level-(j-1) parent, main = +-2 tent on the two children in the exchanged coordinate and other = 4 C(y) S(x) in the other coordinate, then the same with the coordinates exchanged), with any amplitudes a measurable with respect to the counts of levels at most j+1 and, for j >= j_1, functions of F_(j_1) and the points in the level-(j_1 - 1) square containing the pair (the damped Newton descent of its script among them), has int psi_alpha(4|Phi_k|/(L sqrt(N log N))) exceeding every constant with probability tending to one, for both k, every L > 0 and every alpha in (2, infinity], under the depth conditions of thm:coarse-mean-flow-obstruction.",
+   "assessment": "Working proof: thm:coarse-mean-flow-obstruction at r = 1, the correction counted in the step whose counts it reads; its shapes have zero sum over each sibling pair in both coordinates (quoted from the script's unit_shapes), so its mean on each level-(j-1) parent vanishes for every amplitude, the dyadic step meets the r = 0 condition, and the correction is local at level j_1 - 1.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Excludes the restoring-drift item's candidate construction: its lighter per-point tails at J = 6, 7 are not those of a flow with bounded cost at exponents above 2.",
+   "next_action": "None for this flow; the item's next construction must change coarse means at an unbounded shift.",
+   "novelty": "not_claimed"
+  }
+ ],
+ "relationships": [
+  [
+   "thm:coarse-mean-flow-obstruction",
+   "refines",
+   "thm:square-mean-flow-obstruction",
+   "Its case r = 0; the proof is that theorem's run on coarser squares."
+  ],
+  [
+   "thm:coarse-mean-flow-obstruction",
+   "depends_on",
+   "lem:block-lower-tail",
+   "The push of a coarse mean."
+  ],
+  [
+   "cor:lagged-flow-obstruction",
+   "depends_on",
+   "thm:coarse-mean-flow-obstruction",
+   "At r = 1."
+  ],
+  [
+   "cor:lagged-flow-obstruction",
+   "cites",
+   "ex:lagged-restoring-tails",
+   "The flow it excludes asymptotically; that check's finite-size tails stand as measured."
+  ],
+  [
+   "thm:coarse-mean-flow-obstruction",
+   "cites",
+   "lem:conditional-push-obstruction",
+   "The pointwise form, neither more general nor a special case."
+  ]
+ ]
+}
