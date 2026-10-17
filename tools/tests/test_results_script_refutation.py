@@ -1,4 +1,5 @@
 """The launcher's check that a script under research/results names an output that would refute it."""
+import os
 import subprocess
 import tempfile
 import unittest
@@ -136,6 +137,24 @@ class BaselineTest(unittest.TestCase):
             self.assertEqual(CS.scripts_without_record_check(['python3', str(read), str(exempt)]), [])
             os.utime(bare, (1000, 1000))                       # written before the rule
             self.assertEqual(CS.scripts_without_record_check(['python3', str(bare)]), [])
+
+    def test_a_claim_said_not_to_reach_the_run_is_quoted(self):
+        # 17 October 2026: "thm:square-mean-flow-obstruction's hypothesis fails for it", a paraphrase, was wrong.
+        with tempfile.TemporaryDirectory() as folder:
+            said = ('the step means are not the dyadic ones and thm:square-mean-flow-obstruction\'s hypothesis '
+                    'fails for it.')
+            bare = script(folder, BOTH.replace('"""\n', said + '\n"""\n', 1) + 'print(1)\n', 'a.py')
+            self.assertEqual([s for _, s in CS.scripts_with_unquoted_escape(['python3', str(bare)])],
+                             ['the step means are not the dyadic ones and '
+                              'thm:square-mean-flow-obstruction\'s hypothesis fails for it.'])
+            quoted = script(folder, BOTH.replace('"""\n', 'thm:square-mean-flow-obstruction does not apply: it asks '
+                                                 'that "every step has on every level-j square the mean of the '
+                                                 'dyadic step", which the lagged step breaks.\n"""\n', 1), 'b.py')
+            plain = script(folder, BOTH.replace('"""\n', 'Record checked: thm:linear-flow-obstruction decides the '
+                                                'linear rules; none decides this one.\n"""\n', 1), 'c.py')
+            self.assertEqual(CS.scripts_with_unquoted_escape(['python3', str(quoted), str(plain)]), [])
+            os.utime(bare, (1000, 1000))                       # written before the rule
+            self.assertEqual(CS.scripts_with_unquoted_escape(['python3', str(bare)]), [])
 
     def test_the_prompting_script_is_refused(self):
         strip = ROOT / 'research/results/ultimate_matching_review4_20261016/strip_dp.py'

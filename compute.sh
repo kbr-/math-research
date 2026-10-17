@@ -984,6 +984,38 @@ def scripts_without_record_check(command):
     return found
 
 
+CLAIM_ID = re.compile(r'\b(?:thm|lem|cor|prop|conj):[a-z0-9-]+')
+ESCAPE = re.compile(r"hypothes[a-z]* fails|does not apply|\bescapes\b|\bevades\b|not covered by|outside (?:its|the) "
+                    r"(?:hypothes|class)", re.I)
+QUOTED = re.compile(r'"[^"]{20,}"')
+UNQUOTED_ESCAPE_FROM = 1792246500    # 17 October 2026 14:15 UTC; scripts last changed earlier are left alone
+
+
+def scripts_with_unquoted_escape(command):
+    """(script, sentence) for script arguments under research/results whose head says a recorded claim does not
+    reach the computation (its hypothesis fails, it does not apply, the construction escapes it) without quoting the
+    claim's own words beside it. On 17 October 2026 a docstring said a construction's step means are not the dyadic
+    ones "and thm:square-mean-flow-obstruction's hypothesis fails for it", paraphrasing a hypothesis that constrains
+    each step only on its own level's squares; the theorem's own parenthesis covered the construction, and the run
+    failed as the theorem predicts (AGENTS.md: a condition taken from a record is quoted beside it)."""
+    found = []
+    for arg in command[1:]:
+        path = Path(arg)
+        if path.suffix not in REFUTATION_SUFFIXES or not path.is_file():
+            continue
+        if '/research/results/' not in str(path.resolve()) or path.stat().st_mtime < UNQUOTED_ESCAPE_FROM:
+            continue
+        try:
+            with path.open(errors='replace') as handle:
+                head = ''.join(line for _, line in zip(range(REFUTATION_HEAD_LINES), handle))
+        except OSError:
+            continue
+        for sentence in re.split(r'(?<=[.;])\s+', ' '.join(head.split())):
+            if CLAIM_ID.search(sentence) and ESCAPE.search(sentence) and not QUOTED.search(sentence):
+                found.append((arg, sentence))
+    return found
+
+
 LOOP_REFUSALS = LOGS / 'loop-refusals.txt'
 
 
@@ -1407,6 +1439,13 @@ def main():
                          'whether they already decide its outcome, from a search in the words of its objects '
                          '(tools/search-claims.py), or saying none applies: an outcome the record decides is no '
                          'test (COMPUTATION_RULES.md); --exploratory runs it anyway')
+        escapes = scripts_with_unquoted_escape(command)
+        if escapes:
+            parser.error('the script ' + escapes[0][0] + ' says a recorded claim does not reach its computation '
+                         'without quoting the claim\'s own words in that sentence: "' + escapes[0][1][:200] + '". '
+                         'Quote the hypothesis it fails (in double quotes, from the registered statement) and check '
+                         'it against the construction, its step decomposition included (AGENTS.md: a condition '
+                         'taken from a record is quoted beside it); --exploratory runs it anyway')
         if args.timeout > KERNEL_RUN_S and not args.user_approved.strip():
             weak = long_scripts_without_power(command)
             if weak:
