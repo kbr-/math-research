@@ -55,11 +55,16 @@ lem:grid-flow-duality.
 Power (written before the run): a balls-into-bins gain grows like a power of log N or of log log N, and
 J = 6..9 spans log N from about 11 to 17, so a slow trend can be missed; a gap growing by more than 0.15
 over these sizes is what the run can see, and an outcome inside the band leaves slower trends open.
+Decisive at these sizes: only for a gap growing by more than 0.15 from J = 6 to 9; the run prints the
+kurtosis of the two half-samples of seeds (1-4 and 5-8) at each size, whose difference measures the
+spread between seeds, and a growth smaller than twice that spread is reported as not decided.
+Parallel use: the seeds of one size run in separate processes, up to 8 at a time, one thread each.
 """
 import argparse
 import json
 import math
 import time
+from concurrent.futures import ProcessPoolExecutor
 
 import numpy as np
 
@@ -212,6 +217,14 @@ def run(J, N, seed, control1=False):
     return out, dy / sigma, wf / sigma
 
 
+def timed_run(job):
+    J, N, seed, control1 = job
+    t0 = time.time()
+    r, dz, wz = run(J, N, seed, control1=control1)
+    r['seconds'] = time.time() - t0
+    return r, dz, wz
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__.split('\n\n')[0])
     p.add_argument('--levels', type=int, nargs='+', default=[6, 7, 8, 9])
@@ -220,28 +233,37 @@ def main():
     p.add_argument('--out', required=True)
     a = p.parse_args()
     runs, pooled = [], []
+    jobs = [(J, a.per_cell * 4 ** J, seed, J == a.levels[0] and seed == a.seeds[0]) for J in a.levels for seed in a.seeds]
+    with ProcessPoolExecutor(max_workers=min(8, len(a.seeds))) as pool:
+        results = list(pool.map(timed_run, jobs))
+    by_level = {}
+    for r, dz, wz in results:
+        runs.append(r)
+        print(json.dumps(r), flush=True)
+        by_level.setdefault(r['J'], []).append((dz, wz))
     for J in a.levels:
-        dzs, wzs = [], []
-        for seed in a.seeds:
-            t0 = time.time()
-            r, dz, wz = run(J, a.per_cell * 4 ** J, seed, control1=(J == a.levels[0] and seed == a.seeds[0]))
-            r['seconds'] = time.time() - t0
-            runs.append(r)
-            dzs.append(dz)
-            wzs.append(wz)
-            print(json.dumps(r), flush=True)
+        dzs = [dz for dz, _ in by_level[J]]
+        wzs = [wz for _, wz in by_level[J]]
+        h = len(dzs) // 2
         entry = {'J': J, 'kurtosis_dyadic': [kurtosis(dzs, k) for k in range(2)],
                  'kurtosis_rule': [kurtosis(wzs, k) for k in range(2)]}
         entry['gap'] = [entry['kurtosis_dyadic'][k] - entry['kurtosis_rule'][k] for k in range(2)]
+        halves = [[kurtosis(d[:h], k) - kurtosis(w[:h], k), kurtosis(d[h:], k) - kurtosis(w[h:], k)]
+                  for k in range(2) for d, w in [(dzs, wzs)]]
+        entry['gap_half_samples'] = halves
+        entry['gap_seed_spread'] = [abs(x[0] - x[1]) for x in halves]
         print(json.dumps(entry), flush=True)
         pooled.append(entry)
         g = {e['J']: e['gap'] for e in pooled}
         verdict = None
         if 6 in g and 9 in g:
             growth = [g[9][k] - g[6][k] for k in range(2)]
-            verdict = {'gap_growth_9_minus_6': growth,
+            spread = {e['J']: e['gap_seed_spread'] for e in pooled}
+            noise = [2.0 * max(spread[6][k], spread[9][k]) for k in range(2)]
+            verdict = {'gap_growth_9_minus_6': growth, 'twice_seed_spread': noise,
                        'prediction_holds': all(abs(x) <= 0.15 for x in growth),
-                       'refuted_growing_gap': any(x > 0.15 for x in growth)}
+                       'refuted_growing_gap': any(x > 0.15 for x in growth),
+                       'decided': [abs(growth[k]) > noise[k] or abs(growth[k]) <= 0.15 for k in range(2)]}
         with open(a.out, 'w') as fh:
             json.dump({'per_cell': a.per_cell, 'pooled': pooled, 'verdict': verdict, 'runs': runs}, fh, indent=1)
         if verdict:
