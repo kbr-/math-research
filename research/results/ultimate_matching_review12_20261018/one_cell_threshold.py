@@ -47,4 +47,14 @@ for e in range(80, 141):
     prev = cost
 for e in (9, 10, 10.5, 11, 12):
     N = 10 ** e
-    print(f"N = 10^{e}: W = {W(N):.3e}, one-cell cost = {4 * W(N) ** 2 * ps:.3f}")
+    print(f"N = 10^{e}: W = {W(N):.3e}, one-cell cost = {4 * W(N) ** 2 * ps:.3f}, "
+          f"W y* = {W(N) * ystar:.3e}, perimeter of one layer at cost 2 <= {2 / (W(N) * ps):.3e}")
+# A layer of perimeter P costs about P W psi_4^*(y*/2); a stack of K >= 1 layers of perimeter of
+# order one at cost 2 needs W psi_4^*(y*/2) <= 2, and W y* <= 1 for the stack's height K W y* <= 1.
+prev = None
+for e in range(100, 260):
+    N = 10 ** (e / 10)
+    v = W(N) * ystar
+    if prev is not None and prev > 1 >= v:
+        print(f"W y* crosses 1 between N = 10^{(e - 1) / 10:.1f} and 10^{e / 10:.1f}")
+    prev = v
