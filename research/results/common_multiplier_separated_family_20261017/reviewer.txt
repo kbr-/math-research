@@ -1,0 +1,102 @@
+**Verdict: pass with corrections.** Parts (a), (b) and (c) are correct as proved. The corrections concern a degenerate case stated too strongly, a narrower scope than the proof gives, the record comparison, and the Smallest case for K=2, whose ballot claim is false as stated.
+
+**What I checked and found sound**
+- **Item 1, part (a).** The monomials of E_e = (1+q)x_e are x_e, x_e x_g and x_e x_g' (there is no x_e x_g x_g'). Each uses hole j at rank 0 and at most one of ranks 1 and 2. A t with a dance avoids the top. Recounting each top segment:
+  - Whole board: 3 against N−3.
+  - From rank 1: 2 against N−3.
+  - From rank 2: 2 against N−4.
+  - From rank r≥3: 1 against at least 1, since t's rank is at most N−2.
+  
+  All hold for N≥6. The case t=∅ is covered. The ballot lemma gives the dance in every pigeon order, so the pigeon numbering is free.
+- **Item 2, part (b).** The coefficient count is correct over any field: c+a_e; c+a_e+2a_g (Booleanity x_g·x_e x_g = x_e x_g); a_g+a_g'; and a_f for compatible f. Edges in row i or column j are non-matching, so their coefficients are free.
+  - At 6×5 over F_2 this gives dim A_e = 11 and A_e ∩ W = span{Q_i}, so dim(A_e+W) = 16, matching the check.
+- **Item 3, part (c).** The errors used are in the separated family:
+  - Family 1: i ∈ P_1∖{k}, which needs |P_1| = m−2 ≥ 2, and j ∈ {2,3} ⊆ J_1.
+  - Family 2: i ∈ {0,1} ⊆ P_2 and j ∈ {0,4} ⊆ J_2, which needs N≥5.
+  - q_ν's edges lie outside the rows they are used for.
+  - The two hole sets overlap, so each row is constant.
+  - The γ=0 step is right: row k ≠ i has a compatible edge other than g, g', since N≥3.
+- **Item 4, Nonvacuity.** The witness passes every hypothesis: 20+20 = 40 errors, dim W = 7, dim V_1 = 1+42 = 43, and ballot counts 3≤3 and 2≤2. That (a) does not apply to the family jointly is right: x_e at the top hole has no dance.
+
+**Required changes**
+- **Degenerate cases and the "field" Hypotheses bullet are wrong outside characteristic 2.** When char ≠ 2, (b) forces a_g = a_g' = 0, so in (c) rows 0 and 1 are constant off j, g included, using family 1 alone.
+  - So for char ≠ 2, (c) holds for one family alone. "One family alone: (c) fails" is true only in characteristic 2.
+  - In characteristic 2 the same argument gives the single-family kernel exactly: W ⊕ span{q_1} at every N≥6. Row k ≠ i gives a_00 − r_0 = a_11 − r_1, and q_1 E_e = 0 identically. This is the computed 7, now at all sizes.
+  - Restate the degenerate case, and state the general version (more general: char ≠ 2 needs one family).
+- **(c) is narrower than its proof.** The proof uses only 8 errors: family 1 at (2,2), (2,3), (3,2), (3,3), and family 2 at (0,0), (0,4), (1,0), (1,4). Any error set of degree ≤ D−1 that contains them has joint kernel W, because W lies in every such kernel.
+  - State it in the form of cor:two-factor-kernels (b). The scope becomes more general. Reword the bullet "a subfamily missing them is not covered" accordingly.
+- **Record comparison, conj:pang-family-kernel-transfer.** That conjecture is stated over F_2 with m = n+1 and K+2 ≤ D. (c) proves its instance only at K=1, over F_2 and m = N+1 (D≥3 is allowed there). "over every field" exceeds the conjecture's scope; say "and more generally over every field and every m≥4".
+  - What remains of the conjecture: K≥2, N=5, edge sets without the 8 errors or meeting q's edges, longer or overlapping q's, more families.
+- **prop:unit-flag-kernel-gap "shows such intersections need not distribute".** The previous reviewer required this change (reviewer.txt item (4)) and it was not carried. Write "an instance of the same lattice failure in another setting" and give the elementary example A_1 = ⟨a⟩, A_2 = ⟨b⟩, W = ⟨a−b⟩.
+- **"New are (b), (c) and the ballot numbering".** The previous reviewer's open point (reviewer.txt lines 32–45) already gives A_e, the row-constant membership, the intersection and the γ step, as an unverified sketch. Credit it: what is new is the verified proof, not the idea.
+- **Smallest case and Own statements (K=2).** "by the same ballot count with four holes" is false. A t ∈ T_2 ∩ B_2 can have its holes at ranks {N−3, N−2} with a dance (the linear numbering criterion's pair). The ballot condition then fails on the segment from N−3 for every N, so lem:ballot-dance-maps does not cover these t.
+  - A direct dance argument is needed (see Suggestions).
+  - The counts that do hold: whole board 4 ≤ N−4, and from rank 2, 3 ≤ N−5, both giving N≥8.
+- **Unused hypotheses.** None in (a), (b) or (c) beyond the generalizations above. The two-family requirement is used only in characteristic 2.
+
+**Open point: K=2 (bounded effort, unverified)**
+- **Over characteristic 2, the K=2 analogue of (c) is likely false.**
+  - q_1(1+q_1) = q_1 + q_1² = 0 in the multilinear ring over F_2, so q_1 E_e = 0 exactly for family-1 errors; likewise q_2 for family 2. Hence q_1q_2 ∈ V_2 kills every error of both families on every edge.
+  - **q_1q_2 is not in C.** For m ≤ N this follows semantically: send 0→0 and 2→2, and pigeons 1 and 3 elsewhere, injectively. Then q_1 = q_2 = 1 while every axiom vanishes.
+  - For general m: holes 0–3 at ranks 0–3 give the four matching monomials dances (no top hole, no {N−3, N−2} pair when N≥6). Dance monomials are independent modulo C (the step span(T_D ∩ B_D) ∩ K_D = 0 in the transfer proof). So q_1q_2 ∉ C.
+  - The joint kernel at K=2 thus contains (C ∩ V_2) + ⟨q_1q_2⟩. The next attempt's first test is this product-of-domain-killers witness and whether it counts as an admitted mechanism for joint-error-savings, not a collapse to C ∩ V_2.
+  - In characteristic ≠ 2 no such product exists; there the question stays open.
+- **Per-error transfer at K=2 for the exceptional t.** In t ∪ E', E's pigeons can move into free middle holes (ranks 3…N−4, of which there are N−6 ≥ 2 at N≥8), and t's two pigeons dance as alone. This gives N≥8 if the dance definition allows the choice of target hole. Unverified.
+
+**Suggestions (unverified)**
+- **Register the free generalizations:** the 8-error form of (c); one family in char ≠ 2; and kernel W ⊕ ⟨q_ν⟩ for one family in characteristic 2.
+- **Test q_1q_2 at K=2 over F_2** by the dance-independence argument above before any K=2 intersection work. It likely decides the K=2 next attempt negatively in characteristic 2.
+
+**Process audit**
+- **Title and status.** Both are pending. Proposed title: "Separated two-family kernels at K=1". Proposed status line: "Working proof (K=1, N≥6, any field) · Separated-family kernels".
+- **Best outcome:** "no witness on Pang-form families of this shape" drops "at K=1". Over F_2 the K=2 product q_1q_2 is very likely a witness.
+- **Hypotheses (field bullet) and Degenerate cases:** the role of the second family is read from the characteristic-2 instance only. Characteristic ≠ 2 was not tried, so the statement was shaped by the computed F_2 case.
+- **Record comparison:** the previous reviewer's correction (4) was not applied, and the previous reviewer's sketch is not credited.
+- **Smallest case and Own statements:** the K=2 per-error claim was not checked against the record's own two-pigeon criterion (the {N−3, N−2} pair). The intersection step names q_1q_2, but its outcome (an exact killer outside C) was not worked out, although a few lines decide it. The Own statements paragraph therefore does not do its job.
+- **Follow-up s1 "Made for the separated…":** the sub-idea asks about transported killers. The entry proves the kernel is W, which answers it only vacuously for this family. Say so.
+- **Follow-up item kernel-construction:s1:** it is listed unchanged, "Not made", with a reason ("the separated family shows none…") that does not bear on the system it asks for.
+- **Record search:** I made no search-claims run, to avoid writing the session's search log. I could not verify the listed searches.
+
+Strength count: 4 (Best outcome missing "K=1"; Record comparison "over every field" as the conjecture's instance; "New are (b), (c)…" without the credit; Degenerate "(c) fails" without characteristic 2).
+
+Files: /home/kbr/.claude/jobs/354c41d4/tmp/sf-draft.html, /home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/research/results/common_multiplier_linear_numbering_20261017/reviewer.txt
+
+=====
+
+**Follow-up verdict: pass with corrections.** Part (d) is correct as proved. The Fermat remark is right in the multilinear Boolean ring but overstated, and it sits in the wrong paragraph. One Degenerate-case sentence and one Hypotheses bullet need rewording.
+
+**(1) Part (d): correct**
+- **The killer identity.** In characteristic 2, q_1² = x00 + x11 + 2x00x11 = q_1, so q_1(1+q_1) = 2q_1 = 0 exactly.
+- **Family 1 alone.** Rows 0 and 1 are never the pigeon i of any family-1 error.
+  - Errors with j ∈ {2,3} make row 0 constant off hole 0 (the two hole sets overlap for N≥4), and row 1 constant off hole 1.
+  - The exception (a_00 + λ_0 = a_11 + λ_1) gives equal deviations d. So u ≡ γ + d·q_1 modulo W, and γ = 0 as in (c). The reverse containment holds since q_1 E_e = 0.
+  - q_1 ∉ W is right: every row of a combination of the Q_k is constant, and q_1's row 0 is not.
+- **q_1q_2 is a joint killer at K=2.** The product kills every error exactly, on every edge.
+- **q_1q_2 ∉ C.** Each of the four monomials has hole ranks at most 3. They satisfy the ballot condition directly: whole board 2 ≤ N−2, from rank 3, 1 ≤ N−4. So lem:ballot-dance-maps gives each a dance in every pigeon order, which is plainer than the two-pigeon analysis; either citation is valid.
+  - The coefficients are all 1, so the combination is nonzero, and the independence step gives non-membership.
+  - Required: cite the statement that defines B_D and the dance basis (the lemma whose proof contains span(T_D∩B_D) ∩ K_D = 0), not only "as in lem:polynomial-numbering-transfer's proof". That step is a citation of a proof's interior.
+- **Hypotheses bullet for (d).** D ≥ 4 is the K=2 setting's own requirement (errors of degree ≤ D−2). The killer identity needs no D, and non-membership needs only 2 ≤ D ≤ ⌈N/2⌉ with N≥6. Say so.
+- **Optional.** For m ≤ N, non-membership also follows semantically: pigeon 0 to hole 0, pigeon 2 to hole 2, and pigeons 1 and 3 elsewhere, injectively.
+
+**(2) The Fermat remark: right in the ring, overstated in scope, misplaced**
+- **The ring identity is right.** In the multilinear Boolean ring over F_p, with q having F_p coefficients, q^p reduces to the unique multilinear polynomial that agrees with q on the cube, which is q. So q(1 − q^{p−1}) = 0 exactly, and q_1q_2 kills both families' Pang-form errors (1 − q_ν^{p−1})x_e.
+- **Required changes:**
+  - "in every characteristic" should read "over F_p for every prime p, with q over F_p". Pang's factor is not defined in characteristic 0 this way.
+  - Being a joint killer modulo the closure needs q_1q_2 ∉ C of Pang's cube system. Nothing in the entry shows that; only the functional-pigeonhole (d) is proved. State it as an unproved remark, or prove it.
+  - "of the kind the open statement excludes" (here, and in Goal progress "which the open statement excludes") has no quoted source. Quote the clause of joint-error-savings that excludes products of domain killers, or drop the claim.
+- **Placement.** It does not belong in a Smallest case, which is the next attempt's smallest instance on its own objects. The remark is about Pang's F_p cube errors, which are the goal's own parameters. So it contradicts "Bearing. None at the goal's own parameters". Move it to Goal progress or Bearing, labelled unproved. Either set data-bearing to "some" with a Not covered paragraph, or say explicitly why a joint killer that is excluded gives nothing.
+
+**(3) New Hypotheses bullets and Degenerate cases**
+- **Degenerate cases, "the computed dimension 7 … at six by five, now at every N≥6".** Six by five is N=5, outside (d). Rewrite: (d) gives m+1 at every N≥6, and the computed 7 = 6+1 at N=5 over F_2 agrees but is not covered.
+- **"One family alone: … W by (c)".** (c) names family 1's four errors. Say that family 2 follows by the symmetry exchanging {0,1} with {2,3} in both pigeons and holes. Say also that a single family missing those four errors is not covered.
+- **m≥4 bullet.** It still says "i ∈ P_1∖{k}". The proof now uses i ∈ {2,3}∖{k}; m≥4 is needed for pigeons 0–3. Update the wording.
+- **The field bullet and the "errors of (c)" bullet** are correct as written.
+
+**Process audit**
+- **Smallest case.** It now holds a claim about another system (the Fermat remark) with no proof of non-membership. That remark contradicts the Bearing.
+- **Goal progress, "which the open statement excludes".** No source is given for it.
+
+Strength count: 3 ("in every characteristic"; "of the kind the open statement excludes" or "which the open statement excludes", unsourced; Degenerate "now at every N≥6" attached to the N=5 computation).
+
+**Suggestions (unverified)**
+- Decide whether q_1q_2 ∉ C in Pang's F_p cube system, by the analogue of the dance-independence step there. Only that would turn the Fermat remark into a statement with bearing.
