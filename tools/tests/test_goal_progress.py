@@ -290,6 +290,24 @@ class ClosureStakesTest(unittest.TestCase):
                              + self.RECORD + self.READ)                                    # a merge names no remainder
 
 
+    def test_a_closing_list_item_applies_the_entry_s_claims_in_its_own_statements(self):
+        # 17 October 2026: a sub-idea closed as merged while the cited lemma's own proof step decided it.
+        item = ('<ul><li data-check="a:s1">Does the pair beat it? <strong>Stakes.</strong> A yes would give a '
+                'candidate flow for the open statement; a no removes the pair from the candidates. {own}'
+                '<strong>Follow-up.</strong> Closed: merged into a.</li></ul>')
+        with self.assertRaisesRegex(ValueError, 'Own statements'):
+            FT.validate_closures(item.format(own='') + self.LINK)
+        with self.assertRaisesRegex(ValueError, 'Own statements'):                         # names no claim
+            FT.validate_closures(item.format(own='<strong>Own statements.</strong> The recorded results were all '
+                                             'read and none of them is relevant here at all. ') + self.LINK)
+        FT.validate_closures(item.format(own='<strong>Own statements.</strong> lem:balanced-sandpile-flow, its step '
+                                         '(b) run on the slack stage without the balance, decides the pair. ')
+                             + self.LINK)
+        FT.validate_closures(item.format(own='<strong>Own statements.</strong> None applies: the entry cites no '
+                                         'recorded statement, and the closure rests on its own count. ')
+                             + self.LINK)
+
+
 class ProvedInstanceTest(unittest.TestCase):
     def test_a_registered_proof_exhibits_an_input_meeting_its_hypotheses(self):
         plain = '<p>The proposition holds for every graph of the class.</p>'

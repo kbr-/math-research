@@ -701,11 +701,39 @@ def validate_closures(text):
     if closure_admits_unmade(plain) and not re.search(r'Closed:\s*merged into\b', text):   # a merge carries it
         raise ValueError('The closing entry\'s Owed attempt paragraph says an attempt is unmade or undecided: an '
                          'item whose named attempt is unmade is Continuing (AGENTS.md); make it, or continue')
+    bare = closures_without_own_statements(text)
+    if bare:
+        raise ValueError(f'{len(bare)} follow-up list item(s) close a sub-idea without an <strong>Own '
+                         'statements.</strong> clause of at least 60 characters that applies the claims the entry '
+                         'rests on, proof steps included, to the sub-idea\'s question, naming each (or saying "none '
+                         'applies" and why); first item: ' + bare[0][:160] + ' (AGENTS.md: a cited lemma is applied '
+                         'through its proof)')
     missing = unlisted_limits(text)
     if missing and not re.search(r'Closed:\s*merged into\b', text):
         raise ValueError('The closing entry declares limits of its own work (' + ', '.join(missing) + ') that its '
                          '<strong>Not examined.</strong> paragraph does not quote: say there, in the same words, '
                          'why the closure stands with each, or remove the limit by doing the work (AGENTS.md)')
+
+
+# On 17 October 2026 a sub-idea was closed as merged into its item while the proof of the lemma the entry cited
+# decided it (the lemma's step used reversibility, not the balance its statement assumed); the closing list item
+# applied no recorded statement to the sub-idea's question.  Such an item now carries its own Own statements.
+CLOSING_ITEM_RE = re.compile(r'<li\b[^>]*\bdata-(?:check|build|lead|bridge|idea)="[^"]*"[^>]*>((?:(?!</li>).)*?'
+                             r'<strong>Follow-up\.</strong>\s*Closed\b(?:(?!</li>).)*)</li>', re.S)
+OWN_CLAUSE_RE = re.compile(r'<strong>Own statements\.</strong>((?:(?!<strong>[^<]{1,40}\.</strong>).)*)', re.S)
+CLAIM_NAMED_RE = re.compile(r'\b(?:lem|thm|prop|cor|conj|ex|def|obs|imp):[A-Za-z0-9-]+|\bnone applies\b', re.I)
+
+
+def closures_without_own_statements(text):
+    """The plain text of each follow-up list item that closes a sub-idea (merges included) without an Own
+    statements clause of at least 60 characters naming a claim, or saying none applies."""
+    bare = []
+    for item in CLOSING_ITEM_RE.findall(text):
+        clause = OWN_CLAUSE_RE.search(item)
+        plain = html.unescape(strip_tags(clause.group(1))).strip() if clause else ''
+        if len(plain) < 60 or not CLAIM_NAMED_RE.search(plain):
+            bare.append(html.unescape(strip_tags(item)).strip())
+    return bare
 
 
 # A fifth closure of that item rested on a bound with a free parameter, "by this count", sent to closure without
