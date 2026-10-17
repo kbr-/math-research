@@ -672,8 +672,12 @@ class DevelopedRemovalTest(unittest.TestCase):
             FT.validate_developed_removals(self.DONE + self.OWED + self.RECORD)
         with self.assertRaisesRegex(ValueError, 'Owed attempt'):
             FT.validate_developed_removals(self.DONE + self.LEFT + self.RECORD)
-        with self.assertRaisesRegex(ValueError, 'review.txt'):
+        with self.assertRaisesRegex(ValueError, 'reviewer\'s record'):
             FT.validate_developed_removals(self.DONE + self.LEFT + self.OWED)
+        # 17 October 2026: a path in plain text was added after the refusal, which named only "(review.txt)".
+        plain = '<p>The reviewer read it (research/results/x/reviewer.txt).</p>'
+        with self.assertRaisesRegex(ValueError, r'review\[\^"/\]\*.*a path in plain text does not count'):
+            FT.validate_developed_removals(self.DONE + self.LEFT + self.OWED + plain)
         FT.validate_developed_removals(self.DONE + self.LEFT + self.OWED + self.RECORD)
         item = ('<ul><li data-check="a:s1">A sub-idea. <strong>Follow-up.</strong> Developed: done.</li></ul>')
         with self.assertRaisesRegex(ValueError, 'Not examined'):

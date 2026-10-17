@@ -688,8 +688,10 @@ def validate_closures(text):
                          'saying what a yes and what a no to its question would each give the open '
                          'statement (AGENTS.md; user, 10 October 2026)')
     if not re.search(r'href="[^"]*review[^"/]*\.txt"', text):
-        raise ValueError('An entry that closes a queue item links the reviewer\'s record (review.txt): the '
-                         'reviewer reads every closure and its stakes (AGENTS.md; user, 10 October 2026)')
+        raise ValueError('An entry that closes a queue item links the reviewer\'s record: an <a href="..."> whose '
+                         'target is a .txt file with "review" in its name (pattern href="[^"]*review[^"/]*\\.txt"; '
+                         'a path in plain text does not count): the reviewer reads every closure and its stakes '
+                         '(AGENTS.md; user, 10 October 2026)')
     # A reviewer on 10 October 2026 twice refused a closure that rested on a paper's abstract.
     read = re.search(r'<strong>Sources read\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
     plain = html.unescape(strip_tags(read.group(1))).strip() if read else ''
@@ -842,8 +844,10 @@ def validate_developed_removals(text):
                              f'and in at least 40 characters, {what}; an item with a named part unexamined or a '
                              'named attempt unmade is Continuing (AGENTS.md)')
     if not re.search(r'href="[^"]*review[^"/]*\.txt"', text):
-        raise ValueError('An entry that removes a queue item as Developed links the reviewer\'s record '
-                         '(review.txt): the reviewer reads every removal (AGENTS.md)')
+        raise ValueError('An entry that removes a queue item as Developed links the reviewer\'s record: an '
+                         '<a href="..."> whose target is a .txt file with "review" in its name (pattern '
+                         'href="[^"]*review[^"/]*\\.txt"; a path in plain text does not count): the reviewer '
+                         'reads every removal (AGENTS.md)')
 
 
 READING_ITEM_RE = re.compile(r'<li\b[^>]*>((?:(?!</li>).)*?)<strong>Follow-up\.</strong>\s*Developed\b((?:(?!</li>).)*)</li>',
