@@ -115,6 +115,9 @@ def run(m, s, t, K, C, zero_pivot=False):
         l, T0 = lam[a]
         terms = {add(a, w) for w in P}
         top_terms = [c for c in terms if supp(c) == supp(l)]
+        if not top_terms:            # lambda(alpha) absent: a zero coefficient, as the control's pivots give
+            failures += 1
+            continue
         best = max(top_terms, key=lambda c: key(c, T0))
         failures += best != l or l not in terms
     # triangular with unit diagonal on the columns lambda(A): rows sorted by key of their lambda
