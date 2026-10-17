@@ -498,6 +498,13 @@ class LeadQueueTest(unittest.TestCase):
         nodes = lq.parse_tree(merged)[1]
         self.assertEqual([n.ident for n in nodes][-2:], ['t1:s1', 't1:s3'])
         self.assertIn('Merged from t1:s2: Prove an upper bound or a lower bound', nodes[-2].text)
+        # 17 October 2026: "similar NOTEBOOK TEXT" printed the general help and was read as the command missing
+        import contextlib, io
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            self.assertEqual(lq.main(['lead_queue.py', 'similar', 'nb.html', 'a draft text']), 2)
+        self.assertIn('takes only NOTEBOOK.html', err.getvalue())
+        self.assertIn('lead_queue.py similar NOTEBOOK.html', lq.__doc__)
         # an entry that develops the item and closes it as merged, in its own Follow-up, hands the wording over too
         queue = [*self.q, ('check', 't1:s1'), ('check', 't1:s2'), ('check', 't1:s3')]
         own = developing(('check', 't1:s2'), 'Closed').replace('Closed: x.', 'Closed: merged into t1:s1. The rest.')

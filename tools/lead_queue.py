@@ -103,7 +103,10 @@ Usage: lead_queue.py init NOTEBOOK.html  (adds the section, oldest items first, 
                                             the tail, its Waiting and Unblocked marks apply)
        lead_queue.py init NOTEBOOK.html [--counted KINDS] [--backpressure off] [--kind-modules MODULES]
        lead_queue.py check NOTEBOOK.html [--base REV]  (the staged notebook against REV's, default HEAD;
-                                            exit 0 when it passes, 1 when refused, 3 when it cannot run)"""
+                                            exit 0 when it passes, 1 when refused, 3 when it cannot run)
+       lead_queue.py similar NOTEBOOK.html  (pairs of queued items sharing most of their words; it compares the
+                                            queue with itself and takes no text)
+       lead_queue.py pending NOTEBOOK.html  (sub-ideas without a parent, waiting for a review to promote them)"""
 import functools
 import html
 import importlib
@@ -2519,6 +2522,11 @@ def main(argv):
             print(f'{len(waiting)} sub-ideas wait for the next review to promote them (Follow-up. Promoted: '
                   'reason): ' + ', '.join(i for _, i in waiting))
         return 0
+    if len(argv) > 3 and argv[1] in ('similar', 'pending'):
+        # 17 October 2026: "similar NOTEBOOK TEXT" printed the general help, read as the command being absent
+        print(f'lead_queue.py {argv[1]} takes only NOTEBOOK.html; it compares the queued items with one another, '
+              'not with a text', file=sys.stderr)
+        return 2
     if len(argv) == 3 and argv[1] in ('similar', 'pending'):
         body = Path(argv[2]).read_text()
         if argv[1] == 'pending':
