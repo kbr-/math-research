@@ -1,0 +1,58 @@
+{
+ "source": {
+  "record": "[Mixed-level chains with up to exp((log N)^(2/3)) layers](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-multilevel-chains)",
+  "label": "Mixed-level chains with up to exp((log N)^(2/3)) layers",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-17-multilevel-chains"
+  ]
+ },
+ "date": "2026-10-17",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "claims": [
+  {
+   "id": "lem:multilevel-chain-bound",
+   "summary": "On the event of lem:cut-cell-variance-bound (probability tending to one), at (4,4), for every dyadic delta_0 with kappa sqrt(log N/N) <= delta_0 <= 2^(-l_1), every fixed M in [1, 2e^16] and every nested chain g = delta_0 sum_{k <= K} y_k 1_{A_k} (A_1 containing ... containing A_K unions of cells, heights y_k >= 2e^16 otherwise arbitrary) with discrete cost sum_e delta_0^2 psi*_4(|Delta_e g|/(2 delta_0)) <= M (the goal's class has M = 2), its layers split into high H (y_k >= N^(1/3)), small S (not high, P(A_k) < 1) and large B (not high, P(A_k) >= 1), y_B = min over B: (a) c_k = delta_0 P(A_k) psi*_4(y_k/2) has sum_k c_k <= M and y_k delta_0 P(A_k) <= 4 c_k (log(y_k/2))^(-1/4); (b) for N large, if |S| <= N^(1/6)/(log N)^2 and log|B| <= (log N)^(2/3)(log(y_B/2))^(1/3) (no condition on H), then |D(g)| <= (17 M C_b + 1 + 6 M L_f) sqrt(N log N), C_b and L_f the constants of lem:cut-cell-variance-bound (b) and lem:fine-grid-leighton-shor; in particular when K <= N^(1/7) and log K <= (log N)^(2/3)(log(min_k y_k/2))^(1/3); (c) hence every grid function whose distinct values v_0 < ... < v_K are at least 2e^16 delta_0 apart, of cost at most M, whose layer-cake chain meets the conditions of (b), in particular with K <= e^((log N)^(2/3)), has the same bound.",
+   "assessment": "Working proof: the one-signed increments of nested sets and superadditivity of psi*_4 split the cost over the layers; psi*_4(t) >= (t/2)(log t)^(1/4) for t >= e^16; high layers (any number) by (a) and lem:fine-grid-leighton-shor (b), small-perimeter layers by its (a), the others by lem:cut-cell-variance-bound (b) per layer, the monotone function x(2 log_2(4y/x) + 5)^(3/4) at x = 4 c_k (log(y_k/2))^(-1/4), and Jensen for the concave c (2 log_2(1/c))^(3/4) over the costs; the layer cake for (c).",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Extends lem:cut-cell-variance-bound (d), proved at one level, to nested chains at mixed levels and so to grid functions with separated values, at the goal's order uniformly in a growing number of layers; the record's compositions (per layer, per dyadic height group, lem:discrete-flow-bound (c) split at one height) give this for boundedly many layers or height groups, and otherwise a factor growing with the number G of dyadic height groups, at least of order min{(G ln 2)^(1/4), (log N)^(1/8)}, or with the number of layers once a group exceeds the single-level conditions; chains with more large layers remain open.",
+   "next_action": "Bound chains with more large layers than log|B| <= (log N)^(2/3)(log(y_B/2))^(1/3), at growing multiplicity, by charging bundles of layers sharing a tube by their spread as lem:band-family-discrepancy (c) does for bands; on the matching side, bound the length of an optimal chain.",
+   "novelty": "not_claimed"
+  }
+ ],
+ "relationships": [
+  [
+   "lem:multilevel-chain-bound",
+   "depends_on",
+   "lem:cut-cell-variance-bound",
+   "Its part (b) per layer, and its proof's form of the log factor."
+  ],
+  [
+   "lem:multilevel-chain-bound",
+   "depends_on",
+   "lem:fine-grid-leighton-shor",
+   "Its (a) for small-perimeter layers and (c) for high layers."
+  ],
+  [
+   "lem:multilevel-chain-bound",
+   "cites",
+   "lem:discrete-flow-bound",
+   "Its (c), split at one height, bounds such chains with a loss of order (log N)^(1/8) at small multiplicity; the lemma removes the loss for its range of layer counts."
+  ],
+  [
+   "lem:multilevel-chain-bound",
+   "cites",
+   "lem:guided-chain-bound",
+   "Its (d) is at one level with guides."
+  ],
+  [
+   "lem:multilevel-chain-bound",
+   "cites",
+   "lem:band-family-discrepancy",
+   "Its (c) bounds disjoint bands along graphs of bounded slope at mixed ramp gradients against Lebesgue measure, a different class; the template for the next attempt."
+  ]
+ ]
+}

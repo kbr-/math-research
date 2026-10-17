@@ -1,0 +1,85 @@
+Review record: lem:multilevel-chain-bound (entry-2026-10-17-multilevel-chains), 17 October 2026.
+One fresh-context medium-reviewer subagent, three passes, read-only. Its reports, condensed in their
+own words; the figures are the reviewer's.
+
+PASS 1 (draft.html): pass with corrections.
+Checked correct: (a) superadditivity across nested layers, psi*_4(t) >= (t/2)(log t)^(1/4) for
+t >= e^16; (b) high part via fine-grid (c), 8 sqrt3; small-layer bound; u(P) >= cut-cell's u;
+f_k monotone on (0, 2y_k]; x_k <= xi_k <= 4; 7 + 2Lambda/ln2 + (1/2)log_2 Lambda (9 <= 9.67 at 16);
+3.49^(3/4) = 2.553; 20.48/sqrt3 = 11.82; phi concave on (0,1) only, so Jensen restricted to c_k < 1
+is needed and done; monotonicity in S' (K' >= 5); (2/ln2)^(3/4) = 2.214; 17.76; final 34 C_b;
+(c) layer cake; Smallest case 8.88; TV <= 4.
+Required:
+- Nonvacuity "log N >= 4096": y_3 = e^((log N)^(1/3)) >= 2e^16 needs log N >= 4652 (4651.7).
+- "which neither (d) ... covers": the record covers it: cut-cell (d) at K = 1 per layer (each c_k <= 2)
+  and linearity give 4 C_d; any bounded K is covered with K C_d. The lemma adds only for K -> infinity.
+  Witness needs growing K, layers not grid squares. Baseline should name the per-layer composition.
+- Plainest bound "delta_0 sum_k y_k O(sqrt(N log N)), far below": false, delta_0 y_4 = delta_0 sqrt N
+  ~ (log N)^(3/4)/2.
+- Flow comparison: discrete-flow (c) split at a height Y* gives two nested sub-chains; at
+  Y* = e^(sqrt(log N)), about (log N)^(1/8) for every K when m <= e^(sqrt(log N)). Baseline should
+  state it with the free height over its whole range.
+- max phi = 0.84281: write <= 0.843.
+- New mathematics "lost a power of log N": false for bounded K.
+- Hypotheses "the heights are otherwise free, which is what the lemma adds": what it adds is
+  uniformity in growing K at mixed heights.
+- Goal progress "boundedly many levels": wrong.
+- Follow-up Smallest case: single level, multiplicity 1 is decided by discrete-flow (c)'s nested
+  clause; restate the open instance with multiplicity; it is cut-cell (d)'s single-level open case.
+Hypotheses: all used; weaker forms available: |S| <~ N^(1/6)/log N for the small layers, the log K
+condition only on |B| with the minimum over B, none on H; cost bound any constant.
+Record comparison: search "nested chain mixed levels heights per-layer cost" found no per-layer cost
+Jensen. Own search found lem:band-family-discrepancy (c) ("Jensen with packing"), missed by the
+draft's Record search.
+Open point (unverified): grouping by dyadic cost gains nothing; grouping by height gives at best
+(log N)^(1/8); packing heuristic suggests a ramp/gap charge as in band-family (b), (c);
+counterexample candidate: nested delta_0-translates of a Leighton-Shor curve (heuristic).
+Process audit: title drops the limit on K; Shortest route paraphrases rules; Owed attempt deferral
+unchecked; Baseline not run at full range; band-family missed; the direct path (gap charge) should be
+taken next. Strength count 4.
+Suggestion (unverified): band-family's Jensen with packing as template for the gap charge; first
+instance K nested delta_0-translates of one curve.
+
+PASS 2 (draft-v2.html): pass with corrections.
+Checked correct: small-layer arithmetic exactly when log N >= 2 L_f; Lambda_B everywhere needed;
+"in particular" clauses; Baseline (ii) against the cut-cell entry's proof step by step (TV >=
+y delta_0 sum P_k; fine-grid (c) needs only increments >= y and cost <= 2; factor 2; Jensen, P_max,
+cK/P_max, small-layer term carry over), so 2 G C_d is correct; witness nesting, 1 <= P_k <= 3,
+multiplicity 1, heights (sqrt(log N) >= 55 at log N >= 4096), cost -> 0, branches, K' >= 5; flow
+order (log N)^(1/8) on it; hybrid at least min(K_N/2, (K_N/2)^(1/4)); Bernstein far below (mixes two
+t); union over all unions vacuous; Suggestion checked count holds (at most s+1).
+Required:
+- Baseline (iii) "no Y* gives less than order (log N)^(1/8)": false; Y* above every height gives
+  1 + (log m Y_max)^(1/4), e.g. (log log N)^(1/4); the endpoints mixed.
+- Closing sentence and New mathematics: replace with a factor growing with the number of height
+  groups, at least min{(G ln2)^(1/4), (log N)^(1/8)}, or with the layers once a group exceeds (d).
+- Hypotheses "Cost at most 2 ... fine-grid (c) stated at cost 2": wrong reason; any fixed M costs
+  constants linear in M via (a) and fine-grid (b).
+- Smallest case: cost not checked on bundled edges; with bundles on a constant fraction, S' shrinks
+  and the Jensen term falls to (log N)^(7/16): decided. Open only with bundles of small total length.
+- Title claims the open case; use "Mixed-level chains with up to e^((log N)^(2/3)) layers"; suggested
+  status line given.
+Process audit: Shortest route adequate; Owed attempt "first deferral" unchecked; Baseline (ii) written
+as checked before the check; the endpoint omitted again; Smallest case posed without its cost. Strength
+count 3.
+Suggestion (unverified): the flow proof works edge by edge (summation by parts, Young per edge); it may
+give a loss weighted by the cost share of large-increment edges; check before posing the bundled case.
+
+PASS 3 (draft-v3.html): pass with corrections.
+Checked correct: cost M in [1, 2e^16]: high part 4 3^(1/4) M (1+o(1)) = 5.27M <= 6M; xi_k <= 2M <= 2y_k;
+5.91 <= 5.92; Jensen both branches; third term 2M; 1.69(2.12M+1); 16.8 <= 17; thresholds independent
+of M; at M = 2, 34 C_b + 1 + 12 L_f valid (12 L_f < 8 sqrt3 L_f). G-group bound: Y_max >= 2^(G-1) 2e^16;
+splits with a nonempty high part at least 2 (log N)^(1/8) by AM-GM. Jensen figure 4.43 <= 4.5;
+feasibility not ruled out by length or area (sum P_k ~ e^-16/delta_0 against 2/delta_0); existence
+not exhibited. Bernstein at t = log N correct. Title supported (weaker than (b)).
+Required:
+- Smallest case cost "at most 1(1+1) = 2" rests on rho ~ (sqrt(log N)/16)^(1/4); the recorded bounds
+  give rho up to about 1.19 (log N)^(1/8); set eps = 1/rho-bar from the recorded upper bound.
+- Degenerate cases: the high case now uses (a) with fine-grid (b).
+- Status line: write the outcome.
+Process audit: a cost figure written with "~" from psi*'s shape used as an inequality; existence
+asserted; Degenerate sentence not reread. Strength count 1.
+Possible further generality (noted): M < 1 reduces to M = 1.
+
+Dispositions: every required change made; the instance's existence marked unchecked; the two
+suggestions listed in the entry as unverified, the first checked on its first instance.
