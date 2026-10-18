@@ -5,8 +5,9 @@ G_k of the pairs within L k^(1/4) sqrt(log N/N) in both coordinates, at L = 1/2,
 the chain at levels 1, 2 holds exactly when the least number of edges outside G_1 in a maximum matching of G_2
 equals d = nu(G_2) - nu(G_1). Computed exactly as a minimum-weight full matching (scipy's
 min_weight_full_bipartite_matching): G_1 edges cost 1, the edges G_2 adds cost 2, and m_2 dummy rows and m_2 dummy
-columns, joined to every real column and row at cost B = 10^6 and not to each other, force a real matching of size
-nu(G_2); its cost is nu(G_2) + e + 2 m_2 B, e the edges outside G_1, so e is read off and the chain holds iff e = d.
+columns, joined at cost B = 3 to the columns and rows of G_2 that some maximum matching leaves free and not to each
+other, force a real matching of size nu(G_2); its cost is nu(G_2) + e + 2 m_2 B, e the edges outside G_1, so e is
+read off (the real edges of cost 2) and the chain holds iff e = d.
 The least e over maximum matchings: the extreme the question needs, since the chain asks for one such matching.
 
 Expected (written before the run): at N = 16384, seed 1, where lem:completion-failure-certificate's second test
@@ -46,20 +47,27 @@ BOX = HERE.parent / 'ultimate_matching_box_completion_20261018' / 'box_completio
 spec = importlib.util.spec_from_file_location('box_completion', BOX)
 bc = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(bc)
-B = 10 ** 6
+B = 3   # any constant above 2: the dummy edges' total is fixed, and the value only tells them apart from real ones
 
 
 def least_outside(A1, A2):
     """(nu(G_2), least number of edges outside G_1 in a maximum matching of G_2) by the dummy construction."""
     n1, n2 = A2.shape
-    rm = bc.maximum_bipartite_matching(A2)
-    nu2 = int((rm >= 0).sum())
+    A2 = csr_matrix(A2)
+    rmate, cmate = bc.match(A2)
+    nu2 = int((rmate >= 0).sum())
     mx, my = n1 - nu2, n2 - nu2          # unmatched rows and columns of a maximum matching of G_2
+    # A column matched to a dummy row is left free by the real part, a maximum matching of G_2, so it is missable
+    # in G_2 (bc.missable_columns); joining the dummies only to missable vertices keeps every solution. Every full
+    # matching uses exactly my + mx dummy edges, so their cost is a constant: B = 1 (a first version joined them to
+    # every vertex at 10^6 and did not finish one sample of 4096 points in 110 s).
+    DY = np.nonzero(bc.missable_columns(A2, rmate, cmate))[0]
+    DX = np.nonzero(bc.missable_columns(A2.T.tocsr(), cmate, rmate))[0]
     A2 = coo_matrix(A2)
     in1 = np.asarray(csr_matrix(A1)[A2.row, A2.col]).ravel() > 0
-    rows = [A2.row, np.repeat(np.arange(n1, n1 + my), n2), np.tile(np.arange(n1), mx)]
-    cols = [A2.col, np.tile(np.arange(n2), my), np.repeat(np.arange(n2, n2 + mx), n1)]
-    wts = [np.where(in1, 1.0, 2.0), np.full(my * n2, float(B)), np.full(mx * n1, float(B))]
+    rows = [A2.row, np.repeat(np.arange(n1, n1 + my), len(DY)), np.tile(DX, mx)]
+    cols = [A2.col, np.tile(DY, my), np.repeat(np.arange(n2, n2 + mx), len(DX))]
+    wts = [np.where(in1, 1.0, 2.0), np.full(my * len(DY), float(B)), np.full(mx * len(DX), float(B))]
     W = csr_matrix((np.concatenate(wts), (np.concatenate(rows), np.concatenate(cols))),
                    shape=(n1 + my, n2 + mx))
     r, c = min_weight_full_bipartite_matching(W)
