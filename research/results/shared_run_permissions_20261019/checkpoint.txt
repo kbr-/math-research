@@ -1,0 +1,37 @@
+Shared run-file permission correction
+
+The tracked agent settings own the permissions for every new worktree from the updated base.
+Codex defaults to math and the external launcher selects math, extending :workspace with one
+dedicated shared directory. Claude lists the same directory among its working directories and
+allows Edit on the worktree paths, main aliases and resolved files. Other main-checkout files
+are not writable from a Codex worktree. Existing sessions retain their saved permission profile.
+
+The main aliases user_requests and run_state now link into .shared-run-files. Existing worktree
+links continue through those aliases. Migration first hard-linked the original files, then
+atomically replaced the main aliases with symlinks; inode, mode, byte count and SHA-256 checks
+before and after matched. The shared directory is machine-local and ignored by Git.
+
+Two earlier designs were wrong: the inventory installer required repetition for new paths,
+and native Codex individual-file grants failed while constructing metadata protection paths
+beneath files. The inventory installer is deleted. Extending :workspace with a directory grant
+passed the native check. The temporary shared-file Bash refusal is removed.
+
+The Claude dontAsk probe refused Bash; it is not counted as a success. After adding the shared
+working directory, the auto-mode probe with permission-prompts none executed the zero-byte
+append, returned a successful tool_result, and reported no permission denials. Framework hooks
+were disabled only in that isolated native-permission probe; file permissions remained active.
+The retained Claude evidence projects tool calls/results, excluding private initialization data.
+
+Prevention: tools/tests/shared_permissions_smoke.sh exercises the native default profile with
+actual append opens through both symlinks, checks unrelated main files and workspace metadata
+remain read-only, and requires the built-in :workspace control to reject the same append.
+The launcher regression checks selection of the project's math profile.
+
+Meta: permission changes belong in inherited project configuration and must be checked through
+the native runtime. JSON/TOML parsing and edits to temporary settings are not evidence that a
+write is authorized. A local runtime failure is an implementation finding to resolve, not an
+endpoint to hand back to the user. tools/CODEX.md now names the native check for these changes.
+
+Sources: https://learn.chatgpt.com/docs/permissions (named profiles and inheritance),
+https://code.claude.com/docs/en/permissions (symlink paths and working directories),
+https://code.claude.com/docs/en/sandboxing (filesystem permissions).

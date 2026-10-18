@@ -428,21 +428,6 @@ def staging_silenced(command: str):
     return None
 
 
-SHARED_RUN_FILE = re.compile(r"(?:>>?|\btee\b[^;&|\n]*?|\bsed\s+-i\S*\s[^;&|\n]*?)\s*(?:\S*/)?(?:user_requests|run_state)\b")
-
-
-def shared_run_file_write(command: str):
-    """TEMPORARY, until the user's allow rules cover these writes (queue item remove-shared-run-file-guard).
-    A shell write to user_requests or run_state, the main checkout's files that a worktree reaches through a
-    link: the write lands outside the worktree, and in auto mode one such append waited at a permission prompt
-    for 95 minutes (16 October 2026)."""
-    if SHARED_RUN_FILE.search(shell_code(command)):
-        return ("(temporary check, until the allow rules cover it) a shell write to user_requests or run_state "
-                "leaves the worktree through its link and waits at a permission prompt; edit the main checkout's "
-                "file with the Edit tool")
-    return None
-
-
 SUBAGENT_TRANSCRIPT = re.compile(r"/tmp/claude-\d+/\S+\.output\b")
 
 
@@ -803,7 +788,7 @@ def check() -> int:
         print(f"Refused: {reason}.", file=sys.stderr)
         return 2
     reason = (unchained_heredoc(command) or stdin_cat(command) or adhoc_replace_helper(command) or tool_removed(command) or sed_in_place(command)
-              or sed_ampersand(command) or staging_silenced(command) or shared_run_file_write(command)
+              or sed_ampersand(command) or staging_silenced(command)
               or subagent_transcript(command) or self_matching_pgrep(command)
               or existing_result_folder(command, payload.get("cwd") or os.getcwd())
               or tracked_result_overwrite(command, payload.get("cwd") or os.getcwd())

@@ -578,23 +578,6 @@ class StaleBranchTest(unittest.TestCase):
 
 
 
-class SharedRunFileTest(unittest.TestCase):
-    # 16 October 2026: a printf >> user_requests through the worktree's link waited 95 minutes at a prompt.
-    def test_shell_writes_to_the_shared_run_files_are_refused(self):
-        for command in ("printf '%s\\n' text >> user_requests",
-                        'echo x > run_state',
-                        'cat note | tee -a user_requests',
-                        "sed -i 's/a/b/' /home/u/repo/user_requests"):
-            with self.subTest(command=command):
-                self.assertIn('Edit tool', guard.shared_run_file_write(command))
-
-    def test_reading_and_naming_them_pass(self):
-        for command in ('tail -15 user_requests', 'grep -n grant run_state',
-                        'python3 tools/rewrap_md.py user_requests', 'ls -la user_requests'):
-            with self.subTest(command=command):
-                self.assertIsNone(guard.shared_run_file_write(command))
-
-
 class SubagentTranscriptTest(unittest.TestCase):
     # 17 October 2026: a needless cp of a subagent transcript to /dev/null prompted the user.
     def test_commands_on_subagent_transcripts_are_refused(self):

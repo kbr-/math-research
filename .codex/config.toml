@@ -1,3 +1,4 @@
+default_permissions = "math"
 # Keep the complete shared and branch-specific AGENTS.md instructions in native context.
 project_doc_max_bytes = 65536
 
@@ -6,3 +7,10 @@ max_concurrent_threads_per_session = 6
 
 [features]
 hooks = true
+
+# A directory grant avoids the native sandbox's failure on individual file roots.
+[permissions.math]
+extends = ":workspace"
+
+[permissions.math.filesystem]
+"~/dev/math/.shared-run-files" = "write"

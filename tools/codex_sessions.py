@@ -113,7 +113,7 @@ async def session(client, root, mode):
         response = await client.call('thread/start', {
             'cwd': str(root), 'runtimeWorkspaceRoots': [str(root)], 'ephemeral': False,
             'approvalPolicy': 'on-request', 'approvalsReviewer': 'auto_review',
-            'permissions': ':workspace'})
+            'permissions': 'math'})
         ident = str(uuid.UUID(response['thread']['id']))
         if Path(response['cwd']).resolve() != root:
             raise NativeError('Created session belongs to a different worktree')

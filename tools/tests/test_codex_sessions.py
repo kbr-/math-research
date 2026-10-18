@@ -80,7 +80,7 @@ class SessionTest(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(start['runtimeWorkspaceRoots'], [str(self.root)])
         self.assertEqual(start['approvalPolicy'], 'on-request')
         self.assertEqual(start['approvalsReviewer'], 'auto_review')
-        self.assertEqual(start['permissions'], ':workspace')
+        self.assertEqual(start['permissions'], 'math')
         self.assertNotIn('sandbox', start)
         self.assertIs(start['ephemeral'], False)
         self.assertNotIn('config', start)
