@@ -442,7 +442,11 @@ AGENTS.md"):
   bundle's line, a case its hypotheses allowed and its witness lacked).
 - A sentence that gives a decision its reason (dropping, choosing, calling a case decided) names its
   source: a proof, a statement of record, or the word judgement; the reason is written from that
-  source, not from the decision it is meant to support.
+  source, not from the decision it is meant to support. A label, status or assessment is read off
+  the words of the rule that defines it, at the level they support: understatement is a mistake as
+  overstatement is, and the reading least open to challenge is not thereby the right one (18 October
+  2026: one of 99 entries was labelled as advancing the goal, while the rule counted the conditional
+  reductions that others proved).
 - A size or depth stated for a construction is counted from the construction written out in the
   proof, level by level of its gates, and the count is written beside the figure: a cost read from
   the picture of a construction is a guess (17 October 2026: two depth bounds in one draft, \(k+5\)
