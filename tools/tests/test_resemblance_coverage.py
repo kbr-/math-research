@@ -72,5 +72,43 @@ class ResemblanceCoverageTest(unittest.TestCase):
                          {'cor:star-closure'})
 
 
+PROVED_CLAIMS = [dict(c, mathematical_status='working_proof') for c in CLAIMS]
+
+
+def witness_article(nonvacuity, comparison='lem:old-occupancy and cor:star-closure.'):
+    return (f'<article id="entry-x" data-kind="research" data-claims="cor:new-ratio">'
+            f'<p><strong>Nonvacuity.</strong> {nonvacuity} <strong>Plainest bound.</strong> a count.</p>'
+            f'<p><strong>Record comparison.</strong> {comparison}</p></article>')
+
+
+class WitnessCoverageTest(unittest.TestCase):
+    def test_the_exposing_case_a_resembling_bound_named_only_in_the_comparison(self):
+        # 18 October 2026: lem:cost-weighted-slope-bound decided a witness its passages never named.
+        gaps = rc.witness_missing(witness_article('An edge set with one star.'), PROVED_CLAIMS, at=0.1)
+        self.assertIn('cor:star-closure', [other for _, _, other in gaps])
+
+    def test_naming_in_a_witness_passage_passes(self):
+        text = witness_article('cor:star-closure and lem:old-occupancy give nothing on it.')
+        self.assertEqual(rc.witness_missing(text, PROVED_CLAIMS, at=0.1), [])
+        later = witness_article('A count. <strong>Baseline.</strong> cor:star-closure and lem:old-occupancy.')
+        self.assertEqual(rc.witness_missing(later, PROVED_CLAIMS, at=0.1), [])
+        # The Baseline paragraph's Composed part is part of it (AGENTS.md); the first draft's regex stopped there.
+        composed = witness_article('A count. <strong>Composed.</strong> cor:star-closure and lem:old-occupancy.')
+        self.assertEqual(rc.witness_missing(composed, PROVED_CLAIMS, at=0.1), [])
+
+    def test_a_passage_ends_at_the_next_label(self):
+        text = witness_article('A count. <strong>Smallest case.</strong> cor:star-closure and lem:old-occupancy.')
+        self.assertIn('cor:star-closure', [o for _, _, o in rc.witness_missing(text, PROVED_CLAIMS, at=0.1)])
+
+    def test_conjectures_are_not_compared_and_unproved_own_claims_not_checked(self):
+        claims = [dict(c, mathematical_status='conjecture') if c['id'] == 'cor:star-closure' else c
+                  for c in PROVED_CLAIMS]
+        gaps = rc.witness_missing(witness_article('lem:old-occupancy gives nothing.'), claims, at=0.1)
+        self.assertEqual(gaps, [])
+        unproved = [dict(c, mathematical_status='conjecture') if c['id'] == 'cor:new-ratio' else c
+                    for c in PROVED_CLAIMS]
+        self.assertEqual(rc.witness_missing(witness_article('Nothing.'), unproved, at=0.1), [])
+
+
 if __name__ == '__main__':
     unittest.main()

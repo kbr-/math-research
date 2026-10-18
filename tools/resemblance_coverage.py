@@ -21,7 +21,16 @@ across one theorem family (the majority transfers) without a shared statement.  
 draft took 0.37 s (coverage-timing.txt there).  An entry declaring data-claims="none" is not checked here; the
 claim inventory check refuses one whose registered claims do not match its declaration.
 
-Usage: resemblance_coverage.py --replay NOTEBOOK [--limit N]   (counts what the check would refuse in the last
+For a declared claim registered with a proof, the same listing at WITNESS_AT, over claims proved for some inputs,
+must also be named in a Nonvacuity, Plainest bound or Baseline passage (witness_missing; 18 October 2026, a
+witness twice offered that a resembling registered bound decided): replayed on the ultimate-matching notebook's 68
+research entries with claims, it would refuse 29 with 76 unnamed claims at 0.35, and 0.4 would miss the exposing
+case at 0.37 (research/provenance/framework/witness-coverage-replay-20261018.txt; of the first ten refusals, nine
+were judged real and one false, witness-coverage-judgement-20261018.txt there, a judgement).  Naming is checked,
+not what the passage says of the claim.
+
+Usage: resemblance_coverage.py --replay NOTEBOOK [--limit N]
+       resemblance_coverage.py --draft DRAFT --spec SPEC   (the witness check before the spec is registered)   (counts what the check would refuse in the last
 N research entries that declare claims, each compared only with the claims registered before it).
 """
 import argparse
@@ -102,6 +111,34 @@ def missing(article, claims, count=COUNT, at=AT, relationships=()):
             for score, other in found if other not in named]
 
 
+WITNESS_AT = 0.35   # the replay printed in research/provenance/framework/witness-coverage-replay-20261018.txt
+PROVED = ('working_proof', 'conditional')
+DECIDING = PROVED + ('established',)
+WITNESS = re.compile(r'<strong>(?:Nonvacuity|Plainest bound|Baseline)\.</strong>([\s\S]*?)(?=<strong>(?!Plainest '
+                     r'bound\.|Baseline\.|Composed\.)[A-Z][^<]{0,40}\.</strong>|</p>)')
+
+
+def witness_missing(article, claims, count=COUNT, at=WITNESS_AT, relationships=()):
+    """[(own id, score, nearest id), ...]: for each declared claim registered with a proof or a conditional proof,
+    the earlier registered claims resembling it at least `at` that no Nonvacuity, Plainest bound or Baseline
+    passage names.  On 18 October 2026 a witness was offered twice that a resembling registered bound decided,
+    the second time lem:cost-weighted-slope-bound at 0.38, which those passages never named; the Record
+    comparison may name a claim without anyone asking what it gives on the witness."""
+    status = {claim['id']: claim.get('mathematical_status') for claim in claims}
+    own = [ident for ident in declared(article) if status.get(ident) in PROVED]
+    if not own:
+        return []
+    # Only a statement proved for some inputs can already decide a witness: a conjecture, a context note or a
+    # retracted claim cannot, and the replay's first run listed conjectures among its refusals.
+    claims = [claim for claim in claims if claim['id'] in declared(article) or status[claim['id']] in DECIDING]
+    named = set()
+    for passage in WITNESS.findall(article):
+        named.update(CLAIM_ID.findall(notebook_math.strip_tags(passage)))
+    named = covered(named, relationships)
+    return [(ident, score, other) for ident, found in nearest(claims, declared(article), count, at).items()
+            if ident in own for score, other in found if other not in named]
+
+
 def validate(article, root=ROOT):
     if declared(article) and 'data-kind="research"' in article[:article.find('>') + 1] and not PARAGRAPH.search(article):
         raise ValueError('A research entry that declares claims needs a <p><strong>Record comparison.</strong> paragraph, '
@@ -118,6 +155,13 @@ def validate(article, root=ROOT):
                                                                   for ident, score, other in gaps)
                          + '. Read each and say there whether it is more general, a special case or neither '
                          '(AGENTS.md, record comparison).')
+    gaps = witness_missing(article, registry['claims'], relationships=registry['relationships'])
+    if gaps:
+        raise ValueError('No Nonvacuity, Plainest bound or Baseline passage names registered claims that resemble a '
+                         'proved declared claim: ' + '; '.join(f'{other} ({score:.2f}, beside {ident})'
+                                                             for ident, score, other in gaps)
+                         + '. Say there what each gives on the witness, or why it does not apply to it (AGENTS.md, '
+                         'Nonvacuity: the witness must be one the recorded statements do not already cover).')
 
 
 def replay(notebook, limit, root=ROOT):
@@ -148,15 +192,43 @@ def replay(notebook, limit, root=ROOT):
             print(f'  of the {len(flat)} unnamed claims, {sum(flat)} are cited elsewhere in their entry and '
                   f'{len(flat) - sum(flat)} are not cited there')
     print(f'{len(claims)} registered claims, {len(chosen)} entries, {time.time() - start:.1f} s')
+    proved = [a for a in articles if 'data-kind="research"' in a and declared(a)][-limit:]
+    for at in (0.3, 0.35, 0.4):
+        refused = [(re.search(r'id="([^"]+)"', a).group(1),
+                    witness_missing(a, claims, at=at, relationships=registry['relationships'])) for a in proved]
+        refused = [(ident, gaps) for ident, gaps in refused if gaps]
+        print(f'witness passages, threshold {at}: {len(refused)} of {len(proved)} research entries with claims '
+              f'would be refused, {sum(len(g) for _, g in refused)} unnamed claims')
+        if at == WITNESS_AT:
+            for ident, gaps in refused:
+                print('  ' + ident + ': ' + ', '.join(f'{o} {s:.2f} beside {i}' for i, s, o in gaps))
+
+
+def draft_check(draft, spec):
+    """The witness check on a draft whose claims are not yet registered: its spec's claims are appended to the
+    registry, after every registered claim, with their spec status."""
+    registry = json.loads((ROOT / 'research/claims/index.json').read_text())
+    known = {claim['id'] for claim in registry['claims']}
+    claims = registry['claims'] + [{'id': c['id'], 'summary': c['summary'], 'mathematical_status': c.get('status')}
+                                   for c in json.loads(Path(spec).read_text())['claims'] if c['id'] not in known]
+    return witness_missing(Path(draft).read_text(), claims, relationships=registry['relationships'])
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('--replay', required=True)
+    parser.add_argument('--replay')
     parser.add_argument('--limit', type=int, default=60)
+    parser.add_argument('--draft', help='with --spec: run the witness check on a draft before registration')
+    parser.add_argument('--spec')
     args = parser.parse_args(argv)
+    if args.draft:
+        gaps = draft_check(args.draft, args.spec)
+        for ident, score, other in gaps:
+            print(f'unnamed in the witness passages: {other} ({score:.2f}, beside {ident})')
+        print(f'{len(gaps)} unnamed')
+        return 1 if gaps else 0
     replay(args.replay, args.limit)
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
