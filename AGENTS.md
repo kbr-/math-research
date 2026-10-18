@@ -112,11 +112,14 @@ growing checklists or one-off setup narratives.
   16 October 2026: weaker hypotheses were read as a generalization thrown away). A correct result is
   withdrawn only when false: one that is elementary, dominated or superseded is kept and registered
   with that relation (user, 16 October 2026: "If we get a general version for free, we do the
-  general version. Don't throw away results."). To compare dimensions or bound a rank, first seek a
-  natural map: an injection into the space claimed larger, or a map whose zero set is described
-  exactly, which shows which elements survive. Use a bare dimension count only after the entry says
-  which map was tried and where it failed (user, 16 October 2026: dimension counts only when no such
-  map is found after an honest attempt).
+  general version. Don't throw away results."), nor narrowed in a correction for a convenient
+  constant: a constant fixed to simplify a step (an exponent set to four where any value above one
+  would do) is written as the free parameter it fixes, so that no part an earlier draft proved is
+  lost (18 October 2026). To compare dimensions or bound a rank, first seek a natural map: an
+  injection into the space claimed larger, or a map whose zero set is described exactly, which shows
+  which elements survive. Use a bare dimension count only after the entry says which map was tried
+  and where it failed (user, 16 October 2026: dimension counts only when no such map is found after
+  an honest attempt).
 - Before proposing a next step or naming/developing a result, use `tools/search-claims.py WORDS` or
   `--show LABEL`. The tool logs each search, and the finisher refuses an entry with a Record search
   paragraph whose session ran none, printing the session's searches to compare with the paragraph.
@@ -342,12 +345,16 @@ AGENTS.md"):
   certificates was applied to an intermediate sum and not to the transformed image itself, where it
   showed the conclusion empty). A recorded bound used as the baseline is run with each free
   parameter of its proof at its whole range, not at the values its statement fixed (17 October 2026:
-  a corollary's argument at a free level already gave the new bound but for one length). A statement
-  about to be posed as a conjecture, and each new result of a draft, is first composed with the
-  record's bounds on its own objects (each bound on each part, split where the bounds' ranges meet),
-  and the entry says what that gave, before a new method is named (18 October 2026: a conjecture was
-  posed with a chaining rerun named while two recorded lemmas proved it, and a draft's proposition
-  and a recorded bound, split at one threshold, gave the whole class's new bound uncomposed).
+  a corollary's argument at a free level already gave the new bound but for one length). So is the
+  draft's own bound: a factor a step bounds at its least value (a level index at least one) is kept
+  as displayed, and what the bound gives at the factor's whole range is written before the
+  statement's hypotheses are (18 October 2026: a theorem was stated above a constant that its own
+  displayed bound, read at large levels, did not need). A statement about to be posed as a
+  conjecture, and each new result of a draft, is first composed with the record's bounds on its own
+  objects (each bound on each part, split where the bounds' ranges meet), and the entry says what
+  that gave, before a new method is named (18 October 2026: a conjecture was posed with a chaining
+  rerun named while two recorded lemmas proved it, and a draft's proposition and a recorded bound,
+  split at one threshold, gave the whole class's new bound uncomposed).
 - Before a step is called the open one (an Attempt's stop, a test's outcome left to the next cycle),
   the plainest tools of its kind are run on it and their outcome written: a concentration bound on
   the sum the step concerns, a gluing or composition of the parts it joins, the converse of each

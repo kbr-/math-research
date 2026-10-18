@@ -1,0 +1,64 @@
+{
+ "source": {
+  "record": "[Thin shell completion failure](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-18-thin-shell-completion-failure)",
+  "label": "Thin shell completion failure",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-18-thin-shell-completion-failure"
+  ]
+ },
+ "date": "2026-10-18",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "claims": [
+  {
+   "id": "thm:thin-shell-completion-failure",
+   "summary": "For alpha_1, alpha_2 in (0, infinity] with 1/alpha_1 + 1/alpha_2 >= 1/2, beta_j = 1/alpha_j, X a sample of N uniform points of [0,1]^2 and Y either an independent such sample or evenly spread, s_1 = sqrt(log N/N), c >= 2, integer levels 1 = k_1 < ... < k_I with k_(i+1) <= (c-1) k_i + 1 and k_I >= log N/(4c), box graphs G_i of the pairs with |X^j - Y^j| <= L'' k_i^(beta_j) s_1 for j = 1, 2 and G_(I+1) complete, rho = c^(max_j beta_j), r = floor(4 rho) + 1, epsilon = (2r+1)^(-2) and K*_a = (16 sqrt(a)/(epsilon L''))^(2/(beta_1+beta_2)) for a fixed a > 1: if L'' >= (4c)^(max_j beta_j) K_0 (K_0 the constant of thm:maximum-displacement-curve-threshold), then with probability tending to one some level i < I with k_i >= K*_a has m_(i+1) < m_i, and at every such level the set B_X of lem:completion-failure-certificate is matchable in G_i, so universal completion with C = 1 fails there; for L'' > 16 (2r+1)^2 at every level with a drop. In particular the hypothesis of prop:universal-completion-sufficiency fails at every admissible L''.",
+   "assessment": "Working proof, passed with corrections in two passes of one medium reviewer (research/results/ultimate_matching_thin_shell_20261018/review.txt): B_X is matchable once T_0 = B_X cap D_X is (the transversal matroid extends T_0 to the X-cover of a maximum matching, which covers X minus D_X); G_i has no edge between D_X and D_Y (thm:universal-completion-criterion (a)); every cell meeting T_0 lies within r cells of a cell meeting no point of D_X, so each component of T_0's cells under cell distance 2 has a ring of at least an epsilon share; Hall's condition then follows from Y(Q+) >= X(Q) on every thin connected cell set, which a Chernoff bound (deterministic counts for evenly spread Y) and a union over lattice animals give at levels with k_i >= K*_a, where the exponent carries k_i^(beta_1+beta_2); a drop at such a level by both parts of thm:maximum-displacement-curve-threshold.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Closes the gluing route through thm:local-completion-dichotomy (f) at every admissible box constant, in the two-sample and evenly spread settings: the one recorded per-level completion form that guarantees gluing fails on the goal's samples.",
+   "next_action": "Decide whether completion asked of some maximum matching, at C = 1, glues on the goal's samples at the levels from K*_a on, through whether the forced paths of thm:local-completion-dichotomy (d) occur in the box graphs there.",
+   "novelty": "not_claimed"
+  }
+ ],
+ "relationships": [
+  [
+   "thm:thin-shell-completion-failure",
+   "depends_on",
+   "lem:completion-failure-certificate",
+   "The certificate it shows to fire."
+  ],
+  [
+   "thm:thin-shell-completion-failure",
+   "depends_on",
+   "thm:universal-completion-criterion",
+   "Its (a), for no G-edge between D_X and D_Y."
+  ],
+  [
+   "thm:thin-shell-completion-failure",
+   "depends_on",
+   "thm:maximum-displacement-curve-threshold",
+   "Both parts: a drop exists below the top level."
+  ],
+  [
+   "thm:thin-shell-completion-failure",
+   "cites",
+   "prop:universal-completion-sufficiency",
+   "Its hypothesis is shown false at every L'' above the constant."
+  ],
+  [
+   "thm:thin-shell-completion-failure",
+   "cites",
+   "ex:box-completion-failures",
+   "The finite check at L = 1/2 the theorem extends, asymptotically and at large constants, in another setting (two samples)."
+  ],
+  [
+   "thm:thin-shell-completion-failure",
+   "cites",
+   "thm:low-level-mixed-counts",
+   "A matching with few pairs beyond two levels, from cells and sorted leftovers; neither a version nor a special case of a failure of completion."
+  ]
+ ]
+}
