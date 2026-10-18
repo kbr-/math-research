@@ -254,18 +254,25 @@ So perform the following, in a loop:
   its computation saved beside the entry's results (an exact check of both statements' constants for
   a relation), before it goes back: moving to the opposite wording is a patch (17 October 2026:
   "refines" corrected to "neither implies", both wrong, the relation holding with a free constant).
-  Before an item is closed as refuted, the strongest positive form its words allow is written and a
-  proof of it is tried, since counterexamples to the forms in hand do not refute the form not yet
-  written (17 October 2026: an item was closed on four refuted readings while the universal one
-  glued in a few lines). A sentence stating a property of a computed quantity (a sign, a crossing
-  point, a range) is written after the quantity is computed at the instance: a crossing point is
-  solved for, not read between two grid values, and a range is the object's only when no step of the
-  proof's accounting set it (17 October 2026: a ratio called at most one from its factors' look, a
-  threshold read off two grid points, and a range set by a corner-area bound, in one draft). Words
-  received from elsewhere (a reviewer's required change, a source's sentence, a tool's message) are
-  read as a claim to check, not as text to insert: each is first restated as the property it asserts
-  and checked on the instance, at both ends of every range it names, before any wording is written,
-  and the entry's sentence is then written from that check (17 October 2026: a window copied as
+  After a review's corrections, every summary drafted before it (the title, New mathematics,
+  Bearing, the spec's summary, rationale and next action, the commit message) is discarded and
+  written again from the corrected statement, each parameter it quantifies set at both ends of the
+  statement's own conditions, before the next pass; a summary kept from the first draft carries the
+  shape the drafter pictured, not what the steps give (18 October 2026: "translates at every
+  spacing" and "linear through the Lipschitz remainders" survived from a first draft whose statement
+  held only for spacings up to \(my^*\) and whose \(\lambda\) came from one step's mesh). Before an
+  item is closed as refuted, the strongest positive form its words allow is written and a proof of
+  it is tried, since counterexamples to the forms in hand do not refute the form not yet written (17
+  October 2026: an item was closed on four refuted readings while the universal one glued in a few
+  lines). A sentence stating a property of a computed quantity (a sign, a crossing point, a range)
+  is written after the quantity is computed at the instance: a crossing point is solved for, not
+  read between two grid values, and a range is the object's only when no step of the proof's
+  accounting set it (17 October 2026: a ratio called at most one from its factors' look, a threshold
+  read off two grid points, and a range set by a corner-area bound, in one draft). Words received
+  from elsewhere (a reviewer's required change, a source's sentence, a tool's message) are read as a
+  claim to check, not as text to insert: each is first restated as the property it asserts and
+  checked on the instance, at both ends of every range it names, before any wording is written, and
+  the entry's sentence is then written from that check (17 October 2026: a window copied as
   "one-sided" from a reviewer's report was false inside the window). A sentence saying what a
   construction does to its objects (which points cross, which rank a cut has, which edges change) is
   written after the construction is run on one instance with its numbers set down, and a widened
