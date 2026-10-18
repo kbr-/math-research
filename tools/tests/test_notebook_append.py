@@ -698,6 +698,16 @@ class NotebookAppendTests(unittest.TestCase):
         self.assertTrue(tool.closures_count(source + resembling + quoting.replace('id="new"', 'id="new2"'))
                         .startswith('1\t0\t0\tnew\n1\t1\t0\tnew2\n2 closing follow-ups in 2 entries; 1 quote'))
 
+    def test_a_case_called_decided_beside_a_sketch_needs_a_decided_by_answer(self):
+        import draft_claim_sentences
+        entry = ('<article id="new"><h3>T</h3><p><strong>Decision.</strong> By hand, the two-block case is '
+                 'decided.</p></article>')
+        form = draft_claim_sentences.answers_template(entry)
+        filled = form.replace('rests on: \n', 'rests on: part one of lem:the-lemma\n')
+        with self.assertRaisesRegex(ValueError, 'no "decided by:" answer'):
+            tool.refuse_unanswered(entry, filled)
+        tool.refuse_unanswered(entry, filled.replace('decided by: \n', 'decided by: sketch, the sentence now says so\n'))
+
     def test_an_entry_s_summing_up_sentences_are_answered_before_it_is_appended(self):
         import draft_claim_sentences
         entry = ('<article id="new"><h3>T</h3><p><strong>New mathematics.</strong> No point hides.</p>'

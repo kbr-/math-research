@@ -932,7 +932,9 @@ def answers_template(draft, summaries=None):
     form += ''.join(f'{key} [{where}] {sentence}\n  hypotheses: \n'
                     for key, where, sentence in hypothesis_rows(draft) if key not in asked)
     form += ''.join(f'{key} [{where}] {sentence}\n  converse: \n' for key, where, sentence in converse_rows(draft))
-    return form + ''.join(f'{key} [{where}] {sentence}\n  source: \n' for key, where, sentence in source_rows(draft))
+    form += ''.join(f'{key} [{where}] {sentence}\n  source: \n' for key, where, sentence in source_rows(draft))
+    form += ''.join(f'{key} [{where}] {sentence}\n  decided by: \n' for key, where, sentence in decided_rows(draft))
+    return form + ''.join(f'{key} [{where}] {sentence}\n  regrouping: \n' for key, where, sentence in regroup_rows(draft))
 
 
 # A summing-up sentence that cites a registered claim while its paragraph leaves some of the claim's symbols
@@ -1059,6 +1061,155 @@ def unconversed_report(rows):
                       'no "converse:" answer: say which direction the source proves and the step that gives the other, '
                       'or rewrite the sentence as a one-sided condition:']
                      + [f'{key} [{where}] {sentence[:160]}\n  converse: ' for key, where, sentence in rows])
+
+
+# A summing-up or test sentence that calls a case decided, in a paragraph or beside one that calls an argument a
+# sketch, a hand computation, heuristic, informal or unverified, is answered on a line "decided by:": a claim ID, a
+# research/ path or an entry anchor that decides it, or the word "sketch", the sentence then saying so itself.
+# On 18 October 2026 a hand sketch with an unread dependency was summed up as "decided" (the item
+# sketch-decided-check); the two words often concern different steps, so the row asks the drafter rather than
+# refusing the words.  Replayed with --replay-rows decided over every notebook's past articles
+# (research/provenance/framework/decided-rows-replay-20261018.txt): 37 asks in 20 of 2572 articles, judged 34 true and
+# 3 false (class-tool-search-judgement-20261018.txt there lists the false ones).  The exposing sentence was corrected
+# in an uncommitted draft that was not kept, so the row was not run on it; its tests use one written from the
+# record's description.  An answer's claim ID or anchor is not checked to exist.
+ANY_ID = re.compile(r'\b[a-z]+:[a-z0-9][\w-]*', re.I)        # a claim id of any prefix, stripped before word tests
+DECIDED = re.compile(r'\b(?:decided|decides (?:it|the|this|that|each|every)|settled|settles|resolved)\b', re.I)
+NOT_DECIDED = re.compile(r'\b(?:not|nothing|neither|nor|never|no case|none) (?:\w+ ){0,2}decided\b|\bdecides nothing\b|'
+                         r'\bwhat (?:\w+ ){0,3}decides\b|\bnone (?:\w+ ){0,2}decides\b|\bnot an? (?:\w+ ){0,3}that '
+                         r'decides\b|\bdecides the order\b|\bdecided little\b|\bno (?:\w+ ){0,3}(?:at the sizes \w+ )?'
+                         r'decides\b', re.I)
+# "no ... decides" is fitted to the replay's sentences ("no finite run at the sizes reachable decides it") and also
+# silences a true ask such as "with no loss this decides the case" (its reviewer, 18 October 2026): a known limit.
+CAVEAT = re.compile(r'\bsketch|\bhand computation|\bby hand\b|\bunverified\b|\bheuristic|\binformal\b|\boutline\b|'
+                    r'\bunreviewed\b', re.I)
+DECIDED_LABELS = re.compile(CONVERSE_LABELS.pattern[:-2] + r'|Architecture test)$', re.I)
+DECIDED_ANSWER = re.compile(r'^([0-9a-f]{8})\b[^\n]*\n(?:[ \t]*(?:rests on|within|extreme|hypotheses|converse|source):'
+                            r'[^\n]*\n)*[ \t]*decided by:[ \t]*([^\n]*)$', re.M)
+DECIDER = re.compile(r'\b[a-z]+:[a-z0-9][\w-]*|research/\S+|#?entry-\d{4}-\d\d-\d\d-[\w-]+', re.I)
+
+
+def decided_rows(draft):
+    """[(key, section label, sentence)] for the sentences of summing-up and test paragraphs that call a case decided
+    while that paragraph, or the one before or after it, calls an argument a sketch, a hand computation, heuristic,
+    informal or unverified, each once."""
+    found, heading, blocks = {}, '', BLOCK.findall(STATUS_LINE.sub('', draft))
+    bodies = [text(body) if tag == 'p' else '' for tag, body in blocks]
+    for index, (tag, body) in enumerate(blocks):
+        if tag in ('h3', 'h4'):
+            heading = text(body) if tag == 'h4' else ''
+            continue
+        label = LABEL.match(body)
+        where = label.group(1) if label else heading
+        near = ' '.join(bodies[max(0, index - 1):index + 2])
+        if STATEMENT.match(where) or not CAVEAT.search(ANY_ID.sub(' ', near)):
+            continue
+        for sentence in sentences(body):
+            inline = LABEL.match(sentence)
+            if inline:
+                where = inline.group(1)
+            bare = ANY_ID.sub(' ', text(re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]|"[^"]*"|&quot;.*?&quot;', ' ', sentence,
+                                               flags=re.S)))
+            if DECIDED_LABELS.match(where) and DECIDED.search(bare) and not NOT_DECIDED.search(bare):
+                plain = text(sentence)
+                found.setdefault(hashlib.sha1(plain.encode()).hexdigest()[:8], (where, plain))
+    return [(key, where, sentence) for key, (where, sentence) in found.items()]
+
+
+def decided_answered(answer, sentence):
+    """An answer names what decides the case (a claim ID, a research/ path, an entry anchor), or says "sketch" of a
+    sentence that says so itself; any four words are not enough (its reviewer, 18 October 2026)."""
+    if len(answer.split()) < ANSWER_WORDS:
+        return False
+    return bool(DECIDER.search(answer)) or bool(re.search(r'\bsketch\b', answer, re.I) and CAVEAT.search(sentence))
+
+
+def undecided_by(draft, answers):
+    """The rows of decided_rows(draft) whose "decided by:" answer is missing or names nothing that decides."""
+    given = {key: answer for key, answer in DECIDED_ANSWER.findall(answers or '')}
+    return [row for row in decided_rows(draft) if not decided_answered(given.get(row[0], ''), row[2])]
+
+
+def undecided_by_report(rows):
+    return '\n'.join([f'{len(rows)} sentences call a case decided beside a paragraph that calls an argument a sketch, '
+                      'a hand computation, heuristic, informal or unverified, and have no "decided by:" answer naming '
+                      'what decides it: give the claim ID, research/ path or entry anchor, or write "sketch" and '
+                      'rewrite the sentence so it says so:']
+                     + [f'{key} [{where}] {sentence[:160]}\n  decided by: ' for key, where, sentence in rows])
+
+
+# A Nonvacuity or Baseline sentence saying the recorded bounds leave a witness above the target (or that none
+# decides it) is answered on a line "regrouping:": the regroupings tried on the witness (a layer cake in one of its
+# parameters, a split into pieces each scaled to the cost bound by linearity) with what each recorded bound gave on
+# the pieces, or "none applies" and why.  On 18 October 2026 a pyramid witness was called beyond the record while a
+# layer cake in its base height and its step split, each composed with recorded bounds, decided it
+# (witness-linear-regrouping).  Replayed with --replay-rows regroup
+# (research/provenance/framework/witness-regrouping-replay-20261018.txt): 14 asks in 10 of 2572 articles, judged 11 true
+# and 3 false (class-tool-search-judgement-20261018.txt there); the exposing pyramid sentence is asked, in the record
+# and in its entry's first draft.  A sentence naming its own split is not asked, and an answer holding the word
+# "split" passes whatever it says of it (a limit of the check).
+ESCAPE = re.compile(r'\b(?:above the target|stays? above|exceeds? the target|outside the record|beyond (?:the record|'
+                    r'every recorded|the recorded)\b(?![’\']s)|(?:recorded|plainest) bounds? (?:\w+ ){0,4}(?:leave|lose|'
+                    r'loses|miss|fail)|no recorded (?:bound|statement) (?:decides|reaches|covers)|escapes? (?:the '
+                    r'record|every recorded|the recorded))', re.I)
+REGROUPED = re.compile(r'\b(?:split|splits|layer cake|regroup\w*|by linearity|pieces?)\b', re.I)
+REGROUP_ANSWER = re.compile(r'^([0-9a-f]{8})\b[^\n]*\n(?:[ \t]*(?:rests on|within|extreme|hypotheses|converse|source|'
+                            r'decided by):[^\n]*\n)*[ \t]*regrouping:[ \t]*([^\n]*)$', re.M)
+REGROUP_LABELS = ('Nonvacuity', 'Baseline', 'Plainest bound')
+
+
+def regroup_rows(draft):
+    """[(key, label, sentence)] for the sentences of Nonvacuity and Baseline paragraphs that say the recorded bounds
+    leave a witness above the target, unless the sentence names its own regrouping, each once; claim ids are
+    stripped first, so that one citing lem:cellwise-lipschitz-split is not taken to name a split."""
+    found = {}
+    for tag, body in BLOCK.findall(STATUS_LINE.sub('', draft)):
+        label = LABEL.match(body)
+        if tag != 'p' or not label or label.group(1) not in REGROUP_LABELS:
+            continue
+        for sentence in sentences(body):
+            bare = ANY_ID.sub(' ', text(re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]', ' ', sentence, flags=re.S)))
+            if ESCAPE.search(bare) and not REGROUPED.search(bare):
+                plain = text(sentence)
+                found.setdefault(hashlib.sha1(plain.encode()).hexdigest()[:8], (label.group(1), plain))
+    return [(key, where, sentence) for key, (where, sentence) in found.items()]
+
+
+def regroup_answered(answer):
+    """An answer names a regrouping tried, or says that none applies; any four words are not enough."""
+    return len(answer.split()) >= ANSWER_WORDS and bool(REGROUPED.search(answer) or
+                                                         re.search(r'\bnone applies\b', answer, re.I))
+
+
+def unregrouped(draft, answers):
+    """The rows of regroup_rows(draft) whose "regrouping:" answer is missing or names no regrouping."""
+    given = {key: answer for key, answer in REGROUP_ANSWER.findall(answers or '')}
+    return [row for row in regroup_rows(draft) if not regroup_answered(given.get(row[0], ''))]
+
+
+def unregrouped_report(rows):
+    return '\n'.join([f'{len(rows)} Nonvacuity or Baseline sentences say the recorded bounds leave the witness above '
+                      'the target and have no "regrouping:" answer: name the regroupings tried (a layer cake in a '
+                      'parameter of the witness, a split into pieces scaled to the cost bound by linearity) and what '
+                      'each recorded bound gave on the pieces, or write "none applies" and why:']
+                     + [f'{key} [{where}] {sentence[:160]}\n  regrouping: ' for key, where, sentence in rows])
+
+
+def replay_rows(text, kind):
+    """Lines: for each article of `text`, the sentences the decided_rows or regroup_rows row would ask, then the
+    counts, for judging a row's asks over past records before relying on it."""
+    rows_of = {'decided': decided_rows, 'regroup': regroup_rows}[kind]
+    lines, asked, hit = [], 0, 0
+    articles = re.findall(r'<article id="([^"]+)"[\s\S]*?</article>', text)
+    for match in re.finditer(r'<article id="([^"]+)"[\s\S]*?</article>', text):
+        rows = rows_of(match.group(0))
+        if rows:
+            hit += 1
+            lines.append('== ' + match.group(1))
+            lines.extend(f'   [{where}] {sentence[:260]}' for _, where, sentence in rows)
+            asked += len(rows)
+    lines.append(f'{asked} sentences asked in {hit} of {len(articles)} articles')
+    return lines
 
 
 # A summing-up or test sentence that cites a claim and describes its proof, scope or what it uses is answered on
@@ -1901,7 +2052,13 @@ def main():
     parser.add_argument('--gaps', nargs='+', metavar='ANSWERS', help='print only, for each article of the file, '
                         'its summing-up sentences answered in these answers files and how many of the answers '
                         'limit their sentence by a word it lacks, with those sentences')
+    parser.add_argument('--replay-rows', choices=('decided', 'regroup'), help='print only, for every article of '
+                        'this file (one notebook, or several files joined), the sentences the "decided by:" or '
+                        '"regrouping:" row would ask, and the counts')
     args = parser.parse_args()
+    if args.replay_rows:
+        print('\n'.join(replay_rows(pathlib.Path(args.draft).read_text(), args.replay_rows)))
+        return 0
     # 16 October 2026: a listing run at --width 1 passed the brief hook while cutting every sentence to one
     # character, so no citing sentence was read beside its source, and an unsupported citation reached review.
     if 0 < args.width < MIN_WIDTH:

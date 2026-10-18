@@ -963,6 +963,18 @@ def refuse_unanswered(entry, answers):
             raise ValueError(draft_claim_sentences.unconversed_report(open_converse)
                              + ('\n(pass the answers with --answers FILE; tools/draft_claim_sentences.py DRAFT '
                                 '--answers FILE writes the form)' if answers is None else ''))
+    if draft_claim_sentences.decided_rows(entry):      # a case called decided beside a sketch, what decides it named
+        open_decided = draft_claim_sentences.undecided_by(entry, answers or '')
+        if open_decided:
+            raise ValueError(draft_claim_sentences.undecided_by_report(open_decided)
+                             + ('\n(pass the answers with --answers FILE; tools/draft_claim_sentences.py DRAFT '
+                                '--answers FILE writes the form)' if answers is None else ''))
+    if draft_claim_sentences.regroup_rows(entry):      # a witness called beyond the record, its regroupings named
+        open_regroup = draft_claim_sentences.unregrouped(entry, answers or '')
+        if open_regroup:
+            raise ValueError(draft_claim_sentences.unregrouped_report(open_regroup)
+                             + ('\n(pass the answers with --answers FILE; tools/draft_claim_sentences.py DRAFT '
+                                '--answers FILE writes the form)' if answers is None else ''))
     if not rows:
         refuse_unbounded(entry, answers)
         return

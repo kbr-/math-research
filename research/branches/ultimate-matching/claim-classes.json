@@ -1,0 +1,51 @@
+{
+  "about": "The recorded classes of this notebook's objects, read by tools/claim_resemblance.py: for a new claim (or a next attempt's text) whose words name an object of a class, it lists this notebook's proved claims whose hypothesis (the summary's first colon-ended segment that quantifies an object, up to the first word that opens a conclusion) takes the class or one containing it. 'object' and 'hypothesis' are case-blind regular expressions; 'within' names the classes containing this one, whose bounds apply to its members. An optional 'conclusion' keeps a class's listing to claims whose summary concludes that kind of bound (here a discrepancy bound, |sum_i g(X_i) - N int g| or |D(g)| and the like).",
+  "classes": [
+    {
+      "name": "Lipschitz functions",
+      "object": "\\b(?:\\d-)?lipschitz (?:functions?|g\\b|profiles?|test functions?)|\\bramps?\\b|\\bmollif\\w*",
+      "hypothesis": "\\b(?:every|each|all|for) (?:bounded )?(?:lipschitz g\\b|g lipschitz\\b(?! on))",
+      "within": [
+        "functions Lipschitz on cells"
+      ],
+      "conclusion": "\\|\\s*sum_i|\\|D\\(|discrepancy (?:at most|is at most|<=)|\\|int g d|<= C\\b|<= L\\b"
+    },
+    {
+      "name": "functions Lipschitz on cells",
+      "object": "lipschitz on (?:each |every )?(?:open )?cells?|\\bcellwise lipschitz\\b|piecewise (?:affine|linear)",
+      "hypothesis": "lipschitz on each (?:open )?cell",
+      "within": [],
+      "conclusion": "\\|\\s*sum_i|\\|D\\(|discrepancy (?:at most|is at most|<=)|\\|int g d|<= C\\b|<= L\\b"
+    },
+    {
+      "name": "nested chains",
+      "object": "\\bnested chains?\\b|\\bone-height chains?\\b|\\bpiles? of\\b|\\bstacks? of (?:translates|layers|staircases|sets)",
+      "hypothesis": "\\bnested chain",
+      "within": [
+        "grid functions of bounded cost"
+      ],
+      "conclusion": "\\|\\s*sum_i|\\|D\\(|discrepancy (?:at most|is at most|<=)|\\|int g d|<= C\\b|<= L\\b"
+    },
+    {
+      "name": "unions of cells",
+      "object": "\\bunions? of cells\\b|\\blattice down-sets?\\b|\\bcell sets?\\b",
+      "hypothesis": "\\bunions? of cells\\b",
+      "within": [],
+      "conclusion": "\\|\\s*sum_i|\\|D\\(|discrepancy (?:at most|is at most|<=)|\\|int g d|<= C\\b|<= L\\b"
+    },
+    {
+      "name": "families fixed in advance",
+      "object": "\\bfamil(?:y|ies) (?:of [\\w ]{1,30} )?(?:fixed|chosen) (?:before|in advance)|\\btranslates of one\\b|\\bpolynomially many\\b",
+      "hypothesis": "\\bfixed before the points\\b|\\bfixed in advance\\b",
+      "within": [],
+      "conclusion": "\\|\\s*sum_i|\\|D\\(|discrepancy (?:at most|is at most|<=)|\\|int g d|<= C\\b|<= L\\b"
+    },
+    {
+      "name": "grid functions of bounded cost",
+      "object": "\\bgrid functions?\\b[^.]{0,80}\\bcost\\b|\\bdiscrete cost\\b",
+      "hypothesis": "\\bgrid functions? g?\\b[^:]{0,200}\\bcost\\b|\\bdiscrete cost\\b",
+      "within": [],
+      "conclusion": "\\|\\s*sum_i|\\|D\\(|discrepancy (?:at most|is at most|<=)|\\|int g d|<= C\\b|<= L\\b"
+    }
+  ]
+}

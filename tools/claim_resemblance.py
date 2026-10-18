@@ -160,6 +160,126 @@ def context_matches(sentences, spec, count=CONTEXT_SHOWN):
     return out
 
 
+# The recorded classes of a notebook's objects, from its claim-classes.json (beside the notebook; none, no
+# listing): a class's object words in a new claim's summary, or in a next attempt's text, list the notebook's
+# proved claims whose hypothesis takes that class or one containing it.  18 October 2026: a ramp lemma was proved
+# by a new chaining while lem:cellwise-lipschitz-split, the record's bound for functions Lipschitz on cells, gave it
+# at once; every search had used the draft's own words.  The table is the notebook's, since class words carry one
+# goal's meaning ("fixed in advance" means another thing in the pigeonhole notebooks; its reviewer, same day), and
+# the listing keeps to the notebook's own claims for the same reason.
+CLASS_SHOWN = 8
+CLASS_STATUSES = ('working_proof', 'conditional', 'established')
+QUANTIFIED = re.compile(r'\b(?:every|each|for all|for any|all)\b', re.I)
+# words that open a conclusion; "<=" is not one, a quantifier's range using it ("every j with 1 <= j <= l_1")
+RELATION = re.compile(r'\|\s*sum\b|\bhas\b|\bhave\b|\bthere (?:is|are)\b|\bsatisf\w*|\bgives?\b|\bmakes?\b')
+
+
+def claim_id_pattern(registered):
+    """Claim identifiers by the prefixes the registry uses (lem:, thm:, imp:, criterion: ...)."""
+    prefixes = sorted({c['id'].split(':', 1)[0] for c in registered if ':' in c['id']}, key=len, reverse=True)
+    return re.compile(r'\b(?:' + '|'.join(map(re.escape, prefixes)) + r'):[\w-]+', re.I) if prefixes else None
+
+
+def class_table(notebook):
+    """The notebook's class rows, or [] when it declares none."""
+    path = pathlib.Path(notebook).parent / 'claim-classes.json'
+    return json.loads(path.read_text())['classes'] if path.exists() else []
+
+
+def notebook_marker(notebook):
+    """The part of a record's URL that names this side notebook (records cite .../branches/NAME/#entry-...), or None
+    for the main notebook, whose records carry no such part."""
+    parts = pathlib.Path(notebook).resolve().parts
+    return f'branches/{parts[-2]}/' if len(parts) > 2 and parts[-3] == 'branches' else None
+
+
+def hypothesis_part(summary, ids):
+    """The part of a registered summary read as its hypothesis, cited claim ids removed: the first colon-ended
+    segment that quantifies an object, up to the first word that opens a conclusion (RELATION).  Summaries open
+    with a setting ("For X_1..X_N i.i.d. uniform ..., with probability tending to one:") before their quantified
+    objects, so the first colon alone hid most of the bounds (its reviewer, 18 October 2026); a conclusion may name
+    a class only to bound it (Lip(G on Q) in a cellwise sum).  A heuristic: a conditional conclusion written
+    inside the segment ("if ... then ... <= C") is read as hypothesis, the replay's false listings of two
+    reductions (research/provenance/framework/class-tool-search-judgement-20261018.txt).  Two more limits, untested
+    on the record: a hypothesis phrased with a conclusion word ("every G whose cells have ...") is cut early, and a
+    setting that itself quantifies ("for every fixed kappa > 0, with probability tending to one: every union ...") is
+    taken for the hypothesis (its reviewer, 18 October 2026)."""
+    return split_summary(summary, ids)[0]
+
+
+def split_summary(summary, ids):
+    """(hypothesis part, the rest of the summary after it): the rest is where a class's "conclusion" is sought, so
+    that "cost <= C" in a hypothesis does not pass for a bound (its reviewer, 18 October 2026)."""
+    plain = ids.sub(' ', summary) if ids else summary
+    segments = plain.split(':')
+    index = next((i for i, s in enumerate(segments) if QUANTIFIED.search(s)), 0)
+    head, *tail = RELATION.split(segments[index], 1)
+    found = RELATION.search(segments[index])
+    rest = (segments[index][found.start():] if found else '') + ':' + ':'.join(segments[index + 1:])
+    return head.strip().lower(), rest
+
+
+def object_classes(text, table, ids=None):
+    """The names of the table's classes whose object words the text contains, with every class containing them."""
+    plain = (ids.sub(' ', text) if ids else text).lower()
+    found = [row['name'] for row in table if re.search(row['object'], plain, re.I)]
+    within = {row['name']: row.get('within', []) for row in table}
+    out, todo = [], list(found)
+    while todo:
+        name = todo.pop(0)
+        if name not in out:
+            out.append(name)
+            todo.extend(within.get(name, []))
+    return out
+
+
+def class_listing(registered, text, table, marker, own=(), limit=CLASS_SHOWN):
+    """[(class, [(registered id, summary start), ...], total), ...]: for each class the text's object is in, the
+    notebook's proved claims (their record names MARKER) whose hypothesis takes the class, the newest LIMIT of them;
+    TOTAL counts them all.  A reading list in the words of the object's class: each is applied to the object before
+    a new method is drafted (AGENTS.md), and the finisher asks the entry to name each (resemblance_coverage)."""
+    ids = claim_id_pattern(registered)
+    rows = {row['name']: row for row in table}
+    local = [c for c in registered if c['id'] not in own and c.get('mathematical_status') in CLASS_STATUSES
+             and marker in json.dumps(c.get('record'))]
+    out = []
+    parts = {c['id']: split_summary(c.get('summary', ''), ids) for c in local}
+    for name in object_classes(text, table, ids):
+        # a row's optional "conclusion" keeps the listing to claims concluding the kind of bound the class asks
+        conclusion = rows[name].get('conclusion')
+        hits = [(c['id'], c.get('summary', '')[:120]) for c in local
+                if re.search(rows[name]['hypothesis'], parts[c['id']][0], re.I)
+                and (not conclusion or re.search(conclusion, parts[c['id']][1], re.I))]
+        if hits:
+            out.append((name, hits[-limit:], len(hits)))
+    return out
+
+
+def class_bounds(registered, spec, table, marker, limit=CLASS_SHOWN):
+    """[(draft id, class, rows, total), ...]: class_listing for each claim of the spec, by its summary."""
+    own = {claim['id'] for claim in spec.get('claims', [])}
+    return [(claim['id'], name, rows, total) for claim in spec.get('claims', [])
+            for name, rows, total in class_listing(registered, claim.get('summary', ''), table, marker, own, limit)]
+
+
+def class_replay(registered, table, marker):
+    """Lines listing, for every proved claim of the notebook taken as a one-claim spec against the claims
+    registered before it, each class it fires and the claims listed, for judging by hand, and the counts."""
+    local = {c['id'] for c in registered if marker in json.dumps(c.get('record'))}
+    lines, fired = [], 0
+    for index, claim in enumerate(registered):
+        if claim['id'] not in local:
+            continue
+        found = class_listing(registered[:index], claim.get('summary', ''), table, marker)
+        if found:
+            fired += 1
+            lines.append(f'{claim["id"]}: ' + '; '.join(f'{name} ({total}): ' + ', '.join(i for i, _ in rows)
+                                                       for name, rows, total in found))
+    lines.append(f'{fired} of {len(local)} claims of {marker} fire a class, each against the claims registered '
+                 f'before it; {len(table)} classes in the table.')
+    return lines
+
+
 SCHEMA = ROOT / 'research' / 'claims' / 'schema.json'
 # spec field -> the schema's enumeration it must belong to ($defs path)
 SPEC_ENUMS = {'status': ('claim', 'mathematical_status'), 'category': ('significance', 'category'),
@@ -187,12 +307,44 @@ def spec_value_problems(spec, schema=None):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.split('\n')[0])
-    parser.add_argument('spec')
+    parser.add_argument('spec', nargs='?')
     parser.add_argument('--count', type=int, default=5)
     parser.add_argument('--registry', default=str(DEFAULT_REGISTRY))
     parser.add_argument('--notebook', help='notebook file whose queue is compared (default: the selected one)')
+    parser.add_argument('--text', help='print only the class listing for this text (a next attempt, a Smallest '
+                                       'case), before any spec exists')
+    parser.add_argument('--replay', action='store_true', help='print only the class listing of every proved claim '
+                                                              'of the notebook against the claims before it')
     args = parser.parse_args(argv)
     registered = json.loads(pathlib.Path(args.registry).read_text())['claims']
+    if args.text is not None or args.replay:
+        import notebooks
+        notebook = (notebooks.notebook_file(args.notebook) if args.notebook
+                    else ROOT / notebooks.selected()['source'])
+        table, marker = class_table(notebook), notebook_marker(notebook)
+        if not table or not marker:
+            print(f'No class listing: {pathlib.Path(notebook).parent / "claim-classes.json"} '
+                  + ('does not exist.' if not table else 'belongs to the main notebook, whose records name no branch.'))
+            return 0
+        if args.replay:
+            print('\n'.join(class_replay(registered, table, marker)))
+            return 0
+        # the pre-spec run is optional (no check requires it); it is logged with the record searches
+        if args.registry == str(DEFAULT_REGISTRY):
+            log_run(['--text', args.text[:200]])
+        found = class_listing(registered, args.text, table, marker)
+        for name, rows, total in found:
+            print(f'The text\'s object is in the recorded class "{name}"; {total} proved claims of this notebook '
+                  'read as taking it as a hypothesis (a heuristic reading): apply each to the object before '
+                  'drafting a new method'
+                  + (f' (the newest {len(rows)} shown)' if total > len(rows) else ''))
+            for other, start in rows:
+                print(f'  {other}: {start}')
+        print(f'{len(found)} class listings; classes named by the text: '
+              + (', '.join(object_classes(args.text, table, claim_id_pattern(registered))) or 'none'))
+        return 0
+    if not args.spec:
+        parser.error('a spec is needed unless --text or --replay is given')
     spec = json.loads(pathlib.Path(args.spec).read_text())
     if args.registry == str(DEFAULT_REGISTRY):       # a run on the record: logged for the finisher, as searches are
         log_run([claim['id'] for claim in spec.get('claims', [])])
@@ -232,6 +384,20 @@ def main(argv=None):
             import notebooks
             notebook = ROOT / notebooks.selected()['source']
         text = notebook.read_text()
+        table, marker = class_table(notebook), notebook_marker(notebook)
+        found_classes = class_bounds(registered, spec, table, marker) if table and marker else []
+        for ident, name, rows, total in found_classes:
+            print(f'{ident}: its object is in the recorded class "{name}"; {total} proved claims of this notebook '
+                  'read as taking that class as a hypothesis (a heuristic reading): apply each to the object '
+                  'before drafting a new method, and name each in the entry (the finisher checks naming)'
+                  + (f' (the newest {len(rows)} shown)' if total > len(rows) else ''))
+            for other, start in rows:
+                print(f'  {other}: {start}')
+        if table and marker:
+            print(f'{len(found_classes)} class listings for {len(spec.get("claims", []))} claims, from '
+                  f'{sum(marker in json.dumps(c.get("record")) for c in registered)} registered claims of {marker}.')
+        else:
+            print('No class listing: the notebook declares no claim-classes.json, or is the main notebook.')
         for ident, rows in context_matches(context_sentences(text), spec):
             print(f'{ident}: nearest Working mathematical context sentences (read each; a result stated there is '
                   'not new):')

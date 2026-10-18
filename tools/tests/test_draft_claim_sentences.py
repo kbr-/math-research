@@ -425,6 +425,118 @@ class PairingsTest(unittest.TestCase):
         self.assertIsNone(dcs.best_window('<p>unrelated prose only</p>', {'kernels'}))
 
 
+class DecidedRowsTest(unittest.TestCase):
+    # 18 October 2026: a hand sketch with an unread dependency was summed up as "decided" (sketch-decided-check).
+    def test_a_case_called_decided_beside_a_sketch_is_asked(self):
+        draft = ('<p><strong>New mathematics.</strong> Two blocks are decided by the straight-band bound '
+                 '(the reviewer\'s sketch, unverified).</p>')
+        rows = dcs.decided_rows(draft)
+        self.assertEqual([where for _, where, _ in rows], ['New mathematics'])
+        self.assertEqual(dcs.undecided_by(draft, ''), rows)
+        key = rows[0][0]
+        self.assertEqual(dcs.undecided_by(draft, f'{key} [x] s\n  decided by: sketch, now written so\n'), [])
+        self.assertIn('decided by: ', dcs.answers_template(draft))
+
+    def test_legitimate_uses_of_the_words_are_not_asked(self):
+        for paragraph in (
+                # the sketch and the decision in one paragraph, but outside a summing-up label
+                '<p><strong>Proof.</strong> By the sketch above the case is decided.</p>',
+                # a summing-up paragraph with no caveat word
+                '<p><strong>New mathematics.</strong> The two-block case is decided by lem:split.</p>',
+                # a caveat beside a sentence that denies a decision
+                '<p><strong>Power.</strong> The sketch is unverified, and the test is not yet decided.</p>',
+                '<p><strong>Attempt.</strong> By hand, lem:x decides nothing here.</p>',
+                # undecided is not decided
+                '<p><strong>Bearing.</strong> The heuristic leaves the case undecided.</p>'):
+            with self.subTest(paragraph=paragraph):
+                self.assertEqual(dcs.decided_rows(paragraph), [])
+
+    def test_denials_and_the_replays_false_asks_are_not_asked(self):
+        for sentence in ('It is not a statement that decides the endpoint, by hand.',
+                         'None uses the count, and none decides the test (a sketch).',
+                         'By hand, the queue drain decides the order.',
+                         'I posed it by hand, so the test decided little.',
+                         'By hand: no finite run at the sizes reachable decides it.'):
+            with self.subTest(sentence=sentence):
+                self.assertEqual(dcs.decided_rows(f'<p><strong>Decision.</strong> {sentence}</p>'), [])
+
+    def test_the_architecture_test_and_a_neighbouring_caveat_are_read(self):
+        draft = ('<p><strong>Attempt.</strong> The reviewer\'s sketch, unverified, of the band.</p>'
+                 '<p><strong>Architecture test.</strong> Decided: the band case is settled.</p>')
+        self.assertEqual([where for _, where, _ in dcs.decided_rows(draft)], ['Architecture test'])
+
+    def test_an_answer_must_name_what_decides(self):
+        draft = '<p><strong>Decision.</strong> By hand, the instance is settled.</p>'
+        key = dcs.decided_rows(draft)[0][0]
+        for answer, ok in (('it is fine really', False), ('lem:a, its second step', True),
+                           ('research/results/x/out.json, the saved run', True),
+                           ('a sketch, the sentence says by hand', True),
+                           ('lem:x step 2, not the sketch', True)):
+            with self.subTest(answer=answer):
+                self.assertEqual(dcs.undecided_by(draft, f'{key} [x] s\n  decided by: {answer}\n') == [], ok)
+        # "sketch" answers only a sentence that says so itself
+        plain = ('<p><strong>Attempt.</strong> By hand, a check.</p>'
+                 '<p><strong>Decision.</strong> The instance is settled.</p>')
+        key = dcs.decided_rows(plain)[0][0]
+        self.assertTrue(dcs.undecided_by(plain, f'{key} [x] s\n  decided by: a sketch, written so now\n'))
+        # a named decider passes beside the word sketch even where the sentence names no caveat
+        self.assertFalse(dcs.undecided_by(plain, f'{key} [x] s\n  decided by: lem:x step 2, not the sketch\n'))
+
+    def test_the_answer_may_follow_other_rows_of_its_key(self):
+        draft = '<p><strong>Decision.</strong> By hand, the instance is settled.</p>'
+        key = dcs.decided_rows(draft)[0][0]
+        answers = f'{key} [x] s\n  rests on: lem:a and its step\n  source: its proof, step two\n  decided by: lem:a, its step two\n'
+        self.assertEqual(dcs.undecided_by(draft, answers), [])
+
+
+class ReplayRowsTest(unittest.TestCase):
+    def test_the_replay_lists_each_asked_sentence_and_counts(self):
+        text = ('<article id="a"><p><strong>Decision.</strong> By hand, the case is settled.</p></article>'
+                '<article id="b"><p><strong>Decision.</strong> The case is settled by lem:x.</p></article>')
+        lines = dcs.replay_rows(text, 'decided')
+        self.assertEqual(lines[0], '== a')
+        self.assertEqual(lines[-1], '1 sentences asked in 1 of 2 articles')
+
+
+class RegroupRowsTest(unittest.TestCase):
+    # 18 October 2026: a pyramid witness was called beyond the record while a layer cake decided it.
+    def test_a_witness_called_above_the_target_is_asked(self):
+        draft = ('<p><strong>Nonvacuity.</strong> The pyramid \\(g\\). The recorded uniform bounds leave it above '
+                 'the target: lem:a charges \\((\\log N)^{3/4}\\).</p>')
+        rows = dcs.regroup_rows(draft)
+        self.assertEqual(len(rows), 1)
+        self.assertIn('regrouping: ', dcs.answers_template(draft))
+        key = rows[0][0]
+        self.assertEqual(dcs.unregrouped(draft, f'{key} [x] s\n  regrouping: a layer cake in the height, lem:a on each\n'), [])
+
+    def test_a_cited_id_with_split_does_not_exempt_and_baseline_is_read(self):
+        for draft in ('<p><strong>Nonvacuity.</strong> lem:cellwise-lipschitz-split leaves it above the target.</p>',
+                      '<p><strong>Baseline.</strong> The plainest bounds leave the witness above the target.</p>',
+                      '<p><strong>Nonvacuity.</strong> The witness stays above every recorded bound.</p>'):
+            with self.subTest(draft=draft):
+                self.assertEqual(len(dcs.regroup_rows(draft)), 1)
+
+    def test_a_possessive_scope_and_a_bare_answer_are_handled(self):
+        for apostrophe in ("'", '’', '&rsquo;'):
+            draft = f'<p><strong>Nonvacuity.</strong> For (c), beyond the record{apostrophe}s binary factors, a family.</p>'
+            self.assertEqual(dcs.regroup_rows(draft), [], apostrophe)
+        self.assertEqual(len(dcs.regroup_rows('<p><strong>Plainest bound.</strong> The recorded bounds leave it '
+                                              'above the target.</p>')), 1)
+        draft = '<p><strong>Nonvacuity.</strong> The recorded bounds leave it above the target.</p>'
+        key = dcs.regroup_rows(draft)[0][0]
+        self.assertTrue(dcs.unregrouped(draft, f'{key} [x] s\n  regrouping: we looked at it\n'))
+        self.assertFalse(dcs.unregrouped(draft, f'{key} [x] s\n  regrouping: none applies, one cell only\n'))
+
+    def test_a_sentence_naming_its_split_and_other_paragraphs_are_not_asked(self):
+        for draft in (
+                '<p><strong>Nonvacuity.</strong> A split of g at v into two chains, each covered by one recorded '
+                'bound, leaves nothing above the target.</p>',
+                '<p><strong>Bearing.</strong> The recorded bounds leave it above the target.</p>',
+                '<p><strong>Nonvacuity.</strong> The witness meets every hypothesis at N = 2^20.</p>'):
+            with self.subTest(draft=draft):
+                self.assertEqual(dcs.regroup_rows(draft), [])
+
+
 class ConverseUseTest(unittest.TestCase):
     # The registered statement of 16 October 2026 that a draft used backwards, shortened.
     SUMMARIES = {'cor:edge-supported-error-ratio': (

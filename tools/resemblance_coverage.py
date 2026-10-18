@@ -141,7 +141,38 @@ def witness_missing(article, claims, count=COUNT, at=WITNESS_AT, relationships=(
             if ident in own for score, other in found if other not in named]
 
 
-def validate(article, root=ROOT):
+APPLIED = re.compile(r'<strong>(?:Plainest bound|Baseline|Nonvacuity|Own statements|Record comparison)\.</strong>'
+                     r'([\s\S]*?)(?=<strong>[A-Z][^<]{0,40}\.</strong>|</p>|</li>)')
+
+
+def class_missing(article, claims, table, marker):
+    """[(own id, class, listed id), ...]: for each declared claim, the claims tools/claim_resemblance.py lists for
+    its object's recorded class (the notebook's claim-classes.json), against the claims registered before the
+    entry's own, that no Plainest bound, Baseline, Nonvacuity, Own statements or Record comparison passage names.
+    18 October 2026: a ramp lemma's summary cited lem:cellwise-lipschitz-split, and the bound was still not applied
+    to the ramp; a listing alone is a reading list, so the entry names each listed bound where it applies it, or
+    says there why it does not apply (its reviewer, same day).  Naming is checked, not the application: the exposing
+    entry named lem:cellwise-lipschitz-split without applying it, which this check does not catch.  Replayed on the
+    ultimate-matching notebook it would refuse 10 of 72 research entries with claims, 6 judged real omissions and 4
+    false (dualities and reductions, whose answer costs a sentence; research/provenance/framework/
+    class-tool-search-judgement-20261018.txt)."""
+    import claim_resemblance
+    own = declared(article)
+    if not own or not table or not marker:
+        return []
+    order = {claim['id']: index for index, claim in enumerate(claims)}
+    first = min((order[ident] for ident in own if ident in order), default=len(claims))
+    earlier = claims[:first]
+    summaries = {claim['id']: claim.get('summary', '') for claim in claims}
+    named = set()
+    for passage in APPLIED.findall(article):
+        named.update(CLAIM_ID.findall(notebook_math.strip_tags(passage)))
+    return [(ident, name, other) for ident in own if ident in summaries
+            for name, rows, _ in claim_resemblance.class_listing(earlier, summaries[ident], table, marker, own)
+            for other, _ in rows if other not in named]
+
+
+def validate(article, root=ROOT, notebook=None):
     if declared(article) and 'data-kind="research"' in article[:article.find('>') + 1] and not PARAGRAPH.search(article):
         raise ValueError('A research entry that declares claims needs a <p><strong>Record comparison.</strong> paragraph, '
                          'written from the record\'s side (AGENTS.md, order of work); without it this check would '
@@ -164,6 +195,17 @@ def validate(article, root=ROOT):
                                                              for ident, score, other in gaps)
                          + '. Say there what each gives on the witness, or why it does not apply to it (AGENTS.md, '
                          'Nonvacuity: the witness must be one the recorded statements do not already cover).')
+    if notebook is not None:
+        import claim_resemblance
+        gaps = class_missing(article, registry['claims'], claim_resemblance.class_table(notebook),
+                             claim_resemblance.notebook_marker(notebook))
+        if gaps:
+            raise ValueError('No Plainest bound, Baseline, Nonvacuity, Own statements or Record comparison passage '
+                             'names proved claims listed for a declared claim\'s recorded class (claim_resemblance, '
+                             'the notebook\'s claim-classes.json): ' + '; '.join(f'{other} ({name}, beside {ident})'
+                                                                                 for ident, name, other in gaps)
+                             + '. Apply each to the object there, or say why it does not apply (AGENTS.md: a '
+                             'search in the words of the smallest recorded class containing the object).')
 
 
 def replay(notebook, limit, root=ROOT):
@@ -204,6 +246,17 @@ def replay(notebook, limit, root=ROOT):
         if at == WITNESS_AT:
             for ident, gaps in refused:
                 print('  ' + ident + ': ' + ', '.join(f'{o} {s:.2f} beside {i}' for i, s, o in gaps))
+    import claim_resemblance
+    table, marker = claim_resemblance.class_table(notebook), claim_resemblance.notebook_marker(notebook)
+    if table and marker:
+        refused = [(re.search(r'id="([^"]+)"', a).group(1), class_missing(a, claims, table, marker)) for a in proved]
+        refused = [(ident, gaps) for ident, gaps in refused if gaps]
+        print(f'class listings (claim-classes.json): {len(refused)} of {len(proved)} research entries with claims '
+              f'would be refused, {sum(len(g) for _, g in refused)} unnamed claims')
+        for ident, gaps in refused:
+            print('  ' + ident + ': ' + '; '.join(f'{o} ({n}, beside {i})' for i, n, o in gaps))
+    else:
+        print('class listings: the notebook declares no claim-classes.json, or is the main notebook')
 
 
 def draft_check(draft, spec):

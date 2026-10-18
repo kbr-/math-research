@@ -1,0 +1,54 @@
+Judgement (by hand, from the registered summaries and the entries) of the replays of the three builds of 18
+October 2026 (class-tool-search, sketch-decided-check, witness-linear-regrouping), after their reviewer's third
+pass. A judgement, not a computation. The replay files beside this one are the tools' own output.
+
+History of the class listing (none of these versions was committed): first pass, a hard-coded table and the
+whole summary as hypothesis, 48 fires in 105 claims, judged 24 applicable, 2 of little use and 1 false listing
+(lem:one-height-rounding); second pass, the notebook's table with the text before the first colon as hypothesis,
+26 fires, the Lipschitz class listing nothing (the reviewer's finding); third, the reading below.
+
+class-tool-search-replay-20261018.txt (tools/claim_resemblance.py --replay --notebook ultimate-matching):
+26 of 105 claims fire a class, each against the claims registered before it. The hypothesis is the first
+colon-ended segment that quantifies an object, up to a word that opens a conclusion; a discrepancy-bound
+conclusion is sought in the rest.
+- The exposing case, lem:monotone-path-ramps (its registered summary, in the tests): lists
+  lem:cellwise-lipschitz-split (functions Lipschitz on cells, containing its Lipschitz ramp), and
+  lem:mollified-smooth-part and lem:flow-coarea-level-bound (Lipschitz functions), all three bounds that apply
+  to the ramp.
+- Listings of applicable discrepancy bounds: the Lipschitz-class, chain, grid-function and unions-of-cells fires.
+- False listing: thm:one-height-chain-reduction, a reduction whose conditional conclusion carries "<= C", under
+  grid functions of bounded cost wherever it appears.
+- Fires of little use: lem:grid-flow-duality and thm:cell-scale-reduction themselves (a duality and a reduction).
+- lem:anchored-level-sum and lem:dyadic-level-sum are not listed for later claims: they conclude no discrepancy
+  bound (a deterministic total-variation sum and a level sum), so the conclusion filter is right there.
+Silent claims, a sample: lem:fine-grid-leighton-shor and lem:cut-cell-variance-bound (grid functions without a
+cost word: misses by wording), lem:guided-chain-bound (no earlier claim of its classes: correct silence). Recall
+is not measured, on either side.
+
+class-coverage-replay-20261018.txt (tools/resemblance_coverage.py --replay ... --limit 1000): 10 of 72 research
+entries with claims would be refused, 24 unnamed claims.
+- Real omissions, 6 entries: local-factor-discrepancy, band-family-discrepancy, mollified-split,
+  flow-coarea-levels, smeared-y-term (bounds for Lipschitz classes that say nowhere in the five passages what the
+  listed bounds give), monotone-path-ramps (lem:mollified-smooth-part and lem:flow-coarea-level-bound unnamed,
+  both bounding its ramp).
+- False refusals, 4 entries: grid-flow-duality, cell-scale-reduction, coarse-discrete-sufficiency (a duality and
+  reductions) and anchored-increments (its only unnamed listing is the reduction thm:one-height-chain-reduction).
+The check is a naming check: the exposing entry named lem:cellwise-lipschitz-split and still did not apply it,
+which naming does not catch.
+
+decided-rows-replay-20261018.txt (tools/draft_claim_sentences.py ALL --replay-rows decided, ALL the main and side
+notebooks joined): 37 sentences asked in 20 of 2572 articles. Judged one by one: 34 true asks (a case called
+decided beside a sketch, heuristic or unverified argument, answerable by the claim or computation that decides
+it; the Architecture test reports among them), 3 false: a counterfactual Prediction (selection-review), a
+sentence split broken by a quotation (eleventh-route-review), a Bearing of none (thirteenth-route-review). The
+second pass's three other false asks ("no finite run ... decides", "decided little", "A split ... would
+reduce") are no longer asked. The exposing sentence was corrected in an uncommitted draft that was not kept;
+the tests carry a sentence written from its description.
+
+witness-regrouping-replay-20261018.txt (--replay-rows regroup): 14 sentences asked in 10 of 2572 articles. 11 true
+(witness or plainest-bound sentences saying the recorded bounds leave the witness above the target:
+tube-localized-discrepancy, discrete-flow-bound 2, fixed-line-reduction 4, monotone-product-chains,
+anchored-increments 2, monotone-path-ramps), 3 false (fine-grid-leighton-shor's Baseline, a bound's size;
+partial-restoration, an absence reported; separated-bundles, a cost said to stay above a constant). The exposing
+case, the pyramid witness, is monotone-product-chains' sentence "The recorded uniform bounds over the class leave
+it above the target ... at K=h(0)/(Wy*) layers", asked in the record and in that entry's first draft.
