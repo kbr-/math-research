@@ -27,6 +27,26 @@ actual append opens through both symlinks, checks unrelated main files and works
 remain read-only, and requires the built-in :workspace control to reject the same append.
 The launcher regression checks selection of the project's math profile.
 
+Integration completed: a fresh detached worktree was created from the synchronized source
+checkpoint, with no copied settings and no permission installer. From that working directory,
+the native Codex default profile opened the main shared aliases for zero-byte append while
+unrelated main files and workspace metadata remained read-only. Native Claude auto mode opened
+the same aliases with no permission denials. See fresh-worktree-codex.txt and
+fresh-worktree-claude.jsonl. The test worktree was then removed.
+
+Base synchronization brought concurrent framework changes requiring Python 3.15 and setting
+the suite limit to fifteen seconds. The integrated-suite.txt run uses that interpreter and
+the project limit, with twelve workers; the earlier Python 3.12 run failed to import the
+new symbol check's Python 3.15 tree-sitter binding. The final symbol-use check passes.
+The earlier worker-count comparison is retained: eight workers reduced CPU contention but
+extended wall time; twelve passed the then-current ten-second limit. No suite limit was
+changed by this permission correction.
+
+Timing begins after the initial configuration investigation. Preparation includes approval
+interruptions and support for the user's terminal commands; those intervals are not separate
+measurements of engineering work. Final checkpoint operations follow the timing snapshot.
+Raw runtime traces remain local because they contain private initialization and scratch data.
+
 Meta: permission changes belong in inherited project configuration and must be checked through
 the native runtime. JSON/TOML parsing and edits to temporary settings are not evidence that a
 write is authorized. A local runtime failure is an implementation finding to resolve, not an
