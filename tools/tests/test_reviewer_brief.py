@@ -315,6 +315,39 @@ class MissingBriefFileTest(unittest.TestCase):
             # All three replayed messages have the refusal within their window, the first at the refusal's time.
             self.assertEqual(len(covered), 3)
 
+    def test_a_draft_closing_its_item_before_its_gate_is_filled_is_refused(self):
+        # 18 October 2026: the thin-shell and layered-cost drafts went to review with their items Closed; both
+        # closures were found wrong (PROMPTS.md, Spin: draft the Follow-up as Continuing).
+        with tempfile.TemporaryDirectory() as tmp:
+            draft = Path(tmp) / 'draft.html'
+            early = ('<article id="entry-x" data-kind="research"><p><strong>Follow-up.</strong> Closed: a restatement.'
+                     '</p><p><strong>Verification gate.</strong> [after review]</p></article>')
+            draft.write_text(early)
+            prompt = f'Review {draft}.'
+            self.assertEqual(hook.premature_closures(prompt), [str(draft)])
+            self.assertEqual(hook.premature_closures(prompt.replace('Review', 'Second pass on')), [str(draft)])
+            for good in (early.replace('Closed: a restatement.', 'Continuing. Next attempt: x.'),
+                         early.replace('[after review]', 'One medium reviewer read the closure.'),
+                         early.replace('Closed:', 'Developed').replace('[after review]', 'Checked.')):
+                with self.subTest(good=good[60:120]):
+                    draft.write_text(good)
+                    self.assertEqual(hook.premature_closures(prompt), [])
+            draft.write_text(early.replace('Closed: a restatement.', 'Developed: no remaining application.'))
+            self.assertEqual(hook.premature_closures(prompt), [str(draft)])
+            # An unbracketed placeholder and a missing gate are unfilled too (its reviewer's ways around).
+            for unfilled in (early.replace('[after review]', 'Pending the review of this draft and its sources.'),
+                             early.replace('<p><strong>Verification gate.</strong> [after review]</p>', '')):
+                with self.subTest(unfilled=unfilled[-90:]):
+                    draft.write_text(unfilled)
+                    self.assertEqual(hook.premature_closures(prompt), [str(draft)])
+            draft.write_text(early.replace('<p><strong>Follow-up', '<p class="follow">\n<strong>Follow-up'))
+            self.assertEqual(hook.premature_closures(prompt), [str(draft)])
+            # A sub-idea's closure in a list item, with the item Continuing, passes.
+            draft.write_text('<article id="entry-x" data-kind="research"><p><strong>Follow-up.</strong> Continuing.'
+                             '</p><ul><li>A check. <strong>Follow-up.</strong> Closed: merged into other-item.</li>'
+                             '</ul><p><strong>Verification gate.</strong> [after review]</p></article>')
+            self.assertEqual(hook.premature_closures(prompt), [])
+
     def test_record_claims_unread_or_uncompared_are_refused_before_the_review(self):
         # 18 October 2026: the thin-shell entry named three claims it had not read, and left two resembling claims out
         # of its Record comparison; the finisher found both after four review passes.

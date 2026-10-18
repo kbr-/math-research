@@ -336,6 +336,34 @@ def premature_reviewed(text):
     return early
 
 
+# The entry's own Follow-up paragraph: a sub-idea's list item ("<li>... <strong>Follow-up.</strong> Closed: merged
+# into ID") closes a sub-idea, not the item, and is not matched.
+CLOSING_FOLLOW_UP = re.compile(r'<p\b[^>]*>\s*<strong>Follow-up\.</strong>\s*(Closed|Developed)\b')
+GATE = re.compile(r'<strong>Verification gate\.</strong>(.*?)</p>', re.S)
+
+
+def gate_unfilled(body):
+    """No gate paragraph, an empty one, a bracketed placeholder, or a gate opening with "Pending"."""
+    gate = GATE.search(body)
+    text = gate.group(1).strip() if gate else ''
+    return (not text or GATE_PLACEHOLDER.search(body) is not None
+            or re.match(r'pending\b', text, re.I) is not None)
+
+
+def premature_closures(text):
+    """Drafts whose Follow-up says Closed or Developed while their Verification gate is unfilled (gate_unfilled):
+    PROMPTS.md's Spin asks a queue item's Follow-up drafted as Continuing and changed only after the review, and
+    on 18 October 2026 two entries in a row went to their reviewer closed, each closure found wrong."""
+    return [path for path in named_drafts(text)
+            for body in [Path(path).read_text(errors='replace')]
+            if CLOSING_FOLLOW_UP.search(body) and gate_unfilled(body)]
+
+
+CLOSURE_REASON = ('the draft {} closes its item (Follow-up Closed or Developed) while its Verification gate is still '
+                  'a placeholder: draft the Follow-up as Continuing and change it after the review has read the '
+                  'readings and the owed attempt (PROMPTS.md, Spin)')
+
+
 PREMATURE_REASON = ('the draft {} says "reviewed" in its status line while its Verification gate is still a '
                     'placeholder: write the status line after the review (AGENTS.md), for instance "Working '
                     'proof, under review", and change it when the gate is filled')
@@ -479,6 +507,9 @@ def refusal(payload, tools=TOOLS, log=None, now=None):
         early = premature_reviewed(message)
         if early:
             return PREMATURE_REASON.format(', '.join(early))
+        closed = premature_closures(message)
+        if closed:
+            return CLOSURE_REASON.format(', '.join(closed))
         absent = missing_statements(message)
         if absent:
             return STATEMENTS_REASON.format('; '.join(f'{d}: {", ".join(c)}' for d, c in absent))
@@ -506,6 +537,9 @@ def refusal(payload, tools=TOOLS, log=None, now=None):
     early = premature_reviewed(prompt)
     if early:
         return PREMATURE_REASON.format(', '.join(early))
+    closed = premature_closures(prompt)
+    if closed:
+        return CLOSURE_REASON.format(', '.join(closed))
     absent = missing_statements(prompt)
     if absent:
         return STATEMENTS_REASON.format('; '.join(f'{d}: {", ".join(c)}' for d, c in absent))

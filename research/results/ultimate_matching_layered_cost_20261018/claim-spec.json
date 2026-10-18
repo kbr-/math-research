@@ -1,0 +1,70 @@
+{
+ "source": {
+  "record": "[Layered cost equivalence](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-18-layered-cost-equivalence)",
+  "label": "Layered cost equivalence",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-18-layered-cost-equivalence"
+  ]
+ },
+ "date": "2026-10-18",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "claims": [
+  {
+   "id": "lem:layered-cost-equivalence",
+   "status": "working_proof",
+   "category": "route_specific",
+   "novelty": "not_claimed",
+   "summary": "For alpha_1, alpha_2 in (0, infinity], beta_j = 1/alpha_j, any two sets X, Y of N >= 2 points of [0,1]^2, s_1 = sqrt(log N/N), levels 0 < k_1 < ... < k_I, L'' > 0, box graphs G_i of the pairs with |X^j - Y^j| <= L'' k_i^(beta_j) s_1 for j = 1, 2, weights w_i = e^(k_(i+1)) - e^(k_i) and the layered cost Gamma(P) = sum_(i<I) w_i |P - G_i| of a perfect matching P: (A) if P lies in G_I and Gamma(P) <= C N (C >= 0), then P is (lambda L'', alpha_j)-good in both coordinates, lambda = max_j l^(beta_j), l = max(1, log_2(C + e^(k_1))); (B) if P is (L, alpha_j)-good in both coordinates, the levels are integers with k_1 >= 1, k_(i+1) <= (c-1) k_i + 1 for some c >= 2 and k_I >= log N/(4c), and L'' >= (8c)^(max_j beta_j) L, then P lies in G_I and Gamma(P) <= 4e/(e-1) N. Hence for every pair alpha, every random pair X, Y of N-point sets and such levels, some matching is good at alpha with some constant with probability tending to one if and only if, for some constants L'' and C, with probability tending to one some perfect matching inside G_I has layered cost at most C N; for the goal's samples this is conj:ultimate-matching at alpha.",
+   "assessment": "Working proof, passed with corrections by one medium reviewer (research/results/ultimate_matching_layered_cost_20261018/review.txt): (A) by the least level holding each pair, the telescoping weights and Jensen for x -> x^theta, theta = lambda^(-alpha_j) <= 1; (B) by the maximum bound from each term of the sum, and lem:level-count-consequence at t = c k_i with the weight bound w_i <= e^((c-1)k_i + 1) and a geometric sum.",
+   "rationale": "Fixes the gluing route's endpoint: a per-level condition helps the goal only as a proof of min Gamma = O(N), the conjecture itself at box levels; since min Gamma >= S and S = o_P(N) (prop:universal-completion-sufficiency's step (ii)), gluing at a constant factor of the deficiency sum is a sufficient condition of the form min Gamma = o(N), not shown to follow from the goal. Through lem:two-graph-chain-duality, on the event m_I = 0, the endpoint is a bound O(N) on chains of the layered cost.",
+   "next_action": "Decide whether on the samples some perfect matching has |P - G_i| = m_i at every box level, first at two levels, where it is existential completion at C = 1 and lem:completion-failure-certificate's second test can refute it."
+  }
+ ],
+ "relationships": [
+  [
+   "lem:layered-cost-equivalence",
+   "depends_on",
+   "lem:level-count-consequence",
+   "The level counts, at t = c k_i, in (B)."
+  ],
+  [
+   "lem:layered-cost-equivalence",
+   "cites",
+   "prop:universal-completion-sufficiency",
+   "Its proof's steps (iii)-(iv) are (A) at C = 1 for alpha_j >= 1 on samples."
+  ],
+  [
+   "lem:layered-cost-equivalence",
+   "cites",
+   "lem:two-graph-chain-duality",
+   "Its real-cost form dualizes the layered cost into chains over the box levels."
+  ],
+  [
+   "lem:layered-cost-equivalence",
+   "depends_on",
+   "lem:exponential-matching-consequences",
+   "Its maximum bound, in (B)."
+  ],
+  [
+   "lem:layered-cost-equivalence",
+   "cites",
+   "thm:thin-shell-completion-failure",
+   "About the gluing Gamma <= S, which the lemma shows a stronger convenience than the goal's Gamma = O(N)."
+  ],
+  [
+   "lem:layered-cost-equivalence",
+   "cites",
+   "thm:low-level-mixed-counts",
+   "A matching for two levels, from cells and sorted leftovers; neither a version nor a special case of the lemma, which joins every level in one matching."
+  ],
+  [
+   "lem:layered-cost-equivalence",
+   "cites",
+   "conj:ultimate-matching",
+   "The equivalence restates it at box levels."
+  ]
+ ]
+}
