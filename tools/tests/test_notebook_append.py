@@ -971,6 +971,18 @@ class SkeletonCheckTests(unittest.TestCase):
         self.assertIn('commit hash', failures.get('record lines', ''))
         self.assertNotIn('record lines', dict(tool.skeleton_check(routed(), draft())))
 
+    def test_the_queue_is_checked_as_the_queue_step_after_the_append_leaves_it(self):
+        # 18 October 2026: a review's one new sub-idea failed the skeleton's queue check, which read the queue
+        # before lead_queue.py append, the step after the append that queues it.
+        import lead_queue
+        entry = draft(kind='review', content='<h4>Sub-ideas</h4><ul><li data-sub="check">Whether the bound '
+                                             'holds at every width of the source.</li></ul>')
+        source = queued(1)
+        body = tool.insert_entry(source, entry)
+        with self.assertRaises(ValueError):
+            lead_queue.check(source, body, None, Path(tool.ROOT))
+        self.assertNotIn('queue', self.names(entry, source))
+
     def test_a_draft_that_is_not_an_article_fails_as_append(self):
         self.assertEqual(tool.skeleton_check(routed(), '<p>not an article</p>')[0][0], 'append')
 

@@ -763,8 +763,16 @@ def skeleton_check(source, entry, next_html=None, committed=None, reason=None, p
     article = body.rfind('<article', 0, body.rindex(f'id="{ident.group(1)}"'))
     close = body.find('</article>', article)
     checks = reporting_checks()
-    from lead_queue import check as queue_check, is_draining, SECTION_RE
-    run('queue', lambda: queue_check(committed, body, path, Path(root)))
+    from lead_queue import check as queue_check, is_draining, SECTION_RE, append_new
+
+    # The queue is checked as lead_queue.py append leaves it, which runs after the append (AGENTS.md): on
+    # 18 October 2026 the bare body failed for the entry's one new sub-idea, which that step adds.
+    def queued():
+        try:
+            return append_new(body)[0]
+        except ValueError:
+            return body
+    run('queue', lambda: queue_check(committed, queued(), path, Path(root)))
     section = SECTION_RE.search(body)
     draining = is_draining(committed, section.group(1) if section else None)
     for name, call in checks.entry_checks(body, article, close, draining, registered=False):
