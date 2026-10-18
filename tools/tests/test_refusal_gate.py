@@ -97,6 +97,16 @@ class RefusalGateTest(unittest.TestCase):
                    result('a', '1 staged articles\ncommit-msg: the message does not carry its condition', True)]
         self.assertEqual(self.run_hook(self.transcript(refused), '/tmp/x/commit.txt')[0], 2)
 
+    def test_the_replay_lists_each_firing(self):
+        entries = [use('a', 'Bash', {'command': 'python3 tools/notebook-append.py /tmp/x/cs.html'}),
+                   result('a', 'Exit code 1\nnotebook-append.py: refused here', True),
+                   use('b', 'Edit', {'file_path': '/tmp/x/cs.html'}), result('b', 'ok'),
+                   use('c', 'Edit', {'file_path': '/tmp/x/other.html'}), result('c', 'ok')]
+        lines = gate.replay(self.transcript(entries))
+        self.assertEqual(lines[0], '3 tool calls read')
+        self.assertEqual(lines[1], 'FIRES on cs.html | refused here')
+        self.assertEqual(lines[-1], '2 edits or writes; 1 would be refused')
+
     def test_other_tools_and_a_missing_transcript_pass(self):
         payload = {'tool_name': 'Bash', 'tool_input': {'command': 'ls'}, 'transcript_path': '/nonexistent'}
         with mock.patch('sys.stdin', io.StringIO(json.dumps(payload))):

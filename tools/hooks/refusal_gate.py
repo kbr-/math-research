@@ -13,7 +13,8 @@ or FAILS lines of a skeleton check) and no later call read the code under tools/
 head or awk on a tools/ path, or a Read of a file under tools/), the edit is refused. A skeleton check
 (notebook-append.py --check), the planning aid AGENTS.md describes, is gated only when its set of failing
 lines repeats that of the check before it on the same file, the second attempt at the same refused step.
-Usage: refusal_gate.py, with the hook JSON on stdin; exit 2 refuses."""
+Usage: refusal_gate.py, with the hook JSON on stdin; exit 2 refuses.
+       refusal_gate.py --replay TRANSCRIPT    print where the gate would have refused over a transcript."""
 import json
 import os
 import re
@@ -140,7 +141,27 @@ def pending(calls, path):
     return line
 
 
+def replay(transcript, max_uses=100000, max_bytes=300 << 20):
+    """The lines of a replay over a transcript: at each Edit or Write, would the gate have refused it, given the
+    MAX_USES calls before it; every firing is printed, to be read against its source."""
+    calls = tool_calls(transcript, max_uses, max_bytes)
+    lines, edits, fired = [f'{len(calls)} tool calls read'], 0, 0
+    for i, call in enumerate(calls):
+        if call['name'] not in ('Edit', 'Write'):
+            continue
+        edits += 1
+        path = str(call['input'].get('file_path') or '')
+        line = pending(calls[max(0, i - MAX_USES):i], path)
+        if line:
+            fired += 1
+            lines.append('FIRES on ' + Path(path).name + ' | ' + line[:150])
+    return lines + [f'{edits} edits or writes; {fired} would be refused']
+
+
 def main():
+    if len(sys.argv) == 3 and sys.argv[1] == '--replay':
+        print('\n'.join(replay(sys.argv[2])))
+        return 0
     try:
         payload = json.load(sys.stdin)
     except ValueError:
