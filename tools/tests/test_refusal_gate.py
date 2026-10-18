@@ -96,6 +96,12 @@ class RefusalGateTest(unittest.TestCase):
         refused = [use('a', 'Bash', {'command': 'git commit -q -F /tmp/x/commit.txt'}),
                    result('a', '1 staged articles\ncommit-msg: the message does not carry its condition', True)]
         self.assertEqual(self.run_hook(self.transcript(refused), '/tmp/x/commit.txt')[0], 2)
+        # 18 October 2026: a read of the module that prints the commit-msg refusals did not count.
+        read = refused + [use('b', 'Bash', {'command': 'sed -n 116,160p tools/commit_message_checks.py'}),
+                          result('b', 'def dropped_conditions(...)')]
+        self.assertEqual(self.run_hook(self.transcript(read), '/tmp/x/commit.txt')[0], 0)
+        other = refused + [use('b', 'Bash', {'command': 'sed -n 1,20p tools/lead_queue.py'}), result('b', 'x')]
+        self.assertEqual(self.run_hook(self.transcript(other), '/tmp/x/commit.txt')[0], 2)
 
     def test_the_replay_lists_each_firing(self):
         entries = [use('a', 'Bash', {'command': 'python3 tools/notebook-append.py /tmp/x/cs.html'}),

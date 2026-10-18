@@ -91,9 +91,13 @@ def refusal_line(text):
 
 
 def emitter(text):
-    """The file name of the tool the refusal text names ("notebook-append.py: ..."), or None."""
+    """The file name of the tool the refusal text names ("notebook-append.py: ..."), or None.  The commit-msg hook's
+    refusals come from tools/commit_message_checks.py: on 18 October 2026 reads of that module did not count,
+    and only a search quoting the refusal did."""
     match = re.search(r'^([\w.-]+\.py): ', text, re.M)
-    return match.group(1) if match else None
+    if match:
+        return match.group(1)
+    return 'commit_message_checks.py' if re.search(r'^commit-msg: ', text, re.M) else None
 
 
 def quotes(command, line):
