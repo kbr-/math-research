@@ -26,6 +26,28 @@ DRAFT = '''<article id="entry-x" data-claims="lem:new-one">
 
 
 class DraftClaimSentences(unittest.TestCase):
+    def test_carry_fills_a_new_form_from_the_old_answers(self):
+        # 18 October 2026: a repeated key's last block was empty and a hand script copied it; an edit re-keyed a
+        # Bearing sentence and its answer had to be moved by hand.
+        old = ('aaaaaaaa [Goal progress] Bearing. At the pair every stack of staircases is at the target.\n'
+               '  rests on: cor:x at lambda small, its conditions\n  within: lambda up to a power\n'
+               'bbbbbbbb [title] A title\n  rests on: cor:x, its Statement\n'
+               'aaaaaaaa [Bearing] Bearing. At the pair every stack of staircases is at the target.\n'
+               '  source: the curve ledger\n')
+        form = ('cccccccc [Goal progress] Bearing. At the pair every stack of staircases is at the target, gamma small.\n'
+                '  rests on: \n  within: \n'
+                'bbbbbbbb [title] A title\n  rests on: \n'
+                'dddddddd [Follow-up] Something else entirely about clusters.\n  rests on: \n')
+        out = dcs.carry_answers(form, old)
+        self.assertIn('  rests on: cor:x at lambda small, its conditions', out)
+        self.assertIn('  within: lambda up to a power', out)
+        self.assertIn('[title] A title\n  rests on: cor:x, its Statement', out)
+        # A sentence with no near old one keeps its empty line.
+        self.assertIn('about clusters.\n  rests on: \n', out)
+        # The repeated key's empty-or-other blocks do not shadow the filled one.
+        self.assertEqual(dcs.carry_answers('aaaaaaaa [Bearing] Bearing.\n  source: \n', old).splitlines()[1],
+                         '  source: the curve ledger')
+
     def test_a_width_too_short_to_read_is_refused(self):
         # 16 October 2026: --width 1 passed the brief hook and showed no sentence.
         with tempfile.TemporaryDirectory() as tmp:

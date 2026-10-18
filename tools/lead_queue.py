@@ -2401,6 +2401,11 @@ def cost_claim(text):
             ends = [i for i in (text.find('.', found.end()), text.find(';', found.end())) if i >= 0]
             if not RESOURCE.search(text[start:min(ends, default=len(text))]):
                 continue
+        # A bare "save" is also the verb of storing ("save its verdict"): a saving only with a resource within
+        # the words after it ("saves time", "saves 3 s per run"); 18 October 2026, a build asking a tool to save
+        # its verdict was refused as a claimed saving.
+        if re.fullmatch(r'saves?', found.group(0), re.I) and not RESOURCE.search(text[found.end():found.end() + 40]):
+            continue
         return found
     return None
 

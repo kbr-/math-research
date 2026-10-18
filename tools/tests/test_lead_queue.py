@@ -759,7 +759,8 @@ class LeadQueueTest(unittest.TestCase):
         head = notebook([self.rev], self.q)
         claims = ('Share the runs: it saves most of the time.', 'Cache it; the scan is slow.', 'The copy took 27 s each run.',
                   'Skip the copy, which takes several minutes.', 'Make it faster.', 'A change that cost the run 5 s was hidden.',
-                  'The scan is the main cost of each turn.', 'Profiling shows registry loading as the largest cost.')
+                  'The scan is the main cost of each turn.', 'Profiling shows registry loading as the largest cost.',
+                  'Reuse the index: it saves time.', 'The cache saves 3 s per run.')
         for text in claims:
             with self.subTest(text=text):
                 with self.assertRaisesRegex(ValueError, r'^a-build: the text claims a cost or a saving \(".+"\) and does '
@@ -776,7 +777,10 @@ class LeadQueueTest(unittest.TestCase):
                      # The mathematics' own cost is no running cost (17 October 2026: a build on summaries of a
                      # flow's cost was refused).
                      'List each outcome beside its bound: a late restoration was said not to lower the cost.',
-                     'Flag a sentence that bounds the cost of one part and concludes about the whole.'):
+                     'Flag a sentence that bounds the cost of one part and concludes about the whole.',
+                     # "save" as the verb of storing (18 October 2026: a build asking the route judge to save its
+                     # verdict, so that a cycle opens on it, was refused).
+                     'Make the judge save its verdict and its step, so that the next cycle opens on it.'):
             with self.subTest(text=text):
                 lq.add(head, 'build', 'a-build', 's', text)
         body = lq.add(head, 'build', 'a-build', 's', 'Port it.')

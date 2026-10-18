@@ -937,6 +937,51 @@ def answers_template(draft, summaries=None):
     return form + ''.join(f'{key} [{where}] {sentence}\n  regrouping: \n' for key, where, sentence in regroup_rows(draft))
 
 
+FORM_HEAD = re.compile(r'^([0-9a-f]{8}) \[([^\]]*)\] (.*)$')
+FORM_FIELD = re.compile(r'^[ \t]+([a-z][a-z ]*):[ \t]*(.*)$')
+CARRY_OVERLAP = 0.6
+
+
+def carry_answers(form, old):
+    """FORM with each empty answer line filled from OLD, an earlier answers file of the same draft: the
+    non-empty answer of the same key and field, else, for a sentence whose key changed (an edit gives it a new
+    one), that of the old sentence of the same section label sharing at least CARRY_OVERLAP of its words. A key
+    can head several blocks of a form, one per listing; the non-empty answer is taken from whichever holds it
+    (18 October 2026: a hand script that rekeyed answers took the last block of a repeated key, whose lines were
+    empty, and the append refused two sentences). A carried answer is the old sentence's: it is reread beside the
+    new sentence before the append (its first run carried a Bearing's answer naming a claim the edit had removed,
+    research/provenance/framework/answers-carry-run-20261018.txt)."""
+    by_key, by_label, head = {}, {}, None
+    for line in old.splitlines():
+        found = FORM_HEAD.match(line)
+        if found:
+            head = found.groups()
+            continue
+        field = FORM_FIELD.match(line)
+        if head and field and field.group(2).strip():
+            by_key.setdefault((head[0], field.group(1)), field.group(2).strip())
+            by_label.setdefault((head[1], field.group(1)), []).append((set(head[2].lower().split()),
+                                                                        field.group(2).strip()))
+    out, head = [], None
+    for line in form.splitlines():
+        found = FORM_HEAD.match(line)
+        if found:
+            head = found.groups()
+        field = FORM_FIELD.match(line)
+        if head and field and not field.group(2).strip():
+            name = field.group(1)
+            answer = by_key.get((head[0], name))
+            if answer is None:
+                words = set(head[2].lower().split())
+                scored = [(len(words & w) / max(1, len(words | w)), a) for w, a in by_label.get((head[1], name), [])]
+                best = max(scored, default=(0, None))
+                answer = best[1] if best[0] >= CARRY_OVERLAP else None
+            if answer:
+                line = line.rstrip() + ' ' + answer
+        out.append(line)
+    return '\n'.join(out) + '\n'
+
+
 # A summing-up sentence that cites a registered claim while its paragraph leaves some of the claim's symbols
 # unnamed is answered also on a line "within:": how the sentence's objects meet that claim's hypotheses.  On
 # 17 October 2026 a Bearing applied a conversion lemma to a family of grid functions that are not in the lemma's
@@ -2043,6 +2088,9 @@ def main():
                         'read are read for the unread-section listing')
     parser.add_argument('--answers', help='a file answering the summing-up sentences the listings print: written '
                         'as a form if it does not exist, else read, and the unanswered sentences printed')
+    parser.add_argument('--carry', help='with --answers naming a file not yet written: an earlier answers file of '
+                        'the same draft, whose answers fill the new form by key, or, for a sentence an edit '
+                        're-keyed, by the most similar old sentence of the same section')
     parser.add_argument('--summing-up', action='store_true', help='print only, for each article of the file, the '
                         'number of summing-up sentences an entry answers before it is appended')
     parser.add_argument('--source', help='print only the sentences that name line numbers, each beside those lines '
@@ -2151,7 +2199,10 @@ def main():
         answers = pathlib.Path(args.answers)
         summaries = {c['id']: c['summary'] for c in registry['claims']}
         if not answers.exists():
-            answers.write_text(answers_template(draft, summaries))
+            form = answers_template(draft, summaries)
+            if args.carry:
+                form = carry_answers(form, pathlib.Path(args.carry).read_text())
+            answers.write_text(form)
             print(f'\nWrote {answers} with {len(summing_up(draft))} summing-up sentences to answer: after each, '
                   'say on its "rests on:" line what it rests on, pointing at a claim identifier, an #entry- '
                   'anchor, a file under research/ or a formula, or "none:" and why.')
