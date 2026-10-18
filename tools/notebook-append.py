@@ -140,7 +140,8 @@ def refuse_off_route(source, entry, ask=None):
     if 'data-kind="research"' not in entry[:600] or not goal_open(source):
         return
     import route_judge
-    reason = route_judge.refusal(entry, source, **({'ask': ask} if ask else {}))
+    reason = route_judge.refusal(entry, source, **({'ask': ask} if ask else {}),
+                                 store=route_judge.VERDICT_STORE if not ask else None)
     if reason:
         raise ValueError(reason)
 

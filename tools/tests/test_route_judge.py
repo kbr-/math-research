@@ -92,5 +92,38 @@ class RouteJudgeTest(unittest.TestCase):
         self.assertIn('not consulted', notice.getvalue())
 
 
+class CarriedVerdictTest(unittest.TestCase):
+    def test_a_stored_detour_on_an_earlier_entry_must_be_answered_by_the_next(self):
+        # 18 October 2026: the judge returned "detour" five times on one entry, naming the step its own Follow-up
+        # left untaken; the next entry is to meet that verdict before it is written (judge-shortest-carried).
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            store = Path(tmp) / 'last.json'
+            judged = DRAFT.replace('id="e"', 'id="earlier"').replace('SAID', 'Taken: one more class excluded.')
+            route_judge.save_verdict(judged, {'verdict': 'detour', 'shortest': 'build the drift flow',
+                                              'reason': 'it excludes'}, store)
+            self.assertEqual(route_judge.last_verdict(store)['anchor'], 'earlier')
+            bare = DRAFT.replace('SAID', 'The entry builds another exclusion of the same class.')
+            self.assertIn('read the last judged entry (earlier', route_judge.carried_refusal(bare, store))
+            for said in ('Not taken: the drift flow waits for its smallest case, which this entry computes.',
+                         'Taken: the drift flow is built here and its tails are tested on two sizes.'):
+                with self.subTest(said=said):
+                    self.assertIsNone(route_judge.carried_refusal(DRAFT.replace('SAID', said), store))
+            # The same entry rewritten is the judge's own to read again; no store, no carried verdict.
+            self.assertIsNone(route_judge.carried_refusal(bare.replace('id="e"', 'id="earlier"'), store))
+            self.assertIsNone(route_judge.carried_refusal(bare, Path(tmp) / 'none.json'))
+            # "Taken" with too short a reason does not answer it.
+            self.assertIsNotNone(route_judge.carried_refusal(DRAFT.replace('SAID', 'Taken: yes.'), store))
+            # A stored verdict other than a detour carries nothing.
+            route_judge.save_verdict(judged, {'verdict': 'on route', 'shortest': 'x', 'reason': 'y'}, store)
+            self.assertIsNone(route_judge.carried_refusal(bare, store))
+
+    def test_refusal_reads_no_store_unless_one_is_passed(self):
+        # The store is the caller's, so a machine's stored verdict never reaches a test.
+        quiet = io.StringIO()
+        said = DRAFT.replace('SAID', 'The entry builds another exclusion of the same class, and more words.')
+        self.assertIsNone(route_judge.refusal(said, NOTEBOOK, ask=asker('on route'), notice=quiet, every=1))
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -31,6 +31,51 @@ import notebooks
 
 TIMEOUT = 90
 MODEL = 'claude-sonnet-5-5'
+# The last verdict, kept so that the next research entry meets it before it is written: on 18 October 2026 the
+# judge returned "detour" five times on one entry, each time naming the step the entry's own Follow-up named and
+# left untaken, a verdict no tool showed when the next entry was planned (the queued build judge-shortest-carried).
+VERDICT_STORE = Path(__file__).resolve().parents[1] / 'research/logs/route-judge-last.json'
+ANCHOR = re.compile(r'<article\b[^>]*\bid="([^"]+)"')
+
+
+def save_verdict(draft, verdict, store=None):
+    """Keep the judge's last verdict, with the anchor of the draft it read."""
+    import datetime
+    store = Path(store or VERDICT_STORE)
+    anchor = ANCHOR.search(draft or '')
+    try:
+        store.parent.mkdir(parents=True, exist_ok=True)
+        store.write_text(json.dumps({'anchor': anchor.group(1) if anchor else '', 'verdict': verdict.get('verdict'),
+                                     'shortest': verdict.get('shortest', ''), 'reason': verdict.get('reason', ''),
+                                     'at': datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}))
+    except OSError:
+        pass
+
+
+def last_verdict(store=None):
+    """The stored last verdict as a dict, or None."""
+    try:
+        return json.loads(Path(store or VERDICT_STORE).read_text())
+    except (OSError, ValueError):
+        return None
+
+
+def carried_refusal(draft, store=None):
+    """The reason to refuse a research draft that meets a stored "detour" verdict on an earlier entry without
+    answering it: its Shortest route paragraph must say "Taken" or "Not taken" with a reason of eight words."""
+    last = last_verdict(store)
+    if not last or last.get('verdict') != 'detour':
+        return None
+    anchor = ANCHOR.search(draft or '')
+    if anchor and anchor.group(1) == last.get('anchor'):
+        return None   # the same entry rewritten: the judge reads it again on its own turn
+    said = shortest_paragraph(draft)
+    if NOT_TAKEN.search(said) or re.match(r'\s*Taken\b[:,.;]?\s+(?:\S+\s+){7,}\S+', said):
+        return None
+    return (f'the route judge read the last judged entry ({last.get("anchor")}, {last.get("at")}) as a detour, '
+            f'its shortest step: {last.get("shortest")}. This entry\'s Shortest route paragraph says "Taken" and '
+            'how, or "Not taken" and the concrete reason, in at least eight words (AGENTS.md, order of work: '
+            'shortest route first)')
 LIVING = ('where-we-stand', 'open-statements', 'remaining-route', 'proposed-next-step')
 PARAGRAPHS = ('Question', 'Shortest route', 'New mathematics')
 
@@ -142,7 +187,7 @@ def due(notebook, every=EVERY):
     return (len(RESEARCH.findall(notebook)) + 1) % every == 0
 
 
-def refusal(draft, notebook, ask=sonnet, notice=sys.stderr, every=EVERY):
+def refusal(draft, notebook, ask=sonnet, notice=sys.stderr, every=EVERY, store=None):
     """The reason to refuse a research draft on route grounds, or None. A draft without a Shortest route paragraph
     is refused without asking; on every EVERY-th research entry the judge is asked, and a detour is refused unless
     that paragraph says "Not taken" with a reason."""
@@ -153,6 +198,11 @@ def refusal(draft, notebook, ask=sonnet, notice=sys.stderr, every=EVERY):
                 'takes it, or "Not taken" with the concrete reason, or, where the record names none, "No direct '
                 'route known yet" and what the exploration is to find (AGENTS.md, order of work: shortest route '
                 'first)')
+    # The store is the caller's: tools/notebook-append.py passes VERDICT_STORE, tests a scratch file, so that a
+    # machine's stored verdict never reaches a test.
+    carried = carried_refusal(draft, store) if store else None
+    if carried:
+        return carried
     if not due(notebook, every):
         count = len(RESEARCH.findall(notebook)) + 1
         print(f'route judge: not run on research entry {count} (it reads every {every}th; the next at entry '
@@ -165,6 +215,8 @@ def refusal(draft, notebook, ask=sonnet, notice=sys.stderr, every=EVERY):
         return None
     print(f'route judge: {verdict["verdict"]}; shortest named: {verdict["shortest"]}; {verdict["reason"]}',
           file=notice)
+    if store:
+        save_verdict(draft, verdict, store)
     if verdict['verdict'] == 'detour' and not NOT_TAKEN.search(said):
         return (f'the route judge reads this entry as a detour ({verdict["reason"]}); its shortest step: '
                 f'{verdict["shortest"]}. Take that step, or say in the Shortest route paragraph "Not taken" and the '

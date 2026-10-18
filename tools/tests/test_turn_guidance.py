@@ -302,5 +302,20 @@ class TurnGuidanceTest(unittest.TestCase):
         self.assertEqual(self.guide.guidance('<section id="research-record"></section>', self.ft), [])
 
 
+class JudgeNoteTest(unittest.TestCase):
+    def test_a_stored_detour_is_printed_and_another_verdict_is_not(self):
+        import json
+        import tempfile
+        guide = load('turn_guidance', 'tools/turn_guidance.py')
+        with tempfile.TemporaryDirectory() as tmp:
+            store = Path(tmp) / 'last.json'
+            self.assertEqual(guide.judge_notes(store), [])
+            store.write_text(json.dumps({'anchor': 'entry-x', 'verdict': 'detour', 'shortest': 'build the flow',
+                                         'reason': 'r', 'at': '2026-10-18 10:00'}))
+            self.assertIn('build the flow', ' '.join(guide.judge_notes(store)))
+            store.write_text(json.dumps({'anchor': 'entry-x', 'verdict': 'on route', 'shortest': 's'}))
+            self.assertEqual(guide.judge_notes(store), [])
+
+
 if __name__ == '__main__':
     unittest.main()

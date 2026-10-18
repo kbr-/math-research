@@ -254,6 +254,19 @@ SQUEEZE = ('Squeeze each item, do not close it at its first usable result (user,
            'lead_queue.py append queues them under the item they belong to.')
 
 
+def judge_notes(store=None):
+    """The route judge's stored last verdict when it is a detour, so the next research entry meets it before it is
+    written (the build judge-shortest-carried, 18 October 2026)."""
+    sys.path.insert(0, str(ROOT / 'tools'))
+    import route_judge
+    last = route_judge.last_verdict(store)
+    if not last or last.get('verdict') != 'detour':
+        return []
+    return [f'Route judge: its last verdict ({last.get("anchor")}, {last.get("at")}) was a detour; its shortest step: '
+            f'{last.get("shortest")}. The next research entry takes it ("Taken" and how) or says "Not taken" and the '
+            'concrete reason in its Shortest route paragraph; tools/notebook-append.py refuses one that does neither.']
+
+
 def guidance(body, ft, which=shutil.which, has=installed_header):
     # every article also carries data-route-item, so keep each route once, in order
     items = list(dict.fromkeys(re.findall(r'data-route-item="([^"]+)"', body)))
@@ -297,6 +310,7 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
     if lq.is_draining(body):
         notes[-1] = lq.DRAINING_REVIEW_RULE
     notes += [note for note in (algebra_note(which), library_note(has)) if note]
+    notes += judge_notes()
     notes += queue_notes(body)
     notes.append('Separate New mathematics from Goal progress in every research/review entry; name a stable '
                  'data-obligation and data-goal-progress="advanced|unchanged". The scheduled review includes '
