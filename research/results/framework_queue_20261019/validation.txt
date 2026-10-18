@@ -1,0 +1,31 @@
+The migration inventory is the complete classified inventory requested by the user.
+audit.py compares it against its recorded source commit and the current files.
+audit.json records 221 framework items, 646 mathematical items and 867 in total.
+Transferred descriptions, summaries and original-parent provenance match exactly;
+local source links are converted to portable cross-notebook links. Remaining math
+nodes and their order match, and all content outside the queue sections is unchanged.
+
+tests-checkpoint.txt records 1518 tests in 10.9s: OK, one optional authenticated-browser
+download test skipped. Browser tests exercise both queues together: separate
+five-item disclosures, full-text expansion, unique target IDs, search and deep links.
+resume-counts.txt records actual main and Ultimate Matching bundles reporting only
+the framework count, without including the section in their living-section payload.
+The record-line check reports eight files and zero findings; git diff --check passed.
+
+Writes use the current worktree's main notebook, not another checkout. Shared queue
+CLI mutations use one lock. Multi-file transfers validate input snapshots and write
+main first using per-file atomic replacement; interruption may leave a duplicate
+source until retry, but never deletes an item before its destination is written.
+The recovery test forces that interruption and verifies an idempotent retry.
+No publication or mathematical research was performed.
+
+tests-overrun.txt preserves the functional pass that exceeded the timing gate
+(1518 tests in 16.3s). The runner measured outside load and its own CPU use.
+Profiling identified unnecessary MathJax compilation in the plain-text queue
+fixture; its loader element is retained for the production error listener, while
+its unused external engine is omitted. An assertion rejects TeX in that fixture.
+All queue/search assertions and the separate math-rendering cases remain.
+browser-before.txt and browser-after.txt record the queue case at about 0.94s
+and 0.68s respectively; these are two observations, not a load-controlled benchmark.
+tests-optimized.txt records the next full pass, before final whitespace cleanup;
+tests-checkpoint.txt is the passing run on the staged code.

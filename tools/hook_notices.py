@@ -65,6 +65,10 @@ def item_text(root, ident, notebook):
     path = Path(root) / notebook
     if not path.exists():
         return None
+    if '::' in ident:
+        import framework_queue
+        return next((n.text for n in framework_queue.parse(path.read_text())
+                     if framework_queue.key(n) == ident), None)
     found = re.search(r'<li\b[^>]*\bdata-(?:build|check|idea|lead|bridge)="' + re.escape(ident) + r'"[^>]*>(.*?)'
                       r'(?:<ul\b|</li>)', path.read_text(), re.S)
     return found.group(1) if found else None

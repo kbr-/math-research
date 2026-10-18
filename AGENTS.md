@@ -964,73 +964,89 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   intends to carry out: do a small one in the entry, drop one that will not be done, and add none to
   fill the section (user, 9 October 2026). Work that comes up outside an entry (a conversation, a
   review, a tool's defect) joins the queue at once with `lead_queue.py add NOTEBOOK.html
-  --check|--build|--idea ID SOURCE TEXT --summary SUMMARY`: a top-level item at the tail, which
-  needs no entry and which a commit without an entry may add (user, 7 October 2026: "You should be
-  able to queue items by just running the tool"). New items carry an agent-written plain-text
-  summary of at most 160 characters: `--summary` for direct additions, or `data-summary` on the
-  source list item. This attribute is hidden in the rendered notebook. Queue descriptions retain
-  their full text; listing and resume require the summary, with no prefix fallback. Repair missing
-  metadata with `lead_queue.py summarize`. `history --status` prints the full queued text before its
-  development history. A finished top-level build leaves the same way: `lead_queue.py close-built
-  NOTEBOOK.html ID --record REVIEW.txt --path PATH --note TEXT` records the reviewer's record, the
-  implementation paths and what was built in `research/queue-closures.jsonl`, and a commit without
-  an entry may carry it (user, 16 October 2026: "Isn't that a gap in the framework? Why can't you
-  close items"). Those of a research entry that develops no queue item have no parent: they wait in
-  their entry, `lead_queue.py pending` lists them, and the next review promotes any number by
-  judgement with a follow-up list item ending `<strong>Follow-up.</strong> Promoted: <reason>`
-  (user, 9 October 2026). `lead_queue.py append` and `similar` show queued items with similar
-  wording; when two ask the same thing keep one, closing the other with "Closed: merged into ID",
-  which adds its wording to that item. The others join the queue nested under the item they belong
-  to (user, 3 October 2026: "I want it to look like a nested list of entries"), a sub-idea's
-  development counting toward its parent's spell; a check is Developed only with evidence that
-  resolves, a build only with its opened task or its path. The user may pick any item out of order
-  (`data-picked="user"`, the words quoted in a `<strong>Picked.</strong>` paragraph), and an item
-  waiting on the user's answer stays queued and passed over (`Waiting:` and `Unblocked:`
-  follow-ups). The queue section's attributes set, per notebook, the entry kinds that count,
-  backpressure and extra kinds; [tools/lead_queue.py](tools/lead_queue.py) holds the details.
-  Backpressure: at 30 top-level items (user, 9 October 2026; 50 before) the queue drains
-  (`data-draining="true"`), and until 10 remain every research entry develops a queued item or one
-  of its sub-ideas: the head by default, or any other queued item under the same choice rule as
-  outside draining, a `<strong>Chosen.</strong>` paragraph saying which open statement it bears on
-  and why it comes first. Draining restricts entries to the queue; it does not restrict them to the
-  head (user, 11 October 2026: "it moves you to where you choose, the only restriction being to
-  select a diff item"). Then work returns to the route, or to a better route the leads opened. While
-  the queue is draining, reviews produce no Outside leads or Absurd bridges: omit both sections and
-  assess existing work (user, 5 October 2026). Review cadence and the other review requirements
-  still apply. A review of a draining queue declares `data-queue-items="N"`, its top-level count
-  (the finisher checks), and `compute.sh start` prints the last two recorded counts beside the
-  present one: draining is a rule, and only the counts show whether the queue shrinks. A review that
-  decides to leave items declares them in `data-left-items="ID ID"`, and until the next review an
-  entry on one of them, or on a sub-idea of one, says after `<strong>Returns.</strong>` why it
-  returns (the finisher checks the item, not the subject, which the reviewer checks). Reviews report
-  only follow-ups whose status changed. A review whose period queued build items that are still
-  queued, and made fewer builds than remain queued from it, says in a `<p><strong>Builds.</strong>`
-  paragraph what becomes of each: built now, dropped, or the dated reason it waits (the finisher
-  checks that each is named; the queue tool stamps an added item with the record's last entry, by
-  which the period is known). The finisher checks all of this against HEAD and `compute.sh start`
-  prints the queue's state and head. A one-step objection (a structural remark, a record match, one
-  encoding tried) falsifies only that formulation. Before a review declares an open statement
-  without mechanism, or moves cycles away from it, each "Not run" item and each item closed by such
-  an objection that bears on that statement gets a development cycle: read the source in full, and
-  try other encodings, formulations and settings where the objection does not apply (user, 26
-  September 2026: "Did you make an honest attempt at developing some of these in order to solve
-  A1?"). In the user's words (25 September 2026): "absurd bridges can reach for mathematics,
-  computer science, theoretical physics, quantum fucking chemistry, I don't give a fuck. That's why
-  they are absurd." Reaching for other areas is the agent's job at every cycle, not only when the
-  user names a field. Proposed next step names its route item, and the queue item it takes, by
-  identifier or by a link to an entry that developed it: the append tool prints that item's queued
-  text and latest follow-up, to write the description against, refuses a next step naming none while
-  the queue drains, and refuses one that names a developed item by its identifier without quoting
-  eight consecutive words of the item's latest follow-up or queued text. While the goal is open that
-  step is always research: never park, pause or stop the goal, or wait for a user decision; when
-  recorded routes are closed, propose and test a new idea. Once the goal is proved, a Spin loop
-  stops ([PROMPTS.md](PROMPTS.md#spin)). During an authorized Spin, continue the next cycle or
-  review in the current turn; possible user redirection is no reason to idle or request a check-in.
-  Low-yield cycles, corrections and hard next steps call for developing the latest review's Outside
-  leads and Absurd bridges, not stopping the loop while the goal is open. Explain progress,
-  obstructions and remaining uncertainty; do not invent numerical probabilities for research
-  prospects. A probability requires a stated quantitative method and evidence, not an uncalibrated
-  impression.
+  --check|--build|--idea ID SOURCE TEXT --summary SUMMARY --scope math|framework`: a top-level item
+  at the tail, which needs no entry and which a commit without an entry may add (user, 7 October
+  2026: "You should be able to queue items by just running the tool"). New items carry an
+  agent-written plain-text summary of at most 160 characters: `--summary` for direct additions, or
+  `data-summary` on the source list item. The author classifies each new listed item with
+  `data-queue="math"` or `data-queue="framework"`; its kind alone does not decide this. These
+  attributes are hidden in the rendered notebook. Queue descriptions retain their full text; listing
+  and resume require the summary, with no prefix fallback. Repair missing metadata with
+  `lead_queue.py summarize`. `history --status` prints the full queued text before its development
+  history. Framework items go directly to the main notebook's separate `<section
+  id="framework-queue">`, from any notebook, including framework sub-ideas that would otherwise wait
+  for a research review. `lead_queue.py append` routes listed items; stage the main notebook with
+  the originating notebook when it reports a transfer. The tools edit the main notebook in the
+  current worktree, synchronized through the normal Git checkpoint. The framework queue has no
+  mathematical draining, spell or research-cycle obligations and no context budget; resume reports
+  only its count. The rendered main notebook shows five items initially, with expandable full
+  descriptions and the remaining items behind a disclosure. Use `lead_queue.py framework-list`, then
+  `framework-status ORIGIN::KIND:ID` for full text and provenance, or `framework-edit
+  ORIGIN::KIND:ID TEXT --summary SUMMARY` to revise it. `framework-close ORIGIN::KIND:ID --record
+  REVIEW.txt --path PATH --note TEXT` closes any framework kind with reviewed evidence in the
+  existing closure ledger. Closed identities retain framework ownership; a repeated append cannot
+  reopen them, and new work uses a new identifier. Migration retains original IDs, summaries, source
+  links and parent provenance; distinct originating notebooks disambiguate IDs. Mathematical items
+  remain in their current notebook. A finished top-level mathematical build leaves the same way:
+  `lead_queue.py close-built NOTEBOOK.html ID --record REVIEW.txt --path PATH --note TEXT` records
+  the reviewer's record, the implementation paths and what was built in
+  `research/queue-closures.jsonl`, and a commit without an entry may carry it (user, 16 October
+  2026: "Isn't that a gap in the framework? Why can't you close items"). Those of a research entry
+  that develops no queue item have no parent: they wait in their entry, `lead_queue.py pending`
+  lists them, and the next review promotes any number by judgement with a follow-up list item ending
+  `<strong>Follow-up.</strong> Promoted: <reason>` (user, 9 October 2026). `lead_queue.py append`
+  and `similar` show queued items with similar wording; when two ask the same thing keep one,
+  closing the other with "Closed: merged into ID", which adds its wording to that item. The others
+  join the queue nested under the item they belong to (user, 3 October 2026: "I want it to look like
+  a nested list of entries"), a sub-idea's development counting toward its parent's spell; a check
+  is Developed only with evidence that resolves, a build only with its opened task or its path. The
+  user may pick any item out of order (`data-picked="user"`, the words quoted in a
+  `<strong>Picked.</strong>` paragraph), and an item waiting on the user's answer stays queued and
+  passed over (`Waiting:` and `Unblocked:` follow-ups). The queue section's attributes set, per
+  notebook, the entry kinds that count, backpressure and extra kinds;
+  [tools/lead_queue.py](tools/lead_queue.py) holds the details. Backpressure: at 30 top-level items
+  (user, 9 October 2026; 50 before) the queue drains (`data-draining="true"`), and until 10 remain
+  every research entry develops a queued item or one of its sub-ideas: the head by default, or any
+  other queued item under the same choice rule as outside draining, a `<strong>Chosen.</strong>`
+  paragraph saying which open statement it bears on and why it comes first. Draining restricts
+  entries to the queue; it does not restrict them to the head (user, 11 October 2026: "it moves you
+  to where you choose, the only restriction being to select a diff item"). Then work returns to the
+  route, or to a better route the leads opened. While the queue is draining, reviews produce no
+  Outside leads or Absurd bridges: omit both sections and assess existing work (user, 5 October
+  2026). Review cadence and the other review requirements still apply. A review of a draining queue
+  declares `data-queue-items="N"`, its top-level count (the finisher checks), and `compute.sh start`
+  prints the last two recorded counts beside the present one: draining is a rule, and only the
+  counts show whether the queue shrinks. A review that decides to leave items declares them in
+  `data-left-items="ID ID"`, and until the next review an entry on one of them, or on a sub-idea of
+  one, says after `<strong>Returns.</strong>` why it returns (the finisher checks the item, not the
+  subject, which the reviewer checks). Reviews report only follow-ups whose status changed. A review
+  whose period queued build items that are still queued, and made fewer builds than remain queued
+  from it, says in a `<p><strong>Builds.</strong>` paragraph what becomes of each: built now,
+  dropped, or the dated reason it waits (the finisher checks that each is named; the queue tool
+  stamps an added item with the record's last entry, by which the period is known). The finisher
+  checks all of this against HEAD and `compute.sh start` prints the queue's state and head. A
+  one-step objection (a structural remark, a record match, one encoding tried) falsifies only that
+  formulation. Before a review declares an open statement without mechanism, or moves cycles away
+  from it, each "Not run" item and each item closed by such an objection that bears on that
+  statement gets a development cycle: read the source in full, and try other encodings, formulations
+  and settings where the objection does not apply (user, 26 September 2026: "Did you make an honest
+  attempt at developing some of these in order to solve A1?"). In the user's words (25 September
+  2026): "absurd bridges can reach for mathematics, computer science, theoretical physics, quantum
+  fucking chemistry, I don't give a fuck. That's why they are absurd." Reaching for other areas is
+  the agent's job at every cycle, not only when the user names a field. Proposed next step names its
+  route item, and the queue item it takes, by identifier or by a link to an entry that developed it:
+  the append tool prints that item's queued text and latest follow-up, to write the description
+  against, refuses a next step naming none while the queue drains, and refuses one that names a
+  developed item by its identifier without quoting eight consecutive words of the item's latest
+  follow-up or queued text. While the goal is open that step is always research: never park, pause
+  or stop the goal, or wait for a user decision; when recorded routes are closed, propose and test a
+  new idea. Once the goal is proved, a Spin loop stops ([PROMPTS.md](PROMPTS.md#spin)). During an
+  authorized Spin, continue the next cycle or review in the current turn; possible user redirection
+  is no reason to idle or request a check-in. Low-yield cycles, corrections and hard next steps call
+  for developing the latest review's Outside leads and Absurd bridges, not stopping the loop while
+  the goal is open. Explain progress, obstructions and remaining uncertainty; do not invent
+  numerical probabilities for research prospects. A probability requires a stated quantitative
+  method and evidence, not an uncalibrated impression.
 - Keep entries chronological and append-only, including opinions/assessments even when the user
   objects. Withdraw/correct/retract in a new dated entry linking the old anchor; update living
   status and correction metadata. Never silently rewrite prior mathematics to match later results.

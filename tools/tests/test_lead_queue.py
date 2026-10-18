@@ -31,13 +31,15 @@ def queue_command(argv):
     """Keep existing CLI fixtures valid under the new summary requirement."""
     if len(argv) >= 7 and argv[1] == 'add' and '--summary' not in argv:
         argv = [*argv, '--summary', argv[6][:160]]
+    if len(argv) >= 7 and argv[1] == 'add' and '--scope' not in argv:
+        argv = [*argv, '--scope', 'math']
     return lq.main(argv)
 
 
 def review(ident, leads, bridges=(FAIL, FAIL)):
     return (f'<article id="{ident}" data-kind="review" data-route="step"><h4>Outside leads</h4><ul>'
-            + ''.join(f'<li data-summary="Review lead {n}">L{n}{t}</li>' for n, t in enumerate(leads)) + '</ul><h4>Absurd bridges</h4><ul>'
-            + ''.join(f'<li data-summary="Review bridge {n}">B{n}{t}</li>' for n, t in enumerate(bridges)) + '</ul></article>')
+            + ''.join(f'<li data-queue="math" data-summary="Review lead {n}">L{n}{t}</li>' for n, t in enumerate(leads)) + '</ul><h4>Absurd bridges</h4><ul>'
+            + ''.join(f'<li data-queue="math" data-summary="Review bridge {n}">B{n}{t}</li>' for n, t in enumerate(bridges)) + '</ul></article>')
 
 
 def research(develops=None, outcome=None):
@@ -49,10 +51,11 @@ def research(develops=None, outcome=None):
 def subideas(ident, items, kind='task', extra=''):
     """An entry listing sub-ideas: items are (sub kind, text)."""
     return (f'<article id="{ident}" data-kind="{kind}"{extra}>{"" if extra else "<p>work</p>"}<h4>Sub-ideas</h4><ul>'
-            + ''.join(f'<li data-sub="{k}" data-summary="Listed fixture item">{x}</li>' for k, x in items) + '</ul></article>')
+            + ''.join(f'<li data-sub="{k}" data-queue="math" data-summary="Listed fixture item">{x}</li>' for k, x in items) + '</ul></article>')
 
 
 def developing(item, outcome, body=''):
+    body = re.sub(r'<li data-sub=', '<li data-queue="math" data-sub=', body)
     return (f'<article id="d" data-kind="research" data-route="step" data-{item[0]}="{item[1]}">{body}'
             f'<p><strong>Follow-up.</strong> {outcome}: x.</p></article>')
 
@@ -66,6 +69,8 @@ def line(entry):
 
 
 def notebook(articles, queue=None, draining=False, attrs='', route=True):
+    articles = [re.sub(r'<li(?![^>]*data-queue=)([^>]*data-summary="[^"]*"[^>]*)>',
+                       r'<li data-queue="math"\1>', article) for article in articles]
     section = ''
     if queue is not None:
         flag = attrs + (' data-draining="true"' if draining else '')

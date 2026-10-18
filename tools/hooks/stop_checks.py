@@ -472,7 +472,7 @@ def missing_tool_block(texts, calls):
         return None
     return {'decision': 'block', 'reason': (
         f'A missing tool: "{found[0]}". A job without a tool recurs; build the tool, with its test, or queue it '
-        '(tools/lead_queue.py add notebook.html --build ID SOURCE TEXT) in this turn, so the need outlives it '
+        '(tools/lead_queue.py add NOTEBOOK --build ID SOURCE TEXT --summary SUMMARY --scope framework) in this turn, so the need outlives it '
         '(AGENTS.md: "Extend committed, tested tools for recurring helpers"). If the job is a genuine one-off, '
         'or the sentence names no missing tool, say so.')}
 

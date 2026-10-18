@@ -1,0 +1,36 @@
+Consolidated framework-queue review
+
+Native reviewer: gpt-6.1-sol, medium reasoning, read-only. No computations run.
+Initial verdict: fail pending lifecycle corrections.
+
+Findings addressed:
+- A repeated append could recreate a closed or source-resolved item. Source
+  resolutions are now excluded; the existing closure ledger retains closed IDs.
+- Closed legacy items could return to mathematics because their archived source
+  lacks classification metadata. Closed identities now retain framework ownership.
+- Reusing a closed key could reuse its old closure evidence. New work must use a
+  new identifier; direct addition and validation reject closed-key reuse.
+- Direct framework additions bypassed common ID/source/text checks. They now use
+  added_admit and explicitly reject an empty question.
+- Staged closure validation initially consulted the working ledger first. The
+  staged ledger now reaches every stage of the staged check; a real Git fixture
+  checks both unstaged-evidence refusal and independence from working-tree edits.
+
+Final verdict: pass. No further required corrections within software scope.
+Reviewed routing, migration, lifecycle, ownership, staged payload and evidence,
+resume/context exclusion, notices, UI, guidance, tests and migration audit.
+The reviewer did not certify mathematics or independently rerun tests.
+Process audit: no new findings; strength count zero.
+
+Final test-only follow-ups passed review: framework-search expansion, portable
+links through notebook_site.source, and isolation of the plain-text queue case
+from unused external MathJax loading while retaining its DOM listener target.
+
+Prevention: lifecycle regression tests cover close then append, close then legacy
+promotion, close then key reuse, resolved-at-source work, invalid additions,
+interrupted transfers, source-payload substitution and staged closure evidence.
+
+Meta: classify by the purpose of the task, independently of its build/check/idea
+label, and retain ownership after completion. AGENTS.md owns that workflow;
+framework_queue.py implements it without assigning mathematical work cycles to
+framework maintenance.

@@ -39,7 +39,9 @@ on resume, even in a fresh clone. “Before this notebook” is historical conte
    from the repository root; no dependency installation without authorization.
 3. Read the bundled living sections, including formalization gaps: goal,
    highest-risk route, next step, exact working conventions and active warnings.
-   These summaries orient; they do not replace proof reading.
+   These summaries orient; they do not replace proof reading. The shared framework
+   queue is represented only by its count, never its descriptions. Inspect it with
+   `tools/lead_queue.py framework-list` when doing framework work.
 4. Use the bundled latest-ten TOC to select relevant entries. For more navigation,
    use `tools/notebook-excerpt.py --toc --tail 20 --since 2026-09-01`; read an exact
    source with `tools/notebook-excerpt.py ANCHOR`. Headings stop at the next peer or

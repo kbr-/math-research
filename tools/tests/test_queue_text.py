@@ -83,8 +83,8 @@ class QueueText(unittest.TestCase):
                 self.assertEqual(lq.main(['lead_queue.py', 'summarize', str(path), str(spec)]), 0)
             self.assertEqual(path.read_text(), updated)
             spec.write_text(json.dumps(rows * 2))
-            with self.assertRaises(ValueError):
-                lq.main(['lead_queue.py', 'summarize', str(path), str(spec)])
+            with contextlib.redirect_stderr(io.StringIO()):
+                self.assertEqual(lq.main(['lead_queue.py', 'summarize', str(path), str(spec)]), 1)
             self.assertEqual(path.read_text(), updated)
 
     def test_restoration_handles_renamed_sources_cross_kind_merges_and_literal_ellipsis(self):
@@ -118,7 +118,7 @@ class QueueText(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'notebook.html'
             path.write_text(body)
-            argv = ['lead_queue.py', 'add', str(path), '--check', 'compare', 'user', full]
+            argv = ['lead_queue.py', 'add', str(path), '--check', 'compare', 'user', full, '--scope', 'math']
             missing = io.StringIO()
             with contextlib.redirect_stderr(missing):
                 self.assertEqual(lq.main(argv), 2)

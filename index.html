@@ -166,15 +166,14 @@
   </aside>
   <script id="queue-disclosure">
     (() => {
-      const list = document.querySelector('#lead-queue > ol, #lead-queue > ul');
-      if (!list) return;
+      for (const list of document.querySelectorAll('#lead-queue > ol, #lead-queue > ul, #framework-queue > ol')) {
       for (const [index, item] of [...list.querySelectorAll('li')].entries()) {
         const content = [...item.childNodes].filter(node =>
           node.nodeType !== Node.ELEMENT_NODE || !node.matches('ul, ol'));
         if (content.map(node => node.textContent).join('').trim().length <= 180) continue;
         const text = document.createElement('div');
         text.className = 'queue-item-text';
-        text.id = `queue-full-text-${index}`;
+        text.id = `${list.parentElement.id}-full-text-${index}`;
         text.dataset.collapsed = '';
         text.append(...content);
         const button = document.createElement('button');
@@ -192,7 +191,7 @@
         item.prepend(text, button);
       }
       const remaining = [...list.children].filter(item => item.matches('li')).slice(5);
-      if (!remaining.length) return;
+      if (!remaining.length) continue;
       const disclosure = document.createElement('details');
       disclosure.className = 'queue-more';
       const toggle = document.createElement('summary');
@@ -207,6 +206,7 @@
       disclosure.addEventListener('toggle', label);
       disclosure.append(toggle, rest);
       list.after(disclosure);
+      }
     })();
   </script>
   <script id="viewport-math">
@@ -406,7 +406,7 @@
             highlighted?.classList.remove('search-hit');
             highlighted = record.element;
             highlighted.classList.add('search-hit');
-            const queueItem = highlighted.closest('#lead-queue li');
+            const queueItem = highlighted.closest('#lead-queue li, #framework-queue li');
             for (const button of queueItem?.querySelectorAll('.queue-text-toggle[aria-expanded="false"]') || []) {
               button.click();
             }

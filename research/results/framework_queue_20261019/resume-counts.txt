@@ -1,0 +1,6 @@
+# command: python3 -c import sys; from pathlib import Path; sys.path.insert(0,"tools"); import resume; root=Path.cwd()
+for name in ("main","ultimate-matching"):
+ parts=resume.bundle(root,notebook=name); shared=[part[1] for part in parts if part[2]=="framework-queue"]; living=[part[1] for part in parts if "living sections" in part[0]]; assert len(shared)==1 and "221 framework items" in shared[0]; assert all("id=\"framework-queue\"" not in text for text in living); print(name+": "+shared[0].strip())
+# run 4adad30a67, session framework-queue-20261019; full output
+main: 221 framework items in the main notebook; contents omitted.
+ultimate-matching: 221 framework items in the main notebook; contents omitted.

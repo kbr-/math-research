@@ -116,13 +116,18 @@ def bundle(root, formalization=False, tail=10, notebook=None):
     current,toc,omitted=excerpt.living_and_toc(source,tail)
     current=current.rstrip()+'\n'
     # The lead queue has no word limit: restoration reads its head only (tools/lead_queue.py).
-    current=re.sub(r'<section id="lead-queue"[^>]*>.*?</section>\s*','',current,flags=re.S)
+    current=re.sub(r'<section id="(?:lead|framework)-queue"[^>]*>.*?</section>\s*','',current,flags=re.S)
     parts.append((item['source']+' — living sections (thread '+item['name']+')',current,'notebook-excerpt',
                   {'anchor':None,'until':None,'current':True,'toc':False,'tail':None,'since':'None'}))
     from lead_queue import head_lines
     queue=head_lines(source)
     if queue:
         parts.append(('Lead and bridge queue — head (the default; another item needs a Chosen. paragraph; sub-ideas under their item)','\n'.join(queue)+'\n','lead-queue','head'))
+    from framework_queue import parse as framework_items
+    main_path=root/'notebook.html'
+    shared=framework_items(source if item['name']=='main' else main_path.read_text()) if main_path.exists() else []
+    parts.append(('Framework queue',f'{len(shared)} framework items in the main notebook; contents omitted.\n',
+                  'framework-queue','count'))
     parts.append((f'Research-record contents — latest {tail}; {omitted} earlier entries omitted',toc,
                   'notebook-excerpt',{'anchor':None,'until':None,'current':False,'toc':True,'tail':tail,'since':'None'}))
     if (root/'research/claims/index.json').exists():

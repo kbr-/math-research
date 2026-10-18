@@ -994,7 +994,7 @@ class SkeletonCheckTests(unittest.TestCase):
         # 18 October 2026: a review's one new sub-idea failed the skeleton's queue check, which read the queue
         # before lead_queue.py append, the step after the append that queues it.
         import lead_queue
-        entry = draft(kind='review', content='<h4>Sub-ideas</h4><ul><li data-sub="check" data-summary="Test all source widths">Whether the bound '
+        entry = draft(kind='review', content='<h4>Sub-ideas</h4><ul><li data-sub="check" data-queue="math" data-summary="Test all source widths">Whether the bound '
                                              'holds at every width of the source.</li></ul>')
         source = queued(1)
         body = tool.insert_entry(source, entry)

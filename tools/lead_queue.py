@@ -3,7 +3,9 @@
 
 Every Outside lead and Absurd bridge that passed its cheap test in a route review waits in one FIFO queue,
 the living section <section id="lead-queue">, the last section before the Research record.  It has no word
-budget (notebook_context.py skips it) and restoration reads only its head (resume.py).  Rules, checked by
+budget (notebook_context.py skips it) and restoration reads only its head (resume.py). Framework work is
+classified explicitly and routed to the main notebook's framework-queue by framework_queue.py; its contents
+do not enter this mathematical queue's draining or spell rules. Rules, checked by
 finish-turn.py against HEAD:
 
 - The queue holds passed review items once each.  A review appends its newly passed items at the end; a review
@@ -95,11 +97,16 @@ Usage: lead_queue.py init NOTEBOOK.html  (adds the section, oldest items first, 
                                             KIND:ID, as lead:REVIEW:1, where two kinds share an identifier)
        lead_queue.py done NOTEBOOK.html Closed|Developed|Continuing  (after appending the entry developing an
                                             item, and before append)
-       lead_queue.py add NOTEBOOK.html --check|--build|--idea ID SOURCE TEXT --summary SUMMARY  (appends the item at the tail;
+       lead_queue.py add NOTEBOOK.html --check|--build|--idea ID SOURCE TEXT --summary SUMMARY --scope math|framework  (appends the item at the tail;
                                             SOURCE says where it came up)
        lead_queue.py edit NOTEBOOK.html ID TEXT [--summary SUMMARY]  (replaces an added item's text; its source stays)
        lead_queue.py restore-text NOTEBOOK.html|--all  (restores legacy shortened descriptions from their sources)
        lead_queue.py summarize NOTEBOOK.html SPEC.json  (applies authored {item, summary} rows to existing items)
+       lead_queue.py framework-list  (all shared items, with ORIGIN::KIND:ID identifiers)
+       lead_queue.py framework-status ORIGIN::KIND:ID  (full description and provenance)
+       lead_queue.py framework-edit ORIGIN::KIND:ID TEXT --summary SUMMARY
+       lead_queue.py framework-close ORIGIN::KIND:ID --record REVIEW.txt --path PATH --note TEXT
+       lead_queue.py migrate-framework INVENTORY.json  (move the explicitly classified inventory to main)
        lead_queue.py close-built NOTEBOOK.html ID --record REVIEW.txt --path PATH [--path PATH] --note TEXT
                                             (removes a built top-level build without an entry and records it in
                                             research/queue-closures.jsonl; a commit without an entry may carry it)
@@ -125,6 +132,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import branch_extension
+import framework_queue
 from notebook_math import strip_tags, strip_tags_tight
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -595,6 +603,9 @@ def new_node(body, item, require_summary=False):
     listed = item_source(body, kind, ident)
     summary = item_summary(listed[0]) if listed else None
     attrs = summary_attribute(summary) if summary is not None or require_summary else ''
+    queue_scope = framework_queue.scope(listed[0]) if listed else None
+    if queue_scope:
+        attrs += f' data-queue="{queue_scope}"'
     return Node(kind, ident, f' data-{kind}="{ident}"{attrs}',
                 f'<a href="#{ident.rsplit(":", 1)[0]}">{ident}</a> ({kind}): {item_text(body, kind, ident)}')
 
@@ -1549,6 +1560,9 @@ def place_arrivals(body, nodes, tag, text, listed, reopened):
     audit = 'data-kind="audit"' in tag
     queued = set(every_item(nodes))
     for item in dict.fromkeys(listed + reopened):
+        source = item_source(body, *item)
+        if source and framework_queue.scope(source[0]) == 'framework':
+            continue
         if item in queued:
             continue
         sub = KINDS[item[0]].sub and item in listed and item not in reopened
@@ -1604,6 +1618,8 @@ def check_source_summaries(tag, text):
     for kind, ident in arrivals_of(tag, text):
         listed = listed_item(kind, text, ident)
         summary_attribute(item_summary(listed[0]) if listed else None)
+        if not listed or framework_queue.scope(listed[0]) not in ('math', 'framework'):
+            raise ValueError(f'{kind}:{ident}: classify the item with data-queue="math" or "framework"')
 
 
 def triaged(tag, text):
@@ -1758,7 +1774,8 @@ def queued_arrivals(tag, text):
         listed = listed_item(item[0], text, item[1])
         return KINDS[item[0]].sub and not (listed and 'data-parent=' in listed[0])
     return [item for item in arrivals_of(tag, text)
-            if item not in resolved and not (waiting and parentless(item))]
+            if framework_queue.scope(listed_item(item[0], text, item[1])[0]) != 'framework'
+            and item not in resolved and not (waiting and parentless(item))]
 
 
 def pending_subideas(body):
@@ -1773,6 +1790,7 @@ def pending_subideas(body):
                 if work and work[1] in ('Developed', 'Closed')}
     return [item for tag, text in articles[last + 1:]
             for item in arrivals_of(tag, text)
+            if framework_queue.scope(listed_item(item[0], text, item[1])[0]) != 'framework'
             if item not in queued and item not in finished and item not in queued_arrivals(tag, text)]
 
 
@@ -1817,7 +1835,8 @@ def built(root, rev='HEAD'):
     lines = []
     for path in ['notebook.html', *sorted(git('ls-tree', '--name-only', rev, 'research/branches/').split())]:
         path = path if path.endswith('.html') else f'{path}/notebook.html'
-        tree = parse_tree(git('show', f'{rev}:{path}'))
+        body = git('show', f'{rev}:{path}')
+        tree = parse_tree(body)
         hits = built_items(tree[1], text) if tree else []
         if hits:        # an item the commit itself queued shares its words with the commit and is not built by it
             before = parse_tree(git('show', f'{rev}~1:{path}'))
@@ -1826,6 +1845,17 @@ def built(root, rev='HEAD'):
             lines.append(f'This commit resembles the queued build item {ident} of {path} '
                          f'({share} of its words): read the item, and if the commit builds it or part of it, say '
                          'so in the next entry on it, which closes it or names what is left.')
+        if path == 'notebook.html':
+            prior = {framework_queue.key(n) for n in framework_queue.parse(git('show', f'{rev}~1:{path}'))}
+            shared = []
+            for node in framework_queue.parse(body):
+                copy = node.copy()
+                copy.ident = framework_queue.key(node)
+                shared.append(copy)
+            for share, ident in built_items(shared, text):
+                if ident in prior:
+                    lines.append(f'This commit resembles the queued build item {ident} of {path} '
+                                 f'({share} of its words): read framework-status and close reviewed work with framework-close.')
     return lines
 
 
@@ -1928,6 +1958,9 @@ def open_tree(body):
     nodes, top = [], {}
     # stable: an audit's items take their source's place in record order
     for _, item in sorted(passed, key=lambda pair: pair[0]):
+        source = item_source(body, *item)
+        if source and framework_queue.scope(source[0]) == 'framework':
+            continue
         if closed.get(item) or item in top:
             continue
         parent = record_parent(body, item) if KINDS[item[0]].sub else None
@@ -2039,12 +2072,15 @@ def draft_item_problems(body):
     return item_history_problems(body, nodes, articles, tag, text, work, now)
 
 
-def check(head_body, body, path=None, root=None):
+def check(head_body, body, path=None, root=None, framework_body=None, framework_ledger=None):
     """Raise ValueError if the queue in `body` breaks the rules relative to `head_body` (HEAD's notebook).
     The entry checked is the last Research-record article of `body`; `path` is the notebook's file, against whose
     directory its relative links resolve, and `root` the repository (default: this one)."""
     # both sections are read under the committed notebook's settings, so a commit changing them (a move
     # from data-items="ideas" to its kind module) reads HEAD's items as the notebook now means them
+    framework_queue.validate(body, path, root, head_body, framework_ledger)
+    framework_queue.check_math_ownership(body, path, root, framework_body, framework_ledger)
+    head_body = framework_queue.math_baseline(head_body, body, path, root, framework_body)
     section = SECTION_RE.search(body)
     before = parse_tree(head_body, section.group(1) if section else None) if head_body else None
     now = parse_tree(body)
@@ -2067,6 +2103,8 @@ def check(head_body, body, path=None, root=None):
     legacy = {item for tag0, text0 in old_articles for item in arrivals_of(tag0, text0)}
     for top in nodes:
         for node in [top, *top.children]:
+            if framework_queue.scope(node.attrs) == 'framework':
+                raise ValueError('Framework items belong in the main framework queue, not the lead queue')
             summary = item_summary(node.attrs)
             required = node.item not in known and (admitter(node) is not None or
                        (before is not None and node.item not in legacy))
@@ -2406,8 +2444,15 @@ def staged_check(notebook, base='HEAD'):
     if known.returncode != 0:
         return 3, f'{base} is no commit in this repository'
     head = git(['git', 'show', f'{base}:{relative}'], cwd=root)
+    central = git(['git', 'show', ':notebook.html'], cwd=root)
     try:
-        check(head.stdout if head.returncode == 0 else None, staged.stdout, path, root)
+        closure_text = git(['git', 'show', ':' + CLOSURES], cwd=root).stdout
+        closure_rows = [json.loads(line) for line in closure_text.splitlines() if line.strip()]
+        ledger = {(r.get('notebook'), r.get('ident')): r for r in closure_rows}
+        check(head.stdout if head.returncode == 0 else None, staged.stdout, path, root,
+              central.stdout if central.returncode == 0 else None, ledger)
+        framework_queue.check_routed(head.stdout if head.returncode == 0 else '', staged.stdout,
+                                     path, root, central.stdout if central.returncode == 0 else '', ledger)
     except ValueError as error:
         return 1, f'{relative}: {error}'
     return 0, None
@@ -2711,11 +2756,14 @@ def listing(body, after=None):
     return lines
 
 
-def main(argv):
+def _main(argv):
     # 17 October 2026: "lead_queue.py append --help" read --help as the notebook path and crashed.
     if any(arg in ('-h', '--help') for arg in argv[1:3]):
         print(__doc__)
         return 0
+    if len(argv) > 1 and argv[1] in ('framework-list', 'framework-status', 'framework-edit',
+                                    'framework-close', 'migrate-framework'):
+        return framework_queue.command(ROOT, argv)
     if len(argv) >= 2 and argv[1] == 'list':
         if len(argv) not in (3, 5) or (len(argv) == 5 and argv[3] != '--after'):
             print('usage: lead_queue.py list NOTEBOOK.html [--after ANCHOR]', file=sys.stderr)
@@ -2742,6 +2790,8 @@ def main(argv):
         parser.add_argument('source')
         parser.add_argument('text')
         parser.add_argument('--summary', required=True, help=f'agent-written summary, at most {SUMMARY_LIMIT} characters')
+        parser.add_argument('--scope', choices=('math', 'framework'), required=True,
+                            help='author judgement: research in this notebook, or shared framework work')
         try:
             args = parser.parse_args(argv[2:])
         except SystemExit as error:
@@ -2765,7 +2815,13 @@ def main(argv):
                   'before the reply)', file=sys.stderr)
             return 1
         try:
-            path.write_text(add(path.read_text(), argv[3][2:], argv[4], argv[5], argv[6], summary=args.summary))
+            if args.scope == 'framework':
+                ident = framework_queue.add(ROOT, path, args.kind, args.ident, args.source, args.text, args.summary)
+                print(f'Appended {ident} to notebook.html#framework-queue; stage notebook.html.')
+                return 0
+            updated = add(path.read_text(), argv[3][2:], argv[4], argv[5], argv[6], summary=args.summary)
+            framework_queue.check_math_ownership(updated, path, ROOT)
+            path.write_text(updated)
         except ValueError as error:
             print(error, file=sys.stderr)
             return 1
@@ -2844,8 +2900,9 @@ def main(argv):
         path = Path(argv[2])
         old = path.read_text()
         was = set(every_item(parse_tree(old)[1])) if parse_tree(old) else set()
-        body, count = append_new(old)
-        path.write_text(body)
+        body, count, shared_count = framework_queue.append(ROOT, path)
+        if shared_count:
+            print(f'Appended {shared_count} framework items to notebook.html; stage it with {path}.')
         print(f'Appended {count} items; ' + head_lines(body, 0)[0])
         nodes = parse_tree(body)[1]
         new = {ident for _, ident in set(every_item(nodes)) - was}
@@ -2961,6 +3018,19 @@ def main(argv):
     path.write_text(body[:record] + render(body, nodes, draining_after(False, nodes), attrs) + body[record:])
     print(f'Added the queue with {len(nodes)} items and {len(every_item(nodes)) - len(nodes)} sub-ideas under them')
     return 0
+
+
+def main(argv):
+    mutations = {'add', 'edit', 'append', 'done', 'init', 'summarize', 'restore-text', 'close-built',
+                 'framework-edit', 'framework-close', 'migrate-framework'}
+    try:
+        if len(argv) > 1 and argv[1] in mutations:
+            with framework_queue.locked(ROOT):
+                return _main(argv)
+        return _main(argv)
+    except ValueError as error:
+        print(error, file=sys.stderr)
+        return 1
 
 
 if __name__ == '__main__':

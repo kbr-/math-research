@@ -40,6 +40,7 @@ async function check(changed) {
       getElementById: id => id === 'status' ? status : id === 'update-notice' ? notice
         : { addEventListener() {} },
       querySelectorAll(selector) {
+        if (selector === '#lead-queue > ol, #lead-queue > ul, #framework-queue > ol') return [];
         if (selector === 'main h2, main h3') return headingTops.map((_, index) => ({
           getBoundingClientRect: () => ({ top: headingTops[index] - context.scrollY }),
         }));
