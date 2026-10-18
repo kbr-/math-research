@@ -768,6 +768,26 @@ class UnhomedMetaTest(unittest.TestCase):
                         tool.refuse_unhomed_meta(entry(meta, prevention), root)
 
 
+class UnchangedRerunTest(unittest.TestCase):
+    def test_a_rerun_on_the_refused_inputs_is_refused_before_any_check(self):
+        # 18 October 2026: an edit meant to answer a refusal was itself refused, and the append sent beside it ran
+        # three more times on the unchanged entry, each paying a route judge call.
+        with tempfile.TemporaryDirectory() as tmp:
+            store = Path(tmp) / 'refused.json'
+            tool.refuse_unchanged_rerun(tool.inputs_digest('entry', 'next'), store)   # no store yet: passes
+            digest = tool.inputs_digest('entry', 'next', None, 'reason', 'notebook')
+            tool.record_refused(digest, 'the route judge reads this entry as a detour', store)
+            with self.assertRaisesRegex(ValueError, 'unchanged since the run refused'):
+                tool.refuse_unchanged_rerun(digest, store)
+            for changed in (tool.inputs_digest('entry edited', 'next', None, 'reason', 'notebook'),
+                            tool.inputs_digest('entry', 'next', 'answers', 'reason', 'notebook'),
+                            tool.inputs_digest('entry', 'next', None, 'reason', 'notebook moved')):
+                with self.subTest(changed=changed):
+                    tool.refuse_unchanged_rerun(changed, store)
+            # Texts are kept apart: moving words from one input to the next is a change.
+            self.assertNotEqual(tool.inputs_digest('ab', 'c'), tool.inputs_digest('a', 'bc'))
+
+
 class UnmeasuredDeclineTest(unittest.TestCase):
     """17 October 2026: a build declined as uninformative ("a measurement cannot tell") showed, once run at the
     user's choice, an instability no entry had predicted."""

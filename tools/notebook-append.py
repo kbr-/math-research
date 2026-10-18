@@ -34,6 +34,7 @@ import argparse
 import functools
 import html
 import importlib.util
+import json
 from pathlib import Path
 import re
 import subprocess
@@ -1068,6 +1069,44 @@ def refuse_unhomed_meta(entry, root=ROOT):
                              'agent\'s own mistake)')
 
 
+REFUSED_INPUTS = Path(ROOT) / 'research/logs/notebook-append-refused.json'
+
+
+def inputs_digest(*texts):
+    """One digest of a run's inputs (the entry, next step, answers, reason and the notebook), each text kept apart."""
+    import hashlib
+    digest = hashlib.sha256()
+    for text in texts:
+        digest.update(hashlib.sha256((text or '').encode()).digest())
+    return digest.hexdigest()
+
+
+def refuse_unchanged_rerun(digest, store=None):
+    """Refuse a run whose inputs are those of the last refused run: it can only be refused again, and a route judge
+    call is paid for nothing. On 18 October 2026 an edit meant to answer a refusal was itself refused, and the
+    append sent beside it ran three more times on the unchanged entry."""
+    store = Path(store or REFUSED_INPUTS)
+    try:
+        last = json.loads(store.read_text())
+    except (OSError, ValueError):
+        return
+    if last.get('digest') == digest:
+        raise ValueError(f'the inputs are unchanged since the run refused at {last.get("at", "?")} ("{last.get("reason", "")[:120]}"): '
+                         'change what the refusal names first, and see that the change was made (an edit of the '
+                         'input may itself have been refused) before running again')
+
+
+def record_refused(digest, reason, store=None):
+    import datetime
+    store = Path(store or REFUSED_INPUTS)
+    try:
+        store.parent.mkdir(parents=True, exist_ok=True)
+        store.write_text(json.dumps({'digest': digest, 'reason': str(reason),
+                                     'at': datetime.datetime.now().strftime('%H:%M:%S')}))
+    except OSError:
+        pass
+
+
 def refuse_one_function_plainest(entry):
     """Refuse a Plainest bound paragraph that settles a fixed witness by a bound for one function without naming
     the plainest uniform bound tried on the witness's family (a union over its members, or over the subsets of
@@ -1151,6 +1190,12 @@ def main():
         path.write_text(result)
         print(f'Replaced the Proposed next step in {path.relative_to(ROOT)}')
         return
+    digest = inputs_digest(args.entry.read_text(), nxt, args.answers.read_text() if args.answers else None,
+                           args.stand_unchanged, path.read_text())
+    try:
+        refuse_unchanged_rerun(digest)
+    except ValueError as err:
+        sys.exit(f'notebook-append.py: {err}')
     try:
         refuse_unanswered(args.entry.read_text(), args.answers.read_text() if args.answers else None)
         refuse_uncited_publication(args.entry.read_text())
@@ -1164,6 +1209,7 @@ def main():
         refuse_item_history(result)
         refuse_cadence_claim(result, nxt)
     except ValueError as err:
+        record_refused(digest, err)
         sys.exit(f'notebook-append.py: {err}')
     path.write_text(result)
     print(f'Appended to {path.relative_to(ROOT)} ({path.stat().st_size:,} bytes)')
