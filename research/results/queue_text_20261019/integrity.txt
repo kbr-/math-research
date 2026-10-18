@@ -1,0 +1,65 @@
+# command: python3 -c import sys,json,re,subprocess; from pathlib import Path; sys.path.insert(0,"tools"); import lead_queue as q; from notebooks import catalogue; rows=[]; total=0; fixed=0
+for name,meta in catalogue().items():
+ path=Path(meta["source"]); body=path.read_text(); old=subprocess.check_output(["git","show","HEAD:"+str(path)],text=True); found=q.parse_tree(body)
+ if not found: continue
+ oldnodes=q.parse_tree(old)[1]; nodes=found[1]; assert q.shape(nodes)==q.shape(oldnodes),name; assert q.SECTION_RE.sub("",body)==q.SECTION_RE.sub("",old),name; restored,changed=q.restore_text(old); expected=q.parse_tree(restored)[1]; flat=lambda ns:[n for top in ns for n in [top,*top.children]]; current=flat(nodes)
+ for a,b in zip(current,flat(expected)):
+  assert a.text==b.text,(name,q.qualified(a)); assert re.sub(r" data-summary=\"[^\"]*\"","",a.attrs)==re.sub(r" data-summary=\"[^\"]*\"","",b.attrs),name; assert q.item_summary(a.attrs) and len(q.item_summary(a.attrs))<=160,(name,q.qualified(a))
+ assert q.restore_text(body)==(body,[]),name; q.check(old,body); total+=len(current); fixed+=sum(bool(q.item_summary(n.attrs)) for n in current); rows.append(dict(notebook=name,fixed=len(current),total=len(current),restored=len(changed)))
+print(json.dumps(dict(fixed=fixed,total=total,notebooks=rows,checks="Queue order/nesting/other attributes unchanged; outside-queue bytes identical; full text matches exact restoration from HEAD; summaries valid; restoration idempotent; queue transitions valid"),indent=2))
+# run a4e614fb17, session queue-text-20261019; full output
+{
+  "fixed": 867,
+  "total": 867,
+  "notebooks": [
+    {
+      "notebook": "main",
+      "fixed": 170,
+      "total": 170,
+      "restored": 110
+    },
+    {
+      "notebook": "binary-multiplicity-degree",
+      "fixed": 217,
+      "total": 217,
+      "restored": 194
+    },
+    {
+      "notebook": "common-multiplier",
+      "fixed": 86,
+      "total": 86,
+      "restored": 22
+    },
+    {
+      "notebook": "near-half-pc-degree",
+      "fixed": 116,
+      "total": 116,
+      "restored": 74
+    },
+    {
+      "notebook": "odd-prime-reslin-php",
+      "fixed": 84,
+      "total": 84,
+      "restored": 84
+    },
+    {
+      "notebook": "openai-math-import",
+      "fixed": 9,
+      "total": 9,
+      "restored": 8
+    },
+    {
+      "notebook": "riemann",
+      "fixed": 85,
+      "total": 85,
+      "restored": 34
+    },
+    {
+      "notebook": "ultimate-matching",
+      "fixed": 100,
+      "total": 100,
+      "restored": 14
+    }
+  ],
+  "checks": "Queue order/nesting/other attributes unchanged; outside-queue bytes identical; full text matches exact restoration from HEAD; summaries valid; restoration idempotent; queue transitions valid"
+}

@@ -1,0 +1,37 @@
+Queue text and agent summaries: consolidated software review
+
+Reviewer: native gpt-6.1-sol, medium reasoning, read-only.
+Initial verdict: pass with corrections.
+Findings: waiting source items could omit summaries before later promotion;
+direct admissions in a newly created queue could omit summaries. The reviewer
+also noted the add usage's description argument; the current usage includes it.
+
+Corrections: validate summaries when source items are authored, including waiting
+sub-ideas; validate directly admitted items when a queue is first created. Keep
+historical source seeding compatible. Regression tests cover missing summaries,
+successful promotion and copied metadata, initial direct admission and legacy
+seeding. Merge fixtures use the actual complete queued text.
+
+Follow-up verdict: pass. No remaining findings within the reviewed scope.
+Reviewed: restoration matching and idempotence, notes and merges, admission paths,
+previews and status, UI disclosure/search, changed fixtures, and four summary/full
+description pairs across Ultimate Matching, OpenAI import and Riemann.
+The reviewer ran no computations and did not certify every authored summary.
+The independent integrity audit and test runner supply the numeric evidence.
+Process audit strength count: zero.
+
+Final user-requested simplification: removed the 100-character prefix fallback
+after the complete backfill. Previews now require valid authored metadata and
+identify a missing summary by qualified item ID and the summarize repair command.
+Full status remains readable without metadata. The same reviewer passed this
+change and its tests in a final read-only follow-up, with no new findings.
+
+Prevention: descriptions are retained in canonical HTML, with bounded previews
+kept separately. Tests exercise the formerly truncated tail, actual direct-item
+merges, hidden metadata, expansion/search and missing-summary admission, including
+deferred and initial-queue paths. Validation begins at source authorship.
+
+Meta: treating display/context brevity as a storage decision lost information.
+The queue guidance in AGENTS.md now assigns full descriptions and authored
+navigation summaries separate roles, so optimization starts from each reader's
+needs while preserving the complete question.

@@ -95,9 +95,11 @@ Usage: lead_queue.py init NOTEBOOK.html  (adds the section, oldest items first, 
                                             KIND:ID, as lead:REVIEW:1, where two kinds share an identifier)
        lead_queue.py done NOTEBOOK.html Closed|Developed|Continuing  (after appending the entry developing an
                                             item, and before append)
-       lead_queue.py add NOTEBOOK.html --check|--build|--idea ID SOURCE TEXT  (appends the item at the tail;
+       lead_queue.py add NOTEBOOK.html --check|--build|--idea ID SOURCE TEXT --summary SUMMARY  (appends the item at the tail;
                                             SOURCE says where it came up)
-       lead_queue.py edit NOTEBOOK.html ID TEXT  (replaces the text of an item add wrote; its source stays)
+       lead_queue.py edit NOTEBOOK.html ID TEXT [--summary SUMMARY]  (replaces an added item's text; its source stays)
+       lead_queue.py restore-text NOTEBOOK.html|--all  (restores legacy shortened descriptions from their sources)
+       lead_queue.py summarize NOTEBOOK.html SPEC.json  (applies authored {item, summary} rows to existing items)
        lead_queue.py close-built NOTEBOOK.html ID --record REVIEW.txt --path PATH [--path PATH] --note TEXT
                                             (removes a built top-level build without an entry and records it in
                                             research/queue-closures.jsonl; a commit without an entry may carry it)
@@ -435,6 +437,54 @@ class Node:
         return Node(self.kind, self.ident, self.attrs, self.text, [c.copy() for c in self.children])
 
 
+SUMMARY_LIMIT = 160
+
+
+def item_summary(attrs):
+    """Agent-authored metadata, never part of the rendered item's text."""
+    match = re.search(r'\bdata-summary="([^"]*)"', attrs)
+    return ' '.join(html.unescape(match.group(1)).split()) if match else None
+
+
+def summary_attribute(summary):
+    """Validate a supplied summary and serialize it safely as invisible HTML metadata."""
+    text = ' '.join((summary or '').split())
+    if not text or len(text) > SUMMARY_LIMIT:
+        raise ValueError(f'Provide an agent-written summary of 1–{SUMMARY_LIMIT} characters '
+                         '(--summary on add, data-summary on a listed item)')
+    return f' data-summary="{html.escape(text, quote=True)}"'
+
+
+def item_preview(node):
+    """Bounded agent orientation from authored metadata, never a truncated description."""
+    summary = item_summary(node.attrs)
+    if not summary:
+        raise ValueError(f'{qualified(node)}: missing agent-written summary; add it with lead_queue.py summarize')
+    summary_attribute(summary)
+    return summary
+
+
+def apply_summaries(body, rows):
+    """Apply explicitly authored metadata, rejecting unknown or repeated IDs before writing anything."""
+    found = parse_tree(body)
+    if found is None:
+        raise ValueError('The notebook has no queue')
+    nodes = {qualified(n): n for top in found[1] for n in [top, *top.children]}
+    seen = set()
+    for row in rows:
+        key = row['item']
+        if key not in nodes or key in seen:
+            raise ValueError(f'Unknown or repeated queue item: {key}')
+        seen.add(key)
+        node = nodes[key]
+        try:
+            attribute = summary_attribute(row['summary'])
+        except ValueError as error:
+            raise ValueError(f'{key}: {error}') from error
+        node.attrs = re.sub(r'\sdata-summary="[^"]*"', '', node.attrs) + attribute
+    return rewrite(body, found[1], found[0])
+
+
 TOKEN_RE = re.compile(r'<(/?)(li|ul|ol)\b([^>]*)>')
 
 
@@ -540,9 +590,12 @@ def render_nodes(nodes):
     return '\n'.join(lines)
 
 
-def new_node(body, item):
+def new_node(body, item, require_summary=False):
     kind, ident = item
-    return Node(kind, ident, f' data-{kind}="{ident}"',
+    listed = item_source(body, kind, ident)
+    summary = item_summary(listed[0]) if listed else None
+    attrs = summary_attribute(summary) if summary is not None or require_summary else ''
+    return Node(kind, ident, f' data-{kind}="{ident}"{attrs}',
                 f'<a href="#{ident.rsplit(":", 1)[0]}">{ident}</a> ({kind}): {item_text(body, kind, ident)}')
 
 
@@ -1209,7 +1262,7 @@ def result_files(body, ident):
 
 
 def item_status(body, ident, claims=None, relationships=None):
-    """Bounded orientation for a queued item, using the same grouping and spell rules as the gate."""
+    """The full queued text, followed by development context using the gate's grouping and spell rules."""
     found = parse_tree(body)
     nodes = found[1] if found else []
     matches = [item for item in every_item(nodes) if named(item, ident)]
@@ -1500,7 +1553,9 @@ def place_arrivals(body, nodes, tag, text, listed, reopened):
             continue
         sub = KINDS[item[0]].sub and item in listed and item not in reopened
         parent = placement(body, nodes, tag, text, item, audit) if sub else None
-        (parent.children if parent is not None else nodes).append(new_node(body, item))
+        anchor = re.search(r'\bid="([^"]+)"', tag)
+        newly_authored = bool(anchor and item[1].rsplit(':', 1)[0] == anchor.group(1))
+        (parent.children if parent is not None else nodes).append(new_node(body, item, require_summary=newly_authored))
         queued.add(item)
 
 
@@ -1542,6 +1597,13 @@ def listed_item(kind, text, ident):
     section = KINDS[kind].listed.search(text)
     items = re.findall(r'<li\b([^>]*)>(.*?)</li>', section.group(1), re.S) if section else []
     return items[int(n) - 1] if n.isdigit() and 0 < int(n) <= len(items) else None
+
+
+def check_source_summaries(tag, text):
+    """Validate at authorship, including sub-ideas waiting for a later promotion."""
+    for kind, ident in arrivals_of(tag, text):
+        listed = listed_item(kind, text, ident)
+        summary_attribute(item_summary(listed[0]) if listed else None)
 
 
 def triaged(tag, text):
@@ -1670,7 +1732,12 @@ def apply_merges(body, nodes, text, tag=None):
                       None)
         if merged and target is None:
             raise ValueError(f'{ident} is merged into {merged.group(1)}, which is not queued')
-        note = f' Merged from {ident}: {item_text(body, kind, ident)}'
+        source_node = locate(nodes, (kind, ident))[1]
+        wording = source_node.text if source_node is not None else item_text(body, kind, ident)
+        wording = re.sub(r'^<a href="#[^"]+">[^<]+</a> \([^)]+\):\s*', '', wording)
+        if not wording:
+            continue
+        note = f' Merged from {ident}: {wording}'
         if target is not None and note not in target.text:
             target.text += note
 
@@ -1783,19 +1850,57 @@ def audit_source(text, item):
     return found.group(1) if found else None
 
 
-def item_text(body, kind, ident):
-    """A short description of a listed item, for the queue line."""
+def item_source(body, kind, ident):
+    """The source list item's attributes and content, without loading unrelated records."""
     anchor = ident.rsplit(':', 1)[0]
     art = re.search(r'<article\b[^>]*\bid="' + re.escape(anchor) + r'"[^>]*>.*?</article>', body, re.S)
-    listed = listed_item(kind, art.group(0), ident) if art else None
+    return listed_item(kind, art.group(0), ident) if art else None
+
+
+def item_text(body, kind, ident):
+    """The complete listed description, stored in the queue; previews are a separate concern."""
+    listed = item_source(body, kind, ident)
     if listed is None:
         return ''
     # the entry's text is HTML: unescape it before the queue line escapes it, so an entity is not escaped twice
     text = html.unescape(re.sub(r'\s+', ' ', strip_tags_tight(listed[1])).strip())
+    return html.escape(text, quote=False)
+
+
+def legacy_item_text(full):
+    """Reproduce the old truncation exactly, only to recognize descriptions safe to restore."""
+    text = html.unescape(full)
     short = text[:220]
     while short.count('\\(') > short.count('\\)'):   # never cut inside inline math
         short = short[:short.rindex('\\(')].rstrip()
     return html.escape(short + ('…' if len(short) < len(text) else ''), quote=False)
+
+
+def restore_text(body):
+    """Restore matching old prefixes, retaining appended notes, merges, metadata and queue order."""
+    found = parse_tree(body)
+    if found is None:
+        return body, []
+    changed = []
+    for top in found[1]:
+        for node in [top, *top.children]:
+            # A historical article may have been renamed while the queue's stable ID stayed put.
+            link = re.match(r'(<a href="#([^"]+)">[^<]+</a> \(' + re.escape(node.kind) + r'\): )', node.text)
+            sources = [(ident, link.group(1), [node.kind]) for ident in
+                       dict.fromkeys((node.ident, link.group(2) + ':' + node.ident.rsplit(':', 1)[-1]))] if link else []
+            # Merges can cross kinds, and a lead and bridge can share ANCHOR:1. Match their actual old text.
+            sources += [(m.group(1), m.group(0), list(KINDS))
+                        for m in re.finditer(r' Merged from ([^\s:]+:s?\d+): ', node.text)]
+            original = node.text
+            for ident, prefix, kinds in sources:
+                for kind in kinds:
+                    full = item_text(body, kind, ident)
+                    old = legacy_item_text(full)
+                    if full and old != full and prefix + full not in node.text and prefix + old in node.text:
+                        node.text = node.text.replace(prefix + old, prefix + full, 1)
+            if node.text != original:
+                changed.append(qualified(node))
+    return (rewrite(body, found[1], found[0]) if changed else body), changed
 
 
 
@@ -1957,6 +2062,19 @@ def check(head_body, body, path=None, root=None):
         raise ValueError('The lead and bridge queue lists an item twice')
     articles = record_articles(body)
     fresh = head_body is None or len(articles) > len(record_articles(head_body))
+    old_articles = record_articles(head_body) if head_body else []
+    known = set(every_item(before[1])) if before else set()
+    legacy = {item for tag0, text0 in old_articles for item in arrivals_of(tag0, text0)}
+    for top in nodes:
+        for node in [top, *top.children]:
+            summary = item_summary(node.attrs)
+            required = node.item not in known and (admitter(node) is not None or
+                       (before is not None and node.item not in legacy))
+            if summary is not None or required:
+                summary_attribute(summary)
+    if head_body is not None:
+        for new_tag, new_text in articles[len(old_articles):]:
+            check_source_summaries(new_tag, new_text)
     tag, text = articles[-1] if articles and fresh else ('', '')     # only a new entry's work is checked
     where = Where(body, path, root)
     work = developed_by(tag, text)
@@ -2167,7 +2285,7 @@ def head_lines(body, count=HEAD_READ):
     state = f'draining (backpressure from {CAP} until {FLOOR})' if draining or len(nodes) >= CAP else 'not draining'
     out = [f'{len(nodes)} items, {state}; restoration shows the first {min(count, len(nodes))}.']
     def plain(node):     # with its ID first, which a lead's text has and a kind module's idea has not
-        text = html.unescape(re.sub(r'\s+', ' ', strip_tags_tight(node.text)).strip())
+        text = item_preview(node)
         return text if text.startswith(node.ident) else f'{node.ident}: {text}'
     for n, node in enumerate(nodes[:count], 1):
         out.append(f'{n}. {plain(node)}{waiting_note(node)}')
@@ -2223,6 +2341,7 @@ def done(body, outcome):
     item = work[0]
     parent, node = locate(nodes, item)
     picked = 'data-picked="user"' in tag
+    apply_merges(body, nodes, text, tag)  # retain directly added wording before done removes its source node
     if outcome == 'Continuing':
         end_spell(body, nodes, parent if parent is not None else node, picked)
     else:
@@ -2245,6 +2364,7 @@ def append_new(body):
     draining, nodes = found
     articles = record_articles(body)
     tag, text = articles[-1] if articles else ('', '')
+    check_source_summaries(tag, text)
     work = developed_by(tag, text)
     if work and work[1] in ('Closed', 'Developed') and locate(nodes, work[0])[1] is not None:
         raise ValueError(f'Run done first: the entry {work[1].lower()} {work[0][1]}, which is still queued, and '
@@ -2296,7 +2416,7 @@ def staged_check(notebook, base='HEAD'):
 ADDABLE = ('check', 'build', 'idea')
 
 
-def add(body, kind, ident, source, text):
+def add(body, kind, ident, source, text, summary=None):
     """The notebook with item `ident` of `kind` (one of ADDABLE) appended at the tail; ValueError if an item of
     that ID is queued already or the line is malformed."""
     found = parse_tree(body)
@@ -2312,7 +2432,8 @@ def add(body, kind, ident, source, text):
     articles = record_articles(body)
     last = re.search(r'\bid="([^"]+)"', articles[-1][0]) if articles else None
     after = f' data-after="{last.group(1)}"' if last else ''
-    node = Node(kind, ident, f' data-{kind}="{ident}" data-source="{html.escape(source)}"{after}',
+    summary_attr = summary_attribute(summary)
+    node = Node(kind, ident, f' data-{kind}="{ident}" data-source="{html.escape(source)}"{after}{summary_attr}',
                 added_text(source, text))
     nodes.append(node)
     updated = rewrite(body, nodes, draining_after(draining, nodes))
@@ -2482,7 +2603,7 @@ def added_text(source, text):
     return html.escape(text, quote=False) + link
 
 
-def edit(body, ident, text):
+def edit(body, ident, text, summary=None):
     """The notebook with the text of queued item `ident`, one `add` wrote, replaced and its source kept; ValueError
     if no such item is queued, or an entry listed it, since such an item's text is that entry's."""
     found = parse_tree(body)
@@ -2499,6 +2620,8 @@ def edit(body, ident, text):
     if node.kind == 'build' and build_evidence(text, user_source=bool(USER_SOURCE_RE.search(source.group(1)))):
         raise ValueError(f'{ident}: {build_evidence(text, user_source=bool(USER_SOURCE_RE.search(source.group(1))))}')
     node.text = added_text(html.unescape(source.group(1)), text)
+    if summary is not None:
+        node.attrs = re.sub(r'\sdata-summary="[^"]*"', '', node.attrs) + summary_attribute(summary)
     return rewrite(body, nodes, draining)
 
 
@@ -2581,7 +2704,7 @@ def listing(body, after=None):
             continue
         if after is not None and rank[stamp] < rank[after]:
             continue
-        text = ' '.join(strip_tags_tight(node.text).split())[:100]
+        text = item_preview(node)
         lines.append(f'{position}\t{node.kind}:{node.ident}\t{stamp or "-"}\t{len(node.children)}\t{text}')
     if unstamped:
         lines.append(f'({unstamped} items carry no stamp of a known entry and are not listed with --after)')
@@ -2608,7 +2731,22 @@ def main(argv):
     if len(argv) in (2, 3) and argv[1] == 'built':
         print('\n'.join(built(Path.cwd(), argv[2] if len(argv) == 3 else 'HEAD')), end='')
         return 0
-    if len(argv) == 7 and argv[1] == 'add' and argv[3] in [f'--{k}' for k in ADDABLE]:
+    if len(argv) >= 2 and argv[1] == 'add':
+        import argparse
+        parser = argparse.ArgumentParser(prog='lead_queue.py add')
+        parser.add_argument('notebook')
+        kinds = parser.add_mutually_exclusive_group(required=True)
+        for kind in ADDABLE:
+            kinds.add_argument('--' + kind, dest='kind', action='store_const', const=kind)
+        parser.add_argument('ident')
+        parser.add_argument('source')
+        parser.add_argument('text')
+        parser.add_argument('--summary', required=True, help=f'agent-written summary, at most {SUMMARY_LIMIT} characters')
+        try:
+            args = parser.parse_args(argv[2:])
+        except SystemExit as error:
+            return error.code
+        argv = [argv[0], 'add', args.notebook, '--' + args.kind, args.ident, args.source, args.text]
         path = Path(argv[2])
         dictated = bool(USER_SOURCE_RE.search(argv[5]))
         if argv[3] == '--build' and not dictated and not (NOT_BUILT_RE.search(argv[6]) and TRIED_RE.search(argv[6])):
@@ -2627,7 +2765,7 @@ def main(argv):
                   'before the reply)', file=sys.stderr)
             return 1
         try:
-            path.write_text(add(path.read_text(), argv[3][2:], argv[4], argv[5], argv[6]))
+            path.write_text(add(path.read_text(), argv[3][2:], argv[4], argv[5], argv[6], summary=args.summary))
         except ValueError as error:
             print(error, file=sys.stderr)
             return 1
@@ -2662,10 +2800,36 @@ def main(argv):
         print(f'Closed {args.ident} as {"falsified by measurement" if args.falsified else "built"}, recorded in {CLOSURES}; '
               f'{len(parse_tree(body)[1])} items in the queue. Stage the ledger with the notebook.')
         return 0
-    if len(argv) == 5 and argv[1] == 'edit':
+    if len(argv) == 4 and argv[1] == 'summarize':
+        path = Path(argv[2])
+        original = path.read_text()
+        rows = json.loads(Path(argv[3]).read_text())
+        updated = apply_summaries(original, rows)
+        if path.read_text() != original:
+            raise ValueError('Notebook changed during summarization; nothing written')
+        path.write_text(updated)
+        print(json.dumps({'notebook': str(path), 'summaries_applied': len(rows)}))
+        return 0
+    if len(argv) == 3 and argv[1] == 'restore-text':
+        from notebooks import catalogue
+        paths = [ROOT / row['source'] for row in catalogue().values()] if argv[2] == '--all' else [Path(argv[2])]
+        for path in paths:
+            original = path.read_text()
+            updated, changed = restore_text(original)
+            if changed:
+                if path.read_text() != original:
+                    raise ValueError('Notebook changed during restoration; nothing written')
+                path.write_text(updated)
+            found = parse_tree(updated)
+            ellipses = [qualified(n) for top in found[1] for n in [top, *top.children]
+                        if '…' in n.text] if found else []
+            print(json.dumps({'notebook': str(path), 'restored': changed, 'count': len(changed),
+                              'items_with_ellipsis': ellipses}))
+        return 0
+    if len(argv) in (5, 7) and argv[1] == 'edit' and (len(argv) == 5 or argv[5] == '--summary'):
         path = Path(argv[2])
         try:
-            path.write_text(edit(path.read_text(), argv[3], argv[4]))
+            path.write_text(edit(path.read_text(), argv[3], argv[4], summary=argv[6] if len(argv) == 7 else None))
         except ValueError as error:
             print(error, file=sys.stderr)
             return 1

@@ -892,7 +892,7 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   when fewer pass); only these are queued and the rest are dropped at once (user, 5 October 2026). A
   picked item is a lead to develop, not only to list: every picked, unclosed item waits in the
   notebook's **Lead and bridge queue** (`<section id="lead-queue">`, the last living section; no
-  word budget; restoration reads its first five items), FIFO, maintained per
+  word budget; restoration reads previews of its first five items), FIFO, maintained per
   [tools/lead_queue.py](tools/lead_queue.py). A review appends its picks at the end. A research
   entry develops at most one top-level item, by default the head; the agent may take another queued
   item first when a `<strong>Chosen.</strong>` paragraph says which open statement it bears on and
@@ -964,19 +964,24 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   intends to carry out: do a small one in the entry, drop one that will not be done, and add none to
   fill the section (user, 9 October 2026). Work that comes up outside an entry (a conversation, a
   review, a tool's defect) joins the queue at once with `lead_queue.py add NOTEBOOK.html
-  --check|--build|--idea ID SOURCE TEXT`: a top-level item at the tail, which needs no entry and
-  which a commit without an entry may add (user, 7 October 2026: "You should be able to queue items
-  by just running the tool"). A finished top-level build leaves the same way: `lead_queue.py
-  close-built NOTEBOOK.html ID --record REVIEW.txt --path PATH --note TEXT` records the reviewer's
-  record, the implementation paths and what was built in `research/queue-closures.jsonl`, and a
-  commit without an entry may carry it (user, 16 October 2026: "Isn't that a gap in the framework?
-  Why can't you close items"). Those of a research entry that develops no queue item have no parent:
-  they wait in their entry, `lead_queue.py pending` lists them, and the next review promotes any
-  number by judgement with a follow-up list item ending `<strong>Follow-up.</strong> Promoted:
-  <reason>` (user, 9 October 2026). `lead_queue.py append` and `similar` show queued items with
-  similar wording; when two ask the same thing keep one, closing the other with "Closed: merged into
-  ID", which adds its wording to that item. The others join the queue nested under the item they
-  belong to (user, 3 October 2026: "I want it to look like a nested list of entries"), a sub-idea's
+  --check|--build|--idea ID SOURCE TEXT --summary SUMMARY`: a top-level item at the tail, which
+  needs no entry and which a commit without an entry may add (user, 7 October 2026: "You should be
+  able to queue items by just running the tool"). New items carry an agent-written plain-text
+  summary of at most 160 characters: `--summary` for direct additions, or `data-summary` on the
+  source list item. This attribute is hidden in the rendered notebook. Queue descriptions retain
+  their full text; listing and resume require the summary, with no prefix fallback. Repair missing
+  metadata with `lead_queue.py summarize`. `history --status` prints the full queued text before its
+  development history. A finished top-level build leaves the same way: `lead_queue.py close-built
+  NOTEBOOK.html ID --record REVIEW.txt --path PATH --note TEXT` records the reviewer's record, the
+  implementation paths and what was built in `research/queue-closures.jsonl`, and a commit without
+  an entry may carry it (user, 16 October 2026: "Isn't that a gap in the framework? Why can't you
+  close items"). Those of a research entry that develops no queue item have no parent: they wait in
+  their entry, `lead_queue.py pending` lists them, and the next review promotes any number by
+  judgement with a follow-up list item ending `<strong>Follow-up.</strong> Promoted: <reason>`
+  (user, 9 October 2026). `lead_queue.py append` and `similar` show queued items with similar
+  wording; when two ask the same thing keep one, closing the other with "Closed: merged into ID",
+  which adds its wording to that item. The others join the queue nested under the item they belong
+  to (user, 3 October 2026: "I want it to look like a nested list of entries"), a sub-idea's
   development counting toward its parent's spell; a check is Developed only with evidence that
   resolves, a build only with its opened task or its path. The user may pick any item out of order
   (`data-picked="user"`, the words quoted in a `<strong>Picked.</strong>` paragraph), and an item
@@ -1115,23 +1120,23 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   CI or names other files use needs the whole suite, through the protected launcher: `./compute.sh
   --threads 1 --timeout 60 python3 tools/tests/run.py`, which runs the tests in parallel worker
   processes. The whole suite stays under 15 seconds (user, 18 October 2026: "just increase the gate
-  to 15s"); the runner fails a slower run and lists its slowest tests. That is a defect to find
-  and fix, such as repeated work in the code under test, not a wait to accept. The runner prints the
-  CPU time the run used itself and what was other work on the machine, and names an overrun under
-  load "TOO SLOW (machine busy)"; it still fails. A change that would let a limit quoted here from
-  the user pass where it failed is built as an option that is off and filed as a question, never
-  made the default by the agent. A timing-limit failure alone does not require another suite run.
-  For the same reason `compute.sh start` warns when its turn guidance takes over 1 s, the finisher
-  when its checks take over 5 s, and `tools/resume.py` when preparing a bundle takes over 2 s. A
-  check that refuses text on its words gets, for each phrase it matches, an accepted test case using
-  that phrase in a legitimate sentence, and is run on the record's past entries before its commit,
-  so that its false refusals are counted, not only its catches (16 October 2026); that holds for
-  each word a widening adds, in the edit that adds it, and an exemption is scoped to the sentence
-  that carries its reason and checked to mean what it claims (17 October 2026: one word exempted a
-  whole paragraph, and an unchecked commit hash exempted any deferral); a check that refuses an
-  action is also tried, before its commit, against the cheapest way around it (an edit that changes
-  nothing that matters, another flag, an older input), and the run is reported beside the change (16
-  October 2026: two new checks let a comment edit and a two-commit-old message through); likewise a
+  to 15s"); the runner fails a slower run and lists its slowest tests. That is a defect to find and
+  fix, such as repeated work in the code under test, not a wait to accept. The runner prints the CPU
+  time the run used itself and what was other work on the machine, and names an overrun under load
+  "TOO SLOW (machine busy)"; it still fails. A change that would let a limit quoted here from the
+  user pass where it failed is built as an option that is off and filed as a question, never made
+  the default by the agent. A timing-limit failure alone does not require another suite run. For the
+  same reason `compute.sh start` warns when its turn guidance takes over 1 s, the finisher when its
+  checks take over 5 s, and `tools/resume.py` when preparing a bundle takes over 2 s. A check that
+  refuses text on its words gets, for each phrase it matches, an accepted test case using that
+  phrase in a legitimate sentence, and is run on the record's past entries before its commit, so
+  that its false refusals are counted, not only its catches (16 October 2026); that holds for each
+  word a widening adds, in the edit that adds it, and an exemption is scoped to the sentence that
+  carries its reason and checked to mean what it claims (17 October 2026: one word exempted a whole
+  paragraph, and an unchecked commit hash exempted any deferral); a check that refuses an action is
+  also tried, before its commit, against the cheapest way around it (an edit that changes nothing
+  that matters, another flag, an older input), and the run is reported beside the change (16 October
+  2026: two new checks let a comment edit and a two-commit-old message through); likewise a
   threshold or filter a tool applies to records is counted over all the records it will read, its
   losses as well as its catches, before it is committed, not fitted to the case that prompted it (16
   October 2026: a floor fitted to one brief hid real statements); and a rewrite of such a check is

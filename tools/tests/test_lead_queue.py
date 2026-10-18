@@ -21,10 +21,23 @@ PASS = ' <strong>Answers.</strong> y. <strong>Test.</strong> Passed.'
 FAIL = ' <strong>Answers.</strong> y. <strong>Test.</strong> Falsified: no.'
 
 
+def add_item(*args, **kwargs):
+    """Supply summary metadata to fixtures testing other queue behavior."""
+    kwargs.setdefault('summary', args[4][:160].strip() or 'Fixture item')
+    return lq.add(*args, **kwargs)
+
+
+def queue_command(argv):
+    """Keep existing CLI fixtures valid under the new summary requirement."""
+    if len(argv) >= 7 and argv[1] == 'add' and '--summary' not in argv:
+        argv = [*argv, '--summary', argv[6][:160]]
+    return lq.main(argv)
+
+
 def review(ident, leads, bridges=(FAIL, FAIL)):
     return (f'<article id="{ident}" data-kind="review" data-route="step"><h4>Outside leads</h4><ul>'
-            + ''.join(f'<li>L{n}{t}</li>' for n, t in enumerate(leads)) + '</ul><h4>Absurd bridges</h4><ul>'
-            + ''.join(f'<li>B{n}{t}</li>' for n, t in enumerate(bridges)) + '</ul></article>')
+            + ''.join(f'<li data-summary="Review lead {n}">L{n}{t}</li>' for n, t in enumerate(leads)) + '</ul><h4>Absurd bridges</h4><ul>'
+            + ''.join(f'<li data-summary="Review bridge {n}">B{n}{t}</li>' for n, t in enumerate(bridges)) + '</ul></article>')
 
 
 def research(develops=None, outcome=None):
@@ -36,7 +49,7 @@ def research(develops=None, outcome=None):
 def subideas(ident, items, kind='task', extra=''):
     """An entry listing sub-ideas: items are (sub kind, text)."""
     return (f'<article id="{ident}" data-kind="{kind}"{extra}>{"" if extra else "<p>work</p>"}<h4>Sub-ideas</h4><ul>'
-            + ''.join(f'<li data-sub="{k}">{x}</li>' for k, x in items) + '</ul></article>')
+            + ''.join(f'<li data-sub="{k}" data-summary="Listed fixture item">{x}</li>' for k, x in items) + '</ul></article>')
 
 
 def developing(item, outcome, body=''):
@@ -48,8 +61,8 @@ def line(entry):
     """A queue line: (kind, id), or ((kind, id), [children]) for a parent with sub-ideas."""
     if isinstance(entry[1], list):
         (k, i), children = entry
-        return f'<li data-{k}="{i}">{i}<ul>' + ''.join(f'<li data-{ck}="{ci}">{ci}</li>' for ck, ci in children) + '</ul></li>'
-    return f'<li data-{entry[0]}="{entry[1]}">{entry[1]}</li>'
+        return f'<li data-{k}="{i}" data-summary="{i}">{i}<ul>' + ''.join(f'<li data-{ck}="{ci}" data-summary="{ci}">{ci}</li>' for ck, ci in children) + '</ul></li>'
+    return f'<li data-{entry[0]}="{entry[1]}" data-summary="{entry[1]}">{entry[1]}</li>'
 
 
 def notebook(articles, queue=None, draining=False, attrs='', route=True):
@@ -402,7 +415,7 @@ class LeadQueueTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'retired'):        # user, 9 October 2026: one item per entry
             lq.check(head, notebook([rev, batch], q[1:]))
         lq.check(notebook([rev, batch], q[1:]), notebook([rev, batch], q[1:]))   # an older batch is history
-        self.assertEqual(lq.main(['lead_queue.py', 'triage', 'nb.html']), 1)
+        self.assertEqual(queue_command(['lead_queue.py', 'triage', 'nb.html']), 1)
 
     def test_help_prints_usage_instead_of_reading_it_as_a_path(self):
         # 17 October 2026: "lead_queue.py append --help" crashed with FileNotFoundError: '--help'.
@@ -410,13 +423,13 @@ class LeadQueueTest(unittest.TestCase):
         for argv in (['lead_queue.py', '--help'], ['lead_queue.py', 'append', '--help'], ['lead_queue.py', 'add', '-h']):
             out = io.StringIO()
             with contextlib.redirect_stdout(out):
-                self.assertEqual(lq.main(argv), 0)
+                self.assertEqual(queue_command(argv), 0)
             self.assertIn('lead and bridge queue', out.getvalue())
 
     def test_research_entries_add_passed_items(self):
         head = notebook([self.rev], self.q)
         entry = ('<article id="w" data-kind="research" data-route="step" data-lead="r1:1"><p><strong>Follow-up.'
-                 '</strong> Closed: done.</p><h4>Outside leads</h4><ul><li>New lead' + PASS + '</li></ul></article>')
+                 '</strong> Closed: done.</p><h4>Outside leads</h4><ul><li data-summary="New fixture lead">New lead' + PASS + '</li></ul></article>')
         body, count = lq.append_new(lq.done(notebook([self.rev, entry], self.q), 'Closed'))
         self.assertEqual(count, 1)
         self.assertEqual(lq.parse(body)[1], [self.q[1], ('lead', 'w:1')])
@@ -523,8 +536,8 @@ class LeadQueueTest(unittest.TestCase):
         self.assertEqual([(x, y) for _, x, y in lq.similar_items(lq.parse_tree(body)[1])], [('t1:s1', 't1:s2')])
         merging = ('<article id="m" data-kind="task"><ul><li data-check="t1:s2">Same question. '
                    '<strong>Follow-up.</strong> Closed: merged into t1:s1</li></ul></article>')
-        merged, _ = lq.append_new(notebook([self.rev, listing, merging], [*self.q, ('check', 't1:s1'), ('check', 't1:s2'),
-                                                                        ('check', 't1:s3')]))
+        at = body.rfind('</section>')
+        merged, _ = lq.append_new(body[:at] + merging + body[at:])
         nodes = lq.parse_tree(merged)[1]
         self.assertEqual([n.ident for n in nodes][-2:], ['t1:s1', 't1:s3'])
         self.assertIn('Merged from t1:s2: Prove an upper bound or a lower bound', nodes[-2].text)
@@ -532,20 +545,19 @@ class LeadQueueTest(unittest.TestCase):
         import contextlib, io
         err = io.StringIO()
         with contextlib.redirect_stderr(err):
-            self.assertEqual(lq.main(['lead_queue.py', 'similar', 'nb.html', 'a draft text']), 2)
+            self.assertEqual(queue_command(['lead_queue.py', 'similar', 'nb.html', 'a draft text']), 2)
         self.assertIn('takes only NOTEBOOK.html', err.getvalue())
         self.assertIn('lead_queue.py similar NOTEBOOK.html', lq.__doc__)
         # an entry that develops the item and closes it as merged, in its own Follow-up, hands the wording over too
-        queue = [*self.q, ('check', 't1:s1'), ('check', 't1:s2'), ('check', 't1:s3')]
         own = developing(('check', 't1:s2'), 'Closed').replace('Closed: x.', 'Closed: merged into t1:s1. The rest.')
-        after = notebook([self.rev, listing, own], queue)
+        after = body[:at] + own + body[at:]
         tag, text = lq.record_articles(after)[-1]
-        left = lq.transition(after, lq.parse_tree(notebook([self.rev, listing], queue))[1], tag, text)
+        left = lq.transition(after, lq.parse_tree(body)[1], tag, text)
         self.assertEqual([n.ident for n in left][-2:], ['t1:s1', 't1:s3'])
         self.assertIn('Merged from t1:s2: Prove an upper bound or a lower bound', left[-2].text)
         gone = own.replace('merged into t1:s1', 'merged into t9:s9')
         with self.assertRaisesRegex(ValueError, 'not queued'):
-            lq.transition(after.replace(own, gone), lq.parse_tree(notebook([self.rev, listing], queue))[1],
+            lq.transition(after.replace(own, gone), lq.parse_tree(body)[1],
                           *lq.record_articles(after.replace(own, gone))[-1])
 
     def test_claims_of_entries_on_other_items_are_shown_for_an_item(self):
@@ -584,7 +596,7 @@ class LeadQueueTest(unittest.TestCase):
         self.assertEqual(lq.linking_entries(queued.replace(listing, listing + linking.replace(
             f'data-{self.q[0][0]}="{self.q[0][1]}"', 'data-check="t1:s1"')), 't1:s1'), [])       # the item's own
         self.assertIsNone(lq.linking_entries(body, 'no-such-item'))                   # not a zero: nothing to look for
-        self.assertIsNone(lq.linking_entries(lq.add(body, 'check', 'by-tool', 'a talk', a), 'by-tool'))
+        self.assertIsNone(lq.linking_entries(add_item(body, 'check', 'by-tool', 'a talk', a), 'by-tool'))
         # other entries whose claims cite, by a registry edge, a claim of the queuing entry: the case of
         # 12 October 2026, where the ranking by nearness printed none (lem:y is far from the item's text)
         self.assertIn('<article id="t1"', listing)
@@ -623,7 +635,7 @@ class LeadQueueTest(unittest.TestCase):
         self.assertEqual(lq.citing_lines(found, True), [])
         # an item added by the tool names no queuing entry: an identifier equal to an entry's anchor does not make
         # that entry's claims the item's (without the guard the entry t1, citing lem:x of #o, would be listed)
-        tool = lq.add(based, 'check', 'o', 'a talk', a)
+        tool = add_item(based, 'check', 'o', 'a talk', a)
         self.assertIn('data-check="o"', tool)
         self.assertEqual(lq.citing_entries(tool, refines, 'o'), [])
         unstamped = re.sub(r'(<li data-check="o"[^>]*?) data-after="[^"]*"', r'\1', tool)
@@ -654,7 +666,7 @@ class LeadQueueTest(unittest.TestCase):
         self.assertEqual(turn_guidance.next_item_notes(body + step.replace('t1:s1', 't1:s2'), summaries), [])
         self.assertEqual(turn_guidance.next_item_notes(body, summaries), [])
         # an item added by the tool is later than the record's last entry at that time, which it names
-        added = lq.add(body, 'check', 'new-item', 'a talk', a)
+        added = add_item(body, 'check', 'new-item', 'a talk', a)
         self.assertEqual(lq.claims_elsewhere(added, summaries, 'new-item'), [])
         self.assertEqual([c for _, c, _ in lq.claims_elsewhere(added.replace(other, other + more.replace('"o"', '"p"')),
                                                                summaries, 'new-item')], ['lem:x', 'lem:z'])
@@ -674,7 +686,7 @@ class LeadQueueTest(unittest.TestCase):
                                              earlier=True), [])                       # the item's own entry
         self.assertEqual(lq.older_nearest(body, summaries)[0], 0)
         self.assertEqual(lq.older_nearest(before, summaries)[:2], (1, 1))
-        apart = lq.add(before, 'check', 'by-hand', 'a talk', a)
+        apart = add_item(before, 'check', 'by-hand', 'a talk', a)
         gone = re.sub(r'(<li data-check="by-hand"[^>]*?) data-after="[^"]*"', r'\1 data-after="no-such-entry"', apart)
         self.assertEqual(lq.older_nearest(gone, summaries)[2], lq.older_nearest(apart, summaries)[2] + 1)
         # both sides in one ranking: the better match after the item wins, and the worse one before it does not
@@ -689,7 +701,7 @@ class LeadQueueTest(unittest.TestCase):
         self.assertEqual(lq.claims_elsewhere(between, summaries, 't1:s1', earlier=True), [])
         self.assertEqual(lq.claims_elsewhere(between, summaries, 't1:s1'), [])
         # an item whose queuing entry the record does not hold has no earlier side and is counted apart
-        self.assertEqual(lq.claims_elsewhere(lq.add(before, 'check', 'by-hand', 'a talk', a).replace(
+        self.assertEqual(lq.claims_elsewhere(add_item(before, 'check', 'by-hand', 'a talk', a).replace(
             ' data-after="o"', '').replace(' data-after="t1"', ''), summaries, 'by-hand', earlier=True), [])
         places = lq.claim_places(before, summaries, 't1:s1', ['lem:x', 'lem:z'])
         self.assertIn('lem:x: place 1 of 1 among the claims of earlier entries', places[0])
@@ -723,7 +735,7 @@ class LeadQueueTest(unittest.TestCase):
 
     def test_subidea_ids_never_meet_lead_ids(self):
         entry = ('<article id="w" data-kind="review" data-route="step"><h4>Outside leads</h4><ul><li>L' + PASS
-                 + '</li></ul><h4>Sub-ideas</h4><ul><li data-sub="check">c</li><li data-sub="build">b</li></ul></article>')
+                 + '</li></ul><h4>Sub-ideas</h4><ul><li data-sub="check" data-summary="Listed fixture item">c</li><li data-sub="build" data-summary="Listed fixture item">b</li></ul></article>')
         self.assertEqual(lq.arrivals_of(*lq.record_articles(notebook([entry]))[0]),
                          [('lead', 'w:1'), ('check', 'w:s1'), ('build', 'w:s2')])
 
@@ -755,16 +767,16 @@ class LeadQueueTest(unittest.TestCase):
 
     def test_a_check_build_or_idea_joins_by_add_alone(self):
         head = notebook([self.rev], self.q)
-        body = lq.add(head, 'build', 'port-it', 'user, 7 October 2026', 'Port <this> to main.')
+        body = add_item(head, 'build', 'port-it', 'user, 7 October 2026', 'Port <this> to main.')
         lq.check(head, body)
         # The item carries the record's last entry at the time, so that a review's period can place it.
         last = re.findall(r'<article id="([^"]+)"', head)[-1]
-        self.assertIn(f'<li data-build="port-it" data-source="user, 7 October 2026" data-after="{last}">'
+        self.assertIn(f'<li data-build="port-it" data-source="user, 7 October 2026" data-after="{last}" data-summary="Port &lt;this&gt; to main.">'
                       'Port &lt;this&gt; to main.</li>', body)
         self.assertEqual(lq.head_lines(body, 3)[3], '3. port-it: Port <this> to main.')
         for kind in ('check', 'idea'):
-            body = lq.add(body, kind, f'a-{kind}', 'entry-2026-10-07-x', 'Y.')
-            self.assertIn(f'<li data-{kind}="a-{kind}" data-source="entry-2026-10-07-x" data-after="{last}">Y. '
+            body = add_item(body, kind, f'a-{kind}', 'entry-2026-10-07-x', 'Y.')
+            self.assertIn(f'<li data-{kind}="a-{kind}" data-source="entry-2026-10-07-x" data-after="{last}" data-summary="Y.">Y. '
                           '(<a href="#entry-2026-10-07-x">source</a>)</li>', body)
             lq.check(head, body)
         for kind, ident, source, text, error in (
@@ -772,9 +784,9 @@ class LeadQueueTest(unittest.TestCase):
                 ('build', 'ok', '', 't', 'an added build is .* where it came up'), ('idea', 'ok', 's', ' ', 'came up')):
             with self.subTest(ident=ident, source=source, text=text):
                 with self.assertRaisesRegex(ValueError, error):
-                    lq.add(body, kind, ident, source, text)
+                    add_item(body, kind, ident, source, text)
         with self.assertRaisesRegex(ValueError, 'no lead and bridge queue'):
-            lq.add(notebook([self.rev]), 'build', 'x', 's', 't')
+            add_item(notebook([self.rev]), 'build', 'x', 's', 't')
 
     def test_a_build_that_claims_a_cost_or_a_saving_says_whether_it_is_measured(self):
         head = notebook([self.rev], self.q)
@@ -786,12 +798,12 @@ class LeadQueueTest(unittest.TestCase):
             with self.subTest(text=text):
                 with self.assertRaisesRegex(ValueError, r'^a-build: the text claims a cost or a saving \(".+"\) and does '
                                                         'not say what it rests on: name the measurement'):
-                    lq.add(head, 'build', 'a-build', 's', text)
+                    add_item(head, 'build', 'a-build', 's', text)
                 # The word settles it either way, and a check or an idea is a question, not a promise.
                 for said in (' Not measured.', ' Measured: 27 s of 30 (research/results/x.txt).', ' No measurement yet.'):
-                    lq.add(head, 'build', 'a-build', 's', text + said)
-                lq.add(head, 'check', 'a-check', 's', text)
-                lq.add(head, 'idea', 'an-idea', 's', text)
+                    add_item(head, 'build', 'a-build', 's', text + said)
+                add_item(head, 'check', 'a-check', 's', text)
+                add_item(head, 'idea', 'an-idea', 's', text)
         # No claim of a cost: a verb of taking or saving something else, a time that is no duration.
         for text in ('Port it to main.', 'Let the tool take a source that was rewritten.', 'Ask for the saved output of a run.',
                      'A mutant took the group down twice, the first time unseen.', 'It took four calls by hand.',
@@ -803,11 +815,11 @@ class LeadQueueTest(unittest.TestCase):
                      # verdict, so that a cycle opens on it, was refused).
                      'Make the judge save its verdict and its step, so that the next cycle opens on it.'):
             with self.subTest(text=text):
-                lq.add(head, 'build', 'a-build', 's', text)
-        body = lq.add(head, 'build', 'a-build', 's', 'Port it.')
+                add_item(head, 'build', 'a-build', 's', text)
+        body = add_item(head, 'build', 'a-build', 's', 'Port it.')
         with self.assertRaisesRegex(ValueError, 'a-build: the text claims a cost'):
             lq.edit(body, 'a-build', 'Port it: the copy is slow.')
-        body = lq.add(body, 'check', 'a-check', 's', 'Why?')
+        body = add_item(body, 'check', 'a-check', 's', 'Why?')
         lq.edit(body, 'a-check', 'Why is the copy slow?')
 
     def test_a_cited_saved_measurement_must_hold_the_figure(self):
@@ -827,9 +839,9 @@ class LeadQueueTest(unittest.TestCase):
             path = Path(tmp) / 'notebook.html'
             path.write_text(notebook([self.rev], self.q))
             with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
-                self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'dictated',
+                self.assertEqual(queue_command(['lead_queue.py', 'add', str(path), '--build', 'dictated',
                                          'user, 18 October', 'The user says: “The finisher took 60 s.” Profile it.']), 0)
-                self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'agent',
+                self.assertEqual(queue_command(['lead_queue.py', 'add', str(path), '--build', 'agent',
                                          'reviewer', 'Profile the finisher.']), 1)
             self.assertIn('The finisher took 60 s.', path.read_text())
             self.assertIsNotNone(lq.build_evidence('The user says: “The finisher took 60 s.” It is faster now.',
@@ -851,22 +863,22 @@ class LeadQueueTest(unittest.TestCase):
             self.assertIsNone(lq.saved_figure_missing(text + ' The figure was not saved.', tmp))
 
     def test_a_second_extension_of_a_queued_builds_text_is_found(self):
-        base = lq.add(notebook([self.rev], self.q), 'build', 'b1', 'a talk', 'Have the tool print the line.')
+        base = add_item(notebook([self.rev], self.q), 'build', 'b1', 'a talk', 'Have the tool print the line.')
         once = base.replace('print the line.', 'print the line. Added 1 May from an entry: also the count.')
         twice = once.replace('also the count.', 'also the count. Added 2 May from another: also the words.')
         self.assertEqual(lq.extended_again(base, once), [])          # a first addition is allowed
         self.assertEqual(lq.extended_again(once, twice), ['build:b1'])
         self.assertEqual(lq.extended_again(once, once), [])
         self.assertEqual(lq.extended_again(None, twice), [])         # no committed notebook to compare with
-        other = lq.add(once, 'check', 'c1', 'a talk', 'Read the source. Added 1 May: its second lemma.')
+        other = add_item(once, 'check', 'c1', 'a talk', 'Read the source. Added 1 May: its second lemma.')
         self.assertEqual(lq.extended_again(other, other.replace('second lemma.', 'second lemma. Added 2 May: more.')),
                          [])                                         # a check's text may be extended
 
     def test_edit_replaces_an_added_items_text_and_keeps_its_source(self):
         head = notebook([self.rev], self.q)
-        body = lq.add(head, 'build', 'port-it', 'entry-2026-10-07-x', 'Port it.')
-        edited = lq.edit(body, 'port-it', 'Port it & test it.')
-        self.assertRegex(edited, r'<li data-build="port-it" data-source="entry-2026-10-07-x" data-after="[^"]+">'
+        body = add_item(head, 'build', 'port-it', 'entry-2026-10-07-x', 'Port it.')
+        edited = lq.edit(body, 'port-it', 'Port it & test it.', summary='Port and test it.')
+        self.assertRegex(edited, r'<li data-build="port-it" data-source="entry-2026-10-07-x" data-after="[^"]+" data-summary="Port and test it\.">'
                                  r'Port it &amp; test it\. \(<a href="#entry-2026-10-07-x">source</a>\)</li>')
         self.assertNotIn('Port it.', edited)
         self.assertEqual(lq.edit(edited, 'port-it', 'Port it & test it.'), edited)
@@ -880,8 +892,8 @@ class LeadQueueTest(unittest.TestCase):
             path.write_text(body)
             out, err = io.StringIO(), io.StringIO()
             with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
-                self.assertEqual(lq.main(['lead_queue.py', 'edit', str(path), 'port-it', 'Ported.']), 0)
-                self.assertEqual(lq.main(['lead_queue.py', 'edit', str(path), 'gone', 'x']), 1)
+                self.assertEqual(queue_command(['lead_queue.py', 'edit', str(path), 'port-it', 'Ported.']), 0)
+                self.assertEqual(queue_command(['lead_queue.py', 'edit', str(path), 'gone', 'x']), 1)
             self.assertIn('Edited port-it.', out.getvalue())
             self.assertIn('gone is not queued', err.getvalue())
             self.assertIn('>Ported. (<a href="#entry-2026-10-07-x">source</a>)</li>', path.read_text())
@@ -917,11 +929,11 @@ class LeadQueueTest(unittest.TestCase):
             path.write_text(notebook([self.rev], self.q))
             out, err = io.StringIO(), io.StringIO()
             with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
-                self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'port-it', 's', 'Port it.']), 1)
-                self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'port-it', 's', 'Port it. '
+                self.assertEqual(queue_command(['lead_queue.py', 'add', str(path), '--build', 'port-it', 's', 'Port it.']), 1)
+                self.assertEqual(queue_command(['lead_queue.py', 'add', str(path), '--build', 'port-it', 's', 'Port it. '
                                           'Not built in the turn: the target branch is not checked out here.']), 1)
                 # 17 October 2026: a Tried clause naming no file is refused; one naming a repository file passes
-                self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'port-it', 's', 'Port it. '
+                self.assertEqual(queue_command(['lead_queue.py', 'add', str(path), '--build', 'port-it', 's', 'Port it. '
                                           'Not built in the turn: the target branch is not checked out here. '
                                           'Tried: a checkout of the target branch, refused.']), 1)
                 Path(tmp, 'tools').mkdir()
@@ -930,26 +942,26 @@ class LeadQueueTest(unittest.TestCase):
                 os.chdir(tmp)
                 try:
                     # a source from the user is not held to the saved-output rule below
-                    self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'port-it', 'user, 5 Oct',
+                    self.assertEqual(queue_command(['lead_queue.py', 'add', str(path), '--build', 'port-it', 'user, 5 Oct',
                                               'Port it. '
                                               'Not built in the turn: the target branch is not checked out here. '
                                               'Tried: tools/port.py on a checkout of the target branch, refused.']), 0)
                     # 17 October 2026: a build from a review names a saved output of a partial check, not only a tool
                     text = ('Check it. Not built in the turn: the hook input lacks the earlier calls. Tried: '
                             'tools/port.py on the case, which {} the exposing message.')
-                    self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'check-it',
+                    self.assertEqual(queue_command(['lead_queue.py', 'add', str(path), '--build', 'check-it',
                                               'stand-in review, 17 October', text.format('reads')]), 1)
                     Path(tmp, 'research', 'results', 'x').mkdir(parents=True)
                     Path(tmp, 'research', 'results', 'x', 'replay.txt').write_text('1 match')
-                    self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'check-it',
+                    self.assertEqual(queue_command(['lead_queue.py', 'add', str(path), '--build', 'check-it',
                                               'stand-in review, 17 October', text.format(
                                                   'reads, research/results/x/replay.txt, missing')]), 0)
                 finally:
                     os.chdir(here)
-                self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--check', 'port-it', 's', 'Again.']), 1)
-                self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--idea', 'weigh-it', 's', 'Weigh it.']), 0)
-                self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), 'other', 's', 'No kind.', 'x']), 2)
-                self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--lead', 'other', 's', 'x']), 2)
+                self.assertEqual(queue_command(['lead_queue.py', 'add', str(path), '--check', 'port-it', 's', 'Again.']), 1)
+                self.assertEqual(queue_command(['lead_queue.py', 'add', str(path), '--idea', 'weigh-it', 's', 'Weigh it.']), 0)
+                self.assertEqual(queue_command(['lead_queue.py', 'add', str(path), 'other', 's', 'No kind.', 'x']), 2)
+                self.assertEqual(queue_command(['lead_queue.py', 'add', str(path), '--lead', 'other', 's', 'x']), 2)
             self.assertIn('Appended port-it, a build; 3 items in the queue.', out.getvalue())
             self.assertIn('Appended check-it, a build; 4 items in the queue.', out.getvalue())
             self.assertIn('names in its Tried clause the saved output of a partial check', err.getvalue())
@@ -957,7 +969,7 @@ class LeadQueueTest(unittest.TestCase):
             self.assertIn('port-it is already queued', err.getvalue())
             self.assertIn('Not built in the turn: <reason>', err.getvalue())
             self.assertIn('names no file of the repository', err.getvalue())
-            self.assertRegex(path.read_text(), r'<li data-build="port-it" data-source="user, 5 Oct" data-after="[^"]+">Port it\. '
+            self.assertRegex(path.read_text(), r'<li data-build="port-it" data-source="user, 5 Oct" data-after="[^"]+" data-summary="[^"]+">Port it\. '
                                                r'Not built in the turn: the target branch is not checked out here\. '
                                                r'Tried: tools/port\.py on a checkout of the target branch, refused\.</li>')
             self.assertNotIn('Again.', path.read_text())
@@ -980,7 +992,7 @@ class LeadQueueTest(unittest.TestCase):
             lq.check(head, sourced_lead)
         body = head
         for n in range(lq.CAP - len(self.q)):
-            body = lq.add(body, 'build', f'b-{n}', 's', 't')
+            body = add_item(body, 'build', f'b-{n}', 's', 't')
         self.assertIn('data-draining="true"', body)
         lq.check(head, body)
         with self.assertRaisesRegex(ValueError, refused):
@@ -993,7 +1005,7 @@ class LeadQueueTest(unittest.TestCase):
             (root / 'research/results/reviewer.txt').write_text('pass')
             (root / 'tools').mkdir()
             (root / 'tools/thing.py').write_text('')
-            head = lq.add(lq.add(notebook([self.rev], self.q), 'build', 'b-1', 's', 'Build the thing'),
+            head = add_item(add_item(notebook([self.rev], self.q), 'build', 'b-1', 's', 'Build the thing'),
                           'build', 'b-2', 's', 'Build the other thing')
             page = root / 'notebook.html'
             note = 'Built in tools/thing.py with its test; the suite passes in 9 s.'
@@ -1029,7 +1041,7 @@ class LeadQueueTest(unittest.TestCase):
                 lq.check(head, body, page, root)                        # not yet in the ledger
             (root / lq.CLOSURES).write_text(json.dumps(row) + '\n')
             lq.check(head, body, page, root)
-            lq.check(head, lq.add(body, 'check', 'c-1', 's', 'Check it'), page, root)   # with an addition too
+            lq.check(head, add_item(body, 'check', 'c-1', 's', 'Check it'), page, root)   # with an addition too
             gone = notebook([self.rev], self.q[1:]) if len(self.q) > 1 else None
             if gone:
                 with self.assertRaisesRegex(ValueError, 'only a build'):
@@ -1041,12 +1053,12 @@ class LeadQueueTest(unittest.TestCase):
                                    ('check', '<a href="#r1">answered</a>', 'cite the evidence'),
                                    ('idea', '<a href="tools/lead_queue.py">settled</a>', 'cite the evidence')):
             with self.subTest(kind=kind):
-                head = lq.add(notebook(closed, []), kind, 'it', 's', 't')
+                head = add_item(notebook(closed, []), kind, 'it', 's', 't')
                 developed = lambda body: notebook(closed + [developing((kind, 'it'), 'Developed', body)], [])
                 lq.check(head, developed(cited), ROOT / 'notebook.html', ROOT)
                 with self.assertRaisesRegex(ValueError, error):
                     lq.check(head, developed('<p>done</p>'), ROOT / 'notebook.html', ROOT)
-        build_head = lq.add(notebook(closed, []), 'build', 'it', 's', 't')
+        build_head = add_item(notebook(closed, []), 'build', 'it', 's', 't')
         with self.assertRaisesRegex(ValueError, 'link the opened task'):          # an anchor is no built thing
             lq.check(build_head, notebook(closed + [developing(('build', 'it'), 'Developed', '<a href="#r1">x</a>')], []),
                      ROOT / 'notebook.html', ROOT)
@@ -1120,8 +1132,8 @@ class LeadQueueTest(unittest.TestCase):
 
     def test_subideas_nest_under_the_item_they_belong_to(self):
         head = notebook([self.rev], self.q)
-        listing = developing(self.q[0], 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="check">c</li>'
-                             '<li data-sub="build" data-parent="lead:r1:2">b</li></ul>')
+        listing = developing(self.q[0], 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="check" data-summary="Listed fixture item">c</li>'
+                             '<li data-sub="build" data-summary="Listed fixture item" data-parent="lead:r1:2">b</li></ul>')
         want = [(self.q[0], [('check', 'd:s1')]), (self.q[1], [('build', 'd:s2')])]
         body, count = lq.append_new(notebook([self.rev, listing], self.q))
         self.assertEqual((count, lq.shape(lq.parse_tree(body)[1])), (2, [(i, c) for i, c in want]))
@@ -1129,16 +1141,16 @@ class LeadQueueTest(unittest.TestCase):
         with self.assertRaises(ValueError):                             # flat, not nested
             lq.check(head, notebook([self.rev, listing], self.q + [('check', 'd:s1'), ('build', 'd:s2')]))
         nested = notebook([self.rev], want)
-        child = developing(('check', 'd:s1'), 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="check">e</li></ul>'
+        child = developing(('check', 'd:s1'), 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="check" data-summary="Listed fixture item">e</li></ul>'
                            ).replace('id="d"', 'id="f"')
         body, _ = lq.append_new(notebook([self.rev, child], want))       # listed while developing a child: its parent
         self.assertEqual(lq.shape(lq.parse_tree(body)[1])[0], (self.q[0], [('check', 'd:s1'), ('check', 'f:s1')]))
 
     def test_subideas_of_a_developed_subidea_join_its_parent(self):
-        listing = developing(self.q[0], 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="build">a</li></ul>'
+        listing = developing(self.q[0], 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="build" data-summary="Listed fixture item">a</li></ul>'
                              ).replace('id="d"', 'id="k"')
         tree = [(self.q[0], [('build', 'k:s1')]), (self.q[1], [])]
-        child = developing(('build', 'k:s1'), 'Developed', '<h4>Sub-ideas</h4><ul><li data-sub="build">b</li></ul>'
+        child = developing(('build', 'k:s1'), 'Developed', '<h4>Sub-ideas</h4><ul><li data-sub="build" data-summary="Listed fixture item">b</li></ul>'
                            ).replace('id="d"', 'id="f"')
         body = lq.done(notebook([self.rev, listing, child], tree), 'Developed')   # removes k:s1 first
         body, count = lq.append_new(body)
@@ -1262,8 +1274,8 @@ class LeadQueueTest(unittest.TestCase):
         # the item behind it, done and the head shown settle it, and developing the parent instead is refused
         # (as in a real record, the sub-ideas were listed by an entry developing their parent, here with ID k)
         stale = [(self.q[0], [('check', 'k:s2')]), (self.q[1], [])]
-        listing = developing(self.q[0], 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="check">a</li>'
-                             '<li data-sub="check">b</li></ul>').replace('id="d"', 'id="k"')
+        listing = developing(self.q[0], 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="check" data-summary="Listed fixture item">a</li>'
+                             '<li data-sub="check" data-summary="Listed fixture item">b</li></ul>').replace('id="d"', 'id="k"')
         settled = [listing, cont_child.replace('id="d"', 'id="d1"'), cont_parent, closing]
         nxt = research(self.q[1], 'Continuing')
         lq.check(notebook([self.rev] + settled, stale), notebook([self.rev] + settled + [nxt], left))
@@ -1289,7 +1301,7 @@ class LeadQueueTest(unittest.TestCase):
         lq.check(before, notebook([self.rev, keep.replace('Closed: falsified', 'Continuing: its sub-idea')], tree))
 
     def test_a_reopened_subidea_returns_at_the_top_level(self):
-        listing = developing(self.q[0], 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="check">c</li></ul>')
+        listing = developing(self.q[0], 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="check" data-summary="Listed fixture item">c</li></ul>')
         closing = developing(('check', 'd:s1'), 'Closed').replace('id="d"', 'id="e"')
         closed = notebook([self.rev, listing, closing], self.q)
         # the reopening entry develops the head, yet the reopened sub-idea goes to the tail, not under it
@@ -1308,15 +1320,15 @@ class LeadQueueTest(unittest.TestCase):
         before = notebook([rev], many)
         self.assertEqual(lq.parse(before)[1], queue)                     # 49 top-level items: not draining
         flat = notebook([rev], queue)                                    # 49 top-level items, no sub-ideas yet
-        listing = developing(queue[0], 'Continuing', '<h4>Sub-ideas</h4><ul>' + '<li data-sub="check">c</li>' * 5
+        listing = developing(queue[0], 'Continuing', '<h4>Sub-ideas</h4><ul>' + '<li data-sub="check" data-summary="Listed fixture item">c</li>' * 5
                              + '</ul>')
         body, count = lq.append_new(notebook([rev, listing], queue))
         self.assertEqual((count, lq.parse(body)[0]), (5, False))          # 54 items, 49 top-level: no draining
         lq.check(flat, body)
 
     def test_init_places_subideas_under_their_parents(self):
-        listing = developing(self.q[0], 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="check">c</li>'
-                             '<li data-sub="build" data-parent="lead:r9:9">b</li></ul>')
+        listing = developing(self.q[0], 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="check" data-summary="Listed fixture item">c</li>'
+                             '<li data-sub="build" data-summary="Listed fixture item" data-parent="lead:r9:9">b</li></ul>')
         tree = lq.open_tree(notebook([self.rev, listing]))
         self.assertEqual(lq.shape(tree), [(self.q[0], [('check', 'd:s1')]), (self.q[1], []), (('build', 'd:s2'), [])])
         plain = '<article id="z" data-kind="review" data-route="step"><p>no queue work</p></article>'
@@ -1334,7 +1346,7 @@ class LeadQueueTest(unittest.TestCase):
         lines = lq.head_lines(notebook([self.rev], [(self.q[0], [('check', 'k:s1')]), self.q[1]]))
         self.assertEqual(lines[1:], ['1. r1:1', '   - k:s1', '2. r1:2'])
         waiting = notebook([self.rev], [(self.q[0], [('check', 'k:s1')]), self.q[1]]).replace(
-            'data-check="k:s1">', 'data-check="k:s1" data-waits="the licence">')
+            'data-check="k:s1"', 'data-check="k:s1" data-waits="the licence"')
         self.assertEqual(lq.head_lines(waiting)[2], '   - k:s1 [waiting: the licence]')
 
     def test_a_notebook_without_route_items_is_checked_once_it_has_a_queue(self):
@@ -1443,7 +1455,7 @@ class LeadQueueTest(unittest.TestCase):
         with self.assertRaises(ValueError):                             # with a triage batch
             lq.check(head, notebook([rev, order(new[:2], tag='data-kind="research" data-picked="user"',
                                                 extra=triage)], [q[2], q[1]]))
-        child = ('<article id="t" data-kind="task"><p>work</p><h4>Sub-ideas</h4><ul><li data-sub="check" '
+        child = ('<article id="t" data-kind="task"><p>work</p><h4>Sub-ideas</h4><ul><li data-sub="check" data-summary="Listed fixture item" '
                  'data-parent="lead:r1:1">x</li></ul></article>')
         nested = [(q[0], [('check', 't:s1')]), q[1], q[2]]
         with self.assertRaisesRegex(ValueError, 'sub-ideas keep their place'):   # a sub-idea is not top-level
@@ -1480,15 +1492,15 @@ class LeadQueueTest(unittest.TestCase):
         body2, _ = lq.append_new(marked.replace('</article></section>', '</article>' + unblock + '</section>'))
         self.assertEqual(lq.marks(lq.parse_tree(body2)[1]), set())
         lq.check(marked, body2)
-        everyone = notebook([rev], q).replace('data-lead="r1:1">', 'data-lead="r1:1" data-waits="a">').replace(
-            'data-lead="r1:2">', 'data-lead="r1:2" data-waits="b">').replace('data-lead="r1:3">', 'data-lead="r1:3" data-waits="c">')
+        everyone = notebook([rev], q).replace('data-lead="r1:1"', 'data-lead="r1:1" data-waits="a"').replace(
+            'data-lead="r1:2"', 'data-lead="r1:2" data-waits="b"').replace('data-lead="r1:3"', 'data-lead="r1:3" data-waits="c"')
         draining = everyone.replace('<section id="lead-queue">', '<section id="lead-queue" data-draining="true">')
         # every item waits: draining asks nothing of the entry (the flag goes, three items being under the floor)
         lq.check(draining, everyone.replace('</article></section>', '</article>' + research() + '</section>'))
 
     def test_waiting_subideas_and_triage_items_are_passed_over(self):
         wait_child = notebook([self.rev], [(self.q[0], [('check', 'k:s1'), ('check', 'k:s2')]), self.q[1]]).replace(
-            'data-check="k:s1">', 'data-check="k:s1" data-waits="x">')
+            'data-check="k:s1"', 'data-check="k:s1" data-waits="x"')
         ok = lq.done(wait_child.replace('</article></section>', '</article>' + developing(('check', 'k:s2'), 'Closed')
                                         + '</section>'), 'Closed')
         lq.check(wait_child, ok)                                        # the first sub-idea not waiting
@@ -1624,11 +1636,11 @@ class LeadQueueTest(unittest.TestCase):
             try:
                 section = '<section id="lead-queue" data-kind-modules="own_kinds"{}><ol>{}</ol></section>'
                 def body(ids, flag=''):
-                    return (ROUTE + section.format(flag, ''.join(f'<li data-idea="{i}">Sold to x.</li>' for i in ids))
+                    return (ROUTE + section.format(flag, ''.join(f'<li data-idea="{i}" data-summary="Sold to x.">Sold to x.</li>' for i in ids))
                             + '<section id="research-record">' + self.rev + '</section>')
                 with self.assertRaises(ValueError):                     # init seeds the leads, which are missing
                     lq.check(None, body(['one', 'two']))
-                seeded = body(['one', 'two']).replace('</ol>', '<li data-lead="r1:1">r1:1</li><li data-lead="r1:2">'
+                seeded = body(['one', 'two']).replace('</ol>', '<li data-lead="r1:1" data-summary="r1:1">r1:1</li><li data-lead="r1:2" data-summary="r1:2">'
                                                      'r1:2</li></ol>')
                 lq.check(None, seeded)                                  # ideas admitted, leads as init seeds them
                 with self.assertRaises(ValueError):
@@ -1749,8 +1761,8 @@ class LeadQueueTest(unittest.TestCase):
 
     def test_malformed_subideas_are_refused(self):
         head = notebook([self.rev], self.q)
-        for item in ('<li data-sub="chek">c</li>', '<li>c</li>', '<li data-sub="check" data-parent="r1:2">c</li>',
-                     '<li data-sub="check" data-parent="nokind:r1:2">c</li>'):
+        for item in ('<li data-sub="chek">c</li>', '<li>c</li>', '<li data-sub="check" data-summary="Listed fixture item" data-parent="r1:2">c</li>',
+                     '<li data-sub="check" data-summary="Listed fixture item" data-parent="nokind:r1:2">c</li>'):
             entry = ('<article id="m" data-kind="research" data-route="step"><h4>Sub-ideas</h4><ul>' + item
                      + '</ul></article>')
             with self.subTest(item=item):
@@ -1758,12 +1770,12 @@ class LeadQueueTest(unittest.TestCase):
                     lq.check(head, notebook([self.rev, entry], self.q))
                 with self.assertRaises(ValueError):
                     lq.append_new(notebook([self.rev, entry], self.q))
-        fine = ('<article id="m" data-kind="research" data-route="step"><h4>Sub-ideas</h4><ul><li data-sub="check" '
+        fine = ('<article id="m" data-kind="research" data-route="step"><h4>Sub-ideas</h4><ul><li data-sub="check" data-summary="Listed fixture item" '
                 'data-parent="lead:r1:2">c</li></ul></article>')
         lq.check(head, notebook([self.rev, fine], [self.q[0], (self.q[1], [('check', 'm:s1')])]))
 
     def test_append_runs_after_done(self):
-        listing = developing(self.q[0], 'Closed', '<h4>Sub-ideas</h4><ul><li data-sub="check">c</li></ul>')
+        listing = developing(self.q[0], 'Closed', '<h4>Sub-ideas</h4><ul><li data-sub="check" data-summary="Listed fixture item">c</li></ul>')
         body = notebook([self.rev, listing], self.q)
         with self.assertRaises(ValueError):                             # the closed item is still queued
             lq.append_new(body)
@@ -1776,7 +1788,7 @@ class LeadQueueTest(unittest.TestCase):
         entry = developing(self.q[0], 'Continuing', '<ul><li data-lead="r1:2">no longer bears on anything '
                            '<strong>Follow-up.</strong> Closed: superseded.</li><li data-check="k:s2">still open '
                            '<strong>Follow-up.</strong> Continuing: on its own.</li></ul><h4>Sub-ideas</h4><ul>'
-                           '<li data-sub="check">c</li></ul>')
+                           '<li data-sub="check" data-summary="Listed fixture item">c</li></ul>')
         body, count = lq.append_new(lq.done(notebook([self.rev, entry], tree), 'Continuing'))
         self.assertEqual((count, lq.shape(lq.parse_tree(body)[1])),
                          (1, [(self.q[0], [('check', 'd:s1')]), (('check', 'k:s2'), [])]))
@@ -1795,7 +1807,7 @@ class LeadQueueTest(unittest.TestCase):
             lq.check(notebook([self.rev], self.q, route=False), notebook([self.rev], route=False))
 
     def test_a_reopened_subidea_no_longer_counts_toward_its_old_parent(self):
-        listing = developing(self.q[0], 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="check">c</li></ul>')
+        listing = developing(self.q[0], 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="check" data-summary="Listed fixture item">c</li></ul>')
         closing = developing(('check', 'd:s1'), 'Closed').replace('id="d"', 'id="e"')
         reopen = ('<article id="r" data-kind="research" data-route="step"><ul><li data-check="d:s1">x <strong>'
                   'Follow-up.</strong> Reopened: too early.</li></ul></article>')
@@ -1827,8 +1839,8 @@ class ListingTest(unittest.TestCase):
     # 17 October 2026: a review read the queue's HTML by hand to find the builds stamped in its period.
     def test_items_are_listed_in_order_and_filtered_by_their_stamp(self):
         body = ('<section id="lead-queue"><ol>'
-                '<li data-build="old-one" data-source="x" data-after="entry-a">Build the <b>old</b> thing.</li>'
-                '<li data-check="new-one" data-source="x" data-after="entry-c">Check the new thing.</li>'
+                '<li data-build="old-one" data-source="x" data-after="entry-a" data-summary="Build the old thing.">Build the <b>old</b> thing.</li>'
+                '<li data-check="new-one" data-source="x" data-after="entry-c" data-summary="Check the new thing.">Check the new thing.</li>'
                 '</ol></section><section id="research-record"><article id="entry-a"></article>'
                 '<article id="entry-b"></article><article id="entry-c"></article></section>')
         lines = lq.listing(body)
@@ -1842,7 +1854,7 @@ class ListingTest(unittest.TestCase):
             lq.listing(body, 'entry-typo')
         unstamped = body.replace(' data-after="entry-a"', '')
         self.assertIn('1 items carry no stamp', lq.listing(unstamped, 'entry-b')[-1])
-        self.assertEqual(lq.main(['lead_queue.py', 'list', 'x.html', '--after']), 2)
+        self.assertEqual(queue_command(['lead_queue.py', 'list', 'x.html', '--after']), 2)
 
 
 class OwnFollowUpsTest(unittest.TestCase):
@@ -1980,7 +1992,7 @@ class LinkEarlierWorkTest(unittest.TestCase):
             path = Path(folder) / 'n.html'
             path.write_text(body)
             with contextlib.redirect_stdout(output):
-                self.assertEqual(lq.main(['lead_queue.py', 'survey', str(path)]), 0)
+                self.assertEqual(queue_command(['lead_queue.py', 'survey', str(path)]), 0)
         self.assertIn('2 items: 1 with no entry; 0 with entries, no open sub-idea and no attempt named',
                       output.getvalue())
 
@@ -2074,7 +2086,7 @@ class LinkEarlierWorkTest(unittest.TestCase):
             path.write_text(notebook(entries, queue))
             output = io.StringIO()
             with contextlib.redirect_stdout(output):
-                self.assertEqual(lq.main(['lead_queue.py', 'history', str(path), child[1], '--status']), 0)
+                self.assertEqual(queue_command(['lead_queue.py', 'history', str(path), child[1], '--status']), 0)
             self.assertIn('Latest development: #entry-2026-10-11-return', output.getvalue())
             self.assertIn('Current spell: 1; boundary: 4.', output.getvalue())
 

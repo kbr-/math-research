@@ -492,7 +492,7 @@ sys.exit(compute.main())
         subprocess.run(['git', 'add', 'notebook.html'], cwd=self.root, check=True)
         subprocess.run(['git', '-c', 'user.name=Test', '-c', 'user.email=test@example.invalid',
                         'commit', '-qm', 'Before review'], cwd=self.root, check=True)
-        passed = ('<li data-pick>A concrete continuation. <strong>Answers.</strong> The open obstacle. '
+        passed = ('<li data-pick data-summary="Test the full-source compatibility bound">A concrete continuation. <strong>Answers.</strong> The open obstacle. '
                   '<strong>Test.</strong> Passed. <strong>Break point.</strong> The full source bound '
                   'still requires a proved compatibility statement.</li>')
         rejected = ('<li>A rejected shortcut. <strong>Answers.</strong> The same open obstacle. '

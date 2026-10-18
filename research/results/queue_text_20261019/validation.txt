@@ -1,0 +1,29 @@
+Queue-description migration and summary backfill
+
+integrity.txt records all 867 queue nodes, including children, across eight
+nonempty notebooks. All have authored summaries of at most 160 characters.
+The audit compares each notebook with HEAD: queue IDs, nesting, order and other
+attributes match; descriptions match the exact source-based restoration; every
+byte outside the queue matches. Restoration is idempotent and queue transitions
+validate. The audit is serial because it is a one-off ordered notebook comparison
+using process-global queue configuration; it took about ten seconds.
+
+tests.txt records the earlier passing suite. After removing the legacy prefix
+fallback at the user's request, tests-no-fallback.txt records 1508 tests in 13.1s:
+OK, one optional authenticated-browser download test skipped. The real notebook browser cases run in this suite and
+cover expansion/collapse, full tail availability, hidden summary metadata,
+search expansion, nested items and the existing five-item disclosure.
+full-status.txt records the original Talagrand monograph item's full stored text
+and its development history, including the previously truncated comparison.
+After removing a trailing blank line, the required post-edit checkpoint suite
+passed again: tests-checkpoint.txt records 1508 tests in 11.9s, one skipped.
+
+The record-line check reported two pre-existing plain commit hashes in
+common-multiplier's stale-generic-principal-kernel item. Comparison with HEAD
+confirmed its complete description is unchanged; only data-summary was added.
+These historical findings are retained rather than rewriting the queued question.
+No new record-line finding was identified. git diff --check passed.
+
+No mathematical claim, proof, living section outside the queue, queue disposition
+or publication status was changed. The sweep restores exact legacy prefixes and
+does not reconstruct text that had already been lost before this migration.

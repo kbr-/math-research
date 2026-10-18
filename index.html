@@ -41,6 +41,9 @@
     .queue-more > summary::-webkit-details-marker { display: none; }
     .queue-more > summary:hover { background: #eef5ef; }
     .queue-more > summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+    .queue-item-text[data-collapsed] { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+    .queue-text-toggle { border: 0; padding: 0; background: none; color: var(--accent); font: 13px/1.5 system-ui, sans-serif; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+    .queue-text-toggle:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
     pre { overflow-x: auto; padding: 16px; background: #f1f3ee; border-radius: 4px; line-height: 1.6; }
     code { font: .85em/1.5 ui-monospace, monospace; }
     .research-entry + .research-entry { margin-top: 36px; padding-top: 28px; border-top: 1px solid #e2e5dd; }
@@ -165,6 +168,29 @@
     (() => {
       const list = document.querySelector('#lead-queue > ol, #lead-queue > ul');
       if (!list) return;
+      for (const [index, item] of [...list.querySelectorAll('li')].entries()) {
+        const content = [...item.childNodes].filter(node =>
+          node.nodeType !== Node.ELEMENT_NODE || !node.matches('ul, ol'));
+        if (content.map(node => node.textContent).join('').trim().length <= 180) continue;
+        const text = document.createElement('div');
+        text.className = 'queue-item-text';
+        text.id = `queue-full-text-${index}`;
+        text.dataset.collapsed = '';
+        text.append(...content);
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'queue-text-toggle';
+        button.setAttribute('aria-controls', text.id);
+        button.setAttribute('aria-expanded', 'false');
+        button.textContent = 'Show full text';
+        button.addEventListener('click', () => {
+          const expand = button.getAttribute('aria-expanded') !== 'true';
+          text.toggleAttribute('data-collapsed', !expand);
+          button.setAttribute('aria-expanded', String(expand));
+          button.textContent = expand ? 'Show less' : 'Show full text';
+        });
+        item.prepend(text, button);
+      }
       const remaining = [...list.children].filter(item => item.matches('li')).slice(5);
       if (!remaining.length) return;
       const disclosure = document.createElement('details');
@@ -380,6 +406,10 @@
             highlighted?.classList.remove('search-hit');
             highlighted = record.element;
             highlighted.classList.add('search-hit');
+            const queueItem = highlighted.closest('#lead-queue li');
+            for (const button of queueItem?.querySelectorAll('.queue-text-toggle[aria-expanded="false"]') || []) {
+              button.click();
+            }
             // Search can find text inside a closed disclosure too.
             for (let parent = highlighted.parentElement; parent; parent = parent.parentElement) {
               if (parent.matches('details')) parent.open = true;
