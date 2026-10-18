@@ -20,6 +20,9 @@ code or in its reading of the dummy construction, which is what the control is f
 Control: a pair G_1 = G_2 (no drop), where e = d = 0 must hold; and each sample's nu(G_2) recomputed by the
 Hopcroft-Karp kernel of box_completion.py and asserted equal to the real matching size of the weighted solution.
 Each sample's m_1 and m_2 are asserted equal to those box_completion.py saved for the same N and seed.
+Forced by counts: G_1 = G_2 forces e = 0 (no edge lies outside G_1), the gadget's unique maximum matching of G_2
+forces e = 2, and the seed-1 sample's nu(G_2[D_X u D_Y]) = 108 < d = 134 forces e > d; each control so tests
+only the routine (the dummy construction, the cost offsets, the sample's reconstruction), not the question.
 Refuted by: a mismatch between the two nu(G_2) values, or e != 0 when G_1 = G_2.
 Possible because: a wrong dummy count or a cost read with the wrong offset gives either.
 Baseline: the second test of lem:completion-failure-certificate, nu(G_2[D_X u D_Y]) >= d, necessary for the chain;
