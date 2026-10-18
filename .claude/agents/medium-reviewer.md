@@ -155,3 +155,5 @@ Report a verdict (pass, pass with corrections, or fail) followed by short bullet
 or error with the exact location and the change required, and each unused hypothesis. Then, under a
 separate heading "Suggestions (unverified)", give any way forward you found, with its argument, or
 "none found". Keep the report brief; do not restate correct material.
+
+- For each recorded claim a draft cites by one part, apply its other parts to the draft's instance and report any that decides it: authors stop at the part matching their picture of the instance (18 October 2026).

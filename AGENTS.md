@@ -358,7 +358,10 @@ AGENTS.md"):
   ranges meet), and the entry says what that gave, before a new method is named (18 October 2026: a
   conjecture was posed with a chaining rerun named while two recorded lemmas proved it, and a
   draft's proposition and a recorded bound, split at one threshold, gave the whole class's new bound
-  uncomposed).
+  uncomposed). A recorded statement with several parts is applied part by part, each part's outcome
+  on the instance written: the part that matches the instance's picture is not the only one that can
+  decide it (18 October 2026: a lemma's union over a fixed family was tried and its uniform part,
+  which decided the witness, was not).
 - Before a step is called the open one (an Attempt's stop, a test's outcome left to the next cycle),
   the plainest tools of its kind are run on it and their outcome written: a concentration bound on
   the sum the step concerns, a gluing or composition of the parts it joins, the converse of each
