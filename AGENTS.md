@@ -389,22 +389,24 @@ AGENTS.md"):
   names its rule and what in the input broke it, read from the code that emits the refusal (a search
   of the tool for the refusal's words), not inferred from the message; an input changed until a gate
   passes, without that line, is the same route (17 October 2026: a launcher's five-word line rule
-  and a qualifier gate were each answered by edits before their cause was read). A refusal that
-  names no rule (a bare git error) has its cause found by changing one suspected factor and
-  rerunning the same step; a cause not so shown is written as a guess, and no other route is taken
-  on it (17 October 2026: a rebase's refusal was put down to a commit hook, a hand commit took its
-  place and wrote git's conflict comments into the message, and the cause was unstaged files).
-  Before an action meant to undo or forestall something (a correction, a retraction, a note to an
-  agent), read the record showing that the thing happened and quote it in the reply. A verdict that
-  recurs against the work (a judge, a check, a reviewer) is settled in the turn it recurs, by
-  correcting the work, the living section it reads or the check, or by filing the choice in
-  `user_requests` with its default; sending it to a later review is no disposition (17 October 2026:
-  a judge's repeated verdict was deferred to the next review by a rule that does not exist). A
-  paragraph assembled from parts written at different times (a reviewer's lead, an instance check, a
-  plan) is reread whole before it is sent, each claim it makes against each of its own qualifiers
-  (17 October 2026: a review's Decision named a tail test, from its reviewer's lead, and ended with
-  its own finding that no reachable size decides it) (17 October 2026: a "disregard" note went to a
-  reviewer that had been sent nothing).
+  and a qualifier gate were each answered by edits before their cause was read; on 18 October 2026,
+  after the same three times more, `tools/hooks/refusal_gate.py` refuses an Edit or Write of a
+  refused framework command's input until code under tools/ has been read). A refusal that names no
+  rule (a bare git error) has its cause found by changing one suspected factor and rerunning the
+  same step; a cause not so shown is written as a guess, and no other route is taken on it (17
+  October 2026: a rebase's refusal was put down to a commit hook, a hand commit took its place and
+  wrote git's conflict comments into the message, and the cause was unstaged files). Before an
+  action meant to undo or forestall something (a correction, a retraction, a note to an agent), read
+  the record showing that the thing happened and quote it in the reply. A verdict that recurs
+  against the work (a judge, a check, a reviewer) is settled in the turn it recurs, by correcting
+  the work, the living section it reads or the check, or by filing the choice in `user_requests`
+  with its default; sending it to a later review is no disposition (17 October 2026: a judge's
+  repeated verdict was deferred to the next review by a rule that does not exist). A paragraph
+  assembled from parts written at different times (a reviewer's lead, an instance check, a plan) is
+  reread whole before it is sent, each claim it makes against each of its own qualifiers (17 October
+  2026: a review's Decision named a tail test, from its reviewer's lead, and ended with its own
+  finding that no reachable size decides it) (17 October 2026: a "disregard" note went to a reviewer
+  that had been sent nothing).
 - A property of a family (nested, disjoint, packed, few per point) enters a proof only after it is
   checked on the family's extreme members: boundaries that coincide, many members through one point.
   A case split over what a construction changes (the edges, cells or terms it touches) is derived
