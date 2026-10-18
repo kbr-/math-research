@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
-"""Preserve completed timing sessions and their outputs as durable evidence."""
+"""Preserve completed sessions with zstd-3 payloads and readable summaries/manifests.
+
+Manifest hashes and part sizes describe decompressed content. Existing raw/part layouts remain
+unchanged. Read a new payload with tools/evidence_io.py read PATH or zstd -dc PATH.
+"""
 import argparse
 import hashlib
 import json
 from pathlib import Path
 import shutil
+from typing import Any
+import evidence_io
 
 ROOT = Path(__file__).resolve().parents[1]
 RESEARCH = ROOT / 'research'
@@ -13,12 +19,8 @@ DEST = RESEARCH / 'provenance/session-records'
 OUTPUT_PART_BYTES = 32 * 1024 * 1024
 
 
-def digest(path):
-    result = hashlib.sha256()
-    with path.open('rb') as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b''):
-            result.update(chunk)
-    return result.hexdigest()
+def digest(path: Path) -> str:
+    return evidence_io.digest(path)
 
 
 def output_chunks(stream):
@@ -43,7 +45,7 @@ def output_chunks(stream):
         yield pending
 
 
-def verify_parts(target, entry):
+def verify_parts(target: Path, entry: dict[str, Any]) -> None:
     whole = hashlib.sha256()
     if not entry['archived_parts']:
         raise RuntimeError('Empty archived output part list')
@@ -53,7 +55,7 @@ def verify_parts(target, entry):
             raise RuntimeError(f'Archived output part missing or unsafe: {saved}')
         single = hashlib.sha256()
         size = 0
-        with saved.open('rb') as stream:
+        with evidence_io.open_binary(saved) as stream:
             for block in iter(lambda: stream.read(1024 * 1024), b''):
                 whole.update(block)
                 single.update(block)
@@ -64,21 +66,20 @@ def verify_parts(target, entry):
         raise RuntimeError('Archived output parts do not reconstruct the original hash')
 
 
-def archive_parts(source, target, name, source_hash):
+def archive_parts(source: Path, target: Path, name: str, source_hash: str) -> dict[str, Any]:
     parts = []
     whole = hashlib.sha256()
     with source.open('rb') as stream:
         for block in output_chunks(stream):
-            part_name = name + f'.part-{len(parts) + 1:04d}'
+            part_name = name + f'.part-{len(parts) + 1:04d}.zst'
             destination = target / part_name
             destination.parent.mkdir(parents=True, exist_ok=True)
             part_hash = hashlib.sha256(block).hexdigest()
             if destination.exists() and digest(destination) != part_hash:
                 raise RuntimeError(f'Refusing to overwrite different output part: {destination}')
             if not destination.exists():
-                temporary = destination.with_name(destination.name + '.tmp')
-                temporary.write_bytes(block)
-                temporary.replace(destination)
+                with evidence_io.compressed_writer(destination) as output:
+                    output.write(block)
             whole.update(block)
             parts.append({'archived_path': part_name, 'bytes': len(block),
                           'sha256': part_hash})
@@ -90,7 +91,7 @@ def archive_parts(source, target, name, source_hash):
     return entry
 
 
-def canonical_report(event):
+def canonical_report(event: dict[str, Any]) -> Path | None:
     """A declared --out report may replace an identical captured output."""
     command = event.get('command', [])
     if '--out' not in command:
@@ -104,12 +105,14 @@ def canonical_report(event):
         # machine's absolute cwd to locate evidence after moving a checkout.
         candidate = RESEARCH.parent / candidate
     candidate = candidate.resolve()
+    if not candidate.exists() and candidate.suffix != '.zst':
+        candidate = candidate.with_name(candidate.name + '.zst').resolve()
     if candidate.is_relative_to((RESEARCH / 'results').resolve()) and candidate.is_file():
         return candidate
     return None
 
 
-def archive(path):
+def archive(path: Path) -> bool:
     events = [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
     if not any(e['event'] == 'stop' for e in events):
         return False
@@ -164,19 +167,27 @@ def archive(path):
                 and source.stat().st_size > OUTPUT_PART_BYTES:
             manifest.append(archive_parts(source, target, name, source_hash))
             continue
-        destination = target / name
+        saved_name = prior['archived_path'] if prior else name if name == 'summary.json' else name + '.zst'
+        destination = (target / saved_name).resolve()
+        if not destination.is_relative_to(target.resolve()):
+            raise RuntimeError(f'Unsafe archived evidence path: {saved_name}')
         destination.parent.mkdir(parents=True, exist_ok=True)
         if destination.exists() and digest(destination) != source_hash:
             raise RuntimeError(f'Refusing to overwrite different archived evidence: {destination}')
         if not destination.exists():
-            temporary = destination.with_name(destination.name + '.part')
-            with source.open('rb') as src, temporary.open('wb') as dst:
-                shutil.copyfileobj(src, dst, length=1024 * 1024)
-            if digest(temporary) != source_hash:
+            if destination.suffix == '.zst':
+                evidence_io.compress_file(source, destination)
+            else:
+                temporary = destination.with_name(destination.name + '.part')
+                with source.open('rb') as src, temporary.open('wb') as dst:
+                    shutil.copyfileobj(src, dst, length=1024 * 1024)
+                if digest(temporary) != source_hash:
+                    raise RuntimeError(f'Source changed during archival: {source}')
+                temporary.replace(destination)
+            if digest(destination) != source_hash:
                 raise RuntimeError(f'Source changed during archival: {source}')
-            temporary.replace(destination)
         manifest.append({'original_path': original_path,
-                         'archived_path': name, 'sha256': source_hash})
+                         'archived_path': saved_name, 'sha256': source_hash})
     data = json.dumps(manifest, indent=2).encode() + b'\n'
     if index.exists() and index.read_bytes() != data:
         raise RuntimeError(f'Archive manifest changed: {index}')

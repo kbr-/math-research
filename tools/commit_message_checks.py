@@ -24,6 +24,7 @@ import re
 import subprocess
 import sys
 from pathlib import Path
+from evidence_io import read_git_text
 
 ROOT = Path(__file__).resolve().parents[1]
 FIGURE = re.compile(r'\b\d+(?:\.\d+)?\s?(?:of|in)\s\d+(?:\.\d+)?\b|\b\d+(?:\.\d+)?\s?(?:tests?|s|ms|MB|GB|%)(?![\w/])'
@@ -356,7 +357,7 @@ def check_staged(message_path):
     message = Path(message_path).read_text(encoding='utf-8', errors='replace')
     paths = git('diff', '--cached', '--name-only').split()
     top = Path(git('rev-parse', '--show-toplevel').strip())
-    read = lambda p: (top / p).read_text(errors='replace') if (top / p).is_file() else ''   # noqa: E731
+    read = lambda p: read_git_text(p, root=top)   # noqa: E731
     status = 0
     refusal = suite_after(paths, top)
     if refusal:
@@ -453,7 +454,7 @@ def replay(count, scripts_only=False):
             continue
         message = git('log', '-1', '--format=%B', rev)
         paths = git('diff-tree', '--no-commit-id', '--name-only', '-r', rev).split()
-        read = lambda p, rev=rev: git('show', f'{rev}:{p}', check=False)   # noqa: E731
+        read = lambda p, rev=rev: read_git_text(p, rev)   # noqa: E731
         subject = message.splitlines()[0][:80] if message else ''
         if is_framework(paths):
             framework += 1

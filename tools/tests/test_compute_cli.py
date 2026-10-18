@@ -526,6 +526,10 @@ class RecordedKernelReasonTest(unittest.TestCase):
                               'kernel_reason': ''}) + '\n')
             self.assertEqual(compute.recorded_kernel_reasons(res / 'b/new.py', root), [('old.py', reason)])
             self.assertEqual(compute.recorded_kernel_reasons(res / 'b/alone.py', root), [])
+            from evidence_io import compress_file
+            compress_file(rec / 'session.jsonl')
+            (rec / 'session.jsonl').unlink()
+            self.assertEqual(compute.recorded_kernel_reasons(res / 'b/new.py', root), [('old.py', reason)])
 
 
 if __name__ == '__main__':

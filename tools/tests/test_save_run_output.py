@@ -4,6 +4,9 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from evidence_io import read_text
 
 SPEC = importlib.util.spec_from_file_location('save_run_output', Path(__file__).resolve().parents[1] / 'save-run-output.py')
 MOD = importlib.util.module_from_spec(SPEC)
@@ -24,7 +27,8 @@ class SaveRunOutputTest(unittest.TestCase):
 
     def test_copies_full_log_with_header(self):
         target = MOD.save('s1', 'abc', 'research/results/r/out.txt', ['/scratch/'], root=self.root)
-        text = target.read_text()
+        self.assertEqual(target.suffix, '.zst')
+        text = read_text(target)
         self.assertTrue(text.startswith('# command: kern 7 x\n# run abc, session s1; full output\n'))
         self.assertTrue(text.endswith('line one\nline two\n'))
 

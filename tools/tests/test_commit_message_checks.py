@@ -2,6 +2,11 @@
 import importlib.util
 import unittest
 from pathlib import Path
+import sys
+import tempfile
+import subprocess
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from evidence_io import compress_file, read_git_text
 
 ROOT = Path(__file__).resolve().parents[2]
 spec = importlib.util.spec_from_file_location('commit_message_checks', ROOT / 'tools/commit_message_checks.py')
@@ -10,6 +15,24 @@ spec.loader.exec_module(cmc)
 
 
 class FigureTest(unittest.TestCase):
+    def test_compressed_figures_use_staged_and_historical_bytes_not_working_copy(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            subprocess.run(['git', 'init', '-q', str(root)], check=True)
+            raw = root / 'research/results/check/output.txt'
+            raw.parent.mkdir(parents=True)
+            raw.write_text('Ran 123 tests in 4.5s: OK\n')
+            packed = compress_file(raw)
+            relative = str(packed.relative_to(root))
+            subprocess.run(['git', '-C', str(root), 'add', relative], check=True)
+            tree = subprocess.check_output(['git', '-C', str(root), 'write-tree'], text=True).strip()
+            packed.write_bytes(b'not the indexed evidence')
+            message = 'Check\n\n123 tests in 4.5s.'
+            for revision in ('', tree):
+                read = lambda path: read_git_text(path, revision, root)
+                self.assertEqual(cmc.unsourced(message, [relative], read), [])
+                self.assertEqual(cmc.unsourced(message.replace('123', '124'), [relative], read), ['124 tests'])
+
     def test_a_figure_needs_each_number_in_a_saved_output_the_commit_carries(self):
         # 16 October 2026: four figures seen on the terminal and saved nowhere.
         message = 'Tool: x\n\nSuite: 1191 tests in 8.5 s; it flags 10 calls, 8 distinct briefs.\n# 99 tests\n'

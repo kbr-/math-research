@@ -55,6 +55,10 @@ if [ -f "$top/tools/staged_claims.py" ] && [ -f "$top/research/claims/index.json
   python3 "$top/tools/staged_claims.py" --base "$claims_base" || exit 1
 fi
 # A branch's own checks of a commit, where it has them (tools/git-hooks-branch/pre-commit).
+# New evidence is compressed; existing historical files are not migrated by this check.
+if [ -f "$top/tools/evidence_io.py" ]; then
+  python3 "$top/tools/evidence_io.py" check-staged || exit 1
+fi
 own="$top/tools/git-hooks-branch/pre-commit"
 [ -x "$own" ] || exit 0
 exec "$own"

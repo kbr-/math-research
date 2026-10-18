@@ -432,6 +432,24 @@ unfinished.
 
 ## Persist computation outputs
 
+New result/provenance data is stored with **zstd level 3** (`.zst`). Source code, documentation,
+timing HTML, and readable summary/index/manifest files stay uncompressed. `save-run-output.py` and
+the session archiver compress their new payloads automatically; use the printed paths in links. For
+another producer, finish using its raw output, then run:
+
+```bash
+./compute.sh --threads 1 --timeout 60 python3 tools/evidence_io.py pack --replace research/results/NEW_DIRECTORY
+python3 tools/evidence_io.py read research/results/NEW_DIRECTORY/data.json.zst
+```
+
+The packer accepts files or directories, verifies decompressed hashes before removing raw inputs,
+refuses replacement of evidence already committed at HEAD, and preserves readable metadata/source.
+`zstd -dc FILE.zst` also reads a payload; Python readers use `tools/evidence_io.py`'s `read_text` or
+`open_binary`. Stage the compressed paths and update links before committing. The commit check
+refuses new raw payloads and invalid staged zstd streams. Existing archives are not rewritten by
+ordinary archival; historical conversion and any Git history rewrite are a separate queued build.
+The `zstd` CLI is required; a missing executable is an installation request, never a raw fallback.
+
 Important computation output is research, not disposable logging. Scripts that produce tables,
 group-element enumerations, proof certificates, matrices, search results, or similar data should
 support `--out PATH` (or an equivalent explicit destination) and write the complete result to a
@@ -521,6 +539,7 @@ Different outputs are preserved separately, and existing archives are not rewrit
 changed canonical reports fail re-archival rather than silently losing evidence.
 
 New captured outputs larger than 32 MiB are stored in ordered parts, without dropping bytes or
-splitting valid UTF-8 characters. The manifest's **archived_parts** lists their paths, sizes and
-hashes; concatenating them in order reconstructs the original output and its recorded SHA-256.
-Re-archival checks every part and the combined hash. Existing single-file archives stay unchanged.
+splitting valid UTF-8 characters. Each new part is zstd-compressed. The manifest's
+**archived_parts** lists their paths and decompressed sizes/hashes; concatenating the decompressed
+parts in order reconstructs the original output and its recorded SHA-256. Re-archival checks every
+part and the combined hash. Existing single-file archives stay unchanged.

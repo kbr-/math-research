@@ -783,6 +783,26 @@ class RecordSearchBlockTest(unittest.TestCase):
         self.assertFalse(any('AFTER REVIEW' in row for row in hook.replay_record_rules([str(path)], windows=[])))
 
 
+class ArchivedWindowsTest(unittest.TestCase):
+    def test_replay_reads_raw_and_zstd_and_ignores_other_notebooks(self) -> None:
+        from evidence_io import compress_file
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for name, notebook in [('raw', 'main'), ('packed', 'main'), ('other', 'side')]:
+                folder = root / 'research/provenance/session-records' / name
+                folder.mkdir(parents=True)
+                journal = folder / 'session.jsonl'
+                journal.write_text('\n'.join(json.dumps(row) for row in [
+                    {'event': 'start', 'notebook': notebook},
+                    {'event': 'phase', 'category': 'mathematics', 'unix_s': 10},
+                    {'event': 'stop', 'unix_s': 20}]) + '\n')
+                if name != 'raw':
+                    compress_file(journal)
+                    journal.unlink()
+            with mock.patch('notebooks.selected', return_value={'name': 'main'}):
+                self.assertEqual(hook.replay_math_windows(root), [(10, 20), (10, 20)])
+
+
 class RefusalBlockTest(unittest.TestCase):
     # 17 October 2026: a checkout the classifier refused was redone by another command, the reply silent on it.
     def transcript(self, refused):

@@ -229,8 +229,9 @@ else:
         journal.write_text(''.join(json.dumps(e) + '\n' for e in events))
         journal.with_suffix('.summary.json').write_text('{}\n')
         self.assertTrue(module.archive(journal))
-        saved = module.DEST / 'sample/outputs/sample-output.txt'
-        self.assertEqual(saved.stat().st_size, 8 * 1024 * 1024)
+        from evidence_io import read_bytes
+        saved = module.DEST / 'sample/outputs/sample-output.txt.zst'
+        self.assertEqual(len(read_bytes(saved)), 8 * 1024 * 1024)
         self.assertEqual(module.digest(saved), module.digest(output))
         self.assertTrue(module.archive(journal))
         with output.open('ab') as stream:

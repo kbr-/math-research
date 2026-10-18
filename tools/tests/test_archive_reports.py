@@ -3,6 +3,9 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from evidence_io import read_bytes, compress_file
 
 SOURCE = Path(__file__).resolve().parents[1] / 'archive-session.py'
 
@@ -55,11 +58,22 @@ class ArchiveReportsTests(unittest.TestCase):
         self.report.write_text('only part of output\n')
         entry = self.archive()
         self.assertIn('archived_path', entry)
-        self.assertEqual((self.module.DEST / 'turn' / entry['archived_path']).read_bytes(),
+        self.assertTrue(entry['archived_path'].endswith('.zst'))
+        self.assertEqual(read_bytes(self.module.DEST / 'turn' / entry['archived_path']),
                          self.output.read_bytes())
 
     def test_existing_archive_layout_is_not_rewritten(self):
         entry = self.archive()  # No canonical report exists yet.
+        target = self.module.DEST / 'turn'
+        manifest = json.loads((target / 'manifest.json').read_text())
+        for row in manifest:
+            saved = target / row['archived_path']
+            if saved.suffix == '.zst':
+                saved.with_suffix('').write_bytes(read_bytes(saved))
+                saved.unlink()
+                row['archived_path'] = row['archived_path'][:-4]
+        (target / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
+        entry = manifest[-1]
         self.report.write_bytes(self.output.read_bytes())
         self.assertEqual(self.archive(), entry)
         self.assertIn('archived_path', entry)
@@ -78,13 +92,13 @@ class ArchiveReportsTests(unittest.TestCase):
         paths = [self.module.DEST / 'turn' / p['archived_path']
                  for p in entry['archived_parts']]
         self.assertGreater(len(paths), 1)
-        self.assertEqual(b''.join(p.read_bytes() for p in paths), payload)
+        self.assertEqual(b''.join(read_bytes(p) for p in paths), payload)
         for path in paths:
-            self.assertLessEqual(path.stat().st_size, 11)
-            path.read_text(encoding='utf-8')
+            self.assertLessEqual(len(read_bytes(path)), 11)
+            read_bytes(path).decode('utf-8')
         self.assertEqual(self.archive(), entry)
         paths[1].write_bytes(b'changed')
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises((RuntimeError, OSError)):
             self.archive()
 
     def test_missing_or_reordered_parts_fail(self):
@@ -109,8 +123,39 @@ class ArchiveReportsTests(unittest.TestCase):
         payload = b'abc\xff\xfe\xf0\x9f\x9a\x80xyz\xe2'
         self.output.write_bytes(payload)
         entry = self.archive()
-        self.assertEqual(b''.join((self.module.DEST / 'turn' / p['archived_path']).read_bytes()
+        self.assertEqual(b''.join(read_bytes(self.module.DEST / 'turn' / p['archived_path'])
                                  for p in entry['archived_parts']), payload)
+
+    def test_compressed_declared_report_is_canonical(self) -> None:
+        self.report.write_bytes(self.output.read_bytes())
+        compress_file(self.report)
+        self.report.unlink()
+        entry = self.archive()
+        self.assertEqual(entry['canonical_path'], 'results/turn/verification.txt.zst')
+        self.assertEqual(self.archive(), entry)
+
+    def test_legacy_raw_parts_remain_byte_identical(self) -> None:
+        self.module.OUTPUT_PART_BYTES = 8
+        self.output.write_text('abcdefghijklmnopqrstuvwxyz')
+        self.archive()
+        target = self.module.DEST / 'turn'
+        manifest = json.loads((target / 'manifest.json').read_text())
+        for part in manifest[-1]['archived_parts']:
+            packed = target / part['archived_path']
+            packed.with_suffix('').write_bytes(read_bytes(packed))
+            packed.unlink()
+            part['archived_path'] = part['archived_path'][:-4]
+        (target / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
+        self.assertEqual(self.archive(), manifest[-1])
+
+    def test_manifest_cannot_redirect_archival_outside_its_directory(self) -> None:
+        self.archive()
+        target = self.module.DEST / 'turn'
+        manifest = json.loads((target / 'manifest.json').read_text())
+        manifest[-1]['archived_path'] = '../../../escaped.txt.zst'
+        (target / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
+        with self.assertRaisesRegex(RuntimeError, 'Unsafe archived'):
+            self.archive()
 
 
 if __name__ == '__main__':

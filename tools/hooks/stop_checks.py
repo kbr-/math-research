@@ -1272,18 +1272,21 @@ def completed_record_searches(path: str) -> list[tuple[str, str]]:
 def replay_math_windows(root: Path) -> list[tuple[float, float]]:
     """Completed mathematics windows of the selected notebook, from the existing archived journals."""
     from notebooks import selected
+    from evidence_io import open_binary
     name = selected(root=root)['name']
     windows = []
-    for journal in (root / 'research/provenance/session-records').glob('*/session.jsonl'):
-        with journal.open() as stream:
+    archives = root / 'research/provenance/session-records'
+    journals = [*archives.glob('*/session.jsonl'), *archives.glob('*/session.jsonl.zst')]
+    for journal in journals:
+        with open_binary(journal) as stream:
             try:
                 start = json.loads(stream.readline())
             except ValueError:
-                continue
-            if start.get('notebook') != name:
-                continue
+                start = {}
             began, ended = None, None
             for line in stream:
+                if start.get('notebook') != name:
+                    continue
                 try:
                     event = json.loads(line)
                 except ValueError:

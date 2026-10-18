@@ -903,12 +903,13 @@ RECORD_CHECKED_FROM = 1792170000      # 16 October 2026 17:00 UTC; scripts last 
 _PY_NAME = re.compile(r'([\w.-]+\.py)\b')
 
 
-def recorded_kernel_reasons(script, root=None, limit=3):
+def recorded_kernel_reasons(script: str | Path, root: Path | None = None, limit: int = 3) -> list[tuple[str, str]]:
     """Kernel reasons recorded for earlier runs of scripts that share code with SCRIPT: the same script, or one
     whose local imports (Python file names its text names, followed three deep through the scripts under
     research/results) meet SCRIPT's.  Returned as (script name, reason), the latest first, at most LIMIT.  On 17
     October 2026 two launches in a row were refused for want of a kernel reason that a run of the same imported
     flows had recorded, the second after a rule said to start from the recorded flags."""
+    from evidence_io import read_text
     root = Path(root or ROOT)
     index = {}
     for path in (root / 'research/results').rglob('*.py'):
@@ -935,10 +936,11 @@ def recorded_kernel_reasons(script, root=None, limit=3):
     ours = closure(Path(script))
     journals = list((root / 'research/logs').glob('*.jsonl'))
     journals += list((root / 'research/provenance/session-records').glob('*/session.jsonl'))
+    journals += list((root / 'research/provenance/session-records').glob('*/session.jsonl.zst'))
     found = {}
     for journal in journals:
         try:
-            lines = journal.open(errors='replace').readlines()
+            lines = read_text(journal, errors='replace').splitlines()
         except OSError:
             continue
         for line in lines:

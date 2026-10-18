@@ -358,14 +358,14 @@ class FinalizationTest(unittest.TestCase):
         shutil.copy2(ROOT / 'tools/notebook_math.py', self.root / 'tools/notebook_math.py')
         shutil.copy2(ROOT / 'tools/claim_attention.py', self.root / 'tools/claim_attention.py')
         shutil.copy2(ROOT / 'tools/bearing_ledger.py', self.root / 'tools/bearing_ledger.py')
-        for name in ('tools/framework_queue.py', 'tools/notebooks.py', 'tools/codex_state.py', 'tools/finish-turn.py', 'tools/lead_queue.py', 'tools/branch_extension.py','tools/result_names.py', 'tools/archive-session.py', 'tools/claim_registry.py', 'tools/claim_notices.py', 'tools/claim_maintenance.py', 'tools/claim_reviews.py', 'tools/claim_evidence.py', 'tools/notebook-excerpt.py', 'tools/claim_registration.py', 'tools/claim_reads.py', 'tools/resemblance_coverage.py', 'tools/claim_authoring.py', 'tools/claim_resemblance.py', 'tools/notebook_math.py'):
+        for name in ('tools/framework_queue.py', 'tools/notebooks.py', 'tools/codex_state.py', 'tools/finish-turn.py', 'tools/lead_queue.py', 'tools/branch_extension.py','tools/result_names.py', 'tools/archive-session.py', 'tools/evidence_io.py', 'tools/claim_registry.py', 'tools/claim_notices.py', 'tools/claim_maintenance.py', 'tools/claim_reviews.py', 'tools/claim_evidence.py', 'tools/notebook-excerpt.py', 'tools/claim_registration.py', 'tools/claim_reads.py', 'tools/resemblance_coverage.py', 'tools/claim_authoring.py', 'tools/claim_resemblance.py', 'tools/notebook_math.py'):
             shutil.copy2(ROOT / name, self.root / name)
         # Exercise real metadata, report generation and archival without requiring
         # this laptop's systemd slice on CI. Only the tiny fixture archiver may
         # use this test double; production compute.sh is never changed.
         shutil.copy2(ROOT / 'compute.sh', self.root / 'compute_fixture.py')
         launcher = self.root / 'compute.sh'
-        launcher.write_text('''#!/usr/bin/env python3
+        launcher.write_text(f'#!{sys.executable}\n' + '''
 import sys
 from pathlib import Path
 import compute_fixture as compute
@@ -430,7 +430,8 @@ sys.exit(compute.main())
             'Status: test.</p>', 'Status: test. <span data-generated="finish-turn-producer-v1">Produced by Test agent (Test model, high).</span></p>')
         self.assertEqual(notebook.read_text(), expected)
         archive = self.root / 'research/provenance/session-records/test_turn'
-        self.assertEqual((archive / 'session.jsonl').read_bytes(),
+        from evidence_io import read_bytes
+        self.assertEqual(read_bytes(archive / 'session.jsonl.zst'),
                          (self.root / 'research/logs/test_turn.jsonl').read_bytes())
         stop = next(e for e in self.events('test_turn') if e['event'] == 'stop')
         following = self.events('next_turn')
