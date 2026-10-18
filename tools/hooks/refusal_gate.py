@@ -30,7 +30,7 @@ READ_CODE = re.compile(r'\b(?:grep|sed\s+-n|rg|cat|head|awk)\b[^|;&]*\btools/')
 def tool_calls(transcript, max_uses=MAX_USES, max_bytes=MAX_BYTES):
     """The session's last tool calls, oldest first, as dicts {name, input, error, text}; the file is read
     backwards in blocks, as far as max_uses tool calls or max_bytes."""
-    results, uses, tail, read = {}, [], b'', 0
+    results, uses, tail, read, seen = {}, [], b'', 0, set()
     with open(transcript, 'rb') as stream:
         end = stream.seek(0, 2)
         while end > 0 and len(uses) < max_uses and read < max_bytes:
@@ -47,7 +47,11 @@ def tool_calls(transcript, max_uses=MAX_USES, max_bytes=MAX_BYTES):
                     entry = json.loads(line)
                 except ValueError:
                     continue
-                if not isinstance(entry, dict) or entry.get('isSidechain'):
+                # Only the session's own messages: other records (requests sent to the model) carry copies of
+                # earlier messages, which made one refused check count as its own earlier repeat (the gate's
+                # first firing, 18 October 2026, on a draft checked once).
+                if (not isinstance(entry, dict) or entry.get('isSidechain')
+                        or entry.get('type') not in ('assistant', 'user')):
                     continue
                 parts = (entry.get('message') or {}).get('content')
                 if not isinstance(parts, list):
@@ -61,7 +65,8 @@ def tool_calls(transcript, max_uses=MAX_USES, max_bytes=MAX_BYTES):
                             text = '\n'.join(str(p.get('text') or '') for p in text if isinstance(p, dict))
                         results[part.get('tool_use_id')] = (str(part.get('is_error')).lower() == 'true',
                                                             str(text or ''))
-                    elif part.get('type') == 'tool_use':
+                    elif part.get('type') == 'tool_use' and part.get('id') not in seen:
+                        seen.add(part.get('id'))
                         error, text = results.get(part.get('id'), (False, ''))
                         uses.append({'name': part.get('name'), 'input': part.get('input') or {},
                                      'error': error, 'text': text})

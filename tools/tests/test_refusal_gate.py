@@ -83,6 +83,15 @@ class RefusalGateTest(unittest.TestCase):
                           result('c', 'Exit code 1\nFAILS where we stand: unchanged', True)]
         self.assertEqual(self.run_hook(self.transcript(same), '/tmp/x/cs.html')[0], 2)
 
+    def test_copies_of_messages_in_other_records_are_not_calls(self):
+        # 18 October 2026: a request record carried a copy of the check, which counted as its own earlier repeat.
+        check = use('a', 'Bash', {'command': 'python3 tools/notebook-append.py /tmp/x/fl.html --check'})
+        copy = dict(check, type='api-request')
+        once = [copy, check, result('a', 'Exit code 1\nFAILS where we stand: unchanged', True)]
+        self.assertEqual(self.run_hook(self.transcript(once), '/tmp/x/fl.html')[0], 0)
+        twice = [check, check, result('a', 'Exit code 1\nFAILS where we stand: unchanged', True)]
+        self.assertEqual(self.run_hook(self.transcript(twice), '/tmp/x/fl.html')[0], 0)
+
     def test_a_commit_message_refusal_gates_the_message_file(self):
         refused = [use('a', 'Bash', {'command': 'git commit -q -F /tmp/x/commit.txt'}),
                    result('a', '1 staged articles\ncommit-msg: the message does not carry its condition', True)]
