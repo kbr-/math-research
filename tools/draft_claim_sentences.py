@@ -1247,45 +1247,93 @@ def unregrouped_report(rows):
 # none.  On 18 October 2026 a New mathematics sentence said translates were at the target "at every spacing" while
 # the corollary's condition was \(\gamma\le my^*\), and a review's title said offset trees "reach long hierarchies
 # of translates" and its Assessment called them "at the target" without \(\ln(n+1)\le(\log(my^*/2))^{1/4}\).
-TARGET = re.compile(r'\b(?:at|meets?|meeting|within|reach(?:es)?) the target\b|\bat every (?:spacing|gap|depth|'
-                    r'ratio|width|level|size|height|scale)\b|\breach(?:es)? (?:long|every|all|any)\b', re.I)
-CONDITIONS_ANSWER = re.compile(r'^([0-9a-f]{8})\b[^\n]*\n(?:[ \t]*[a-z][a-z ]*:[^\n]*\n)*?'
+# Phrase families, each with a test case asked only through it: the target reached ("at the target", "meet their
+# target", "on target", "attained the target"), a parameter's whole range ("at every spacing", "for all levels",
+# "at any box level") and long hierarchies ("reach long hierarchies", "cover long hierarchies"); the reviewer of
+# the build found the first form missed all of these but two (18 October 2026).
+TARGET = re.compile(r'\b(?:at|meets?|meeting|met|within|reach(?:es|ed|ing)?|attain(?:s|ed|ing)?) (?:the|its|their) '
+                    r'target\b|\bon target\b|\b(?:at|for) (?:every|all|any|each) (?:X )?(?:box )?(?:spacings?|gaps?|'
+                    r'depths?|ratios?|widths?|levels?|sizes?|heights?|scales?|pairs?|values?)\b|\blong hierarch|'
+                    r'\breach(?:es|ed|ing)? (?:every|all|any|each)\b', re.I)
+# A demand, a proposal, a negative or a counterfactual before the phrase claims no result's range: about half the
+# first form's 148 asks over the record were such (the build's reviewer, a sample of about 30).
+# "prove", "attempt", "stuck" and "prediction" from a judged sample of 30 of the corrected form's asks, 9 of them
+# false (research/provenance/framework/conditions-rows-judged-20261018.txt).
+# Searched only in the phrase's own clause (since the last comma, semicolon or colon), and without "if", "no" and
+# "needs": the build's second-pass reviewer found "If the stack is hierarchical, offset trees are at the target" and
+# "With no condition on the gaps, translates are at the target" exempted, the lapse class itself.
+UNCLAIMED = re.compile(r'\b(?:would|must|demands?|asks?|seeks?|cannot|whether|attempt|stuck|prediction)\b|^\s*prove\b',
+                       re.I)      # "prove" only as the clause's imperative: "We prove that ... at the target" is asked
+# Words that make a phrase a plan or an obstacle's need when they stand before it in its semicolon or colon part
+# (wherever they stood in the sentence, a first form let "...at every depth; the next attempt is..." through, its
+# reviewer's third pass, 18 October 2026): in a judged sample of 20 of
+# the clause rule's 77 added asks, 10 were false, half of them "stuck on" obstacles and next attempts after a colon
+# (research/provenance/framework/conditions-rows-judged-20261018.txt).
+UNCLAIMED_SENTENCE = re.compile(r'\b(?:stuck on|next attempt|needs?,? for every|needs? a mechanism)\b', re.I)
+# The labels whose sentences are asked: summing-up and test paragraphs, and the comparison paragraphs where a
+# draft says what its result reaches.
+CONDITIONS_LABELS = re.compile(r'^(?:Baseline|Shortest route|Plainest bound|Record comparison|Bearing|Not covered|'
+                               r'New .*)$', re.I)
+# Statements and proofs, by a label that opens with their word ("New corollary." and an h4 "The theorem at work"
+# are asked): there the condition is the mathematics itself.
+STATEMENT_LABEL = re.compile(r'^(?:General statement|Setting|Degenerate cases|Nonvacuity|Sources read|Statement|Proof|'
+                             r'Lemma|Theorem|Proposition|Corollary|Hypotheses)\b', re.I)
+UNASKED = re.compile(r'^(?:Sub-idea.*|Stakes|Necessary target|Extra requirements|Reviewer\'s suggestions.*)$', re.I)
+CONDITIONS_ANSWER = re.compile(r'^([0-9a-f]{8})\b[^\n]*\n(?:[ \t]+[^\n:]{1,40}:[^\n]*\n)*?'
                                r'[ \t]*conditions:[ \t]*([^\n]*)$', re.M)
-# A relation symbol or "N large": a bare "when" or "if" let "when it holds here" through (18 October 2026).
-RELATION = re.compile(r'\\le|\\ge|\\leq|\\geq|<=|>=|[<>≤≥]|&lt;|&gt;|\bN large\b', re.I)
+# A relation symbol or "N large": a bare "when" or "if" let "when it holds here" through, and the build's first
+# form also took "\left" for "\le" and "->" for ">" (18 October 2026).
+TARGET_RELATION = re.compile(r'\\(?:le|ge|leq|geq|lt|gt|ll|gg|lesssim|gtrsim)(?![A-Za-z])|<=|>=|(?<![-=])<|(?<![-=])>|'
+                             r'[≤≥]|&lt;|(?<![-=])&gt;|\bN large\b', re.I)
+HTML_TAG = re.compile(r'</?[A-Za-z][^<>]*>')     # removed from an answer first: "see <em>entry</em>" is no relation
 
 
 def conditions_rows(draft):
-    """[(key, section label, sentence)] for the title, the status line and the sentences of summing-up, test and
-    list paragraphs whose prose (formulas removed) holds a word of TARGET, each once.  Statements and proofs are
-    not asked: there the condition is the mathematics itself."""
+    """[(key, section label, sentence)] for the title, the status line and the sentences of summing-up, test,
+    comparison and list paragraphs, and of unlabelled paragraphs under the entry's title, whose prose (formulas
+    removed, quotations kept) holds a phrase of TARGET with no demand, proposal or negative before it, each once.
+    Statements and proofs are not asked: there the condition is the mathematics itself."""
     found, heading = {}, ''
-    for where, sentence in [('title', text(t)) for t in TITLE.findall(draft)[:1]]:
-        if TARGET.search(sentence):
-            found.setdefault(hashlib.sha1(sentence.encode()).hexdigest()[:8], (where, sentence))
+    head = [('title', t) for t in TITLE.findall(draft)[:1]] + [('status line', s) for s in STATUS_LINE.findall(draft)[:1]]
+
+    def ask(where, sentence):
+        # A formula becomes a word, not a space: "At \(m=2\) the target is 22" read as "At the target".
+        bare = text(re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]', ' X ', LABEL.sub('', sentence, count=1), flags=re.S))
+        hit = TARGET.search(bare)       # the label removed: "Falsification attempt." is no proposal
+        clause = re.split(r'[,;:]', bare[:hit.start()])[-1] if hit else ''
+        part = re.split(r'[;:]', bare[:hit.start()])[-1] if hit else ''   # a plan word before the phrase in its part
+        if hit and not UNCLAIMED.search(clause) and not UNCLAIMED_SENTENCE.search(part):
+            plain = text(sentence)
+            found.setdefault(hashlib.sha1(plain.encode()).hexdigest()[:8], (where, plain))
+    for where, sentence in head:
+        ask(where, sentence)
     for tag, body in BLOCK.findall(STATUS_LINE.sub('', draft)):
         if tag in ('h3', 'h4'):
             heading = text(body) if tag == 'h4' else ''
             continue
         label = LABEL.match(body)
         where = label.group(1) if label else heading
-        if STATEMENT.match(where):
+        if STATEMENT_LABEL.match(where) or UNASKED.match(where):
             continue
         for sentence in sentences(body):
             inline = LABEL.match(sentence)
             if inline:
                 where = inline.group(1)
-            bare = text(re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]|"[^"]*"|&quot;.*?&quot;', ' ', sentence, flags=re.S))
+            if STATEMENT_LABEL.match(where) or UNASKED.match(where):
+                continue
             listed = tag == 'li' and not label
-            if (CONVERSE_LABELS.match(where) or SUMMARY.match(where) or listed) and TARGET.search(bare):
-                plain = text(sentence)
-                found.setdefault(hashlib.sha1(plain.encode()).hexdigest()[:8], (where, plain))
+            top = tag == 'p' and not label and not heading
+            if (CONVERSE_LABELS.match(where) or SUMMARY.match(where) or CONDITIONS_LABELS.match(where) or listed
+                    or top):
+                ask(where, sentence)
     return [(key, where, sentence) for key, (where, sentence) in found.items()]
 
 
 def conditions_answered(answer):
-    words = answer.split()
-    return len(words) >= ANSWER_WORDS and (answer.strip().lower().startswith('none:') or bool(RELATION.search(answer)))
+    """A relation answers on its own ("\\(\\gamma\\le my^*\\)"); "none:" needs ANSWER_WORDS words of reason."""
+    if TARGET_RELATION.search(HTML_TAG.sub(' ', answer)):
+        return True
+    return answer.strip().lower().startswith('none:') and len(answer.split()) >= ANSWER_WORDS
 
 
 def unconditioned(draft, answers):

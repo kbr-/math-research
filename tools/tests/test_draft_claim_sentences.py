@@ -849,16 +849,66 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
                  '<p><strong>Question.</strong> Is every layer at the target?</p>'
                  '<p><strong>Goal progress.</strong> The quoted "at the target" is the review\'s.</p></article>')
         self.assertEqual([where for _, where, _ in dcs.conditions_rows(draft)],
-                         ['title', 'New mathematics', 'The six entries'])
+                         ['title', 'New mathematics', 'The six entries', 'Goal progress'])   # quotes kept
         form = dcs.answers_template(draft)
-        self.assertEqual(form.count('  conditions: \n'), 3)
-        self.assertEqual(len(dcs.unconditioned(draft, form)), 3)
+        self.assertEqual(form.count('  conditions: \n'), 4)
+        self.assertEqual(len(dcs.unconditioned(draft, form)), 4)
         vague = form.replace('conditions: \n', 'conditions: the corollary holds for translates\n')
-        self.assertEqual(len(dcs.unconditioned(draft, vague)), 3)        # no relation, no "none:"
+        self.assertEqual(len(dcs.unconditioned(draft, vague)), 4)        # no relation, no "none:"
         filled = form.replace('conditions: \n', 'conditions: gamma \\le my* and lambda \\le (log v)^(1/4)\n')
         self.assertEqual(dcs.unconditioned(draft, filled), [])
         none = form.replace('conditions: \n', 'conditions: none: the theorem is unconditional at every size\n')
         self.assertEqual(dcs.unconditioned(draft, none), [])
+
+    def test_each_target_phrase_family_is_asked_through_its_own_branch(self):
+        # The build's reviewer (18 October 2026) found rewordings, places and quoted phrases not asked.
+        asked = ['Translates are bounded at every spacing.',            # the first exposing sentence's own branch
+                 'The stacks meet their target.', 'The bound is on target here.', 'The tree attained the target.',
+                 'It holds for all levels of the descent.', 'It holds at any box level.',
+                 'Offset trees cover long hierarchies of translates.',
+                 'Translates are "at the target" by the corollary.',           # scare quotes do not hide it
+                 'The offset tree reaches every depth at its price.',
+                 'It holds at all \\(9\\) pairs.',
+                 # the second pass's four, the lapse class with a condition in words or a negative elsewhere
+                 'With no condition on the gaps, translates are bounded at every spacing.',
+                 'If the stack is hierarchical, offset trees are bounded at every depth.',
+                 'The corollary needs only long boundaries, so translates are on target.',
+                 'Translates are not only bounded but at the target.',
+                 # the third pass's: a plan word in another part of the sentence, and "prove" not imperative
+                 'Offset trees are at the target at every depth; the next attempt is distinct staircases.',
+                 'The route is not stuck on translates: offset trees are at the target at every depth.',
+                 'We prove that offset trees are at the target at every depth.']
+        for sentence in asked:
+            with self.subTest(sentence=sentence):
+                rows = dcs.conditions_rows(f'<p><strong>New mathematics.</strong> {sentence}</p>')
+                self.assertEqual(len(rows), 1)
+        # Legitimate sentences that claim no range: a demand, a proposal, a negative, a counterfactual.
+        for sentence in ('The route demands a power saving at every scale.',
+                         'The next entry must reach the target degree.', 'It cannot reach every pair.',
+                         'A proof would have been at the target at every depth.'):
+            with self.subTest(sentence=sentence):
+                self.assertEqual(dcs.conditions_rows(f'<p><strong>New mathematics.</strong> {sentence}</p>'), [])
+        places = ('<article id="x"><h3>T</h3><p class="entry-meta">18 October 2026 · at the target · cycle</p>'
+                  '<p>Unlabelled: at the target for translates.</p>'
+                  '<p><strong>Baseline.</strong> The plain bound is at the target.</p>'
+                  '<p><strong>Shortest route.</strong> Taken: hierarchies at the target.</p>'
+                  '<p><strong>New corollary.</strong> Stacks at the target.</p>'
+                  '<p><strong>Corollary (stacks).</strong> At the target when \\(\\gamma\\le v\\).</p>'
+                  '<h4>Sub-ideas</h4><ul><li data-sub="check">Whether it is at the target.</li></ul></article>')
+        self.assertEqual([where for _, where, _ in dcs.conditions_rows(places)],
+                         ['status line', '', 'Baseline', 'Shortest route', 'New corollary'])
+        # A relation answers on its own; "\left" and "->" are not relations; a bare "none:" needs a reason.
+        for answer, ok in (('\\(\\gamma\\le my^*\\)', True), ('see \\left( the entry \\right)', False),
+                           ('see the entry -> above', False), ('see <em>entry</em>', False),
+                           ('\\(K<N\\)', True), ('a<b holds', True), ('K>N', True), ('so => here', False),
+                           ('none: no reason', False),
+                           ('none: the bound is unconditional', True), ('for N large', True)):
+            with self.subTest(answer=answer):
+                self.assertEqual(dcs.conditions_answered(answer), ok)
+        # A field label with capitals or a parenthesis before the line does not hide the answer.
+        draft = '<p><strong>New mathematics.</strong> Stacks meet their target.</p>'
+        key = dcs.conditions_rows(draft)[0][0]
+        self.assertEqual(dcs.unconditioned(draft, f'{key} x\n  Hypotheses (a): y\n  conditions: \\(\\lambda\\le2\\)\n'), [])
 
     def test_a_condition_called_exact_needs_a_converse_answer(self):
         # 17 October 2026: a Prediction said a proof holds "exactly while" a growth condition held, where a fixed
