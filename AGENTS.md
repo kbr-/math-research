@@ -565,12 +565,15 @@ AGENTS.md"):
   another level (a mean on the parent squares rather than the squares), that proof is rerun with its
   hypothesis moved there before a new, harder statement is posed (17 October 2026: a draft noted
   that a correction keeps the parent's mean and proposed an amplitude-bounded extension, while the
-  cited proof run one level coarser covered the correction at every amplitude). A proof rerun with
-  one hypothesis replaced lists every step the hypothesis serves, read from the steps themselves
-  rather than from the record's sentence on where it is used, indirect services included (an event
-  it makes equal to another, a locality or measurability it supplies) (17 October 2026: a record
-  said its mean condition was used "only there", in the push, while it also made the push event
-  local, and the rerun lost that).
+  cited proof run one level coarser covered the correction at every amplitude). A next attempt that
+  carries the entry's construction to a new coordinate or class first computes there the quantity
+  the entry's result turns on, written beside the attempt (18 October 2026: a tree of offsets was
+  carried to an index in which its amplitudes all vanish). A proof rerun with one hypothesis
+  replaced lists every step the hypothesis serves, read from the steps themselves rather than from
+  the record's sentence on where it is used, indirect services included (an event it makes equal to
+  another, a locality or measurability it supplies) (17 October 2026: a record said its mean
+  condition was used "only there", in the push, while it also made the push event local, and the
+  rerun lost that).
 - When a written rule lets the same mistake through a second time, replace or back it with a check
   in that turn, rather than citing the rule again (17 October 2026: a rule on forced controls,
   written after one, did not stop the next).

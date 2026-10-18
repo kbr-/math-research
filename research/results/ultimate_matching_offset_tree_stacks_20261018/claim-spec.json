@@ -1,0 +1,88 @@
+{
+ "source": {
+  "record": "[Offset tree stacks](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-18-offset-tree-stacks)",
+  "label": "Offset tree stacks",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-18-offset-tree-stacks"
+  ]
+ },
+ "date": "2026-10-18",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "claims": [
+  {
+   "id": "thm:offset-tree-stacks",
+   "status": "working_proof",
+   "category": "route_specific",
+   "novelty": "not_claimed",
+   "summary": "(a) On the events of lem:cellwise-lipschitz-split, lem:mesh-function-discrepancy and cor:fine-mesh-function-tube at delta_0 = W = 2^(-l_1): for every lattice profile phi_0 (1-Lipschitz in t = x - y, profile of a down-set in s = x + y), offsets 0 = c_0 < ... < c_(K-1) in 2W Z, real weights w_i with ||w|| = sum |w_i|, D_i = {s < phi_0(t) - c_i}, g = sum w_i 1_(D_i), mu = sum w_i delta_(c_i), and every offset tree (nested families C_0, ..., C_n of disjoint intervals with endpoints in 2W Z, C_0 = {[c_i, c_i + 2W)}, C_n = {[0, D_n)}, D_n <= 2, cores of C_r of length at most D_r, pieces of a core its cores of C_(r-1) and the rest's components, p_r the least piece length, beta_r = sum over cores I of C_r and pieces J of |mu(J) - mu(I)|J|/|I||): |D(g)| <= C sqrt(N log N)(||w|| + sum_r beta_r) + C sqrt N sum_r beta_r (log_2(16 D_r/p_r))^(3/4) + C ||w|| sqrt N (log_2(4/D_n))^(3/4), C universal. (b) Product stacks (K = 2^n, equal weights a/K, offsets sum eps_r d_r with d_0 >= 2W, d_r >= d_(r-1) + D_(r-1), D_0 = 2W, D_r = d_r, D_n = d_(n-1) + D_(n-1)): beta_r = 2a(D_r - 2D_(r-1))/D_r and sum beta_r <= 2a ln(D_n/(2^(n+1) W)). (c) At (4,4), with the event of lem:fine-grid-leighton-shor at W, for N large: hierarchical stacks c_i = 2W sum_(j<=i) 2^(nu(j)), any K >= 2, n = ceil(log_2 K), g = m W y* sum_(i<K) 1_(D_i) of discrete cost at most 2, 2^n W(n+1) <= 2, grid lengths at least l_0 > 0, v = m y*: |D(g)| <= C sqrt(N log N)(1 + l_0^(-1)(1 + ln(n+1)(log(v/2))^(-1/4))) + C sqrt N l_0^(-1)(1 + ln(n+1))^(7/4)(log(v/2))^(-1/4); at the target when ln(n+1) <= (log(v/2))^(1/4).",
+   "assessment": "Working proof, passed with corrections by one medium reviewer in two passes: g = G(u), u = phi_0 - s; G = (G - G_0) + sum_r q_r + G_n by the level densities of the tree; the cell texture G - G_0 by cor:fine-mesh-function-tube and the cellwise remainder; each level's tents q_r(u) by lem:tube-localized-discrepancy (b) at the meshes p_r and D_r and the cellwise remainder, as in that lemma's (c); the top ramp by lem:monotone-path-ramps; (b) the cylinder tree and 1 - x <= -ln x; (c) T(i + 2^r) = T(i) + T(2^r), zero weights beyond K, one partial core per level, the bound on a from lem:fine-grid-leighton-shor (c).",
+   "rationale": "Decides the long hierarchies the regrouped stacks entry left (largest valuation of order log N, above c(log N)^(2/3)(log v)^(1/3)), uniformly over the staircase, for ln(ceil(log_2 K) + 1) <= (log(my*/2))^(1/4), and with lem:cost-weighted-slope-bound (b) bounds every hierarchical stack by C sqrt(N log N)(1 + 1/l_0 + (ln(ceil(log_2 K) + 1)/l_0)^(1/2)); gives every translate stack a bound in its offsets' tree, a larger subclass of the one-height chains cor:coarse-discrete-sufficiency (b) asks.",
+   "next_action": "Layer trees for every nested one-height chain: a tree of layer intervals with per-level ramps linear in s between physical profiles, each level charged by step (2) at its cores' widths with amplitudes depending on t."
+  }
+ ],
+ "relationships": [
+  [
+   "thm:offset-tree-stacks",
+   "depends_on",
+   "lem:tube-localized-discrepancy",
+   "Its (b), and the proof of its (c), for each level's tents."
+  ],
+  [
+   "thm:offset-tree-stacks",
+   "depends_on",
+   "lem:cellwise-lipschitz-split",
+   "The remainders at the meshes W and p_r."
+  ],
+  [
+   "thm:offset-tree-stacks",
+   "depends_on",
+   "cor:fine-mesh-function-tube",
+   "The cell texture at the coarse mesh 2W."
+  ],
+  [
+   "thm:offset-tree-stacks",
+   "depends_on",
+   "lem:monotone-path-ramps",
+   "The top ramp of width D_n."
+  ],
+  [
+   "thm:offset-tree-stacks",
+   "depends_on",
+   "lem:fine-grid-leighton-shor",
+   "Its (c): the bound on a, in (c)."
+  ],
+  [
+   "thm:offset-tree-stacks",
+   "cites",
+   "cor:translate-staircase-stacks",
+   "The depth-one tree with beta_1 = 0 gives its bound for every K at offsets one cell apart."
+  ],
+  [
+   "thm:offset-tree-stacks",
+   "cites",
+   "cor:regrouped-stacks",
+   "The long hierarchies it leaves are decided here, for translates."
+  ],
+  [
+   "thm:offset-tree-stacks",
+   "cites",
+   "cor:coarse-discrete-sufficiency",
+   "Its (b) asks every one-height chain; this is a subclass."
+  ],
+  [
+   "thm:offset-tree-stacks",
+   "cites",
+   "cor:comparable-gap-stacks",
+   "Distinct staircases at one mesh per class; neither implies the other: the theorem asks translates, the corollary comparable gaps."
+  ],
+  [
+   "thm:offset-tree-stacks",
+   "depends_on",
+   "lem:mesh-function-discrepancy",
+   "Its event in (a), its (c) for the averages in step (1) and the inner edges in step (2)."
+  ]
+ ]
+}
