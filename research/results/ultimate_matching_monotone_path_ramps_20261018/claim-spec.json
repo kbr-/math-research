@@ -1,0 +1,158 @@
+{
+ "source": {
+  "record": "[Monotone path ramps](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-18-monotone-path-ramps)",
+  "label": "Monotone path ramps",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-18-monotone-path-ramps"
+  ]
+ },
+ "date": "2026-10-18",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "claims": [
+  {
+   "id": "lem:monotone-path-ramps",
+   "summary": "On the event of lem:cellwise-lipschitz-split (probability tending to one), for X_1..X_N i.i.d. uniform on [0,1]^2 and W = 2^(-l_1): for every 1-Lipschitz profile phi of a down-set (in t = x - y, s = x + y the down-set is {s < phi(t)}), every w in [2^(-l_1), 2] and every a > 0, the ramp R = a rho((s - phi(t))/w), rho(u) = min(1, max(0, -u)), has |sum_i R(X_i) - N int R| <= C a sqrt N((log_2(4/w))^(3/4) + sqrt(log N)), C universal.",
+   "assessment": "Working proof, passed with corrections by one medium reviewer (research/results/ultimate_matching_monotone_path_ramps_20261018/review.txt): a special case of lem:cellwise-lipschitz-split at the ramp's own mesh (V_j <= C a, Lambda_j <= C a), which gives it for every 1-Lipschitz profile and w >= 2^(-l_1) without the (a/w + a) log N term; second proof by chaining over coarse monotone approximations with Bernstein and a union per level, the coarsest level by lem:mesh-function-discrepancy (b), (c) and Bernstein given the cell counts.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "A ramp along any monotone path, steep or flat in the square's coordinates, pays the Leighton-Shor factor only for the dyadic scales between its width and 1; recorded through lem:cellwise-lipschitz-split.",
+   "next_action": "The ramp-plus-texture mechanism for stacks of distinct nested staircases: the interpolating ramp by lem:local-factor-discrepancy (b) on a partition adapted to the local stack width, the texture by cor:fine-mesh-function-tube at a coarse mesh of the local gap.",
+   "novelty": "not_claimed"
+  },
+  {
+   "id": "cor:translate-staircase-stacks",
+   "summary": "At (4,4), W = 2^(-l_1), on the events of lem:cellwise-lipschitz-split, cor:fine-mesh-function-tube at delta_0 = W, lem:fine-grid-leighton-shor at W and Chernoff's bound for the W-cell counts, for N large: for every lattice down-set D_0 with profile phi, every K >= 1 and m >= 1, with D_i = {s < phi(t) - 2iW} and g = m W y^* sum_(i<K) 1_(D_i), of discrete cost at most 2 and with every boundary of D_i of grid length at least l_0 > 0, |D(g)| <= C (1 + 1/l_0) sqrt(N log N), C universal.",
+   "assessment": "Working proof, passed with corrections by one medium reviewer (research/results/ultimate_matching_monotone_path_ramps_20261018/review.txt): for m y^* >= sqrt(N/log N) by lem:fine-grid-leighton-shor (c); otherwise g = R + (R-bar - R) + H with R the ramp of height K m W y^* and width 2KW, R by lem:cellwise-lipschitz-split, R-bar - R by Bernstein given the cell counts with a union over the at most 4^(2/W) staircases, H by cor:fine-mesh-function-tube at its coarse mesh 2W; for one staircase fixed in advance lem:guided-chain-bound (b) with linearity already gives the bound, the corollary adding uniformity over the staircase. The corollary is a composition of recorded statements (lem:cellwise-lipschitz-split at j_0 and at l_1, cor:fine-mesh-function-tube, lem:fine-grid-leighton-shor (c)) along the decomposition into ramp, cell averaging and texture.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Bunched stacks of piled staircases one cell apart with boundaries of grid length at least l_0, which lem:staircase-bundle-chains' strips miss, meet the one-height target uniformly over the staircase when the staircases are translates of one.",
+   "next_action": "Stacks of distinct nested staircases.",
+   "novelty": "not_claimed"
+  }
+ ],
+ "relationships": [
+  [
+   "lem:monotone-path-ramps",
+   "cites",
+   "lem:band-family-discrepancy",
+   "Bands along graphs of bounded slope; monotone profiles need no slope bound and graphs need not be monotone; neither implies the other."
+  ],
+  [
+   "lem:monotone-path-ramps",
+   "cites",
+   "lem:lipschitz-class-lower-bound",
+   "At w = 2 the bound is of the order that lemma shows necessary for Lipschitz functions."
+  ],
+  [
+   "lem:monotone-path-ramps",
+   "cites",
+   "lem:grid-flow-duality",
+   "Resembles by wording only; a duality on graphs, no relation."
+  ],
+  [
+   "cor:translate-staircase-stacks",
+   "depends_on",
+   "lem:monotone-path-ramps",
+   "The ramp part."
+  ],
+  [
+   "cor:translate-staircase-stacks",
+   "depends_on",
+   "cor:fine-mesh-function-tube",
+   "The step texture at the coarse mesh 2W."
+  ],
+  [
+   "cor:translate-staircase-stacks",
+   "depends_on",
+   "lem:fine-grid-leighton-shor",
+   "Its (c) for m y^* >= sqrt(N/log N)."
+  ],
+  [
+   "cor:translate-staircase-stacks",
+   "depends_on",
+   "lem:mesh-function-discrepancy",
+   "Its (c) for the variation of the cell averages of the ramp."
+  ],
+  [
+   "cor:translate-staircase-stacks",
+   "cites",
+   "lem:staircase-bundle-chains",
+   "That lemma bounds piled monotone paths with room (B2)-(B4) and distinct paths; the corollary needs no room but asks translates; neither implies the other."
+  ],
+  [
+   "cor:translate-staircase-stacks",
+   "cites",
+   "lem:cost-weighted-slope-bound",
+   "Its (b) bounds every translate stack within (log(m y^*))^(1/4) of the target."
+  ],
+  [
+   "cor:translate-staircase-stacks",
+   "cites",
+   "thm:monotone-product-chains",
+   "Product chains with h constant on columns; translate stacks vary along columns; neither implies the other."
+  ],
+  [
+   "cor:translate-staircase-stacks",
+   "cites",
+   "thm:anchored-increment-functions",
+   "Anchored increments; the inner piles of a stack are not anchored; neither implies the other."
+  ],
+  [
+   "cor:translate-staircase-stacks",
+   "cites",
+   "cor:monotone-product-chain-bound",
+   "Product chains; neither implies the other."
+  ],
+  [
+   "cor:translate-staircase-stacks",
+   "cites",
+   "lem:anchored-level-sum",
+   "Counts anchored edges only, which leaves a stack's inner piles out; not used."
+  ],
+  [
+   "cor:translate-staircase-stacks",
+   "cites",
+   "lem:dyadic-level-sum",
+   "Counts the support's boundary only; not used."
+  ],
+  [
+   "lem:monotone-path-ramps",
+   "depends_on",
+   "lem:cellwise-lipschitz-split",
+   "Its proof from the record: the lemma is a special case of lem:cellwise-lipschitz-split at the ramp's own mesh, which implies it."
+  ],
+  [
+   "lem:monotone-path-ramps",
+   "depends_on",
+   "lem:mesh-function-discrepancy",
+   "Its (b) and (c) in the second proof's coarsest level."
+  ],
+  [
+   "lem:monotone-path-ramps",
+   "cites",
+   "lem:local-factor-discrepancy",
+   "Its (b) with a uniform partition gives the same bound."
+  ],
+  [
+   "cor:translate-staircase-stacks",
+   "depends_on",
+   "lem:cellwise-lipschitz-split",
+   "The ramp part, through lem:monotone-path-ramps' proof from the record."
+  ],
+  [
+   "cor:translate-staircase-stacks",
+   "cites",
+   "lem:guided-chain-bound",
+   "Its (b) with linearity gives the bound for a staircase fixed before the points are drawn; the corollary adds uniformity over the staircase."
+  ],
+  [
+   "cor:translate-staircase-stacks",
+   "cites",
+   "lem:fixed-line-boundary-bound",
+   "A set in a half-plane with boundary on its line; staircases lie on no line; neither implies the other."
+  ]
+ ]
+}
