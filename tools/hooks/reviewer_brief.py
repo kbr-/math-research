@@ -200,6 +200,127 @@ STATEMENTS_REASON = ('the draft\'s Follow-up relies on claims whose registered s
                      'reviewer judges the next attempt on the statements and not on the draft\'s words about them')
 
 
+ARTICLE_ID = re.compile(r'<article\b[^>]*\sid="([^"]+)"')
+
+
+def unrecorded_drafts(text, repository):
+    """The drafts named_drafts finds in `text` whose article is not yet in a notebook of the checkout: an entry
+    already appended has passed the finisher, and a brief that names a file mentioning it (a replay, an excerpt)
+    does not send it for review. On 18 October 2026 this check's own review brief was refused on the
+    thin-shell draft, which a replay file the brief named mentions. A draft that keeps a recorded entry's id (one
+    copied from a template) is exempt too."""
+    drafts = []
+    for draft in named_drafts(text):
+        try:
+            found = ARTICLE_ID.search(Path(draft).read_text(errors='replace'))
+        except OSError:
+            continue
+        if found:
+            drafts.append((draft, found.group(1)))
+    if not drafts:
+        return []
+    root = Path(repository)
+    notebooks = [root / 'notebook.html'] + sorted(root.glob('research/branches/*/notebook.html'))
+    recorded = set()
+    for notebook in notebooks:
+        try:
+            body = notebook.read_text(errors='replace')
+        except OSError:
+            continue
+        # The class may come before the id: 293 articles of notebook.html are written so (its reviewer).
+        recorded.update(ident for _, ident in drafts
+                        if re.search(r'<article\b[^>]*\sid="' + re.escape(ident) + '"', body))
+    return [draft for draft, ident in drafts if ident not in recorded]
+
+
+def unread_record_claims(text, repository):
+    """For each draft the brief or message names: the claims its Record search, Record comparison, Record, Own
+    statements or Bearing paragraphs name, other than its own, whose statement no reading tool printed since its
+    timing session started: [(draft, [id, ...]), ...].  The finisher refuses the same (claim_reads); on 18 October
+    2026 it fired only there, after four review passes of the thin-shell entry, so the reviewer read paragraphs
+    that rested on three unread statements.  The session is the one the draft's <!-- TIMING TURN --> marker names,
+    read by tools/draft_claim_sentences.py's session_start as the finisher reads it; a first version took the
+    latest unstopped journal, which a unit test's or a protected run's journal can be (its reviewer). A draft
+    without the marker is not checked here."""
+    import claim_reads
+    import draft_claim_sentences
+    out = []
+    for draft in unrecorded_drafts(text, repository):
+        body = Path(draft).read_text(errors='replace')
+        declared = re.search(r'\bdata-claims="([^"]*)"', body)
+        own = set(declared.group(1).split()) if declared else set()
+        since = draft_claim_sentences.session_start(repository, body)
+        if since is None or not [ident for ident in claim_reads.named(body) if ident not in own]:
+            continue
+        missing = claim_reads.unread(body, claim_reads.read_since(repository, since), own)
+        if missing:
+            out.append((draft, missing))
+    return out
+
+
+def draft_spec(draft):
+    """The claim spec beside a draft or one folder up: a .json file whose claims include one the draft declares."""
+    declared = re.search(r'\bdata-claims="([^"]*)"', Path(draft).read_text(errors='replace'))
+    own = set(declared.group(1).split()) if declared else set()
+    for folder in (Path(draft).parent, Path(draft).parent.parent):
+        for path in sorted(folder.glob('*.json'))[:WALK_LIMIT]:
+            try:
+                claims = json.loads(path.read_text()).get('claims')
+            except (OSError, ValueError, AttributeError):
+                continue
+            if isinstance(claims, list) and own & {c.get('id') for c in claims if isinstance(c, dict)}:
+                return path
+    return None
+
+
+def uncompared_resemblances(text, repository):
+    """For each draft with a spec (draft_spec): the registered claims resembling a spec claim that its Record
+    comparison, or for a proved claim its witness passages, do not name (tools/resemblance_coverage.py, the
+    finisher's check, run with the spec's claims after the registered ones): [(draft, [line, ...]), ...].  On 18
+    October 2026 the finisher found two such claims after the thin-shell entry's four review passes."""
+    found = [(draft, spec) for draft in unrecorded_drafts(text, repository) for spec in [draft_spec(draft)] if spec]
+    if not found:
+        return []
+    import resemblance_coverage
+    registry = json.loads((Path(repository) / 'research/claims/index.json').read_text())
+    out = []
+    for draft, spec in found:
+        known = {claim['id'] for claim in registry['claims']}
+        claims = registry['claims'] + [{'id': c['id'], 'summary': c.get('summary', ''),
+                                        'mathematical_status': c.get('status')}
+                                       for c in json.loads(spec.read_text())['claims'] if c['id'] not in known]
+        article = Path(draft).read_text(errors='replace')
+        lines = [f'{other} ({score:.2f}, beside {ident}) in the Record comparison'
+                 for ident, score, other in resemblance_coverage.missing(article, claims,
+                                                                         relationships=registry['relationships'])]
+        lines += [f'{other} ({score:.2f}, beside {ident}) in a Nonvacuity, Plainest bound or Baseline passage'
+                  for ident, score, other in resemblance_coverage.witness_missing(
+                      article, claims, relationships=registry['relationships'])]
+        if lines:
+            out.append((draft, lines))
+    return out
+
+
+RECORD_READ_REASON = ('the draft names claims in its Record search, Record comparison, Record, Own statements or '
+                      'Bearing paragraphs whose statements were not read in this session: {}. Read each with '
+                      'tools/notebook-excerpt.py --claims ID ... --out FILE and correct the paragraph before the '
+                      'review, as the finisher will ask after it')
+RESEMBLANCE_REASON = ('the draft does not name registered claims resembling its spec\'s claims: {}. Read each and '
+                      'say there whether it is more general, a special case or neither, and what it gives on the '
+                      'witness, before the review, as the finisher will ask after it')
+
+
+def record_reason(text, repository):
+    """The refusal for unread record claims or uncompared resemblances in the drafts `text` names, or None."""
+    unread = unread_record_claims(text, repository)
+    if unread:
+        return RECORD_READ_REASON.format('; '.join(f'{d}: {", ".join(c)}' for d, c in unread))
+    gaps = uncompared_resemblances(text, repository)
+    if gaps:
+        return RESEMBLANCE_REASON.format('; '.join(f'{d}: {"; ".join(lines)}' for d, lines in gaps))
+    return None
+
+
 def premature_reviewed(text):
     """Drafts whose status line says "reviewed" while their Verification gate is still a placeholder: on
     17 October 2026 three entries in a row were sent to their reviewer with that status, and each reviewer had to
@@ -361,6 +482,9 @@ def refusal(payload, tools=TOOLS, log=None, now=None):
         absent = missing_statements(message)
         if absent:
             return STATEMENTS_REASON.format('; '.join(f'{d}: {", ".join(c)}' for d, c in absent))
+        record = record_reason(message, tools.resolve().parent)
+        if record:
+            return record
         stale = stale_files(message, log or block_log.LOG, now)
         return (('the message says ' + ', '.join(stale) + ' was updated, but a call naming it was refused '
                  'after it was last written: read it back, write the update again if it is missing, and say '
@@ -385,6 +509,9 @@ def refusal(payload, tools=TOOLS, log=None, now=None):
     absent = missing_statements(prompt)
     if absent:
         return STATEMENTS_REASON.format('; '.join(f'{d}: {", ".join(c)}' for d, c in absent))
+    record = record_reason(prompt, tools.resolve().parent)
+    if record:
+        return record
     leaks = blind_leaks(prompt, tools.resolve().parent)
     if leaks:
         return ('the brief is for a blind stage, and the folder of its files also holds ' + ', '.join(leaks[:6])

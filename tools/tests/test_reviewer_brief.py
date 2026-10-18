@@ -315,6 +315,82 @@ class MissingBriefFileTest(unittest.TestCase):
             # All three replayed messages have the refusal within their window, the first at the refusal's time.
             self.assertEqual(len(covered), 3)
 
+    def test_record_claims_unread_or_uncompared_are_refused_before_the_review(self):
+        # 18 October 2026: the thin-shell entry named three claims it had not read, and left two resembling claims out
+        # of its Record comparison; the finisher found both after four review passes.
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp) / 'repo'
+            logs = repo / 'research' / 'logs'
+            logs.mkdir(parents=True)
+            (repo / 'research' / 'claims').mkdir()
+            (logs / 'cycle.jsonl').write_text(json.dumps({'event': 'start', 'unix_s': 100.0}) + '\n')
+            # A protected run's journal, unstopped and started later, is not the draft's session (its reviewer).
+            (logs / 'run_x.jsonl').write_text(json.dumps({'event': 'start', 'unix_s': 900.0,
+                                                          'model': 'unspecified'}) + '\n')
+            (logs / 'claim-reads.jsonl').write_text(json.dumps({'unix_s': 120.0, 'claims': ['thm:read-one']}) + '\n'
+                                                    + json.dumps({'unix_s': 80.0, 'claims': ['thm:early-one']}) + '\n')
+            summary = 'random box graphs of uniform samples have a deficiency drop at some level of the boxes'
+            registry = {'claims': [{'id': 'thm:near-one', 'summary': summary, 'mathematical_status': 'working_proof'},
+                                   {'id': 'thm:read-one', 'summary': 'a bound on dual chains', 'mathematical_status':
+                                    'working_proof'},
+                                   {'id': 'thm:early-one', 'summary': 'a flow obstruction', 'mathematical_status':
+                                    'working_proof'}],
+                        'relationships': []}
+            (repo / 'research' / 'claims' / 'index.json').write_text(json.dumps(registry))
+            folder = Path(tmp) / 'lh'
+            (folder / 'rev').mkdir(parents=True)
+            (folder / 'spec.json').write_text(json.dumps({'claims': [{'id': 'thm:new-one', 'summary': summary,
+                                                                      'status': 'working_proof'}]}))
+            draft = folder / 'rev' / 'entry.html'
+            prompt = f'Second pass: {draft}.'
+            body = ('<article id="entry-2026-10-18-x" data-kind="research" data-claims="thm:new-one">'
+                    '<p><strong>Record comparison.</strong> thm:read-one and thm:early-one give nothing here.</p>'
+                    '<p><strong>Nonvacuity.</strong> At (4,4).</p><!-- TIMING cycle --></article>')
+            draft.write_text(body)
+            self.assertEqual(hook.unread_record_claims(prompt, repo), [(str(draft), ['thm:early-one'])])
+            reason = hook.refusal({'tool_name': 'SendMessage', 'tool_input': {'message': prompt}}, tools=repo / 'tools')
+            self.assertIn('not read in this session: ' + str(draft) + ': thm:early-one', reason)
+            # The same through a reviewer's Agent brief.
+            (folder / 'commit.txt').write_text('Entry: x\n')
+            reason = hook.refusal(call(f'Review {draft} with {folder / "commit.txt"}.'), tools=repo / 'tools')
+            self.assertIn('thm:early-one', reason or '')
+            # A draft without its session's marker is not checked here (the finisher still is).
+            draft.write_text(body.replace('<!-- TIMING cycle -->', ''))
+            self.assertEqual(hook.unread_record_claims(prompt, repo), [])
+            draft.write_text(body)
+            with open(logs / 'claim-reads.jsonl', 'a') as log:
+                log.write(json.dumps({'unix_s': 130.0, 'claims': ['thm:early-one']}) + '\n')
+            self.assertEqual(hook.unread_record_claims(prompt, repo), [])
+            gaps = hook.uncompared_resemblances(prompt, repo)
+            self.assertEqual([d for d, _ in gaps], [str(draft)])
+            self.assertTrue(any('thm:near-one' in line and 'Record comparison' in line for line in gaps[0][1]))
+            self.assertTrue(any('thm:near-one' in line and 'Nonvacuity' in line for line in gaps[0][1]))
+            draft.write_text(body.replace('give nothing here.', 'give nothing here; thm:near-one is neither.')
+                             .replace('At (4,4).', 'At (4,4); thm:near-one gives no drop there.'))
+            with open(logs / 'claim-reads.jsonl', 'a') as log:
+                log.write(json.dumps({'unix_s': 140.0, 'claims': ['thm:near-one']}) + '\n')
+            self.assertEqual(hook.record_reason(prompt, repo), None)
+            # A draft already appended to a notebook, named only through a file that mentions it, is not checked:
+            # this check's own review brief was refused so. The class may stand before the id.
+            draft.write_text(body)
+            self.assertIsNotNone(hook.record_reason(prompt, repo))
+            replay = Path(tmp) / 'replay.txt'
+            replay.write_text(f'Exposing case: {draft}\n')
+            (repo / 'research' / 'branches' / 'x').mkdir(parents=True)
+            for article in ('<article id="entry-2026-10-18-x" data-kind="research"></article>',
+                            '<article class="entry" id="entry-2026-10-18-x"></article>'):
+                with self.subTest(article=article):
+                    (repo / 'research' / 'branches' / 'x' / 'notebook.html').write_text(article)
+                    self.assertEqual(hook.record_reason(f'Read {replay}.', repo), None)
+            (repo / 'research' / 'branches' / 'x' / 'notebook.html').write_text(
+                '<article data-id="entry-2026-10-18-x"></article>')
+            self.assertIsNotNone(hook.record_reason(f'Read {replay}.', repo))
+            # Without a spec the resemblance check is silent.
+            (folder / 'spec.json').unlink()
+            with open(logs / 'claim-reads.jsonl', 'a') as log:
+                log.write(json.dumps({'unix_s': 150.0, 'claims': ['thm:early-one']}) + '\n')
+            self.assertEqual(hook.uncompared_resemblances(prompt, repo), [])
+
 
 if __name__ == '__main__':
     unittest.main()

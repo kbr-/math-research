@@ -27,6 +27,14 @@ def call(*args, env=None):
                           timeout=20, env=env)
 
 
+def forget(name):
+    """Delete a test session's journal and outputs from the real research/logs: on 18 October 2026 these tests had
+    left 10745 cli_test_ files there (research/provenance/framework/cli-test-logs-20261018.txt), and a hook reading
+    the logs took one unstopped journal for the running cycle."""
+    for path in (ROOT / 'research/logs').glob(name + '*'):
+        path.unlink(missing_ok=True)
+
+
 def eventually(predicate, timeout=6):
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
@@ -208,15 +216,26 @@ class RunnerChecks(unittest.TestCase):
 
     def tearDown(self):
         call('report', self.name, '--stop')
+        forget(self.name)
 
     def events(self):
         return [json.loads(line) for line in self.path.read_text().splitlines()]
+
+    def test_a_test_session_leaves_no_file_in_the_logs(self):
+        name = 'cli_test_' + uuid.uuid4().hex[:12]
+        call('start', name, '--model', 'unit test, no reasoning', '--no-guidance')
+        call('run', name, '--threads', '1', '--timeout', '20', '--', sys.executable, '-c', 'print(1)')
+        self.assertTrue(list((ROOT / 'research/logs').glob(name + '*')))
+        call('report', name, '--stop')
+        forget(name)
+        self.assertEqual(list((ROOT / 'research/logs').glob(name + '*')), [])
 
     def test_a_start_without_guidance_prints_only_the_journal(self):
         # Fails if the flag is ignored only while the real repository's turn guidance prints something, which its
         # queue and cadence lines always do.
         name = 'cli_test_' + uuid.uuid4().hex[:12]
         started = call('start', name, '--model', 'unit test, no reasoning', '--no-guidance')
+        self.addCleanup(forget, name)                   # cleanups run last first: the stop, then the deletion
         self.addCleanup(call, 'report', name, '--stop')
         self.assertEqual(started.returncode, 0, started.stderr)
         self.assertEqual(started.stdout.strip(), f'research/logs/{name}.jsonl')
@@ -401,6 +420,7 @@ class ModelUseExport(unittest.TestCase):
         self.env = {**os.environ, 'MATH_AGENT': 'Claude Code', 'CLAUDE_CONFIG_DIR': str(self.dir / 'claude')}
         for name in ('CLAUDE_CODE_SESSION_ID', 'USAGE_LOG_DIR', 'CODEX_THREAD_ID'):
             self.env.pop(name, None)
+        self.addCleanup(forget, self.name)
         started = call('start', self.name, '--model', 'unit test, no reasoning', '--no-guidance', env=self.env)
         self.assertEqual(started.returncode, 0, started.stderr)
         self.addCleanup(call, 'report', self.name, '--stop')
