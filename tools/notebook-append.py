@@ -968,6 +968,12 @@ def refuse_unanswered(entry, answers):
             raise ValueError(draft_claim_sentences.unsourced_report(open_source)
                              + ('\n(pass the answers with --answers FILE; tools/draft_claim_sentences.py DRAFT '
                                 '--answers FILE writes the form)' if answers is None else ''))
+    if draft_claim_sentences.conditions_rows(entry):   # a result called at the target, its conditions answered
+        open_conditions = draft_claim_sentences.unconditioned(entry, answers or '')
+        if open_conditions:
+            raise ValueError(draft_claim_sentences.unconditioned_report(open_conditions)
+                             + ('\n(pass the answers with --answers FILE; tools/draft_claim_sentences.py DRAFT '
+                                '--answers FILE writes the form)' if answers is None else ''))
     if draft_claim_sentences.converse_rows(entry):     # a condition called exact, its other direction answered
         open_converse = draft_claim_sentences.unconversed(entry, answers or '')
         if open_converse:

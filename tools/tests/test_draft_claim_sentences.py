@@ -837,6 +837,29 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
                   'lem:cut-cell-variance-bound (d) needs \\(K\\le52\\).</p>')     # the exposing case's own form
         self.assertEqual([where for _, where, _ in dcs.hypothesis_rows(inline)], ['Instance check'])
 
+    def test_a_result_called_at_the_target_needs_its_conditions_answered(self):
+        # 18 October 2026: a New mathematics sentence said translates were at the target "at every spacing" while
+        # the corollary needs gamma <= my*, and a review's title said offset trees "reach long hierarchies of
+        # translates" without the condition ln(n+1) <= (log(my*/2))^(1/4).
+        draft = ('<article id="x"><h3>Review: offset trees reach long hierarchies of translates</h3>'
+                 '<p><strong>New mathematics.</strong> cor:comparable-gap-stacks: comparable gaps are at the target '
+                 'for \\(\\lambda\\le2\\), among them translates at every spacing.</p>'
+                 '<h4>The six entries</h4><ul><li>Offset trees: hierarchical translate stacks at the target.</li></ul>'
+                 '<p><strong>Statement.</strong> The bound is at the target when \\(\\gamma\\le v\\).</p>'
+                 '<p><strong>Question.</strong> Is every layer at the target?</p>'
+                 '<p><strong>Goal progress.</strong> The quoted "at the target" is the review\'s.</p></article>')
+        self.assertEqual([where for _, where, _ in dcs.conditions_rows(draft)],
+                         ['title', 'New mathematics', 'The six entries'])
+        form = dcs.answers_template(draft)
+        self.assertEqual(form.count('  conditions: \n'), 3)
+        self.assertEqual(len(dcs.unconditioned(draft, form)), 3)
+        vague = form.replace('conditions: \n', 'conditions: the corollary holds for translates\n')
+        self.assertEqual(len(dcs.unconditioned(draft, vague)), 3)        # no relation, no "none:"
+        filled = form.replace('conditions: \n', 'conditions: gamma \\le my* and lambda \\le (log v)^(1/4)\n')
+        self.assertEqual(dcs.unconditioned(draft, filled), [])
+        none = form.replace('conditions: \n', 'conditions: none: the theorem is unconditional at every size\n')
+        self.assertEqual(dcs.unconditioned(draft, none), [])
+
     def test_a_condition_called_exact_needs_a_converse_answer(self):
         # 17 October 2026: a Prediction said a proof holds "exactly while" a growth condition held, where a fixed
         # offset sufficed, and a Falsification attempt said an identity holds "only when" a field is a gradient.

@@ -931,6 +931,7 @@ def answers_template(draft, summaries=None):
     asked |= set(domain)
     form += ''.join(f'{key} [{where}] {sentence}\n  hypotheses: \n'
                     for key, where, sentence in hypothesis_rows(draft) if key not in asked)
+    form += ''.join(f'{key} [{where}] {sentence}\n  conditions: \n' for key, where, sentence in conditions_rows(draft))
     form += ''.join(f'{key} [{where}] {sentence}\n  converse: \n' for key, where, sentence in converse_rows(draft))
     form += ''.join(f'{key} [{where}] {sentence}\n  source: \n' for key, where, sentence in source_rows(draft))
     form += ''.join(f'{key} [{where}] {sentence}\n  decided by: \n' for key, where, sentence in decided_rows(draft))
@@ -1240,10 +1241,72 @@ def unregrouped_report(rows):
                      + [f'{key} [{where}] {sentence[:160]}\n  regrouping: ' for key, where, sentence in rows])
 
 
+# A summing-up, test or list sentence that says a result reaches the target, or holds at every value of a
+# parameter, is answered on a line "conditions:": the conditions under which the result's displayed bound is at
+# the target (a relation such as \(\lambda\le(\log v)^{1/4}\), "for N large"), or "none:" with the reason it has
+# none.  On 18 October 2026 a New mathematics sentence said translates were at the target "at every spacing" while
+# the corollary's condition was \(\gamma\le my^*\), and a review's title said offset trees "reach long hierarchies
+# of translates" and its Assessment called them "at the target" without \(\ln(n+1)\le(\log(my^*/2))^{1/4}\).
+TARGET = re.compile(r'\b(?:at|meets?|meeting|within|reach(?:es)?) the target\b|\bat every (?:spacing|gap|depth|'
+                    r'ratio|width|level|size|height|scale)\b|\breach(?:es)? (?:long|every|all|any)\b', re.I)
+CONDITIONS_ANSWER = re.compile(r'^([0-9a-f]{8})\b[^\n]*\n(?:[ \t]*[a-z][a-z ]*:[^\n]*\n)*?'
+                               r'[ \t]*conditions:[ \t]*([^\n]*)$', re.M)
+# A relation symbol or "N large": a bare "when" or "if" let "when it holds here" through (18 October 2026).
+RELATION = re.compile(r'\\le|\\ge|\\leq|\\geq|<=|>=|[<>≤≥]|&lt;|&gt;|\bN large\b', re.I)
+
+
+def conditions_rows(draft):
+    """[(key, section label, sentence)] for the title, the status line and the sentences of summing-up, test and
+    list paragraphs whose prose (formulas removed) holds a word of TARGET, each once.  Statements and proofs are
+    not asked: there the condition is the mathematics itself."""
+    found, heading = {}, ''
+    for where, sentence in [('title', text(t)) for t in TITLE.findall(draft)[:1]]:
+        if TARGET.search(sentence):
+            found.setdefault(hashlib.sha1(sentence.encode()).hexdigest()[:8], (where, sentence))
+    for tag, body in BLOCK.findall(STATUS_LINE.sub('', draft)):
+        if tag in ('h3', 'h4'):
+            heading = text(body) if tag == 'h4' else ''
+            continue
+        label = LABEL.match(body)
+        where = label.group(1) if label else heading
+        if STATEMENT.match(where):
+            continue
+        for sentence in sentences(body):
+            inline = LABEL.match(sentence)
+            if inline:
+                where = inline.group(1)
+            bare = text(re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]|"[^"]*"|&quot;.*?&quot;', ' ', sentence, flags=re.S))
+            listed = tag == 'li' and not label
+            if (CONVERSE_LABELS.match(where) or SUMMARY.match(where) or listed) and TARGET.search(bare):
+                plain = text(sentence)
+                found.setdefault(hashlib.sha1(plain.encode()).hexdigest()[:8], (where, plain))
+    return [(key, where, sentence) for key, (where, sentence) in found.items()]
+
+
+def conditions_answered(answer):
+    words = answer.split()
+    return len(words) >= ANSWER_WORDS and (answer.strip().lower().startswith('none:') or bool(RELATION.search(answer)))
+
+
+def unconditioned(draft, answers):
+    """The rows of conditions_rows(draft) whose "conditions:" answer is missing, shorter than ANSWER_WORDS words,
+    or neither begins "none:" nor holds a relation."""
+    given = {key: answer for key, answer in CONDITIONS_ANSWER.findall(answers or '')}
+    return [row for row in conditions_rows(draft) if not conditions_answered(given.get(row[0], ''))]
+
+
+def unconditioned_report(rows):
+    return '\n'.join([f'{len(rows)} sentences say a result is at the target, or holds at every value of a parameter, '
+                      'and have no "conditions:" answer: write the conditions under which the cited result\'s '
+                      'displayed bound is at the target, as relations (\\le, <, "for N large"), and check '
+                      'the sentence claims no wider range; or "none:" and why it has none:']
+                     + [f'{key} [{where}] {sentence[:160]}\n  conditions: ' for key, where, sentence in rows])
+
+
 def replay_rows(text, kind):
-    """Lines: for each article of `text`, the sentences the decided_rows or regroup_rows row would ask, then the
-    counts, for judging a row's asks over past records before relying on it."""
-    rows_of = {'decided': decided_rows, 'regroup': regroup_rows}[kind]
+    """Lines: for each article of `text`, the sentences the decided_rows, regroup_rows or conditions_rows row would
+    ask, then the counts, for judging a row's asks over past records before relying on it."""
+    rows_of = {'decided': decided_rows, 'regroup': regroup_rows, 'conditions': conditions_rows}[kind]
     lines, asked, hit = [], 0, 0
     articles = re.findall(r'<article id="([^"]+)"[\s\S]*?</article>', text)
     for match in re.finditer(r'<article id="([^"]+)"[\s\S]*?</article>', text):
@@ -2100,7 +2163,7 @@ def main():
     parser.add_argument('--gaps', nargs='+', metavar='ANSWERS', help='print only, for each article of the file, '
                         'its summing-up sentences answered in these answers files and how many of the answers '
                         'limit their sentence by a word it lacks, with those sentences')
-    parser.add_argument('--replay-rows', choices=('decided', 'regroup'), help='print only, for every article of '
+    parser.add_argument('--replay-rows', choices=('decided', 'regroup', 'conditions'), help='print only, for every article of '
                         'this file (one notebook, or several files joined), the sentences the "decided by:" or '
                         '"regrouping:" row would ask, and the counts')
     args = parser.parse_args()
