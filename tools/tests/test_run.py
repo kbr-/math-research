@@ -102,6 +102,37 @@ class SuiteTimeLimit(unittest.TestCase):
         self.assertNotIn('TOO SLOW', result.stdout)
         self.assertNotIn('CPU during the run', result.stdout)
 
+    def test_scope_run_stamps_only_completed_successful_module(self) -> None:
+        import json
+        scope = self.root / 'test_agents_scope.py'
+        scope.write_text('import unittest\nclass Scope(unittest.TestCase):\n'
+                         '    def test_rule(self):\n        self.assertTrue(True)\n')
+        command = [sys.executable, str(self.root / 'run.py'), '-j', '1', 'test_agents_scope']
+        result = subprocess.run(command, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        stamp = self.root / '.module-passes.json'
+        first = json.loads(stamp.read_text())['test_agents_scope']['unix_s']
+        self.assertGreater(first, 0)
+        self.assertFalse((self.root / '.suite-pass.json').exists())
+        scope.write_text(scope.read_text().replace('assertTrue(True)', 'assertTrue(False)'))
+        result = subprocess.run(command, capture_output=True, text=True)
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertEqual(json.loads(stamp.read_text())['test_agents_scope']['unix_s'], first)
+        for body in (
+            'import unittest\n@unittest.skip("scope not checked")\nclass Scope(unittest.TestCase):\n'
+            '    def test_rule(self):\n        self.fail()\n',
+            'import unittest\nclass Scope(unittest.TestCase):\n'
+            '    def test_rule(self):\n        self.assertTrue(True)\n'
+            '    @unittest.skip("one assertion omitted")\n    def test_other(self):\n        self.fail()\n',
+        ):
+            scope.write_text(body)
+            result = subprocess.run(command, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stdout)
+            self.assertEqual(json.loads(stamp.read_text())['test_agents_scope']['unix_s'], first)
+        result = subprocess.run(command[:-1], capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertFalse(json.loads((self.root / '.suite-pass.json').read_text())['scope_test_completed'])
+
     def test_the_cpu_of_the_machine_and_of_the_run_s_own_group_are_read_and_their_growth_reported(self):
         import importlib.util
         spec = importlib.util.spec_from_file_location('framework_runner', RUNNER)

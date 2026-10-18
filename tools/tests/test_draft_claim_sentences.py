@@ -26,6 +26,57 @@ DRAFT = '''<article id="entry-x" data-claims="lem:new-one">
 
 
 class DraftClaimSentences(unittest.TestCase):
+    def test_lettered_baseline_citation_asks_each_other_part(self) -> None:
+        draft = '<p><strong>Plainest bound.</strong> lem:multi-part (b) gives the bound on this instance.</p>'
+        summaries = {'lem:multi-part': '(a) All functions have a uniform bound. (b) Fixed functions have variance. '
+                     '(c) Another class has an envelope.'}
+        rows = dcs.part_rows(draft, summaries)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(set(rows[0][3]), {'a', 'c'})
+        self.assertIn('All functions have a uniform bound', dcs.parts_report(rows))
+        form = dcs.answers_template(draft, summaries)
+        self.assertIn('parts:', form)
+        self.assertEqual(dcs.untried_parts(draft, form, summaries), rows)
+        filled = 'Unrelated answer header\n' + form.replace('parts: ',
+            'parts: (a) applies on this instance (c) fails on this instance')
+        self.assertEqual(dcs.untried_parts(draft, filled, summaries), [])
+        self.assertTrue(dcs.untried_parts(draft, filled.replace('(a)', '(b)'), summaries))
+        changed = dict(summaries, **{'lem:multi-part': summaries['lem:multi-part'] + ' New condition.'})
+        self.assertTrue(dcs.untried_parts(draft, filled, changed))
+        self.assertEqual(dcs.part_rows(draft.replace('Plainest bound', 'Proof'), summaries), [])
+        self.assertEqual(dcs.part_rows(draft, {'lem:multi-part': '(b) A single conclusion.'}), [])
+        self.assertEqual(dcs.part_rows(draft, {'lem:multi-part': '(a) A single conclusion.'}), [])
+        two_parts = {'lem:multi-part': '(a) A uniform estimate. (b) A fixed-member estimate.'}
+        self.assertEqual(set(dcs.part_rows(draft, two_parts)[0][3]), {'a'})
+        self.assertEqual(len(dcs.part_rows('<p><strong>Baseline.</strong> lem:unknown-part (a) applies.</p>' + draft,
+                                           summaries)), 1)
+        implicit = '<article data-claims="lem:multi-part"><p><strong>Baseline.</strong> By (b) it holds.</p></article>'
+        self.assertEqual(dcs.part_rows(implicit, summaries), [])
+        with patch.object(Path, 'read_text', side_effect=AssertionError('unnecessary registry load')):
+            self.assertEqual(dcs.part_rows('<p>A draft with no lettered baseline citation.</p>'), [])
+        self.assertEqual(dcs.part_rows(draft, {}), [])
+        self.assertEqual(dcs.part_rows(draft.replace('(b)', 'Part (B)'), summaries)[0][3], rows[0][3])
+        self.assertEqual(len(dcs.part_rows('<p><strong>Proof.</strong> lem:multi-part is used.</p>' + draft,
+                                           summaries)), 1)
+        self.assertEqual(len(dcs.part_rows('<p><strong>Baseline.</strong> lem:multi-part is used.</p>' + draft,
+                                           summaries)), 1)
+        self.assertEqual(len(dcs.part_rows('<p><strong>Baseline.</strong> lem:one-part (a) applies.</p>' + draft,
+                                           dict(summaries, **{'lem:one-part': '(a) One conclusion.'}))), 1)
+        self.assertEqual(len(dcs.part_rows(draft.replace('Plainest bound', 'Baseline'), summaries)), 1)
+        heading = '<h4>Baseline.</h4><p>lem:multi-part (b) applies.</p>'
+        self.assertEqual(len(dcs.part_rows(heading, summaries)), 1)
+        self.assertEqual(dcs.part_rows(heading.replace('Baseline.', 'BaselineX'), summaries), [])
+        repeated = draft.replace('on this instance.', 'on this instance, beside lem:multi-part.')
+        self.assertEqual(len(dcs.part_rows(repeated, summaries)), 1)
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'research/claims').mkdir(parents=True)
+            (root / 'research/claims/index.json').write_text(json.dumps({'claims': [
+                {'id': 'lem:multi-part', 'summary': summaries['lem:multi-part']}, {'id': 'lem:no-summary'}]}))
+            with patch.object(dcs, 'ROOT', root):
+                self.assertEqual(dcs.part_rows(draft), rows)
+                self.assertEqual(dcs.part_rows('<p><strong>Baseline.</strong> lem:no-summary (a) applies.</p>'), [])
+
     def test_carry_fills_a_new_form_from_the_old_answers(self):
         # 18 October 2026: a repeated key's last block was empty and a hand script copied it; an edit re-keyed a
         # Bearing sentence and its answer had to be moved by hand.

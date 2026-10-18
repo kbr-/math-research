@@ -47,6 +47,32 @@ def checks():
     for name in getattr(ft, 'SCAN_CHECKS', {}):
         found[name] = ft.SCAN_CHECKS[name]
     import draft_claim_sentences as dcs
+    summaries = {}
+
+    def baseline_parts(plain: str, raw: str) -> list[str]:
+        if not summaries:
+            summaries.update({c['id']: c.get('summary', '') for c in
+                              json.loads((ROOT / 'research/claims/index.json').read_text())['claims']})
+        return [dcs.parts_report([row]) for row in dcs.part_rows(raw or '', summaries)]
+
+    found['baseline-parts'] = baseline_parts
+    statuses = {}
+
+    def progress_assessment(plain: str, raw: str) -> list[str]:
+        if not statuses:
+            statuses.update(ft.registered_status())
+        state = re.search(r'data-goal-progress="([^"]+)"', raw or '')
+        declared = re.search(r'data-claims="([^"]+)"', raw or '')
+        if not state or not declared:
+            return []
+        progress = ft.report_paragraph(raw, 'Goal progress')
+        try:
+            ft.validate_progress_assessment(state.group(1), progress, declared.group(1).split(), statuses)
+        except ValueError as error:
+            return [str(error) + ' | ' + plain_text(progress)]
+        return []
+
+    found['progress-assessment'] = progress_assessment
     notebook_words = {}
 
     def own_words():            # the notebook's own words for these listings (data-listing-words)

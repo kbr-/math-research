@@ -65,6 +65,9 @@ runs it through an entry in the global settings, with `--global`, which leaves o
 block the branch's own module puts first.
 """
 from datetime import datetime
+import argparse
+from functools import cache
+from importlib.util import module_from_spec, spec_from_file_location
 import json
 import os
 import re
@@ -75,6 +78,7 @@ import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import branch_extension
+from shell_commands import unambiguous_commands
 from haiku_judge import INSIDE_JUDGE, MODEL, Failed, Refused, ask
 
 JUDGE_TIMEOUT = 9.5
@@ -980,6 +984,7 @@ def reviewer_returned(path, since, chunk=4_000_000, limit=64_000_000):
     """Whether a reviewer agent's report reached the transcript at `path` at or after `since` (Unix seconds). It
     reads back from the end in chunks until it passes an entry older than `since`, at most `limit` bytes."""
     agents = Path(path).with_suffix('') / 'subagents'
+    latest = None
     with open(path, 'rb') as f:
         end = f.seek(0, 2)
         position, carry = end, b''
@@ -1013,10 +1018,27 @@ def reviewer_returned(path, since, chunk=4_000_000, limit=64_000_000):
                 except (OSError, ValueError, AttributeError):
                     kind = ''
                 if 'reviewer' in str(kind):
-                    return True
+                    latest = max(latest or when, when)
             if older:
-                return False
-    return False
+                return latest
+    return latest
+
+
+def drafted_before_review(path: str, since: float, reviewed_at: float) -> str:
+    """Assistant text and thinking drafted during this turn before the latest reviewer handback.
+
+    Exact normalized text is the evidence available here; a paraphrase needs its label. This does not
+    certify that the reviewer read every earlier conclusion, or that later corrections passed review.
+    """
+    drafted = []
+    for entry in last_turn(path):
+        try:
+            when = datetime.fromisoformat(str(entry.get('timestamp', '')).replace('Z', '+00:00')).timestamp()
+        except ValueError:
+            continue
+        if since <= when <= reviewed_at:
+            drafted.extend(blocks_in(entry)[1])
+    return re.sub(r'\s+', ' ', '\n'.join(drafted)).casefold()
 
 
 # "while the reviewer checks" was dropped: in the replay over past replies it matched only status lines on what
@@ -1041,11 +1063,11 @@ def unreviewed_block(path, reply, root):
     report-fixture.txt and research/results/binary_star_cell_images_20261013/report-fixture.txt (13 October 2026).
 
     Its limits. It is retrospective: it reads the reply at the stop and cannot hold back commentary already sent.
-    The word "unreviewed" anywhere in the reply lets it through. Its test of mathematics is a word heuristic, so
+    A mathematical paragraph must carry its own label. Its test of mathematics is a word heuristic, so
     once the open session has had a mathematics phase it also blocks a framework reply with two of its words, a
-    reply about an earlier cycle's reviewed results, and any reply citing a claim identifier. Any reviewer's report
-    since the session started clears it, a framework reviewer's too, and the interval after a review returns but
-    before its corrections are checked is not seen. Any failure of its own lets the stop through."""
+    reply about an earlier cycle's reviewed results, and any reply citing a claim identifier. A report clears
+    only text already drafted before it returned; new or paraphrased conclusions need the label. Review scope
+    and correction correctness remain the author's and reviewer's responsibility."""
     try:
         pending = pending_review_paragraphs(reply)
         if pending:
@@ -1054,20 +1076,25 @@ def unreviewed_block(path, reply, root):
                 f'This paragraph says its conclusion waits for a review ("{quote}") and does not carry the label '
                 'itself: prefix it with **Unreviewed:** (AGENTS.md: saying later that a reviewer is checking it does '
                 'not replace the label), and answer again.')}
-        if 'unreviewed' in reply.lower():
-            return None
-        reports = [p for p in re.split(r'\n\s*\n|\n(?=\s*[-*] )', reply) if mathematical(p)]
+        reports = [p for p in re.split(r'\n\s*\n|\n(?=\s*[-*] )', reply)
+                   if mathematical(p) and 'unreviewed' not in p.lower()]
         if not reports:
             return None
         since = unreviewed_cycle(root)
-        if since is None or (path and reviewer_returned(path, since)):
+        if since is None:
             return None
+        reviewed_at = reviewer_returned(path, since) if path else None
+        if reviewed_at is not None:
+            drafted = drafted_before_review(path, since, reviewed_at)
+            reports = [p for p in reports if re.sub(r'\s+', ' ', p).casefold() not in drafted]
+            if not reports:
+                return None
     except Exception:       # a check of its own must not stop the hook's other checks
         return None
     quote = ' '.join(reports[0].split())[:160]
     return {'decision': 'block', 'reason': (
         f'This reply reports mathematics ("{quote}") while the current cycle\'s mathematics has had no review: no '
-        'reviewer\'s report has arrived since its timing session started. Prefix each such conclusion with '
+        'reviewer\'s report covers its drafting time. Prefix each such conclusion with '
         '**Unreviewed:** (AGENTS.md: until its correctness review returns and its corrections are checked, also '
         'before a draft exists), and answer again.')}
 
@@ -1190,18 +1217,165 @@ GAP_TAKEN = re.compile(r"\b(?:queued|Appended|next attempt|tried|attempt(?:ed)? 
 RECORD_ABSENCE = re.compile(r"[^.!?\n]*\b(?:the record (?:holds|has|gives|states|contains) no|no (?:recorded|registered) "
                             r"(?:statement|result|claim|lemma|theorem|argument)|nothing (?:recorded|registered))\b"
                             r"[^.!?\n]*", re.I)
+RECORD_UNTRIED = re.compile(
+    r"[^.!?\n]*\b(?:(?:the |our |this )?(?:record|notebook)\b[^.!?\n]{0,80}\b(?:lacks|unbuilt|never (?:been )?tried|"
+    r"not (?:yet )?(?:built|explored)|unexplored|still open)|(?:flow|construction|mechanism|approach|route|case|"
+    r"question|lemma|bound)\b[^.!?\n]{0,50}\b(?:unbuilt|never (?:been )?tried|not (?:yet )?(?:built|explored)|"
+    r"unexplored|still open))\b[^.!?\n]*", re.I)
+
+
+@cache
+def record_search_parser() -> argparse.ArgumentParser:
+    spec = spec_from_file_location('stop_search_arguments', Path(__file__).resolve().parents[1] / 'search-claims.py')
+    module = module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.argument_parser(add_help=False, exit_on_error=False)
+
+
+def record_search_command(command: str) -> bool:
+    invocations = unambiguous_commands(command)
+    if len(invocations) != 1:
+        return False
+    words = invocations[0]
+    program = words[1] if len(words) > 1 and Path(words[0]).name.startswith('python') else (words or [''])[0]
+    arguments = words[2:] if program != words[0] else words[1:]
+    if Path(program).name != 'search-claims.py':
+        return False
+    try:
+        args, unknown = record_search_parser().parse_known_args(arguments)
+    except (argparse.ArgumentError, ValueError):
+        return False
+    return not unknown and args.out is None and bool(args.words or args.show or args.status or args.kind
+                                                    or args.topic or args.formalization or args.has_lean)
+
+
+def completed_record_searches(path: str) -> list[tuple[str, str]]:
+    """Successful search tool calls and their output in the current turn; printed commands are not calls."""
+    pending, found = {}, []
+    for entry in last_turn(path):
+        content = (entry.get('message') or {}).get('content')
+        if not isinstance(content, list) or entry.get('isSidechain'):
+            continue
+        for block in content:
+            if block.get('type') == 'tool_use' and block.get('name') == 'Bash':
+                command = str((block.get('input') or {}).get('command', ''))
+                if record_search_command(command):
+                    pending[block.get('id')] = command
+            elif block.get('type') == 'tool_result' and block.get('tool_use_id') in pending:
+                output = block.get('content')
+                output = '\n'.join(str(p.get('text', '')) for p in output if isinstance(p, dict)) if isinstance(output, list) else str(output or '')
+                if not block.get('is_error') and output.strip() and not re.search(r'Exit code [1-9]|Traceback', output):
+                    found.append((pending[block['tool_use_id']], output))
+    return found
+
+
+def replay_math_windows(root: Path) -> list[tuple[float, float]]:
+    """Completed mathematics windows of the selected notebook, from the existing archived journals."""
+    from notebooks import selected
+    name = selected(root=root)['name']
+    windows = []
+    for journal in (root / 'research/provenance/session-records').glob('*/session.jsonl'):
+        with journal.open() as stream:
+            try:
+                start = json.loads(stream.readline())
+            except ValueError:
+                continue
+            if start.get('notebook') != name:
+                continue
+            began, ended = None, None
+            for line in stream:
+                try:
+                    event = json.loads(line)
+                except ValueError:
+                    continue
+                if event.get('event') == 'phase' and event.get('category') == 'mathematics' and began is None:
+                    began = event.get('unix_s')
+                if event.get('event') == 'stop':
+                    ended = event.get('unix_s')
+            if began is not None and ended is not None:
+                windows.append((began, ended))
+    return windows
+
+
+def replay_record_rules(paths: list[str], windows: list[tuple[float, float]] | None = None) -> list[str]:
+    """Stream actual transcript replies through the widened predicates; report candidates for human judgement.
+
+    Review-timing rows are limited to completed mathematics windows in the archived cycle journals.
+    They remain wording candidates: review scope and paraphrase correctness need human judgement.
+    """
+    rows, count, size, turns = [], 0, 0, 0
+    windows = replay_math_windows(ROOT) if windows is None else windows
+    for path in paths:
+        agents = Path(path).with_suffix('') / 'subagents'
+        drafted, reviewed, pending, searched = [], None, {}, []
+        with open(path, 'rb') as stream:
+            for raw in stream:
+                size += len(raw)
+                try:
+                    entry = json.loads(raw)
+                except ValueError:
+                    continue
+                if not isinstance(entry, dict) or entry.get('isSidechain'):
+                    continue
+                try:
+                    when = datetime.fromisoformat(str(entry.get('timestamp', '')).replace('Z', '+00:00')).timestamp()
+                except ValueError:
+                    when = None
+                if is_prompt(entry):
+                    pending, searched, drafted = {}, [], []
+                    turns += 1
+                attached = entry.get('attachment') if isinstance(entry.get('attachment'), dict) else {}
+                origin = next((o for o in (entry.get('origin'), attached.get('origin')) if isinstance(o, dict)), {})
+                if origin.get('handback'):
+                    try:
+                        kind = json.loads((agents / f'agent-{origin.get("from")}.meta.json').read_text()).get('agentType', '')
+                    except (OSError, ValueError):
+                        kind = ''
+                    if 'reviewer' in kind:
+                        reviewed = re.sub(r'\s+', ' ', '\n'.join(drafted)).casefold()
+                content = (entry.get('message') or {}).get('content')
+                if not isinstance(content, list) or entry.get('type') not in ('assistant', 'user'):
+                    continue
+                for block in content:
+                    if block.get('type') == 'tool_use' and block.get('name') == 'Bash':
+                        command = str((block.get('input') or {}).get('command', ''))
+                        if record_search_command(command):
+                            pending[block.get('id')] = command
+                    elif block.get('type') == 'tool_result' and block.get('tool_use_id') in pending:
+                        if not block.get('is_error'):
+                            searched.append(pending[block['tool_use_id']])
+                    elif entry.get('type') == 'assistant' and block.get('type') in ('text', 'thinking'):
+                        passage = block.get('text') or block.get('thinking') or ''
+                        if block.get('type') == 'text':
+                            count += 1
+                            for pattern in (RECORD_ABSENCE, RECORD_GAP, RECORD_UNTRIED):
+                                for match in pattern.finditer(passage):
+                                    rows.append(f'ABSENCE {"searched" if searched else "no search"} | {match.group(0).strip()}')
+                            if reviewed is not None and when is not None and any(a <= when <= b for a, b in windows):
+                                for paragraph in re.split(r'\n\s*\n|\n(?=\s*[-*] )', passage):
+                                    if (mathematical(paragraph) and 'unreviewed' not in paragraph.lower()
+                                            and re.sub(r'\s+', ' ', paragraph).casefold() not in reviewed):
+                                        rows.append('AFTER REVIEW, new text | ' + paragraph)
+                        drafted.append(passage)
+    return rows + [f'{len(rows)} candidate rows in {count} assistant text blocks across {turns} turns; '
+                   f'{size / 1e6:.1f} MB read; {len(windows)} archived mathematics windows. '
+                   'Review-timing rows are wording candidates, not semantic review certification.']
 
 
 def record_search_block(path, reply):
     """The block for a reply that says what the record lacks in a turn that ran no record search, or None."""
-    found = [m.group(0).strip() for m in RECORD_ABSENCE.finditer(reply or '')]
+    found = list(dict.fromkeys(m.group(0).strip() for pattern in (RECORD_ABSENCE, RECORD_GAP, RECORD_UNTRIED)
+                              for m in pattern.finditer(reply or '')))
     if not found or not path:
         return None
     try:
-        calls, _ = read_turn(path)
+        searches = completed_record_searches(path)
     except OSError:
         return None
-    if any('search-claims.py' in str((call or {}).get('command', '')) for _, call in calls):
+    if searches:
+        print('Record absence: ' + found[0], file=sys.stderr)
+        for command, output in searches:
+            print(command + '\n' + output, file=sys.stderr)
         return None
     return {'decision': 'block', 'reason': (
         f'The reply says what the record lacks ("{found[0][:160]}") in a turn that ran no tools/search-claims.py: '
@@ -1438,6 +1612,9 @@ if __name__ == '__main__':
         sys.exit(0)
     if sys.argv[1:2] == ['--replay-idle']:
         replay_idle(sys.argv[2:])
+        sys.exit(0)
+    if sys.argv[1:2] == ['--replay-record-rules']:
+        print('\n'.join(replay_record_rules(sys.argv[2:])))
         sys.exit(0)
     if sys.argv[1:2] == ['--replay-figures']:
         replay_figures(sys.argv[2:])

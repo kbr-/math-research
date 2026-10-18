@@ -35,6 +35,7 @@ DURATIONS = HERE / '.durations.json'
 # Written by a passing run of the whole suite: the commit check refuses a change to shared code made after it
 # (17 October 2026: a hook change was committed after its own module's tests only; AGENTS.md asks the suite).
 SUITE_PASS = HERE / '.suite-pass.json'
+MODULE_PASSES = HERE / '.module-passes.json'
 MEMORY = Path('/dev/shm')
 
 
@@ -295,11 +296,25 @@ def timed_run(args, found, broken):
           + (f'FAILED ({len(failed)})' if failed else 'OK')
           + (', TOO SLOW' + (' (machine busy)' if outcome == 'busy' else '') if slow else '')
           + (f', {len(skipped)} skipped' if skipped else ''))
+    if not failed and not slow and args.modules:
+        try:
+            previous = json.loads(MODULE_PASSES.read_text()) if MODULE_PASSES.exists() else {}
+            for module in args.modules:
+                if module == 'test_agents_scope' and any(
+                        r[0].startswith('test_agents_scope.') for r in results) and not any(
+                        r[5] for r in results if r[0].startswith('test_agents_scope.')):
+                    previous[module] = {'unix_s': started_unix}
+            MODULE_PASSES.write_text(json.dumps(previous))
+        except (OSError, ValueError, TypeError):
+            pass
     if not failed and not slow and not args.modules:
         try:
             # seconds as printed above, so that a commit message's "N tests in X s" can be checked against it
             SUITE_PASS.write_text(json.dumps({'unix_s': started_unix, 'tests': sum(r[1] for r in results),
-                                              'seconds': round(elapsed, 1)}))
+                                              'seconds': round(elapsed, 1),
+                                              'scope_test_completed': any(r[0].startswith('test_agents_scope.')
+                                                                          for r in results) and not any(
+                                                  r[5] for r in results if r[0].startswith('test_agents_scope.'))}))
         except OSError:
             pass
     return 1 if failed or slow else 0

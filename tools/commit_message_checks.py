@@ -158,9 +158,7 @@ def shared_code(paths, top):
              + [p for p in (top / 'tools').glob('git-hooks*/*') if p.is_file()])
     found = []
     for path in paths:
-        # AGENTS.md is read by tools/tests/test_agents_scope.py (17 October 2026: a rule with a goal word was
-        # committed without the suite, which that test fails on).
-        if (path in ('compute.sh', 'AGENTS.md') or path.startswith('tools/hooks/')
+        if (path == 'compute.sh' or path.startswith('tools/hooks/')
                 or path.startswith('tools/git-hooks')):
             found.append(path)
         elif path.startswith('tools/') and path.endswith('.py') and not path.startswith('tools/tests/test_'):
@@ -208,6 +206,19 @@ def suite_figures_unmatched(message, top):
 
 def suite_after(paths, top):
     """None when the whole suite passed after the last edit of each staged shared path, else the refusal."""
+    if 'AGENTS.md' in paths and (top / 'AGENTS.md').exists():
+        passed = 0.0
+        for stamp, key in (('.suite-pass.json', None), ('.module-passes.json', 'test_agents_scope')):
+            try:
+                data = json.loads((top / 'tools/tests' / stamp).read_text())
+                if key is None and not data.get('scope_test_completed'):
+                    continue
+                passed = max(passed, (data[key] if key else data)['unix_s'])
+            except (OSError, ValueError, KeyError, TypeError):
+                continue
+        if (top / 'AGENTS.md').stat().st_mtime > passed:
+            return ('commit-msg: AGENTS.md changed after its last passing scope test: run ./compute.sh '
+                    '--threads 14 --timeout 60 python3 tools/tests/run.py test_agents_scope, then commit.')
     shared = [p for p in shared_code(paths, top) if (top / p).exists()]
     if not shared:
         return None

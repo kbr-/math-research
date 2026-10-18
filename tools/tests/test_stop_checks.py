@@ -709,7 +709,9 @@ class RecordSearchBlockTest(unittest.TestCase):
         import tempfile
         lines = [{'type': 'user', 'message': {'content': 'go on'}},
                  {'type': 'assistant', 'message': {'content': [
-                     {'type': 'tool_use', 'id': 't1', 'name': 'Bash', 'input': {'command': command}}]}}]
+                     {'type': 'tool_use', 'id': 't1', 'name': 'Bash', 'input': {'command': command}}]}},
+                 {'type': 'user', 'message': {'content': [{'type': 'tool_result', 'tool_use_id': 't1',
+                     'content': 'lem:recorded-flow: the flow is already constructed.'}]}}]
         f = tempfile.NamedTemporaryFile('w', suffix='.jsonl', delete=False)
         f.write('\n'.join(json.dumps(x) for x in lines) + '\n')
         f.close()
@@ -722,6 +724,63 @@ class RecordSearchBlockTest(unittest.TestCase):
         self.assertIn('ran no tools/search-claims.py', block['reason'])
         self.assertIsNone(hook.record_search_block(self.transcript('python3 tools/search-claims.py -n 3 kernel'), reply))
         self.assertIsNone(hook.record_search_block(self.transcript('ls'), 'The record holds the lemma we need.'))
+
+    def test_unbuilt_untried_unexplored_and_open_claims_require_actual_search(self) -> None:
+        for reply in ('The restoring drift flow is unbuilt.', 'The construction was never tried.',
+                      'The approach is not explored.', 'The question is still open.',
+                      'The record lacks a construction.'):
+            with self.subTest(reply=reply):
+                self.assertIsNotNone(hook.record_search_block(self.transcript('echo search-claims.py'), reply))
+                self.assertIsNone(hook.record_search_block(
+                    self.transcript('python3 tools/search-claims.py restoring drift'), reply))
+        self.assertIsNone(hook.record_search_block(self.transcript('ls'), 'The suite output file is still open.'))
+        for command in ('python3 tools/search-claims.py --help', 'python3 tools/search-claims.py',
+                        'python3 tools/search-claims.py --hel', 'python3 tools/search-claims.py --hel flow',
+                        'python3 tools/search-claims.py --out=results flow',
+                        'python3 tools/search-claims.py --ou=results --fields=id -n 1 flow',
+                        'python3 tools/search-claims.py bad ; echo success',
+                        'python3 tools/search-claims.py bad\necho success',
+                        'python3 tools/search-claims.py bad || true'):
+            with self.subTest(command=command):
+                self.assertIsNotNone(hook.record_search_block(self.transcript(command), 'The construction is unbuilt.'))
+
+    def test_search_matches_are_printed_and_failed_or_previous_turn_searches_do_not_count(self) -> None:
+        from contextlib import redirect_stderr
+        reply = 'The construction is unbuilt.'
+        path = self.transcript('python3 tools/search-claims.py flow')
+        output = io.StringIO()
+        with redirect_stderr(output):
+            self.assertIsNone(hook.record_search_block(path, reply))
+        self.assertIn(reply.rstrip('.'), output.getvalue())
+        self.assertIn('lem:recorded-flow', output.getvalue())
+        entries = [json.loads(line) for line in Path(path).read_text().splitlines()]
+        entries[-1]['message']['content'][0]['is_error'] = True
+        Path(path).write_text('\n'.join(json.dumps(e) for e in entries))
+        self.assertIsNotNone(hook.record_search_block(path, reply))
+        entries[-1]['message']['content'][0]['is_error'] = False
+        entries.append({'type': 'user', 'message': {'content': 'new turn'}})
+        Path(path).write_text('\n'.join(json.dumps(e) for e in entries))
+        self.assertIsNotNone(hook.record_search_block(path, reply))
+
+    def test_record_rules_replay_reads_real_turn_boundaries_and_reader_metadata(self) -> None:
+        path = Path(self.transcript('echo search-claims.py'))
+        entries = [json.loads(line) for line in path.read_text().splitlines()]
+        agents = path.with_suffix('') / 'subagents'
+        agents.mkdir(parents=True)
+        self.addCleanup(shutil.rmtree, path.with_suffix(''))
+        (agents / 'agent-r.meta.json').write_text(json.dumps({'agentType': 'medium-reviewer'}))
+        entries.extend([
+            {'type': 'assistant', 'message': {'content': [{'type': 'text', 'text': 'The construction is unbuilt.'}]}},
+            {'type': 'user', 'isMeta': True, 'origin': {'handback': True, 'from': 'r'}},
+            {'type': 'assistant', 'timestamp': '1970-01-01T00:20:00Z', 'message': {
+                'content': [{'type': 'text', 'text': 'The new kernel has nonzero rank.'}]}}
+        ])
+        path.write_text('\n'.join(json.dumps(e) for e in entries))
+        lines = hook.replay_record_rules([str(path)], windows=[(1000, 1300)])
+        self.assertTrue(any('ABSENCE no search' in row for row in lines))
+        self.assertTrue(any('AFTER REVIEW, new text' in row for row in lines))
+        self.assertIn('assistant text blocks', lines[-1])
+        self.assertFalse(any('AFTER REVIEW' in row for row in hook.replay_record_rules([str(path)], windows=[])))
 
 
 class RefusalBlockTest(unittest.TestCase):

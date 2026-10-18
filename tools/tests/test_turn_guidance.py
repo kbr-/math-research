@@ -184,7 +184,7 @@ class TurnGuidanceTest(unittest.TestCase):
         notes = self.notes([('research', 'lem:a', 'Working proof.')])
         self.assertIn('<p><strong>General statement.</strong>', notes)
         self.assertIn('(conj:, lem:, thm:, prop: or cor:)', notes)
-        self.assertIn('data-goal-progress="advanced|unchanged"', notes)
+        self.assertIn('data-goal-progress="advanced|narrowed|unchanged"', notes)
         self.assertIn('C or C++ kernels', notes)
         self.assertIn('propose a general statement and attempt to prove it', notes)
         self.assertIn(self.guide.CASES_PLEA, notes)

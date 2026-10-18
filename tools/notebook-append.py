@@ -954,6 +954,10 @@ def refuse_unanswered(entry, answers):
     passed over.  The answer is a line saying what the sentence rests on; whether it does is for the reviewer,
     who is given the file."""
     import draft_claim_sentences
+    alternatives = draft_claim_sentences.untried_parts(entry, answers or '')
+    if alternatives:
+        raise ValueError(draft_claim_sentences.parts_report(alternatives)
+                         + '\n(pass --answers FILE after trying each other registered part)')
     rows = draft_claim_sentences.summing_up(entry)
     instance_rows = draft_claim_sentences.hypothesis_rows(entry)
     if instance_rows:           # a cited claim evaluated at an instance, its hypotheses checked there
@@ -1161,6 +1165,56 @@ def refuse_uncited_publication(entry):
                          + '\n'.join(lines))
 
 
+def relabel_progress(source: str, changes: list[dict], statuses: dict[str, str]) -> str:
+    """Apply an explicitly reviewed historical label audit, preserving the original assessment."""
+    seen = set()
+    for change in changes:
+        ident = change['anchor']
+        if ident in seen:
+            raise ValueError('Repeated relabel anchor: ' + ident)
+        seen.add(ident)
+        pattern = re.compile(r'<article\b[^>]*\bid="' + re.escape(ident) + r'"[^>]*>.*?</article>', re.S)
+        matches = list(pattern.finditer(source))
+        if len(matches) != 1:
+            raise ValueError('Relabel anchor must occur exactly once: ' + ident)
+        match = matches[0]
+        article = match.group(0)
+        tag = article[:article.index('>') + 1]
+        old = f'data-goal-progress="{change["from"]}"'
+        if old not in tag:
+            raise ValueError('Relabel source state differs: ' + ident)
+        state = change['to']
+        if state not in reporting_checks().PROGRESS_STATES:
+            raise ValueError('Unknown relabel state: ' + state)
+        assessment = html.escape(change['assessment'])
+        if state == 'narrowed':
+            assessment += (' <strong>Removed part.</strong> ' + html.escape(change['removed'])
+                           + ' <strong>Remaining part.</strong> ' + html.escape(change['remaining']))
+        declared = re.search(r'data-claims="([^"]+)"', tag)
+        try:
+            reporting_checks().validate_progress_assessment(state, assessment,
+                declared.group(1).split() if declared else [], statuses)
+        except ValueError as error:
+            raise ValueError(ident + ': ' + str(error)) from error
+        original = re.search(r'<p><strong>Goal progress\.</strong>(.*?)</p>', article, re.S)
+        if original is None:
+            raise ValueError('No original Goal progress paragraph: ' + ident)
+        replacement = ('<p><strong>Goal progress.</strong> ' + assessment + '</p>\n'
+                       '<details><summary>Original goal-progress assessment before relabelling</summary>'
+                       '<p>' + original.group(1) + '</p></details>')
+        updated = article[:original.start()] + replacement + article[original.end():]
+        updated = updated.replace(old, f'data-goal-progress="{state}"', 1)
+        if 'spell' in change:
+            spell = re.search(r'(<p\b[^>]*class="spell-extension"[^>]*>)(.*?)(</p>)', updated, re.S)
+            if spell is None:
+                raise ValueError('No spell paragraph for relabel evidence: ' + ident)
+            evidence = ''.join('<strong>' + html.escape(label) + '.</strong> ' + html.escape(value) + ' '
+                               for label, value in change['spell'].items())
+            updated = updated[:spell.end(2)] + evidence + updated[spell.end(2):]
+        source = source[:match.start()] + updated + source[match.end():]
+    return source
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split('\n\n')[0])
     parser.add_argument('entry', type=Path, nargs='?')
@@ -1171,6 +1225,8 @@ def main():
                         help='the file answering the entry\'s summing-up sentences (see refuse_unanswered)')
     parser.add_argument('--next', type=Path, dest='next_file')
     parser.add_argument('--notebook')
+    parser.add_argument('--relabel-progress', type=Path,
+                        help='apply a reviewed JSON list of historical progress-label corrections; preserve originals')
     parser.add_argument('--stand-unchanged', metavar='REASON',
                         help='why Where we stand needs no change in this cycle; recorded in the entry')
     parser.add_argument('--check', action='store_true',
@@ -1178,6 +1234,17 @@ def main():
                              'draft and list each that fails (for an entry\'s skeleton, at the start of drafting)')
     args = parser.parse_args()
     path = Path(ROOT) / selected(args.notebook)['source']
+    if args.relabel_progress:
+        if args.entry or args.check or args.next_file or args.closures:
+            parser.error('--relabel-progress is a separate historical audit operation')
+        try:
+            changes = json.loads(args.relabel_progress.read_text())
+            updated = relabel_progress(path.read_text(), changes, reporting_checks().registered_status())
+        except (ValueError, KeyError) as error:
+            parser.error(str(error))
+        path.write_text(updated)
+        print(f'Relabelled {len(changes)} entries in {path.relative_to(ROOT)}; original assessments retained.')
+        return
     if args.closures:
         print(closures_count(path.read_text()))
         return

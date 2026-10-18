@@ -441,7 +441,8 @@ sys.exit(compute.main())
 
     def test_an_unanswered_stand_in_review_is_answered_in_the_entry_being_finished(self):
         (self.root / 'tools/hooks').mkdir()
-        for name in ('tools/stand_in_review.py', 'tools/haiku_judge.py', 'tools/hooks/stop_checks.py'):
+        for name in ('tools/stand_in_review.py', 'tools/haiku_judge.py', 'tools/hooks/stop_checks.py',
+                     'tools/shell_commands.py'):
             shutil.copy2(ROOT / name, self.root / name)
         state = self.root / 'research/logs/stand-in-review'
         state.mkdir(parents=True)

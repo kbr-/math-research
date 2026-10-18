@@ -535,7 +535,7 @@ GENERAL_ID = re.compile(r'\b(?:conj|lem|thm|prop|cor):[A-Za-z0-9-]+')
 ARCHITECTURE_HEADING = '<h4>Architecture review</h4>'
 ARCHITECTURE_FIELDS = ('Necessary target', 'Extra requirements', 'Independent alternative',
                        'Rank normalization', 'Decision', 'Decisive test')
-PROGRESS_STATES = ('advanced', 'unchanged')
+PROGRESS_STATES = ('advanced', 'narrowed', 'unchanged')
 
 
 def article_attribute(body, article, name):
@@ -2211,6 +2211,31 @@ def validate_bearing(body, article, progress, text=None):
 AGAINST_MIN = 60
 
 
+def validate_progress_assessment(state: str, progress: str, declared: list[str],
+                                 statuses: dict[str, str] | None) -> None:
+    """Check the evidence and stated scope; the reviewer judges whether that scope is justified."""
+    supporting = [cid for cid in declared if re.search(
+        r'(?<![\w:-])' + re.escape(cid) + r'(?![\w-]|:[\w-])', progress)]
+    if statuses is not None:
+        supporting = [cid for cid in supporting if statuses.get(cid) in
+                      ('working_proof', 'established', 'conditional', 'refutation')]
+    if state in ('advanced', 'narrowed') and not supporting:
+        raise ValueError(f'{state.capitalize()} Goal progress must cite a claim declared by this entry with a '
+                         'proof, conditional reduction, or refutation; finite checks and conjectures '
+                         'alone do not certify the goal-critical implication')
+    if state == 'narrowed':
+        for label in ('Removed part', 'Remaining part'):
+            match = re.search(r'<strong>' + re.escape(label) + r'\.</strong>(.*?)(?=<strong>|$)', progress, re.S)
+            value = match.group(1) if match else ''
+            if len(re.findall(r'\S+', strip_tags(value))) < 4:
+                raise ValueError(f'Narrowed Goal progress states the {label.lower()} in the open statement\'s terms')
+    if state == 'unchanged' and supporting and statuses is not None:
+        if not re.search(r'\b(?:untouched|remains? (?:open|unproved|unchanged)|does not (?:settle|prove|bound|give))\b',
+                         strip_tags(progress), re.I) or not re.search(r'\b(?:because|since|as |why:)', strip_tags(progress), re.I):
+            raise ValueError('Unchanged Goal progress cites a proved declared claim: explain which part of the '
+                             'open statement it leaves untouched and why (understatement check)')
+
+
 def validate_progress(body, article, close, *, check_registered_claims=True):
     """Check reporting and follow-through, not the mathematical truth of an advance.
 
@@ -2228,7 +2253,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
         raise ValueError('Name the stable open-statement ID in data-obligation; do not use a new local '
                          'subproblem name each cycle')
     if state not in PROGRESS_STATES:
-        raise ValueError('Set data-goal-progress="advanced" or "unchanged"; new mathematics alone '
+        raise ValueError('Set data-goal-progress="advanced", "narrowed" or "unchanged"; new mathematics alone '
                          'does not establish goal progress')
     text = body[article:close]
     require_report(text, 'New mathematics')
@@ -2276,17 +2301,8 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
             validate_structural_reason(text, claims=entry_claims(body, article))
         if state == 'unchanged':
             validate_bearing(body, article, progress, text)
-    if state == 'advanced':
-        supporting = [cid for cid in entry_claims(body, article)
-                      if re.search(r'(?<![\w:-])' + re.escape(cid) + r'(?![\w:-])', progress)]
-        if check_registered_claims:
-            statuses = registered_status()
-            supporting = [cid for cid in supporting if statuses.get(cid) in
-                          ('working_proof', 'established', 'conditional', 'refutation')]
-        if not supporting:
-            raise ValueError('Advanced Goal progress must cite a claim declared by this entry with a '
-                             'proof, conditional reduction, or refutation; finite checks and conjectures '
-                             'alone do not certify the goal-critical implication')
+    validate_progress_assessment(state, progress, entry_claims(body, article),
+                                 registered_status() if check_registered_claims else None)
     if tags['kind'] == 'review':
         if not article_attribute(body, article, 'id'):
             raise ValueError('An Architecture review needs a stable article id for its next test')

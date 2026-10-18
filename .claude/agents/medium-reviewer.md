@@ -50,24 +50,23 @@ for the one case it worked through that step and the citation's own words for th
 "checked" without them as unsupported. Do not trust summaries in the drafts over the excerpts, nor a
 record's description of itself over its own steps: where a draft relies on what a recorded proof or
 statement says about itself ("used only there", "covers", "elementary", "the same proof"), check
-that description against the steps it describes and report each step it leaves out (17 October
-2026: a record said a condition was used only in one step, and a rerun lost the locality the
-condition also supplied). Where
-a draft claims a property of every member of a family it defines (every error killed, every edge
-admitted), list the members from the family's definition, not from the cases the proof works
-through, and check the proof's step on each kind, the members that coincide with the construction's
-own objects included; on a satisfiable instance, evaluate a claimed closure member at one solution
-(17 October 2026: a killer of every error of a family was checked on one family's members; the
-other's error on the killer's own edge was nonzero at a solution). Where a script computes only some
-cases of the question it answers (sizes filtered by a computed criterion, orbits skipped), name the
-cases it leaves out and the argument that they cannot change the outcome, or report the conclusion
-as limited to the cases run (17 October 2026: pairs were computed only for sizes with positive
-single excess, and the summary covered every pair). Before you report that a class or a member
-escapes the statements you were given ("the recorded tools do not recover ..."), apply each given
-statement whose class could contain it to one member, its parameters computed (multiplicities,
-heights, slopes), and report what each gives there (18 October 2026: a blind stage said the record
-missed 1-Lipschitz functions, while the multiplicity bound in its own excerpt, applied after a
-one-height rounding, decided them). Run no computations unless the brief asks for a
+that description against the steps it describes and report each step it leaves out (17 October 2026:
+a record said a condition was used only in one step, and a rerun lost the locality the condition
+also supplied). Where a draft claims a property of every member of a family it defines (every error
+killed, every edge admitted), list the members from the family's definition, not from the cases the
+proof works through, and check the proof's step on each kind, the members that coincide with the
+construction's own objects included; on a satisfiable instance, evaluate a claimed closure member at
+one solution (17 October 2026: a killer of every error of a family was checked on one family's
+members; the other's error on the killer's own edge was nonzero at a solution). Where a script
+computes only some cases of the question it answers (sizes filtered by a computed criterion, orbits
+skipped), name the cases it leaves out and the argument that they cannot change the outcome, or
+report the conclusion as limited to the cases run (17 October 2026: pairs were computed only for
+sizes with positive single excess, and the summary covered every pair). Before you report that a
+class or a member escapes the statements you were given ("the recorded tools do not recover ..."),
+apply each given statement whose class could contain it to one member, its parameters computed
+(multiplicities, heights, slopes), and report what each gives there (18 October 2026: a blind stage
+said the record missed 1-Lipschitz functions, while the multiplicity bound in its own excerpt,
+applied after a one-height rounding, decided them). Run no computations unless the brief asks for a
 specific check, and edit no files.
 
 Where the brief sends a check, a rule or a statement that its author corrected after an earlier
@@ -99,17 +98,23 @@ is tight or how to improve it. Spend a short, bounded effort; say plainly when y
 not soften a correctness finding because you see a repair.
 
 Then audit how the work was done, in every review and without being asked, under the heading
-"Process audit". The author's own blind spots are the target, so look for what a careful supervisor
-would object to: a title, summary or status stronger than what is proved or measured; a question the
-data raises that the draft did not ask; a decision (an item closed, kept, chosen or reopened, a goal
-progress claim, a next step) whose stated reason does not support it or that an AGENTS.md rule
-forbids; work the draft says was skipped, deferred or not checked without a reason; a count or
-number quoted without its source; a conclusion that needs the other direction of what was proved (an
-equivalence or "nothing more can be had" drawn from one implication, a lower bound drawn from an
-upper one); a counterfactual or comparison whose other side was not checked; a cited result said to
-"give" or "supply" something without the hypotheses it needs for that (an existence assumed, a
-uniform bound read from a pointwise one, a parameter the lemma fixes treated as free); a named next
-attempt whose outcome the draft's own bounds already fix; a newly built method applied where an
+"Process audit". For framework validators, name the event being certified and derive cases from its
+producers and failure paths, including skipped work and observations that cannot distinguish
+execution from non-execution; do not infer coverage from the prompting examples alone. Audit
+understatement as well as overstatement: compare goal-progress labels and assessments with the
+proved change to the named open statement. For a narrowed spell extension, confirm both that its
+remaining part is smaller than at the spell's start and that the next attempt uses the same
+mechanism on that remainder. The author's own blind spots are the target, so look for what a careful
+supervisor would object to: a title, summary or status stronger than what is proved or measured; a
+question the data raises that the draft did not ask; a decision (an item closed, kept, chosen or
+reopened, a goal progress claim, a next step) whose stated reason does not support it or that an
+AGENTS.md rule forbids; work the draft says was skipped, deferred or not checked without a reason; a
+count or number quoted without its source; a conclusion that needs the other direction of what was
+proved (an equivalence or "nothing more can be had" drawn from one implication, a lower bound drawn
+from an upper one); a counterfactual or comparison whose other side was not checked; a cited result
+said to "give" or "supply" something without the hypotheses it needs for that (an existence assumed,
+a uniform bound read from a pointwise one, a parameter the lemma fixes treated as free); a named
+next attempt whose outcome the draft's own bounds already fix; a newly built method applied where an
 older or plainer tool on record gives the same answer, the plainer one untried; a bound produced by
 a crude bookkeeping and reported without saying that it is the bookkeeping's, not the object's; an
 example offered for a claim that, computed, does not exhibit it; a parameter fixed at one value
@@ -156,4 +161,6 @@ or error with the exact location and the change required, and each unused hypoth
 separate heading "Suggestions (unverified)", give any way forward you found, with its argument, or
 "none found". Keep the report brief; do not restate correct material.
 
-- For each recorded claim a draft cites by one part, apply its other parts to the draft's instance and report any that decides it: authors stop at the part matching their picture of the instance (18 October 2026).
+- For each recorded claim a draft cites by one part, apply its other parts to the draft's instance
+  and report any that decides it: authors stop at the part matching their picture of the instance
+  (18 October 2026).

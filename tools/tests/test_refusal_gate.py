@@ -24,6 +24,29 @@ def result(ident, text, error=False):
 
 
 class RefusalGateTest(unittest.TestCase):
+    def test_copy_edit_and_quoted_read_verbs_do_not_clear_the_gate(self) -> None:
+        for command in ('cp tools/notebook-append.py /tmp/cat',
+                        'python3 tools/replace_text.py tools/notebook-append.py old new',
+                        'echo "cat tools/notebook-append.py"',
+                        'sed -n -i 1p tools/notebook-append.py',
+                        'awk \'{print > "tools/notebook-append.py"}\' notes',
+                        'true || cat tools/notebook-append.py',
+                        'true # ; cat tools/notebook-append.py',
+                        'exit 0 && cat tools/notebook-append.py',
+                        'exec true && cat tools/notebook-append.py',
+                        'builtin exit 0 && cat tools/notebook-append.py',
+                        'set -n && cat tools/notebook-append.py',
+                        'eval "exit 0" && cat tools/notebook-append.py',
+                        'echo "|" cat tools/notebook-append.py',
+                        'grep "tools/notebook-append.py" notes'):
+            with self.subTest(command=command):
+                self.assertFalse(gate.reads_code({'name': 'Bash', 'input': {'command': command}},
+                                                'refused', 'notebook-append.py'))
+        self.assertTrue(gate.reads_code({'name': 'Bash', 'input': {
+            'command': 'cp notes /tmp/copy && cat tools/notebook-append.py'}}, 'refused', 'notebook-append.py'))
+        self.assertFalse(gate.reads_code({'name': 'Read', 'input': {
+            'file_path': '/repo/tools/notebook-append.py'}, 'error': True}, 'refused', 'notebook-append.py'))
+
     def transcript(self, entries):
         folder = tempfile.mkdtemp()
         path = Path(folder) / 't.jsonl'

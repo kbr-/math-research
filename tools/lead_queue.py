@@ -1401,6 +1401,21 @@ def validate_spell_extension(body, tag, text, nodes, where):
                          paragraph.group(1), re.S)
     if not progress or any(not strip_tags_tight(part).strip() for part in progress.groups()):
         raise ValueError('A spell extension states Progress and a concrete Next necessary implication')
+    if 'data-goal-progress="narrowed"' in tag:
+        for label in ('Spell-start remainder', 'Smaller remainder', 'Same mechanism', 'Reviewer confirmation'):
+            match = re.search(r'<strong>' + re.escape(label) + r'\.</strong>(.*?)(?=<strong>|$)',
+                              paragraph.group(1), re.S)
+            if not match or len(strip_tags_tight(match.group(1)).split()) < 4:
+                raise ValueError('A narrowed spell extension needs ' + label + ': compare the remainder with '
+                                 'the spell start, use the same mechanism next, and record the reviewer\'s '
+                                 'confirmation of both')
+            if label == 'Reviewer confirmation':
+                confirmation = strip_tags_tight(match.group(1))
+                if (re.search(r'\b(?:pending|awaiting|unverified|absent|fail\w*|refused)\b|'
+                              r'\b(?:not|never|no|cannot|did not)\b', confirmation, re.I)
+                        or not re.search(r'\b(?:confirm(?:s|ed)?|checked|verified|passed)\b', confirmation, re.I)):
+                    raise ValueError('A narrowed spell extension needs a positive completed Reviewer confirmation, '
+                                     'not a pending, absent or negative verdict')
     articles = record_articles(body)
     positions = spell_entries(body, item, nodes)
     if not positions:
@@ -2290,8 +2305,8 @@ def add(body, kind, ident, source, text):
     draining, nodes = found
     if any(i == ident for _, i in every_item(nodes)):
         raise ValueError(f'{ident} is already queued')
-    if kind == 'build' and build_evidence(text):
-        raise ValueError(f'{ident}: {build_evidence(text)}')
+    if kind == 'build' and build_evidence(text, user_source=bool(USER_SOURCE_RE.search(source))):
+        raise ValueError(f'{ident}: {build_evidence(text, user_source=bool(USER_SOURCE_RE.search(source)))}')
     # The last entry of the record when the item is added: a source given in words (a review, a conversation)
     # names no entry, and the finisher's check of a review's period could not tell when such an item was queued.
     articles = record_articles(body)
@@ -2410,11 +2425,15 @@ def cost_claim(text):
     return None
 
 
-def build_evidence(text):
+def build_evidence(text: str, *, user_source: bool = False) -> str | None:
     """What a build's text lacks, or None: a text that claims a cost or a saving (slow, saves, took 27 s)
     says whether the claim is measured, with the word: 'measured' and what was, or 'not measured'.  A figure
     alone does not say it: the build that prompted this rule gave figures of a census and guessed their cause,
     and promised a saving for several cycles that one measurement refuted (10 October 2026)."""
+    if user_source:
+        # Attribution stays in the stored item; only the user's quoted words are exempt.
+        text = re.sub(r'\b(?:the\s+)?user(?:\s+(?:says|said|asked|reported)|,\s*[^:()\n]{1,80})?\s*:\s*'
+                      r'(?:“[^”]*”|"[^"\n]*"|\x27(?:[^\x27]|\x27(?=\w))*\x27)', '', text, flags=re.I)
     claim = cost_claim(text)
     if claim and not re.search(r'\bmeasur(?:ed|ement|ements)\b', text, re.I):
         return (f'the text claims a cost or a saving ("{claim.group(0)}") and does not say what it rests on: name '
@@ -2434,6 +2453,8 @@ def saved_figure_missing(text, root=None):
     terminal; the folder existed, so the citation looked checked.  The figure (as written, or without its space)
     is looked for in the named files, a folder's files included, up to SAVED_SCAN_BYTES in all."""
     root = Path(root or ROOT)
+    if re.search(r'\b(?:the )?figure was not saved\b', text, re.I):
+        return None
     figures = {f for f in FIGURE_RE.findall(text)}
     paths = [root / p for p in SAVED_PATH_RE.findall(text) if (root / p).exists()]
     if not figures or not paths:
@@ -2475,8 +2496,8 @@ def edit(body, ident, text):
     if source is None:
         raise ValueError(f'{ident} was listed by an entry, so its text is that entry\'s: only an item add wrote is '
                          'edited here')
-    if node.kind == 'build' and build_evidence(text):
-        raise ValueError(f'{ident}: {build_evidence(text)}')
+    if node.kind == 'build' and build_evidence(text, user_source=bool(USER_SOURCE_RE.search(source.group(1)))):
+        raise ValueError(f'{ident}: {build_evidence(text, user_source=bool(USER_SOURCE_RE.search(source.group(1))))}')
     node.text = added_text(html.unescape(source.group(1)), text)
     return rewrite(body, nodes, draining)
 
@@ -2589,12 +2610,13 @@ def main(argv):
         return 0
     if len(argv) == 7 and argv[1] == 'add' and argv[3] in [f'--{k}' for k in ADDABLE]:
         path = Path(argv[2])
-        if argv[3] == '--build' and not (NOT_BUILT_RE.search(argv[6]) and TRIED_RE.search(argv[6])):
+        dictated = bool(USER_SOURCE_RE.search(argv[5]))
+        if argv[3] == '--build' and not dictated and not (NOT_BUILT_RE.search(argv[6]) and TRIED_RE.search(argv[6])):
             print(f'{argv[4]}: a build is queued only when it cannot be built in the turn that found it; say why in '
                   '"Not built in the turn: <reason>" (at least five words) and what was tried first in "Tried: '
                   '<attempt>" (at least five words), or build it now (AGENTS.md)', file=sys.stderr)
             return 1
-        if argv[3] == '--build' and not tried_names_file(argv[6], Path.cwd()):
+        if argv[3] == '--build' and not dictated and not tried_names_file(argv[6], Path.cwd()):
             print(f'{argv[4]}: the Tried clause names no file of the repository; name the file the attempt read or '
                   'tested (a tool, a rule file, a script), by its path from the repository root', file=sys.stderr)
             return 1

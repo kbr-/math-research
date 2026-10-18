@@ -679,39 +679,42 @@ reviewer agents every two cycles. Two cycles reporting the same obligation uncha
 turn-start warning for the next scheduled review; audits and unrelated work do not erase it.
 
 Each new research/review article names its stable **Open statements** ID in `data-obligation` (not a
-newly named local lemma) and sets `data-goal-progress="advanced"` or `"unchanged"`. Give separate
-**New mathematics.** and **Goal progress.** paragraphs. The first states what was obtained,
-including no result; the second states exactly which necessary implication changed and why, or that
-it remains unchanged. `advanced` cites a claim declared by the entry with a proof, conditional
-reduction or refutation. A bigger toolbox, stronger convenience, equivalent reformulation or finite
-check is not by itself goal progress. From the third research entry in a row that reports a route
-unchanged, the paragraph ends with `<strong>Bearing.</strong>`: what the entry's result gives at the
-goal's own parameters, or that it gives nothing there and why the cycle was spent on it (what the
-result could have given; that a review or an earlier entry asked for the work is not a reason, and
-the finisher refuses it), and the article declares `data-bearing="none"` or `"some"` to match, a
-`some` bearing ending with `<strong>Not covered.</strong>` and the cases its result does not reach;
-after two entries in a row on one queue item declaring `none`, the next entry develops a different
-item; after three entries in a row on the route declaring `none`, across items, the next states
-before its work, after `<strong>Best outcome.</strong>`, what its best outcome would give at the
-goal's own parameters and, by claim ID, the recorded result it must beat; and an entry in such a run
-whose follow-up is Continuing states `<strong>Record search.</strong>`, the registry searches made
-for the next attempt it names (the finisher checks all six). A rule that limits which work may be
-started (an item, a route, a kind of entry) is checked where that work starts, at `compute.sh start`
-and at the Proposed next step, the finisher's copy being a backstop; work already done against such
-a rule is checkpointed at once, without asking the user, in an entry saying after `<strong>Against
-the rule.</strong>` which stage should have stopped it, and nothing further on what the rule
-excludes follows it: no next step on it and no spell extension it did not earn (user, 17 October
-2026: "work should be blocked before you waste time and tokens, not when it is already done", and
-"Do not throw away work ever"; 18 October 2026: "If you already did the work, just fucking
-checkpoint it. But FFS do not continue breaking the rules further"). Keep the obligation ID stable
-while that implication is unchanged. The finisher checks declarations and evidence references, not
-the truth of the agent's assessment; the existing reviewer must challenge that assessment. Every new
-`data-bearing="some"` entry links its matched parameter ledger from **Bearing** with a named link
-such as `<a data-ledger="selection" href="#selection-ledger">selection budget</a>`. Each
-**Nonvacuity** paragraph uses a matching named link to identify the particular budget its witness
-verifies. Assertions about both or all budgets need separately named references. These checks
-validate references and declarations; the reviewer checks that the inequalities and application
-really hold.
+newly named local lemma) and sets `data-goal-progress="advanced"`, `"narrowed"` or `"unchanged"`.
+Give separate **New mathematics.** and **Goal progress.** paragraphs. The first states what was
+obtained, including no result; the second states exactly which necessary implication changed and
+why, or that it remains unchanged. `advanced` and `narrowed` cite a claim declared by the entry with
+a proof, conditional reduction or refutation. `narrowed` removes a definite part of the named open
+statement: its Goal progress paragraph states **Removed part.** and **Remaining part.** in that
+statement's terms. An `unchanged` paragraph citing its own proved claim says which part remains
+untouched and why; the reviewer audits understatement as well as overstatement. A bigger toolbox,
+stronger convenience, equivalent reformulation or finite check is not by itself goal progress. From
+the third research entry in a row that reports a route unchanged, the paragraph ends with
+`<strong>Bearing.</strong>`: what the entry's result gives at the goal's own parameters, or that it
+gives nothing there and why the cycle was spent on it (what the result could have given; that a
+review or an earlier entry asked for the work is not a reason, and the finisher refuses it), and the
+article declares `data-bearing="none"` or `"some"` to match, a `some` bearing ending with
+`<strong>Not covered.</strong>` and the cases its result does not reach; after two entries in a row
+on one queue item declaring `none`, the next entry develops a different item; after three entries in
+a row on the route declaring `none`, across items, the next states before its work, after
+`<strong>Best outcome.</strong>`, what its best outcome would give at the goal's own parameters and,
+by claim ID, the recorded result it must beat; and an entry in such a run whose follow-up is
+Continuing states `<strong>Record search.</strong>`, the registry searches made for the next attempt
+it names (the finisher checks all six). A rule that limits which work may be started (an item, a
+route, a kind of entry) is checked where that work starts, at `compute.sh start` and at the Proposed
+next step, the finisher's copy being a backstop; work already done against such a rule is
+checkpointed at once, without asking the user, in an entry saying after `<strong>Against the
+rule.</strong>` which stage should have stopped it, and nothing further on what the rule excludes
+follows it: no next step on it and no spell extension it did not earn (user, 17 October 2026: "work
+should be blocked before you waste time and tokens, not when it is already done", and "Do not throw
+away work ever"; 18 October 2026: "If you already did the work, just fucking checkpoint it. But FFS
+do not continue breaking the rules further"). Keep the obligation ID stable while that implication
+is unchanged. The finisher checks declarations and evidence references, not the truth of the agent's
+assessment; the existing reviewer must challenge that assessment. Every new `data-bearing="some"`
+entry links its matched parameter ledger from **Bearing** with a named link such as `<a
+data-ledger="selection" href="#selection-ledger">selection budget</a>`. Each **Nonvacuity**
+paragraph uses a matching named link to identify the particular budget its witness verifies.
+Assertions about both or all budgets need separately named references. These checks validate
+references and declarations; the reviewer checks that the inequalities and application really hold.
 
 Fold an `<h4>Architecture review</h4>` section into each scheduled review, with these
 `<p><strong>Label.</strong> ...</p>` paragraphs:
@@ -939,86 +942,90 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   Four consecutive research entries are the default spell. At its boundary, extend by two cycles
   when a proof, refutation or reduction from the current spell/extension period materially advances
   a named open statement and a concrete next necessary implication uses the same mechanism. Record
-  that evidence and next attempt using [the queue tool's extension format](tools/lead_queue.py).
-  Reassess after each two-cycle extension; there is no lifetime cap, but finite checks, promise
-  alone or reused old progress do not earn more time. Without fresh qualifying progress, rotate to
-  the tail (user, 5 October 2026). Every top-level item, also during backpressure, is developed in
-  its own entry; batch triage is retired (user, 9 October 2026: "Revert it back to the state where
-  each item was done one at a time"). Sub-ideas of the one item an entry develops may be batched in
-  that entry, each in a follow-up list item with its own outcome and evidence (user, 9 October 2026:
-  "An entry may develop at most one top level item. Sub ideas attached to a single parent can be
-  batched."). Research entries carry no Outside leads or Absurd bridges of their own (user, 9
-  October 2026); undone work they name goes under Sub-ideas. An item closed too early is reopened by
-  a follow-up list item ending `<strong>Follow-up.</strong> Reopened: <reason>` and goes to the tail
-  (`lead_queue.py append`). A queue audit (`data-kind="audit"`, outside the review cadence) lists
-  ideas that older reviews named outside the standard sections, each `<li
-  data-source="REVIEW-ANCHOR">`; all of them are queued ("when unsure, queue it"). Any entry lists
-  the questions, checks and builds it names and leaves undone under `<h4>Sub-ideas</h4>` (`<li
-  data-sub="check">` or `"build"`), but only those it intends to carry out: do a small one in the
-  entry, drop one that will not be done, and add none to fill the section (user, 9 October 2026).
-  Work that comes up outside an entry (a conversation, a review, a tool's defect) joins the queue at
-  once with `lead_queue.py add NOTEBOOK.html --check|--build|--idea ID SOURCE TEXT`: a top-level
-  item at the tail, which needs no entry and which a commit without an entry may add (user, 7
-  October 2026: "You should be able to queue items by just running the tool"). A finished top-level
-  build leaves the same way: `lead_queue.py close-built NOTEBOOK.html ID --record REVIEW.txt --path
-  PATH --note TEXT` records the reviewer's record, the implementation paths and what was built in
-  `research/queue-closures.jsonl`, and a commit without an entry may carry it (user, 16 October
-  2026: "Isn't that a gap in the framework? Why can't you close items"). Those of a research entry
-  that develops no queue item have no parent: they wait in their entry, `lead_queue.py pending`
-  lists them, and the next review promotes any number by judgement with a follow-up list item ending
-  `<strong>Follow-up.</strong> Promoted: <reason>` (user, 9 October 2026). `lead_queue.py append`
-  and `similar` show queued items with similar wording; when two ask the same thing keep one,
-  closing the other with "Closed: merged into ID", which adds its wording to that item. The others
-  join the queue nested under the item they belong to (user, 3 October 2026: "I want it to look like
-  a nested list of entries"), a sub-idea's development counting toward its parent's spell; a check
-  is Developed only with evidence that resolves, a build only with its opened task or its path. The
-  user may pick any item out of order (`data-picked="user"`, the words quoted in a
-  `<strong>Picked.</strong>` paragraph), and an item waiting on the user's answer stays queued and
-  passed over (`Waiting:` and `Unblocked:` follow-ups). The queue section's attributes set, per
-  notebook, the entry kinds that count, backpressure and extra kinds;
-  [tools/lead_queue.py](tools/lead_queue.py) holds the details. Backpressure: at 30 top-level items
-  (user, 9 October 2026; 50 before) the queue drains (`data-draining="true"`), and until 10 remain
-  every research entry develops a queued item or one of its sub-ideas: the head by default, or any
-  other queued item under the same choice rule as outside draining, a `<strong>Chosen.</strong>`
-  paragraph saying which open statement it bears on and why it comes first. Draining restricts
-  entries to the queue; it does not restrict them to the head (user, 11 October 2026: "it moves you
-  to where you choose, the only restriction being to select a diff item"). Then work returns to the
-  route, or to a better route the leads opened. While the queue is draining, reviews produce no
-  Outside leads or Absurd bridges: omit both sections and assess existing work (user, 5 October
-  2026). Review cadence and the other review requirements still apply. A review of a draining queue
-  declares `data-queue-items="N"`, its top-level count (the finisher checks), and `compute.sh start`
-  prints the last two recorded counts beside the present one: draining is a rule, and only the
-  counts show whether the queue shrinks. A review that decides to leave items declares them in
-  `data-left-items="ID ID"`, and until the next review an entry on one of them, or on a sub-idea of
-  one, says after `<strong>Returns.</strong>` why it returns (the finisher checks the item, not the
-  subject, which the reviewer checks). Reviews report only follow-ups whose status changed. A review
-  whose period queued build items that are still queued, and made fewer builds than remain queued
-  from it, says in a `<p><strong>Builds.</strong>` paragraph what becomes of each: built now,
-  dropped, or the dated reason it waits (the finisher checks that each is named; the queue tool
-  stamps an added item with the record's last entry, by which the period is known). The finisher
-  checks all of this against HEAD and `compute.sh start` prints the queue's state and head. A
-  one-step objection (a structural remark, a record match, one encoding tried) falsifies only that
-  formulation. Before a review declares an open statement without mechanism, or moves cycles away
-  from it, each "Not run" item and each item closed by such an objection that bears on that
-  statement gets a development cycle: read the source in full, and try other encodings, formulations
-  and settings where the objection does not apply (user, 26 September 2026: "Did you make an honest
-  attempt at developing some of these in order to solve A1?"). In the user's words (25 September
-  2026): "absurd bridges can reach for mathematics, computer science, theoretical physics, quantum
-  fucking chemistry, I don't give a fuck. That's why they are absurd." Reaching for other areas is
-  the agent's job at every cycle, not only when the user names a field. Proposed next step names its
-  route item, and the queue item it takes, by identifier or by a link to an entry that developed it:
-  the append tool prints that item's queued text and latest follow-up, to write the description
-  against, refuses a next step naming none while the queue drains, and refuses one that names a
-  developed item by its identifier without quoting eight consecutive words of the item's latest
-  follow-up or queued text. While the goal is open that step is always research: never park, pause
-  or stop the goal, or wait for a user decision; when recorded routes are closed, propose and test a
-  new idea. Once the goal is proved, a Spin loop stops ([PROMPTS.md](PROMPTS.md#spin)). During an
-  authorized Spin, continue the next cycle or review in the current turn; possible user redirection
-  is no reason to idle or request a check-in. Low-yield cycles, corrections and hard next steps call
-  for developing the latest review's Outside leads and Absurd bridges, not stopping the loop while
-  the goal is open. Explain progress, obstructions and remaining uncertainty; do not invent
-  numerical probabilities for research prospects. A probability requires a stated quantitative
-  method and evidence, not an uncalibrated impression.
+  that evidence and next attempt using [the queue tool's extension format](tools/lead_queue.py). A
+  narrowed result earns this extension only if the remaining part is smaller than at the spell's
+  start and the next attempt uses the same mechanism on that remainder, both confirmed by the
+  reviewer. Its extension paragraph states **Spell-start remainder.**, **Smaller remainder.**,
+  **Same mechanism.** and **Reviewer confirmation.** Reassess after each two-cycle extension; there
+  is no lifetime cap, but finite checks, promise alone or reused old progress do not earn more time.
+  Without fresh qualifying progress, rotate to the tail (user, 5 October 2026). Every top-level
+  item, also during backpressure, is developed in its own entry; batch triage is retired (user, 9
+  October 2026: "Revert it back to the state where each item was done one at a time"). Sub-ideas of
+  the one item an entry develops may be batched in that entry, each in a follow-up list item with
+  its own outcome and evidence (user, 9 October 2026: "An entry may develop at most one top level
+  item. Sub ideas attached to a single parent can be batched."). Research entries carry no Outside
+  leads or Absurd bridges of their own (user, 9 October 2026); undone work they name goes under
+  Sub-ideas. An item closed too early is reopened by a follow-up list item ending
+  `<strong>Follow-up.</strong> Reopened: <reason>` and goes to the tail (`lead_queue.py append`). A
+  queue audit (`data-kind="audit"`, outside the review cadence) lists ideas that older reviews named
+  outside the standard sections, each `<li data-source="REVIEW-ANCHOR">`; all of them are queued
+  ("when unsure, queue it"). Any entry lists the questions, checks and builds it names and leaves
+  undone under `<h4>Sub-ideas</h4>` (`<li data-sub="check">` or `"build"`), but only those it
+  intends to carry out: do a small one in the entry, drop one that will not be done, and add none to
+  fill the section (user, 9 October 2026). Work that comes up outside an entry (a conversation, a
+  review, a tool's defect) joins the queue at once with `lead_queue.py add NOTEBOOK.html
+  --check|--build|--idea ID SOURCE TEXT`: a top-level item at the tail, which needs no entry and
+  which a commit without an entry may add (user, 7 October 2026: "You should be able to queue items
+  by just running the tool"). A finished top-level build leaves the same way: `lead_queue.py
+  close-built NOTEBOOK.html ID --record REVIEW.txt --path PATH --note TEXT` records the reviewer's
+  record, the implementation paths and what was built in `research/queue-closures.jsonl`, and a
+  commit without an entry may carry it (user, 16 October 2026: "Isn't that a gap in the framework?
+  Why can't you close items"). Those of a research entry that develops no queue item have no parent:
+  they wait in their entry, `lead_queue.py pending` lists them, and the next review promotes any
+  number by judgement with a follow-up list item ending `<strong>Follow-up.</strong> Promoted:
+  <reason>` (user, 9 October 2026). `lead_queue.py append` and `similar` show queued items with
+  similar wording; when two ask the same thing keep one, closing the other with "Closed: merged into
+  ID", which adds its wording to that item. The others join the queue nested under the item they
+  belong to (user, 3 October 2026: "I want it to look like a nested list of entries"), a sub-idea's
+  development counting toward its parent's spell; a check is Developed only with evidence that
+  resolves, a build only with its opened task or its path. The user may pick any item out of order
+  (`data-picked="user"`, the words quoted in a `<strong>Picked.</strong>` paragraph), and an item
+  waiting on the user's answer stays queued and passed over (`Waiting:` and `Unblocked:`
+  follow-ups). The queue section's attributes set, per notebook, the entry kinds that count,
+  backpressure and extra kinds; [tools/lead_queue.py](tools/lead_queue.py) holds the details.
+  Backpressure: at 30 top-level items (user, 9 October 2026; 50 before) the queue drains
+  (`data-draining="true"`), and until 10 remain every research entry develops a queued item or one
+  of its sub-ideas: the head by default, or any other queued item under the same choice rule as
+  outside draining, a `<strong>Chosen.</strong>` paragraph saying which open statement it bears on
+  and why it comes first. Draining restricts entries to the queue; it does not restrict them to the
+  head (user, 11 October 2026: "it moves you to where you choose, the only restriction being to
+  select a diff item"). Then work returns to the route, or to a better route the leads opened. While
+  the queue is draining, reviews produce no Outside leads or Absurd bridges: omit both sections and
+  assess existing work (user, 5 October 2026). Review cadence and the other review requirements
+  still apply. A review of a draining queue declares `data-queue-items="N"`, its top-level count
+  (the finisher checks), and `compute.sh start` prints the last two recorded counts beside the
+  present one: draining is a rule, and only the counts show whether the queue shrinks. A review that
+  decides to leave items declares them in `data-left-items="ID ID"`, and until the next review an
+  entry on one of them, or on a sub-idea of one, says after `<strong>Returns.</strong>` why it
+  returns (the finisher checks the item, not the subject, which the reviewer checks). Reviews report
+  only follow-ups whose status changed. A review whose period queued build items that are still
+  queued, and made fewer builds than remain queued from it, says in a `<p><strong>Builds.</strong>`
+  paragraph what becomes of each: built now, dropped, or the dated reason it waits (the finisher
+  checks that each is named; the queue tool stamps an added item with the record's last entry, by
+  which the period is known). The finisher checks all of this against HEAD and `compute.sh start`
+  prints the queue's state and head. A one-step objection (a structural remark, a record match, one
+  encoding tried) falsifies only that formulation. Before a review declares an open statement
+  without mechanism, or moves cycles away from it, each "Not run" item and each item closed by such
+  an objection that bears on that statement gets a development cycle: read the source in full, and
+  try other encodings, formulations and settings where the objection does not apply (user, 26
+  September 2026: "Did you make an honest attempt at developing some of these in order to solve
+  A1?"). In the user's words (25 September 2026): "absurd bridges can reach for mathematics,
+  computer science, theoretical physics, quantum fucking chemistry, I don't give a fuck. That's why
+  they are absurd." Reaching for other areas is the agent's job at every cycle, not only when the
+  user names a field. Proposed next step names its route item, and the queue item it takes, by
+  identifier or by a link to an entry that developed it: the append tool prints that item's queued
+  text and latest follow-up, to write the description against, refuses a next step naming none while
+  the queue drains, and refuses one that names a developed item by its identifier without quoting
+  eight consecutive words of the item's latest follow-up or queued text. While the goal is open that
+  step is always research: never park, pause or stop the goal, or wait for a user decision; when
+  recorded routes are closed, propose and test a new idea. Once the goal is proved, a Spin loop
+  stops ([PROMPTS.md](PROMPTS.md#spin)). During an authorized Spin, continue the next cycle or
+  review in the current turn; possible user redirection is no reason to idle or request a check-in.
+  Low-yield cycles, corrections and hard next steps call for developing the latest review's Outside
+  leads and Absurd bridges, not stopping the loop while the goal is open. Explain progress,
+  obstructions and remaining uncertainty; do not invent numerical probabilities for research
+  prospects. A probability requires a stated quantitative method and evidence, not an uncalibrated
+  impression.
 - Keep entries chronological and append-only, including opinions/assessments even when the user
   objects. Withdraw/correct/retract in a new dated entry linking the old anchor; update living
   status and correction metadata. Never silently rewrite prior mathematics to match later results.
@@ -1103,8 +1110,9 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   these, run the tests the change could affect: a standalone new tool needs only its own test file
   (`./compute.sh --threads 14 --timeout 60 python3 tools/tests/run.py test_NAME`, the parallel
   runner on that one module: a file whose tests each start processes takes several times longer
-  under `unittest`, which runs them one after another); a change to shared code, fixtures, hooks, CI
-  or names other files use needs the whole suite, through the protected launcher: `./compute.sh
+  under `unittest`, which runs them one after another); a commit changing only AGENTS.md needs
+  test_agents_scope, whose passing run the runner records. A change to shared code, fixtures, hooks,
+  CI or names other files use needs the whole suite, through the protected launcher: `./compute.sh
   --threads 1 --timeout 60 python3 tools/tests/run.py`, which runs the tests in parallel worker
   processes. The whole suite stays under 10 seconds (user, 26 September 2026: "The suite should run
   in 10s tops"); the runner fails a slower run and lists its slowest tests. That is a defect to find

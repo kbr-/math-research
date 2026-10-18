@@ -21,13 +21,13 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from shell_commands import unambiguous_commands
+
 MAX_USES = 120
 MAX_BYTES = 60 << 20
 BLOCK = 1 << 22
 REFUSAL = re.compile(r'^(?:[\w.-]+\.py|commit-msg): (?P<rule>.+)$|^FAILS (?P<fails>.+)$', re.M)
-READ_CODE = re.compile(r'\b(?:grep|sed\s+-n|rg|cat|head|awk)\b[^|;&]*\btools/')
-# A shell word in single quotes, or in double quotes with backslash escapes.
-QUOTED = re.compile(r"'[^']*'" + r'|"(?:[^"\\]|\\.)*"')
 
 
 def tool_calls(transcript, max_uses=MAX_USES, max_bytes=MAX_BYTES):
@@ -108,10 +108,12 @@ def quotes(command, line):
     return any(words[i:i + 12] in command for i in range(0, max(1, len(words) - 11)))
 
 
-def reads_code(call, line='', tool=None):
+def reads_code(call: dict, line: str = '', tool: str | None = None) -> bool:
     """A read of the code behind the refusal: of a file under tools/ that is the emitting tool, or a search of
     tools/ quoting the refusal's words (an unrelated grep of tools/ does not count: the bypass tried before the
     commit of 18 October 2026)."""
+    if call.get('error'):
+        return False
     if call['name'] == 'Read':
         path = str(call['input'].get('file_path') or '')
         return '/tools/' in path and (tool is None or path.endswith('/' + tool) or not line)
@@ -119,11 +121,41 @@ def reads_code(call, line='', tool=None):
         text = json.dumps(call['input'])
         return 'tools' in text and (not line or quotes(text, line) or bool(tool and tool in text))
     command = str(call['input'].get('command') or '') if call['name'] == 'Bash' else ''
-    # Quoted text is blanked before the match: a pipe inside a grep pattern ("a\|b") ended the match before the
-    # tools/ path behind it (18 October 2026: four reads of the emitting code went uncounted).
-    if not READ_CODE.search(QUOTED.sub('""', command)):
-        return False
-    return not line or quotes(command, line) or bool(tool and tool in command)
+    for words in unambiguous_commands(command, chain=True):
+        while words and (re.match(r'^\w+=', words[0]) or words[0] in ('command', 'env')):
+            words = words[1:]
+        if not words:
+            continue
+        verb = Path(words[0]).name
+        if verb not in ('grep', 'rg', 'sed', 'cat', 'head', 'awk'):
+            continue
+        if verb == 'sed' and (not any(w == '-n' for w in words[1:])
+                              or any(w == '--in-place' or w.startswith(('-i', '--in-place=')) for w in words[1:])):
+            continue
+        if verb == 'awk':
+            # Arbitrary awk programs can edit files or run subprocesses; require a native Read instead.
+            continue
+        operands = words[1:]
+        if verb in ('grep', 'rg'):
+            # A pattern naming tools/ is not the file operand; recognize explicit -e/--regexp too.
+            index, explicit = 0, False
+            while index < len(operands) and operands[index].startswith('-'):
+                option = operands[index]
+                index += 1
+                if option in ('-e', '--regexp', '-f', '--file'):
+                    explicit = True
+                    index += 1
+                elif option.startswith(('-e', '--regexp=', '-f', '--file=')):
+                    explicit = True
+                elif option in ('-g', '--glob', '--iglob', '-t', '--type', '--type-not', '-m', '--max-count'):
+                    index += 1
+            operands = operands[index if explicit else index + 1:]
+        elif verb == 'sed':
+            operands = [w for w in operands if not w.startswith('-')][1:]
+        named = [w for w in operands if re.search(r'(?:^|/)tools/', w)]
+        if named and (not line or quotes(' '.join(words), line) or bool(tool and any(tool in w for w in named))):
+            return True
+    return False
 
 
 def pending(calls, path):

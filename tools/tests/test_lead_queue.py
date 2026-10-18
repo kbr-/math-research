@@ -202,6 +202,27 @@ class LeadQueueTest(unittest.TestCase):
                                                               'record': '[proof](https://example.test/#e6)'}}):
             lq.check(before, notebook(entries + [refutation], self.q))
 
+    def test_narrowed_extension_compares_spell_start_and_has_review_confirmation(self) -> None:
+        entries = [self.rev] + [self.extension_entry(n, extension=False) for n in range(1, 4)]
+        valid = self.extension_entry(4).replace('data-kind="research"',
+                                              'data-kind="research" data-goal-progress="narrowed"')
+        labels = ('Spell-start remainder', 'Smaller remainder', 'Same mechanism', 'Reviewer confirmation')
+        evidence = ''.join(f'<strong>{label}.</strong> The reviewer confirms the specified remainder comparison '
+                           'and the same mechanism on its next part. ' for label in labels)
+        valid = valid.replace('</p>', evidence + '</p>', 1)
+        with self.extension_registry():
+            lq.check(notebook(entries, self.q), notebook(entries + [valid], self.q))
+            for verdict in ('Pending consolidated review of both parts.', 'The reviewer did not confirm either part.',
+                            'The reviewer has no confirmation yet.', 'The reviewer failed both required comparisons.'):
+                broken = re.sub(r'(<strong>Reviewer confirmation\.</strong>).*?(?=</p>)',
+                                lambda m: m.group(1) + verdict, valid)
+                with self.subTest(verdict=verdict), self.assertRaisesRegex(ValueError, 'positive completed'):
+                    lq.check(notebook(entries, self.q), notebook(entries + [broken], self.q))
+            for label in labels:
+                with self.subTest(label=label), self.assertRaisesRegex(ValueError, label):
+                    broken = valid.replace(f'<strong>{label}.</strong>', f'{label}:')
+                    lq.check(notebook(entries, self.q), notebook(entries + [broken], self.q))
+
     def test_extension_needs_boundary_statement_and_next_attempt(self):
         entries = [self.rev] + [self.extension_entry(n, extension=False) for n in range(1, 4)]
         before = notebook(entries, self.q)
@@ -800,6 +821,34 @@ class LeadQueueTest(unittest.TestCase):
             self.assertIsNone(lq.saved_figure_missing(held, root))
             self.assertIn('appears in none', lq.saved_figure_missing(held.replace('1.0 s', '2.5 s'), root))
             self.assertIsNone(lq.saved_figure_missing('It took 3 s (measured, not saved).', root))
+
+    def test_user_dictation_needs_no_agent_attempt_and_only_quotes_are_exempt(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'notebook.html'
+            path.write_text(notebook([self.rev], self.q))
+            with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+                self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'dictated',
+                                         'user, 18 October', 'The user says: “The finisher took 60 s.” Profile it.']), 0)
+                self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'agent',
+                                         'reviewer', 'Profile the finisher.']), 1)
+            self.assertIn('The finisher took 60 s.', path.read_text())
+            self.assertIsNotNone(lq.build_evidence('The user says: “The finisher took 60 s.” It is faster now.',
+                                                   user_source=True))
+            self.assertIsNone(lq.build_evidence('The user says: “The finisher took 60 s.” Profile it.',
+                                                user_source=True))
+            self.assertIsNotNone(lq.build_evidence('The user says: “Profile it.” The agent adds: “It took 60 s.”',
+                                                   user_source=True))
+            self.assertIsNone(lq.build_evidence("The user, 18 October: 'It took 60 s.' Profile it.", user_source=True))
+            lq.edit(path.read_text(), 'dictated', 'The user says: “The finisher took 60 s.” Profile it again.')
+
+    def test_measurement_refusal_accepts_its_advertised_unsaved_disposition(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp) / 'research/logs'
+            folder.mkdir(parents=True)
+            (folder / 'run.txt').write_text('No timing figure here.')
+            text = 'It took 3 s (measured: research/logs/run.txt).'
+            self.assertIsNotNone(lq.saved_figure_missing(text, tmp))
+            self.assertIsNone(lq.saved_figure_missing(text + ' The figure was not saved.', tmp))
 
     def test_a_second_extension_of_a_queued_builds_text_is_found(self):
         base = lq.add(notebook([self.rev], self.q), 'build', 'b1', 'a talk', 'Have the tool print the line.')

@@ -127,10 +127,10 @@ def historical_matches(words, root=ROOT, limit=3):
     return [claim for _, claim in search({'claims': claims}, words)[:limit]]
 
 
-def main(validated=False):
-    """Answers from the registry as it is written unless `validated`: validating every record took 0.40 s of
-    a search's 1.26 s on 4382 claims, and each commit validates the registry anyway."""
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+def argument_parser(*, add_help: bool = True, exit_on_error: bool = True) -> argparse.ArgumentParser:
+    """The CLI's argument grammar, also used to certify completed search invocations."""
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
+                                     add_help=add_help, exit_on_error=exit_on_error)
     parser.add_argument('-n', type=int, help='explicit result limit (default 12 only for ordinary search)')
     parser.add_argument('--list', action='store_true', help='List all matching claims in registry order')
     parser.add_argument('--fields', help='Comma-separated field paths, e.g. id,summary')
@@ -145,6 +145,13 @@ def main(validated=False):
     parser.add_argument('--has-lean', action='store_true', help='Has a Lean link; does not imply verified coverage')
     parser.add_argument('--json', action='store_true', help='Machine-readable output')
     parser.add_argument('--out', type=Path, help='Save selected data (JSON payload, or the chosen projection format)')
+    return parser
+
+
+def main(validated=False):
+    """Answers from the registry as it is written unless `validated`: validating every record took 0.40 s of
+    a search's 1.26 s on 4382 claims, and each commit validates the registry anyway."""
+    parser = argument_parser()
     args = parser.parse_args()
     from recovery_evidence import observe
     def observed(text, shown=True):

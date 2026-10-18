@@ -918,6 +918,54 @@ def foreign_answers(draft, text):
     return len(held) if held and not held & {key for key, _, _ in summing_up(draft)} else 0
 
 
+def part_rows(draft: str, summaries: dict[str, str] | None = None) -> list[tuple[str, str, str, dict[str, str]]]:
+    """Lettered citations in baseline paragraphs, with each other registered part to be tried."""
+    uses = [(cid, where, sentence) for cid, where, sentence in citations(draft)
+            if where.rstrip('.') in ('Plainest bound', 'Baseline') and cid in sentence
+            and re.match(r'\s*(?:parts?\s+)?\(([a-h])\)', sentence.split(cid, 1)[1], re.I)]
+    if not uses:
+        return []
+    if summaries is None:
+        summaries = {c['id']: c.get('summary', '') for c in
+                     json.loads((ROOT / 'research/claims/index.json').read_text())['claims']}
+    rows = {}
+    for cid, where, sentence in uses:
+        if cid not in summaries:
+            continue
+        following = sentence.split(cid, 1)[1]
+        selected = re.match(r'\s*(?:parts?\s+)?\(([a-h])\)', following, re.I)
+        parts = set(re.findall(r'\(([a-h])\)', summaries[cid]))
+        # A summary can say "(a) and (b) hold ..." or refer back to an earlier part. Splitting at each
+        # marker destroys those clauses. Keep the complete statement beside the required other letters.
+        others = {letter: summaries[cid] for letter in sorted(parts) if letter != selected.group(1).lower()}
+        if len(parts) < 2 or not others:
+            continue
+        key = hashlib.sha1((cid + sentence + summaries[cid]).encode()).hexdigest()[:8]
+        rows[key] = (where, sentence, others)
+    return [(key, *value) for key, value in rows.items()]
+
+
+def untried_parts(draft: str, answers: str, summaries: dict[str, str] | None = None) -> list[tuple]:
+    given = dict(re.findall(r'^([0-9a-f]{8})[^\n]*\n[ \t]*parts:[ \t]*([^\n]*)$', answers, re.M))
+    missing = []
+    for row in part_rows(draft, summaries):
+        answer_parts = re.split(r'\(([a-h])\)', given.get(row[0], ''))
+        tried = dict(zip(answer_parts[1::2], answer_parts[2::2]))
+        if any(len(tried.get(letter, '').split()) < ANSWER_WORDS for letter in row[3]):
+            missing.append(row)
+    return missing
+
+
+def parts_report(rows: list[tuple]) -> str:
+    lines = ['Other registered parts to try on each baseline instance (answer each letter on parts:):']
+    for key, where, sentence, others in rows:
+        lines.append(f'{key} [{where}] {sentence}')
+        lines.append('  Other parts: ' + ', '.join(f'({letter})' for letter in others))
+        lines.append('  Registered statement: ' + next(iter(others.values())))
+        lines.append('  parts: ')
+    return '\n'.join(lines)
+
+
 def answers_template(draft, summaries=None):
     domain = {row[0]: row for row in domain_rows(draft, summaries or {})}
     extreme = {row[0] for row in extreme_rows(draft)}
@@ -935,6 +983,8 @@ def answers_template(draft, summaries=None):
     form += ''.join(f'{key} [{where}] {sentence}\n  converse: \n' for key, where, sentence in converse_rows(draft))
     form += ''.join(f'{key} [{where}] {sentence}\n  source: \n' for key, where, sentence in source_rows(draft))
     form += ''.join(f'{key} [{where}] {sentence}\n  decided by: \n' for key, where, sentence in decided_rows(draft))
+    form += ''.join(f'{key} [{where}] {sentence}\n  parts: \n'
+                    for key, where, sentence, _ in part_rows(draft, summaries))
     return form + ''.join(f'{key} [{where}] {sentence}\n  regrouping: \n' for key, where, sentence in regroup_rows(draft))
 
 
@@ -2273,6 +2323,10 @@ def main():
     registry = json.loads(pathlib.Path(args.registry).read_text())
     out, unregistered = report(draft, registry, args.width)
     print(out)
+    summaries = {c['id']: c.get('summary', '') for c in registry['claims']}
+    alternatives = part_rows(draft, summaries)
+    if alternatives:
+        print(parts_report(alternatives))
     print('\n' + converse_report(draft, {c['id']: c['summary'] for c in registry['claims']}, args.width))
     missing = set()
     notebook_text = notebook_file(args.notebook).read_text() if args.notebook else ''
@@ -2343,6 +2397,10 @@ def main():
             if unchecked:
                 print(unchecked_hypotheses_report(unchecked))
                 open_rows = open_rows + unchecked
+            untried_alternatives = untried_parts(draft, answers.read_text(), summaries)
+            if untried_alternatives:
+                print(parts_report(untried_alternatives))
+                open_rows += untried_alternatives
     return 1 if unregistered or missing or open_rows else 0
 
 

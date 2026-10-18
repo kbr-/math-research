@@ -317,7 +317,7 @@ def guidance(body, ft, which=shutil.which, has=installed_header, judge=None):
     notes += judge_notes(*(judge or ()))
     notes += queue_notes(body)
     notes.append('Separate New mathematics from Goal progress in every research/review entry; name a stable '
-                 'data-obligation and data-goal-progress="advanced|unchanged". The scheduled review includes '
+                 'data-obligation and data-goal-progress="advanced|narrowed|unchanged". The scheduled review includes '
                  'the Architecture review in AGENTS.md, using its existing medium reviewer, not another review.')
     notes += ft.progress_warnings(body)
     for route, target in ft.pending_architecture_test(body).items():

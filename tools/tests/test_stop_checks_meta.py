@@ -298,8 +298,26 @@ class UnreviewedLabelTest(HookFixture):
         self.assertIsNone(self.block('**Unreviewed:** ' + reply))
         self.returned('1970-01-01T00:10:00Z')          # 600 s: before the session started at 1000 s
         self.assertIsNotNone(self.block(reply))
+        self.add({'type': 'assistant', 'timestamp': '1970-01-01T00:18:00Z', 'message': {
+            'content': [{'type': 'thinking', 'thinking': reply}]}})
         self.returned('1970-01-01T00:20:00Z')          # 1200 s: after it
         self.assertIsNone(self.block(reply))
+
+    def test_report_does_not_clear_later_mathematics_or_another_paragraph(self) -> None:
+        self.session('mathematics')
+        old = 'The rank of the kernel is nonzero.'
+        self.add({'type': 'assistant', 'timestamp': '1970-01-01T00:18:00Z',
+                  'message': {'content': [{'type': 'text', 'text': old}]}})
+        self.returned('1970-01-01T00:20:00Z')
+        fresh = 'The composed bound on the weighted kernel holds for every source.'
+        self.add({'type': 'assistant', 'timestamp': '1970-01-01T00:21:00Z',
+                  'message': {'content': [{'type': 'thinking', 'thinking': fresh}]}})
+        self.assertIsNone(self.block(old))
+        self.assertIsNotNone(self.block(fresh))
+        self.assertIsNotNone(self.block('**Unreviewed:** ' + old + '\n\n' + fresh))
+        self.assertIsNone(self.block(old + '\n\n**Unreviewed:** ' + fresh))
+        self.returned('1970-01-01T00:22:00Z')
+        self.assertIsNone(self.block(fresh))
 
     def test_no_open_mathematics_session_or_no_mathematics_passes(self):
         reply = 'The rank of the weighted kernel is nonzero, so the bound holds for every source.'

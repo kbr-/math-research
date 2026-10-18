@@ -17,6 +17,18 @@ NOTEBOOK = ('<article id="entry-2026-10-15-a"><p>The builds are built in the fra
 
 
 class RecordScanTest(unittest.TestCase):
+    def test_priority_checks_reuse_the_actual_validators(self) -> None:
+        from unittest.mock import patch
+        ft = scan.finisher()
+        with patch.object(scan, 'finisher', return_value=ft), patch.object(
+                ft, 'registered_status', return_value={'thm:result': 'working_proof'}):
+            checks = scan.checks()
+            raw = (' data-goal-progress="unchanged" data-claims="thm:result">'
+                   '<p><strong>Goal progress.</strong> thm:result was proved. Nothing more.</p>')
+            self.assertIn('understatement check', checks['progress-assessment']('', raw)[0])
+            self.assertEqual(checks['progress-assessment']('', raw.replace('thm:result was proved.',
+                'thm:result leaves the class untouched because it treats only one fixed member.')), [])
+
     def test_a_check_counts_its_matches_per_entry_and_since_a_date(self):
         with tempfile.TemporaryDirectory() as tmp:
             book = Path(tmp) / 'notebook.html'

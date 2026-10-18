@@ -96,6 +96,32 @@ class ConditionTest(unittest.TestCase):
 
 
 class SuiteAfterTest(unittest.TestCase):
+    def test_agents_only_accepts_scope_run_but_mixed_shared_code_requires_suite(self) -> None:
+        import json
+        import os
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            top = Path(tmp)
+            (top / 'tools/tests').mkdir(parents=True)
+            (top / 'tools/hooks').mkdir()
+            (top / 'AGENTS.md').write_text('General rules.\n')
+            (top / 'tools/hooks/guard.py').write_text('x = 1\n')
+            os.utime(top / 'AGENTS.md', (100, 100))
+            os.utime(top / 'tools/hooks/guard.py', (100, 100))
+            self.assertIn('test_agents_scope', cmc.suite_after(['AGENTS.md'], top))
+            stamp = top / 'tools/tests/.module-passes.json'
+            stamp.write_text(json.dumps({'test_agents_scope': {'unix_s': 99}}))
+            self.assertIsNotNone(cmc.suite_after(['AGENTS.md'], top))
+            stamp.write_text(json.dumps({'test_agents_scope': {'unix_s': 101}}))
+            self.assertIsNone(cmc.suite_after(['AGENTS.md', 'notes.md'], top))
+            self.assertIn('whole suite', cmc.suite_after(['AGENTS.md', 'tools/hooks/guard.py'], top))
+            full = top / 'tools/tests/.suite-pass.json'
+            stamp.unlink()
+            full.write_text(json.dumps({'unix_s': 102, 'scope_test_completed': False}))
+            self.assertIsNotNone(cmc.suite_after(['AGENTS.md'], top))
+            full.write_text(json.dumps({'unix_s': 102, 'scope_test_completed': True}))
+            self.assertIsNone(cmc.suite_after(['AGENTS.md', 'tools/hooks/guard.py'], top))
+
     def test_shared_code_needs_a_whole_suite_run_after_its_last_edit(self):
         # 17 October 2026: a hook change was committed after its own module's tests only.
         import json
@@ -112,7 +138,7 @@ class SuiteAfterTest(unittest.TestCase):
             (top / 'tools/by-path.py').write_text('w = 1\n')
             (top / 'tools/loader.py').write_text("spec = load(ROOT / 'tools/by-path.py')\n")
             self.assertEqual(cmc.shared_code(['tools/by-path.py'], top), ['tools/by-path.py'])   # loaded by path
-            self.assertEqual(cmc.shared_code(['AGENTS.md', 'notes.md'], top), ['AGENTS.md'])   # read by a test
+            self.assertEqual(cmc.shared_code(['AGENTS.md', 'notes.md'], top), [])
             self.assertEqual(cmc.shared_code(['tools/hooks/guard.py', 'tools/shared.py', 'tools/alone.py',
                                               'tools/tests/test_alone.py', 'compute.sh'], top),
                              ['tools/hooks/guard.py', 'tools/shared.py', 'compute.sh'])

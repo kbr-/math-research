@@ -63,6 +63,36 @@ def test_report(target):
 
 
 class GoalProgressTest(unittest.TestCase):
+    def test_narrowed_requires_proved_claim_removed_and_remaining_parts(self) -> None:
+        paragraph = ('thm:result removes the bounded support case. <strong>Removed part.</strong> '
+                     'All functions with bounded support are now covered. <strong>Remaining part.</strong> '
+                     'Functions with arbitrary support still require the uniform bound.')
+        FT.validate_progress_assessment('narrowed', paragraph, ['thm:result'], {'thm:result': 'working_proof'})
+        FT.validate_progress_assessment('narrowed', paragraph.replace('thm:result removes', 'thm:result: removes'),
+                                        ['thm:result'], {'thm:result': 'working_proof'})
+        with self.assertRaisesRegex(ValueError, 'must cite'):
+            FT.validate_progress_assessment('narrowed', paragraph.replace('thm:result', 'thm:result:other'),
+                                            ['thm:result'], {'thm:result': 'working_proof'})
+        for broken in (paragraph.replace('<strong>Removed part.</strong>', 'Removed:'),
+                       paragraph.replace('<strong>Remaining part.</strong>', 'Remaining:')):
+            with self.assertRaises(ValueError):
+                FT.validate_progress_assessment('narrowed', broken, ['thm:result'], {'thm:result': 'working_proof'})
+        for status in ('finite_check', 'conjecture'):
+            with self.assertRaisesRegex(ValueError, 'Narrowed Goal progress'):
+                FT.validate_progress_assessment('narrowed', paragraph, ['thm:result'], {'thm:result': status})
+
+    def test_unchanged_with_proof_explains_untouched_part_and_reason(self) -> None:
+        good = ('thm:result bounds one function; the uniform class remains open because '
+                'its supremum cannot be interchanged with expectation.')
+        FT.validate_progress_assessment('unchanged', good, ['thm:result'], {'thm:result': 'working_proof'})
+        for bad in ('thm:result was proved; goal progress unchanged.',
+                    'thm:result leaves the uniform class untouched.',
+                    'thm:result matters because it gives a bound.'):
+            with self.assertRaisesRegex(ValueError, 'understatement'):
+                FT.validate_progress_assessment('unchanged', bad, ['thm:result'], {'thm:result': 'working_proof'})
+        FT.validate_progress_assessment('unchanged', 'A finite check only.', ['check:result'],
+                                        {'check:result': 'finite_check'})
+
     def test_separate_reports_and_stable_obligation_required(self):
         validate(notebook(article('a')))
         for body, message in [

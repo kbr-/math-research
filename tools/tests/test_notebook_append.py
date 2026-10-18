@@ -264,6 +264,25 @@ SMALLEST = ('<p><strong>Smallest case.</strong> Width two. Nontrivial because: t
 
 
 class NotebookAppendTests(unittest.TestCase):
+    def test_progress_relabel_preserves_original_and_rejects_stale_or_unproved_changes(self) -> None:
+        source = ('<article id="entry-a" data-goal-progress="unchanged" data-claims="thm:result">'
+                  '<p><strong>Goal progress.</strong> Unchanged: only the bounded case was proved.</p></article>')
+        change = {'anchor': 'entry-a', 'from': 'unchanged', 'to': 'narrowed',
+                  'assessment': 'Narrowed by thm:result at the stated parameters.',
+                  'removed': 'All bounded members of the specified class.',
+                  'remaining': 'The unbounded members still require a uniform bound.'}
+        statuses = {'thm:result': 'working_proof'}
+        result = tool.relabel_progress(source, [change], statuses)
+        self.assertIn('data-goal-progress="narrowed"', result)
+        self.assertIn('Original goal-progress assessment', result)
+        self.assertIn('Unchanged: only the bounded case was proved.', result)
+        with self.assertRaisesRegex(ValueError, 'source state differs'):
+            tool.relabel_progress(result, [change], statuses)
+        with self.assertRaisesRegex(ValueError, 'Narrowed Goal progress'):
+            tool.relabel_progress(source, [change], {'thm:result': 'finite_check'})
+        with self.assertRaisesRegex(ValueError, 'Repeated relabel anchor'):
+            tool.relabel_progress(source, [change, change], statuses)
+
     def test_first_article_follows_record_heading_and_introduction(self):
         source = ('<section id="research-record">\n<h2>Research record</h2>\n'
                   '<p>Record introduction.</p>\n</section>\n<footer></footer>')
