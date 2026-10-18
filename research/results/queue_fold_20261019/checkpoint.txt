@@ -1,0 +1,22 @@
+The shared notebook template displays the first five top-level queue items, with nested
+sub-ideas retained under their parent. A native disclosure styled as a button shows and
+hides the remaining items. Ordered-list numbering continues at six. Queues of five or fewer
+items have no disclosure. The source notebook and queue data are unchanged.
+
+Browser verification exercises the fifth/sixth boundary, nested items, click to expand,
+Enter to collapse, notebook search opening a hidden item, a fresh page loaded at a hidden
+item's fragment, and the short-queue case. The no-queue published-client fixture still runs.
+
+Targeted controls: changing slice(5) to slice(4) fails the top-level item-count assertion;
+setting the disclosure open initially fails the sixth item's hidden assertion. These are
+intentional failures of scratch templates, not production failures. JavaScript has no Python
+mutmut run. The real-browser test is registered by the existing browser-case discovery.
+
+Prevention: tests/test_notebook_queue.cjs covers the boundary and interaction behavior in a
+real browser, including hidden results remaining reachable through existing navigation.
+
+Meta: use the shared template and native disclosure behavior, retaining the source data and
+the existing search mechanism that already opens closed details.
+
+Timing begins after the initial source lookup. Final checkpoint commands follow the exported
+snapshot. The raw session archive stays local where command lines contain private scratch paths.

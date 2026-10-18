@@ -53,6 +53,7 @@ async function check(changed) {
       },
       querySelector(selector) {
         if (selector === '.scroll-nav') return navigation;
+        if (selector === '#lead-queue > ol, #lead-queue > ul') return null; // This fixture has no queue.
         assert.equal(selector, 'main'); return main;
       },
       documentElement: { scrollHeight: 1500 },

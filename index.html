@@ -36,6 +36,11 @@
     a { color: var(--accent); text-underline-offset: 3px; }
     details { font-size: 15px; color: var(--muted); margin-top: 26px; }
     summary { cursor: pointer; font-family: system-ui, sans-serif; }
+    .queue-more { color: inherit; font: inherit; margin-top: 16px; }
+    .queue-more > summary { display: inline-block; padding: 6px 12px; border: 1px solid #c8d8ce; border-radius: 5px; color: var(--accent); background: var(--paper); font: 14px/1.5 system-ui, sans-serif; list-style: none; }
+    .queue-more > summary::-webkit-details-marker { display: none; }
+    .queue-more > summary:hover { background: #eef5ef; }
+    .queue-more > summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
     pre { overflow-x: auto; padding: 16px; background: #f1f3ee; border-radius: 4px; line-height: 1.6; }
     code { font: .85em/1.5 ui-monospace, monospace; }
     .research-entry + .research-entry { margin-top: 36px; padding-top: 28px; border-top: 1px solid #e2e5dd; }
@@ -156,6 +161,28 @@
     <ul id="search-results"></ul>
     <div class="search-controls"><button id="search-previous" type="button" disabled>Previous results</button><button id="search-next" type="button" disabled>Next results</button></div>
   </aside>
+  <script id="queue-disclosure">
+    (() => {
+      const list = document.querySelector('#lead-queue > ol, #lead-queue > ul');
+      if (!list) return;
+      const remaining = [...list.children].filter(item => item.matches('li')).slice(5);
+      if (!remaining.length) return;
+      const disclosure = document.createElement('details');
+      disclosure.className = 'queue-more';
+      const toggle = document.createElement('summary');
+      const rest = list.cloneNode(false);
+      rest.removeAttribute('id');
+      if (rest.tagName === 'OL') rest.start = list.start + 5;
+      rest.append(...remaining);
+      const label = () => {
+        toggle.textContent = disclosure.open ? 'Hide remaining items' : `Show remaining ${remaining.length} items`;
+      };
+      label();
+      disclosure.addEventListener('toggle', label);
+      disclosure.append(toggle, rest);
+      list.after(disclosure);
+    })();
+  </script>
   <script id="viewport-math">
     // Preserve only blocks that MathJax actually changes. Search builds the rest
     // of its text index on demand, without reading layout or typesetting anything.
