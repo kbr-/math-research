@@ -101,7 +101,7 @@ def entry_text(draft):
 
 
 SHORTEST = re.compile(r'<p><strong>Shortest route\.</strong>(.*?)</p>', re.S)
-NOT_TAKEN = re.compile(r'\bNot taken\b[:,]?\s+((?:\S+\s+){7,}\S+)', re.I)
+NOT_TAKEN = re.compile(r'\bNot taken\b[:,.;]?\s+((?:\S+\s+){7,}\S+)', re.I)
 
 
 def shortest_paragraph(draft):

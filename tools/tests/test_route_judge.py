@@ -39,6 +39,13 @@ class RouteJudgeTest(unittest.TestCase):
         taken = said + ' Not taken because its lemma is needed first by the construction itself.'
         self.assertIsNone(route_judge.refusal(DRAFT.replace('SAID', taken), NOTEBOOK, asker('detour'),
                                               io.StringIO(), every=1))
+        # 18 October 2026: "Not taken." opening a sentence of reasons was refused while "Not taken:" passed.
+        stopped = 'Not taken. The direct route is the ramp, which the next entry builds before any other step.'
+        self.assertIsNone(route_judge.refusal(DRAFT.replace('SAID', stopped), NOTEBOOK, asker('detour'),
+                                              io.StringIO(), every=1))
+        bare = 'Not taken. Later.'
+        self.assertIn('detour', route_judge.refusal(DRAFT.replace('SAID', said + ' ' + bare), NOTEBOOK,
+                                                    asker('detour'), io.StringIO(), every=1))
 
     def test_the_two_research_entries_before_the_draft_reach_the_judge(self):
         # the user, 17 October 2026: "give it the last 3 entries then"

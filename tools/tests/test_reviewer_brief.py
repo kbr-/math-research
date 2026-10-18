@@ -348,6 +348,24 @@ class MissingBriefFileTest(unittest.TestCase):
                              '</ul><p><strong>Verification gate.</strong> [after review]</p></article>')
             self.assertEqual(hook.premature_closures(prompt), [])
 
+    def test_a_commit_message_missing_a_declared_claim_is_refused(self):
+        # 18 October 2026: a corrected draft declared ex:two-level-chain-failures and went back to its reviewer
+        # beside the first draft's commit message, which named only the lemma.
+        with tempfile.TemporaryDirectory() as tmp:
+            draft = Path(tmp) / 'entry.html'
+            commit = Path(tmp) / 'commit.txt'
+            draft.write_text('<article id="entry-x" data-kind="research" data-claims="lem:a-b ex:c-d"></article>')
+            commit.write_text('Thread: lem:a-b, a lemma.\n')
+            prompt = f'Second pass on {draft}.'
+            self.assertEqual(hook.stale_commits(prompt), [(str(draft), ['ex:c-d'])])
+            commit.write_text('Thread: lem:a-b, a lemma; ex:c-d, a finite check.\n')
+            self.assertEqual(hook.stale_commits(prompt), [])
+            draft.write_text('<article id="entry-x" data-kind="research" data-claims="none"></article>')
+            self.assertEqual(hook.stale_commits(prompt), [])
+            commit.unlink()
+            draft.write_text('<article id="entry-x" data-claims="lem:a-b"></article>')
+            self.assertEqual(hook.stale_commits(prompt), [])
+
     def test_record_claims_unread_or_uncompared_are_refused_before_the_review(self):
         # 18 October 2026: the thin-shell entry named three claims it had not read, and left two resembling claims out
         # of its Record comparison; the finisher found both after four review passes.

@@ -359,6 +359,33 @@ def premature_closures(text):
             if CLOSING_FOLLOW_UP.search(body) and gate_unfilled(body)]
 
 
+DECLARED = re.compile(r'<article\b[^>]*\sdata-claims="([^"]*)"')
+
+
+def stale_commits(text):
+    """(draft, IDs) for drafts declaring claims (data-claims) that the drafted commit message beside them,
+    commit.txt in the draft's folder, does not name: on 18 October 2026 a corrected draft added the finite check
+    ex:two-level-chain-failures and went back to its reviewer with the first draft's commit message, which still
+    gave the withdrawn stop reason and named no such claim. A draft without a commit.txt beside it is not judged
+    (the Agent path's commit-message rule covers a first brief); a stale docstring is not caught."""
+    found = []
+    for path in named_drafts(text):
+        commit = Path(path).parent / 'commit.txt'
+        declared = DECLARED.search(Path(path).read_text(errors='replace'))
+        if not declared or not commit.is_file():
+            continue
+        message = commit.read_text(errors='replace')
+        missing = [claim for claim in declared.group(1).split() if claim != 'none' and claim not in message]
+        if missing:
+            found.append((path, missing))
+    return found
+
+
+COMMIT_REASON = ('the drafted commit message beside the draft does not name the claims the draft declares ({}): '
+                 'rewrite commit.txt from the corrected draft before it goes back to the reviewer (AGENTS.md: a '
+                 'summary is rewritten with what it summarizes)')
+
+
 CLOSURE_REASON = ('the draft {} closes its item (Follow-up Closed or Developed) while its Verification gate is still '
                   'a placeholder: draft the Follow-up as Continuing and change it after the review has read the '
                   'readings and the owed attempt (PROMPTS.md, Spin)')
@@ -510,6 +537,9 @@ def refusal(payload, tools=TOOLS, log=None, now=None):
         closed = premature_closures(message)
         if closed:
             return CLOSURE_REASON.format(', '.join(closed))
+        stale_commit = stale_commits(message)
+        if stale_commit:
+            return COMMIT_REASON.format('; '.join(f'{d}: {", ".join(c)}' for d, c in stale_commit))
         absent = missing_statements(message)
         if absent:
             return STATEMENTS_REASON.format('; '.join(f'{d}: {", ".join(c)}' for d, c in absent))
@@ -540,6 +570,9 @@ def refusal(payload, tools=TOOLS, log=None, now=None):
     closed = premature_closures(prompt)
     if closed:
         return CLOSURE_REASON.format(', '.join(closed))
+    stale_commit = stale_commits(prompt)
+    if stale_commit:
+        return COMMIT_REASON.format('; '.join(f'{d}: {", ".join(c)}' for d, c in stale_commit))
     absent = missing_statements(prompt)
     if absent:
         return STATEMENTS_REASON.format('; '.join(f'{d}: {", ".join(c)}' for d, c in absent))

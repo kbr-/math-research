@@ -120,7 +120,11 @@ in another; wait on a job's own completion notice.
 - A run that repeats or extends a recorded run (another size, another threshold) starts from that
   run's recorded command and flags, read from its session record under
   `research/provenance/session-records/`, and changes only what the new run changes (17 October
-  2026: a launch written from memory lacked the kernel reason the earlier run had recorded).
+  2026: a launch written from memory lacked the kernel reason the earlier run had recorded). A
+  script that rebuilds a recorded run's inputs (its samples, seeds, graphs) takes their construction
+  from that run's code, its seeding included, and asserts the rebuilt inputs against the run's saved
+  figures on every code path that uses them (18 October 2026: a script seeded samples by the seed
+  alone while the saved run used a formula, and its check sat on a path that never finished).
 - List the run's stages before launch and remove every known waste, even when it does not affect the
   result. Design from the question and the output its conclusion needs, not the nearest driver:
   remove unrelated outputs and skip parameters that proved results or archived runs already settle.

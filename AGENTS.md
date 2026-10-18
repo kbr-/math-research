@@ -370,7 +370,10 @@ AGENTS.md"):
 - Before calling a case hard, handing a step to someone else or asking a question, take the cheapest
   step on the instance yourself: a union bound over its family's members, the default the rules
   already give, the result of the edit just made (17 October 2026: a two-block case called deep, a
-  question the Spin rules answered, a commit sent before its edit's result).
+  question the Spin rules answered, a commit sent before its edit's result). So before an exact
+  computation is declined as too costly, the necessary conditions the entry's own statements give on
+  it (a criterion's single terms, a relaxation) are computed (18 October 2026: an exact chain test
+  was declined while its criterion's two terms, one matching each, decided all nine samples).
 - A sum compared with a budget or a threshold is compared in the quantity the bound it is to escape
   prices: by its tail where that bound rests on a tail (a lower tail of a sum of independent pushes,
   an exceedance), not by its typical size (17 October 2026: a sum of independent pushes was called

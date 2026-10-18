@@ -3,8 +3,14 @@
 Outcome (18 October 2026): the controls pass (the gadget gives e = 2 > d = 1, equal levels e = 0), and no sample
 finished: scipy's min_weight_full_bipartite_matching did not solve the first 4096-point sample in 110 s, twice,
 nor with tie-breaking jitter in 100 s (run1-unfinished.txt, run2-unfinished.txt, profile-jittered-unfinished.txt;
-profile.py times the steps before the solver at under 0.1 s). The run was not continued: an exact answer needs a
-compiled min-cost-flow kernel, and it would bear on L = 1/2 only, below the admissible constants.
+profile.py times the steps before the solver at under 0.1 s). Superseded by the --terms run below, whose necessary
+terms decide every saved sample in seconds.
+
+Outcome of --terms (18 October 2026, necessary_terms.json, with the saved run's seeding and the check of each
+sample's m_1, m_2 against it): the chain is refuted in nine of nine saved samples, r*_Y(T_Y) < d in each and the
+smaller term 0.44 to 0.69 of d; the control, instance (b), gives rX = 1, rY = 2, nuD = 2. An earlier version
+seeded by the seed alone, without that check, computed nine other samples of the same law, all refuted
+(necessary_terms_fresh_seeds.json; their seeds are shared across sizes, so they are not independent).
 
 With --terms (written before that run, 18 October 2026): lem:two-level-chain-criterion's necessary terms F = E'
 and F = empty, r*_X(T_X) >= d and r*_Y(T_Y) >= d, and its Konig relaxation nuD >= d, on the nine saved samples
@@ -40,7 +46,7 @@ only the routine (the dummy construction, the cost offsets, the sample's reconst
 Refuted by: a mismatch between the two nu(G_2) values, or e != 0 when G_1 = G_2.
 Possible because: a wrong dummy count or a cost read with the wrong offset gives either.
 Baseline: the second test of lem:completion-failure-certificate, nu(G_2[D_X u D_Y]) >= d, necessary for the chain;
-it decides the seed-1 sample at N = 16384 and leaves the other eight open, which this run decides.
+it decides the seed-1 sample at N = 16384 and leaves the other eight open, which the --terms run decides.
 Record checked: lem:completion-failure-certificate, thm:universal-completion-criterion (a) (co-basis pairs) and
 ex:box-completion-failures (the same samples) were read for whether together they decide the outcome; they decide
 only the seed-1 sample.
