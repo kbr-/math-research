@@ -1,9 +1,13 @@
+import importlib.util
 import unittest
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-FT = SourceFileLoader('finish_turn', str(ROOT / 'tools/finish-turn.py')).load_module()
+loader = SourceFileLoader('finish_turn', str(ROOT / 'tools/finish-turn.py'))
+spec = importlib.util.spec_from_loader(loader.name, loader)
+FT = importlib.util.module_from_spec(spec)
+loader.exec_module(FT)
 
 
 class NextCycleGuidanceTest(unittest.TestCase):

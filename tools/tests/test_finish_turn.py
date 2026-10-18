@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Real finalizer/timing/archive integration with a fixture-only job launcher."""
 import json
+import importlib.util
 import os
 from pathlib import Path
 import shutil
@@ -47,7 +48,10 @@ def reporting(tags):
 
 from importlib.machinery import SourceFileLoader
 
-FT = SourceFileLoader('finish_turn', str(Path(__file__).resolve().parents[2] / 'tools/finish-turn.py')).load_module()
+loader = SourceFileLoader('finish_turn', str(Path(__file__).resolve().parents[2] / 'tools/finish-turn.py'))
+spec = importlib.util.spec_from_loader(loader.name, loader)
+FT = importlib.util.module_from_spec(spec)
+loader.exec_module(FT)
 
 
 class StaleReviewHint(unittest.TestCase):

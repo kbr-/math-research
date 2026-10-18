@@ -1,11 +1,15 @@
 """Goal-progress declarations, scheduled architecture reviews, and follow-through."""
+import importlib.util
 import unittest
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
-FT = SourceFileLoader('progress_finisher', str(ROOT / 'tools/finish-turn.py')).load_module()
+loader = SourceFileLoader('progress_finisher', str(ROOT / 'tools/finish-turn.py'))
+spec = importlib.util.spec_from_loader(loader.name, loader)
+FT = importlib.util.module_from_spec(spec)
+loader.exec_module(FT)
 
 REPORT = ('<p><strong>New mathematics.</strong> A scoped result was checked; the uniform implication '
           'remains open.</p><p><strong>Goal progress.</strong> The arbitrary-family implication remains '

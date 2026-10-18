@@ -459,7 +459,10 @@ class ModelUseExport(unittest.TestCase):
         self.assertIn('Share of the weekly limit not measured: USAGE_LOG_DIR is not set', fragment)
         self.assertIn('its share of the weekly limit not: USAGE_LOG_DIR is not set', stderr)
         # notebook-excerpt's pattern for a timing report still spans the whole div, the second table included.
-        excerpt = importlib.machinery.SourceFileLoader('excerpt', str(ROOT / 'tools/notebook-excerpt.py')).load_module()
+        loader = importlib.machinery.SourceFileLoader('excerpt', str(ROOT / 'tools/notebook-excerpt.py'))
+        spec = importlib.util.spec_from_loader(loader.name, loader)
+        excerpt = importlib.util.module_from_spec(spec)
+        loader.exec_module(excerpt)
         self.assertEqual(excerpt.TIMING.search(fragment).group(0), fragment.strip())
 
     def test_a_failed_measurement_is_reported_and_the_export_goes_on(self):

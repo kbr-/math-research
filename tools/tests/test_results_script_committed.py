@@ -2,11 +2,15 @@
 import subprocess
 import tempfile
 import unittest
+import importlib.util
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-CS = SourceFileLoader('compute_sh', str(ROOT / 'compute.sh')).load_module()
+loader = SourceFileLoader('compute_sh', str(ROOT / 'compute.sh'))
+spec = importlib.util.spec_from_loader(loader.name, loader)
+CS = importlib.util.module_from_spec(spec)
+loader.exec_module(CS)
 
 
 def git(folder, *args):

@@ -239,7 +239,14 @@ def suite_after(paths, top):
 def compute_module(top):
     """compute.sh loaded as a module, for its script checks (its main runs only under __main__)."""
     from importlib.machinery import SourceFileLoader
-    return SourceFileLoader('compute_checks', str(top / 'compute.sh')).load_module()
+    from importlib.util import module_from_spec, spec_from_loader
+    loader = SourceFileLoader('compute_checks', str(top / 'compute.sh'))
+    spec = spec_from_loader(loader.name, loader)
+    if spec is None:
+        raise ImportError(f'Cannot load {top / "compute.sh"}')
+    module = module_from_spec(spec)
+    loader.exec_module(module)
+    return module
 
 
 def unlabelled_scripts(paths, top, compute=None):

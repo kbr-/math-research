@@ -1,4 +1,5 @@
 """The finisher refuses a Record paragraph naming a claim whose statement the session did not print."""
+import importlib.util
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
 import sys
@@ -10,7 +11,10 @@ TOOLS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TOOLS))
 import claim_reads  # noqa: E402
 
-FT = SourceFileLoader('finish_turn_claim_reads', str(TOOLS / 'finish-turn.py')).load_module()
+loader = SourceFileLoader('finish_turn_claim_reads', str(TOOLS / 'finish-turn.py'))
+spec = importlib.util.spec_from_loader(loader.name, loader)
+FT = importlib.util.module_from_spec(spec)
+loader.exec_module(FT)
 
 # The sentence that exposed the gap, 17 October 2026, as the draft had it.
 EXPOSED = ('<article id="entry-x" data-claims="lem:extension-field-quotients"><p><strong>Follow-up.</strong> '

@@ -1174,7 +1174,14 @@ def test_runner(command):
 def cases_plea():
     """The user's plea against running more cases, kept once in tools/turn_guidance.py."""
     from importlib.machinery import SourceFileLoader
-    return SourceFileLoader('turn_guidance', str(ROOT / 'tools/turn_guidance.py')).load_module().CASES_PLEA
+    from importlib.util import module_from_spec, spec_from_loader
+    loader = SourceFileLoader('turn_guidance', str(ROOT / 'tools/turn_guidance.py'))
+    spec = spec_from_loader(loader.name, loader)
+    if spec is None:
+        raise ImportError(f'Cannot load {ROOT / "tools/turn_guidance.py"}')
+    module = module_from_spec(spec)
+    loader.exec_module(module)
+    return module.CASES_PLEA
 
 
 def series_error(events, command, timeout):
