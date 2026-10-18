@@ -7,7 +7,7 @@ from urllib.parse import urljoin
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from server import snapshot
+from server import render
 from tools.build_pages import build, OUTPUT_FILES
 
 SITE = 'https://example.github.io/math-research/'
@@ -51,10 +51,16 @@ class PagesBuild(unittest.TestCase):
         (self.root / 'notebook.html').write_text('<h1>New result</h1>')
         self.assertNotEqual(build(self.out, SITE, root=self.root), first)
 
-    def test_local_snapshot_keeps_live_configuration(self):
-        template, notebook, revision = snapshot(self.root)
-        self.assertIn("mode: 'live', revisionUrl: '/revision', pollMs: 1000", template)
-        self.assertIn('Example', notebook)
+    def test_local_render_keeps_live_transport_and_published_content(self):
+        page, notebook, revision = render(self.root, site_url=SITE)
+        build(self.out, SITE, root=self.root)
+        self.assertIn('<title>Main research notebook · Noemesis</title>', page)
+        self.assertIn('<meta name="citation_title" content="Main research notebook">', page)
+        self.assertIn('id="cite-this-notebook"', page)
+        self.assertEqual(notebook, (self.out / 'notebook-source.html').read_text())
+        self.assertIn('"mode": "live"', page)
+        self.assertIn('"revisionUrl": "./revision"', page)
+        self.assertIn('"pollMs": 1000', page)
         self.assertEqual(len(revision), 64)
 
     def test_update_url_works_under_project_subpath(self):

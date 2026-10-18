@@ -169,7 +169,9 @@ python3 server.py
 ```
 
 Open **http://localhost:8000** (`--port 8001` if it is occupied). MathJax loads from a CDN, so the
-browser needs internet access. When the notebook's source changes, the page offers a reload.
+browser needs internet access. The local server renders the same title, attribution, citation and
+license metadata as the published site, while retaining its local revision URL and click-to-reload
+behavior. When the notebook's source changes, the page offers a reload.
 
 Mathematics is rendered near the viewport only, and off-screen entries defer layout while staying
 available to browser search and anchor links; see the [performance

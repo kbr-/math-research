@@ -2,7 +2,6 @@
 """Serve the Noemesis notebook on localhost using only the Python standard library."""
 
 import argparse
-import hashlib
 import json
 import sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -11,16 +10,16 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0,str(ROOT/"tools"))
-from notebooks import catalogue
-from notebook_site import source, decorate, manifest
+from notebooks import PUBLIC, catalogue
+from notebook_site import manifest, snapshot
+from build_pages import SOURCE_URL, page
+
+LIVE_SETTINGS = {'mode': 'live', 'revisionUrl': './revision', 'pollMs': 1000}
 
 
-def snapshot(root=ROOT, notebook_name="main"):
-    template = (root / "index.html").read_text(encoding="utf-8")
-    template = decorate(template,root,notebook_name)
-    notebook = source(root,notebook_name)
-    revision = hashlib.sha256(json.dumps([template, notebook]).encode()).hexdigest()
-    return template, notebook, revision
+def render(root=ROOT, notebook_name="main", site_url=PUBLIC):
+    """Render the published page content with localhost's live-reload transport settings."""
+    return page(root, SOURCE_URL, notebook_name, site_url, LIVE_SETTINGS)
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -40,14 +39,13 @@ class Handler(BaseHTTPRequestHandler):
             elif name is None:
                 self.send_error(404);return
             else:
-                template,notebook,revision=snapshot(ROOT,name)
+                rendered,notebook,revision=render(ROOT,name)
                 if leaf=='revision':
                     body=json.dumps({'revision':revision}).encode();content_type='application/json'
                 elif leaf=='notebook-source.html':
                     body=notebook.encode();content_type='text/html; charset=utf-8'
                 else:
-                    template=template.replace("revisionUrl: '/revision'", "revisionUrl: './revision'")
-                    body=template.replace('__REVISION__',revision).replace('<!-- NOTEBOOK -->',notebook).encode()
+                    body=rendered.encode()
                     content_type='text/html; charset=utf-8'
         except (OSError,UnicodeError,ValueError):
             self.send_error(503,'Notebook is being saved or has invalid registration');return

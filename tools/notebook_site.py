@@ -1,9 +1,13 @@
 """Shared navigation and public source payloads; never expose arbitrary repository files."""
 # SPDX-License-Identifier: MIT
+import hashlib
 import html
+import json
 import posixpath
 import re
-from notebooks import catalogue, selected, PUBLIC
+from pathlib import Path
+
+from notebooks import ROOT, catalogue, selected, PUBLIC
 from notebook_math import protect_math
 
 
@@ -41,3 +45,13 @@ def decorate(template,root,name):
     return template.replace('<!-- THREAD SETTINGS -->',
         '<script>window.notebookThread = '+__import__('json').dumps(dict(name=name,title=item['title'],
          catalogue=relative('notebooks.json',item['route'])),ensure_ascii=True).replace('<','\\u003c')+';</script>')
+
+
+def snapshot(root=ROOT, notebook_name="main"):
+    """Return the decorated template, public notebook source, and their raw-source revision."""
+    root = Path(root)
+    template = (root / "index.html").read_text(encoding="utf-8")
+    template = decorate(template, root, notebook_name)
+    notebook = source(root, notebook_name)
+    revision = hashlib.sha256(json.dumps([template, notebook]).encode()).hexdigest()
+    return template, notebook, revision

@@ -11,9 +11,8 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from server import snapshot
 from notebooks import catalogue
-from notebook_site import manifest
+from notebook_site import manifest, snapshot
 from notebook_math import strip_tags_tight
 
 SOURCE_URL = 'https://github.com/kbr-/math-research'
@@ -140,7 +139,7 @@ def attribute(notebook, author, title, url):
     return cite_entries(notebook, author, title, url)
 
 
-def page(root, source_url, notebook_name, site_url):
+def page(root, source_url, notebook_name, site_url, settings=None):
     root = Path(root)
     if urlsplit(source_url).scheme != 'https':
         raise ValueError('Source URL must use HTTPS')
@@ -152,7 +151,7 @@ def page(root, source_url, notebook_name, site_url):
     software_license = (root / 'LICENSES/MIT.txt').read_text(encoding='utf-8').strip()
     if '--' in software_license:
         raise ValueError('License text cannot be embedded in an HTML comment unchanged')
-    settings = {'mode': 'published', 'revisionUrl': './revision.json', 'pollMs': 30000}
+    settings = dict(settings or {'mode': 'published', 'revisionUrl': './revision.json', 'pollMs': 30000})
     configuration = json.dumps(settings, sort_keys=True)
     revision = hashlib.sha256(source_revision.encode() + configuration.encode()
                               + source_url.encode() + site_url.encode() + author.encode()

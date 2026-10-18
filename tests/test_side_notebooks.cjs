@@ -10,7 +10,7 @@ const {spawn, execFile} = require('node:child_process');
 const {promisify} = require('node:util');
 const {main, notebook} = require('./browser_support.cjs');
 
-const ENTRIES = 40;
+const ENTRIES = 31; // One more than the 30-result page, so pagination remains exercised.
 
 // A repository with a small main notebook and two side notebooks, each with ENTRIES matching entries.
 async function repository(root, site) {
@@ -23,7 +23,7 @@ from pathlib import Path
 root = Path(sys.argv[1]); repo = Path.cwd(); sys.path.insert(0, str(repo / 'tools'))
 from branch import create, SECTIONS
 for name in ['index.html', 'server.py', 'LICENSES/MIT.txt', 'CITATION.cff', 'research/context-budgets.json',
-             'tools/notebooks.py', 'tools/notebook_site.py', 'tools/notebook_math.py']:
+             'tools/notebooks.py', 'tools/notebook_site.py', 'tools/notebook_math.py', 'tools/build_pages.py']:
     p = root / name; p.parent.mkdir(parents=True, exist_ok=True); shutil.copyfile(repo / name, p)
 (root / 'main-notebook.html').rename(root / 'notebook.html')
 context = {k: '<p>Initial context.</p>' for k in SECTIONS}
@@ -32,7 +32,7 @@ context['remaining-route'] = '<li data-route-item="side-test">Test obligation</l
 for name in ['alpha', 'beta']:
     create(name, name.title(), context, root)
     p = root / 'research/branches' / name / 'notebook.html'
-    entries = ''.join(f'<article id="{name}-{i}"><h3>Entry {i}</h3><p>\\\\(\\\\operatorname{{sideprobe}} x\\\\) '
+    entries = ''.join(f'<article id="entry-{name}-{i}"><h3>Entry {i}</h3><p>\\\\(\\\\operatorname{{sideprobe}} x\\\\) '
                       f'{name} unique-target</p></article>' for i in range(${ENTRIES}))
     s = p.read_text(); n = s.rfind('</section>'); p.write_text(s[:n] + entries + s[n:])
 if sys.argv[2] == 'static':
@@ -95,7 +95,13 @@ const sideNotebooks = mode => async browser => {
     assert.equal(await page.locator('#math-angles [data-mml-node="merror"]').count(), 0);
     const payload = await page.request.get(server.url + 'notebook-source.html');
     assert.equal(payload.status(), 200);
-    assert.ok((await payload.text()).includes(String.raw`\(P_{&lt;a}&gt;0\)`));
+    const payloadText = await payload.text();
+    assert.ok(payloadText.includes(String.raw`\(P_{&lt;a}&gt;0\)`));
+    assert.ok(payloadText.includes('id="cite-this-notebook"'), `${mode}: source has notebook citation`);
+    assert.ok(payloadText.includes('class="entry-cite"'), `${mode}: source has entry citations`);
+    assert.equal(await page.locator('#cite-this-notebook').count(), 1, `${mode}: page has notebook citation`);
+    assert.equal(await page.locator('meta[name="citation_title"]').getAttribute('content'),
+      'Main research notebook', `${mode}: page has citation metadata`);
     assert.equal(otherNotebooks(), 0, `${mode}: no other notebooks fetched on startup`);
     assert.equal(await page.locator('#search-scope').inputValue(), 'current');
     await page.locator('#search-open').click();
@@ -106,18 +112,16 @@ const sideNotebooks = mode => async browser => {
     await page.locator('#search-scope').selectOption('all');
     await page.waitForFunction(() => document.getElementById('search-status').dataset.state === 'ready');
     assert.match(await page.locator('#search-status').textContent(), new RegExp(`${2 * ENTRIES} matching`));
-    if (mode === 'static') {
-      // Every published page carries a citation block; search finds notebook content, not citations.
-      assert.ok(await page.locator('#cite-this-notebook').count() === 1, 'static: the page has its citation block');
-      await page.locator('#search-query').fill('requires attribution');
-      await page.waitForFunction(() => document.getElementById('search-status').dataset.state === 'ready');
-      assert.match(await page.locator('#search-status').textContent(), /No matching/);
-      await page.locator('#search-query').fill('sideprobe');
-      await page.waitForFunction(() => document.getElementById('search-status').dataset.state === 'ready');
-    }
+    // Both renderers carry citations; search finds notebook content, not generated citation text.
+    await page.locator('#search-query').fill('requires attribution');
+    await page.waitForFunction(() => document.getElementById('search-status').dataset.state === 'ready');
+    assert.match(await page.locator('#search-status').textContent(), /No matching/);
+    await page.locator('#search-query').fill('sideprobe');
+    await page.waitForFunction(() => document.getElementById('search-status').dataset.state === 'ready');
     await page.locator('#search-results button').first().click();
-    await page.waitForURL('**/branches/alpha/#alpha-0');
+    await page.waitForURL('**/branches/alpha/#entry-alpha-0');
     assert.match(await page.locator('.thread-navigation').textContent(), /Alpha/);
+    assert.equal(await page.locator('.entry-cite').count(), ENTRIES, `${mode}: every entry is cited`);
     if (mode === 'live') {
       const revision = await page.request.get(server.url + 'branches/alpha/revision');
       assert.equal(revision.status(), 200);
