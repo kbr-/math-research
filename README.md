@@ -244,7 +244,7 @@ Execute the Formalize prompt in ./PROMPTS.md against claim lem:mp-telescoping.
 
 ## Computation
 
-Python 3.10+ is required. The notebook server, resource controller and timing tools use only the
+Python 3.15+ is required. The notebook server, resource controller and timing tools use only the
 standard library; the browser tests need Node with Playwright, and the Codex runtime client needs
 `websockets`. [requirements-research.txt](requirements-research.txt) records the numerical libraries
 used. An agent installs nothing without approval.
