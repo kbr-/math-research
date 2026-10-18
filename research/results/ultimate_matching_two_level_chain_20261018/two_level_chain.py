@@ -130,7 +130,9 @@ def controls():
 
 def run_terms(N, L, seed):
     """The necessary terms at levels 1 and 2 of a saved sample."""
-    rng = np.random.default_rng(seed)
+    # box_completion.py's main seeds each sample with 1000 N + 10 int(2L) + seed; a first run used seed alone
+    # and computed nine other samples of the same law (necessary_terms_fresh_seeds.json).
+    rng = np.random.default_rng(1000 * N + 10 * int(2 * L) + seed)
     X = rng.uniform(0, 1, (N, 2))
     g = int(round(math.sqrt(N)))
     cells = np.stack(np.meshgrid(np.arange(g), np.arange(g), indexing='ij'), -1).reshape(-1, 2)
@@ -146,7 +148,7 @@ def run_terms(N, L, seed):
 
 
 def run(N, L, seed):
-    rng = np.random.default_rng(seed)             # the same draws, in the same order, as box_completion.sample
+    rng = np.random.default_rng(1000 * N + 10 * int(2 * L) + seed)   # box_completion.py's seeding of sample
     X = rng.uniform(0, 1, (N, 2))
     g = int(round(math.sqrt(N)))
     cells = np.stack(np.meshgrid(np.arange(g), np.arange(g), indexing='ij'), -1).reshape(-1, 2)
@@ -166,21 +168,23 @@ def main():
     args = ap.parse_args()
     result = dict(controls=controls(), samples=[])
     print(json.dumps(result['controls']), flush=True)
+    saved = {}
+    for f in ('box_completion_4096.json', 'box_completion.json'):
+        for s in json.loads((BOX.parent / f).read_text())['samples']:
+            if s['L'] == 0.5 and len(s['levels']) >= 2:
+                saved[(s['N'], s['seed'])] = (s['levels'][0]['m'], s['levels'][1]['m'])
     if args.terms:
         for N in args.sizes:
             for seed in (0, 1, 2):
                 row = run_terms(N, 0.5, seed)
+                # The same sample as the saved run: its deficiencies at levels 1 and 2 must agree.
+                assert (N, seed) in saved and saved[(N, seed)] == (row['m1'], row['m2']), (saved.get((N, seed)), row)
                 result['samples'].append(row)
                 print(json.dumps(row), flush=True)
                 Path(args.out).write_text(json.dumps(result, indent=1))
         hit = [r for r in result['samples'] if r['N'] == 16384 and r['seed'] == 1]
         assert not hit or hit[0]['refuted'], 'the second test refutes the chain at N = 16384, seed 1'
         return
-    saved = {}
-    for f in ('box_completion_4096.json', 'box_completion.json'):
-        for s in json.loads((BOX.parent / f).read_text())['samples']:
-            if len(s['levels']) >= 2:
-                saved[(s['N'], s['seed'])] = (s['levels'][0]['m'], s['levels'][1]['m'])
     for N in args.sizes:
         for seed in (0, 1, 2):
             row = run(N, 0.5, seed)
