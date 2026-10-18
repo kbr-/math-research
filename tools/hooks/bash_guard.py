@@ -122,7 +122,10 @@ def stdin_cat(command: str):
             continue
         match = HEREDOC.search(line)
         end = match.group(2) if match else None
-        kept.append("" if match else line)   # a heredoc's line feeds its command: never a stdin cat
+        # A heredoc's segment feeds its command, never a stdin cat; the segments before it on the line are kept
+        # (18 October 2026: "cat > /dev/null; python3 - <<'EOF'" hid the cat, the whole line being dropped).
+        before = [m.end() for m in SEPARATOR.finditer(line[:match.start()])] if match else []
+        kept.append(line[:before[-1]] if before else ("" if match else line))
     lexer = shlex.shlex("\n".join(kept), posix=True, punctuation_chars=True)   # quoted text stays one word
     lexer.whitespace = " \t\r"
     lexer.commenters = ""

@@ -194,14 +194,17 @@ class BashGuardTest(unittest.TestCase):
         for bad in ["cd /repo && cat > /dev/null; echo \"Review ...\" > review.txt && wc -w review.txt",
                     "cat", "cat > out.txt", "cat >> log.txt && git status", "(cat > x)", "cat - > x | wc -l",
                     # The cheapest bypasses of the first form: a descriptor's redirection, the stdin device.
-                    "cat 2>/dev/null > x", "cat /dev/stdin > x"]:
+                    "cat 2>/dev/null > x", "cat /dev/stdin > x",
+                    # 18 October 2026: a stdin cat before a heredoc's command on its line was dropped with the line.
+                    "L=x && cat > /dev/null; python3 - <<'EOF'\nprint(1)\nEOF"]:
             with self.subTest(bad=bad):
                 result = run(bad)
                 self.assertEqual(result.returncode, 2)
                 self.assertIn("standard input", result.stderr)
         for good in ["cat > f <<'EOF'\nx\nEOF", "cat f.txt > out.txt", "printf 'a\\n' | cat > out.txt",
                      "cat < in.txt > out.txt", "git log | cat", "cat a b && echo done", "grep -c 'cat > x' f",
-                     "concat > x.txt",
+                     "concat > x.txt", "x=1; cat > f <<'EOF'\nx\nEOF",
+                     "echo a && python3 - <<'EOF'\nprint(1)\nEOF",
                      # The false refusal of the first form: the pattern inside a quoted script argument.
                      "python3 -c \"print('cd /r && cat > /dev/null; echo r > review.txt')\""]:
             with self.subTest(good=good):
