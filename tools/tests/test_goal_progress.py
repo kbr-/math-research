@@ -1046,6 +1046,21 @@ class BearingTest(unittest.TestCase):
         self.check([first, orphan], said, last='data-idea="x" data-bearing="none"')  # no parent found
         # The user may pick the item anyway (user, 17 October 2026: "(a) append the entry").
         self.check([first, sub], said, last='data-idea="x" data-bearing="none" data-picked="user"')
+        # Work already done is checkpointed with its paragraph, never with an extension (user, 18 October 2026).
+        body = ''.join(f'<article data-kind="{r[0]}" data-route="r" data-goal-progress="{r[1]}" {r[2]}></article>'
+                       for r in (first, sub))
+        against = ('<p><strong>Against the rule.</strong> Begun before the start guidance named the item; '
+                   'compute.sh start should have stopped it.</p>')
+        for last, text, ok in (('data-idea="x" data-bearing="none"', against, True),
+                               ('data-idea="x" data-bearing="none"', '<p><strong>Against the rule.</strong> Done.</p>',
+                                False),
+                               ('data-idea="x" data-bearing="none" data-spell-extend="2"', against, False)):
+            full = body + f'<article data-kind="research" data-route="r" data-goal-progress="unchanged" {last}>'
+            if ok:
+                FT.validate_bearing(full, full.rindex('<article'), said, text)
+            else:
+                with self.assertRaisesRegex(ValueError, 'Against the rule'):
+                    FT.validate_bearing(full, full.rindex('<article'), said, text)
 
     def test_after_three_entries_without_bearing_the_next_states_its_best_outcome(self):
         said = 'Unchanged. <strong>Bearing.</strong> ' + 'Nothing at the degree the goal needs; spent to decide the item.'

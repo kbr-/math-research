@@ -153,7 +153,8 @@ def bearing_run_notes(body):
     for route, item in sorted(lq.no_bearing_excluded(body).items()):
         notes.append(f'REFUSED IN ADVANCE: on route {route} the last two research entries developed {item} and '
                      'declared no bearing; the finisher refuses the next entry on that route that develops it. Develop '
-                     'a different item, unless the user picks this one (data-picked="user").')
+                     'a different item; do not ask the user. Work already done on it is checkpointed with an '
+                     '<strong>Against the rule.</strong> paragraph and is never extended (AGENTS.md).')
     for route, count in sorted(runs.items()):
         if count >= BEARING_RUN:
             notes.append(f'Route {route}: the last {count} research entries on it declared no bearing; the next entry '

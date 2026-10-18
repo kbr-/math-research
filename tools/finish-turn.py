@@ -2195,8 +2195,20 @@ def validate_bearing(body, article, progress, text=None):
         return
     excluded = lq.no_bearing_excluded(body[:article])
     if excluded.get(route) == root:
+        # Work already done is checkpointed, not refused (user, 18 October 2026: "If you already did the work,
+        # just fucking checkpoint it"), but it earns nothing further: no spell extension.
+        against = re.search(r'<strong>Against the rule\.</strong>(.*?)</p>', text or '', re.S)
+        said = html.unescape(strip_tags(against.group(1))).strip() if against else ''
+        if len(said) >= AGAINST_MIN and 'data-spell-extend' not in tag:
+            return
         raise ValueError(f'The last two entries developed {root} and declared that they give nothing '
-                         "at the goal's parameters: develop a different queue item now (AGENTS.md, goal progress)")
+                         "at the goal's parameters: develop a different queue item now. Work already done on it "
+                         'is checkpointed in its entry with <strong>Against the rule.</strong> and at least '
+                         f'{AGAINST_MIN} characters naming the stage that should have stopped it, and with no '
+                         'spell extension (AGENTS.md, goal progress)')
+
+
+AGAINST_MIN = 60
 
 
 def validate_progress(body, article, close, *, check_registered_claims=True):
