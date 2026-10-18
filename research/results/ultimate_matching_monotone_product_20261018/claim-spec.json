@@ -1,0 +1,122 @@
+{
+ "source": {
+  "record": "[Monotone product chains](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-18-monotone-product-chains)",
+  "label": "Monotone product chains",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-18-monotone-product-chains"
+  ]
+ },
+ "date": "2026-10-18",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "relationships": [
+  [
+   "thm:monotone-product-chains",
+   "depends_on",
+   "lem:fixed-line-boundary-bound",
+   "Each layer whose boundary off the line is shorter than 1."
+  ],
+  [
+   "thm:monotone-product-chains",
+   "depends_on",
+   "lem:cut-cell-variance-bound",
+   "Its (b) for each layer whose boundary off the line is at least 1."
+  ],
+  [
+   "thm:monotone-product-chains",
+   "supersedes",
+   "cor:monotone-product-chain-bound",
+   "The theorem bounds every chain of that corollary's class at the target, where the corollary gave (log N)^(1/8) and, one-height, (log N)^(1/12) above it."
+  ],
+  [
+   "thm:monotone-product-chains",
+   "supersedes",
+   "prop:fixed-line-product-chains",
+   "The high part h_hi 1_B is itself a monotone product chain of cost at most 2, which the theorem bounds at the target without the factor epsilon^(-1/4)."
+  ],
+  [
+   "thm:monotone-product-chains",
+   "cites",
+   "cor:coarse-discrete-sufficiency",
+   "Proves (b)'s hypothesis for the monotone product chains among the one-height chains."
+  ],
+  [
+   "thm:monotone-product-chains",
+   "cites",
+   "lem:one-height-rounding",
+   "Rounding maps a monotone product chain to a one-height one at an error C_0 Y sqrt(N log N); the theorem needs no rounding, holding for every value of h."
+  ],
+  [
+   "thm:monotone-product-chains",
+   "cites",
+   "lem:multilevel-chain-bound",
+   "That lemma bounds chains under a count condition on the large layers; the theorem has none, its level sum charging each dyadic level of h separately."
+  ],
+  [
+   "thm:monotone-product-chains",
+   "depends_on",
+   "lem:dyadic-level-sum",
+   "Step 3, the integral of the perimeter factor over the layers."
+  ],
+  [
+   "thm:monotone-product-chains",
+   "depends_on",
+   "lem:leighton-shor-mesh-averaging",
+   "Its (a), TV(g) <= T(2), for the walls and the boundary of B in Step 2."
+  ],
+  [
+   "lem:dyadic-level-sum",
+   "depends_on",
+   "lem:leighton-shor-mesh-averaging",
+   "Its (a), TV(g) <= T(2), for the total mass of the levels."
+  ],
+  [
+   "lem:dyadic-level-sum",
+   "cites",
+   "lem:multilevel-chain-bound",
+   "The lower bound psi_4^*(t) >= (t/2)(log t)^(1/4) for t >= e^16, recorded with that lemma's proof; that lemma charges all layers by one Jensen inequality, the level sum each dyadic level separately."
+  ],
+  [
+   "lem:dyadic-level-sum",
+   "cites",
+   "prop:fixed-line-product-chains",
+   "That proposition's layer cake charged each layer's boundary of B at (log N)^(3/4); the lemma bounds the perimeter factor integrated over the layers, deterministically; neither implies the other."
+  ],
+  [
+   "lem:dyadic-level-sum",
+   "cites",
+   "lem:anchored-run-bound",
+   "That lemma is a discrepancy bound charging V_B at (log N)^(3/4); the lemma is a deterministic bound on the integrated perimeter factor; neither implies the other."
+  ],
+  [
+   "lem:dyadic-level-sum",
+   "cites",
+   "cor:monotone-product-chain-bound",
+   "That corollary splits at one threshold; the lemma sums over all dyadic levels; neither implies the other, the theorem combining the lemma with Step 1 supersedes the corollary."
+  ]
+ ],
+ "claims": [
+  {
+   "id": "lem:dyadic-level-sum",
+   "summary": "At (4,4), W = 2^(-l_1), for N large, deterministically: for every function h >= 0 constant on the cells of mesh W and every union B of cells with discrete cost of g = h 1_B at most 2, with l_s the length of the inner edges of the boundary of B whose B-cell c has h(c) > s and phi(l) = l (2 log_2(1 + 1/(W l)) + 5)^(3/4), the integral of phi(l_s) over s >= 0 is at most 42 sqrt(log N) + C (log log N)^(3/4), C universal.",
+   "assessment": "Working proof, passed with corrections in two passes of one medium reviewer (research/results/ultimate_matching_monotone_product_20261018/review.txt): dyadic levels a_j = 2^j a_0, a_0 = 2e^16 W; on level j, l_s <= L_j and phi increasing give a_j phi(L_j) <= m_j (2 log_2(1 + v_j) + 5)^(3/4) + m_j (2 log_2(1 + 1/m_j))^(3/4), m_j = a_j L_j; the first sum, swapped to the edges, is at most 2 sum_e W^2 v_e (2 log_2(1 + v_e) + 5)^(3/4) <= 42 sqrt(log N) by the cost lower bound; the second, over at most log_2 N levels with total mass at most 2T(2), is O((log log N)^(3/4)).",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Reduces the one-height bound for any h 1_B to a per-layer bound charging the layers' cut part at sqrt(log N): the class cap carried out over the dyadic levels of h.",
+   "next_action": "A per-layer, or joint over a chain, sqrt(log N) charge for cuts that do not lie on vertical lines, first the staircases of h monotone in both coordinates.",
+   "novelty": "not_claimed"
+  },
+  {
+   "id": "thm:monotone-product-chains",
+   "summary": "At (4,4), W = 2^(-l_1), on the events of lem:fixed-line-boundary-bound and of lem:cut-cell-variance-bound at kappa = 1, for N large: every grid function g = h 1_B on the mesh W with h >= 0 constant on columns and monotone in x, B a union of cells, and discrete cost sum_e W^2 psi_4^*(|Delta_e g|/(2W)) <= 2, has |D(g)| <= C sqrt(N log N), C universal.",
+   "assessment": "Working proof, passed with corrections in two passes of one medium reviewer (research/results/ultimate_matching_monotone_product_20261018/review.txt): the layer cake over the half-planes {h > s}; each layer B cap H_s charged by lem:fixed-line-boundary-bound when its boundary off the line is shorter than 1 and by lem:cut-cell-variance-bound (b) otherwise, both giving phi(l) = l(2 log_2(1 + 1/(W l)) + 5)^(3/4) off the line and sqrt(log N) on it; the walls and boundary of B at sqrt(log N) through TV(g) <= T(2); the integral of phi by lem:dyadic-level-sum.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Proves cor:coarse-discrete-sufficiency (b)'s one-height bound for every monotone product chain, the residual of the pile-class-cap item for product chains closed, by charging each dyadic level of h at its own perimeter factor.",
+   "next_action": "The same level sum for chains h 1_B with h monotone in both coordinates, whose layers are B cut by down-sets: a down-set form of lem:fixed-line-boundary-bound.",
+   "novelty": "not_claimed"
+  }
+ ]
+}
