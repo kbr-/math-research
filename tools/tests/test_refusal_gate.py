@@ -55,6 +55,20 @@ class RefusalGateTest(unittest.TestCase):
         named = refused + [use('f', 'Bash', {'command': 'sed -n 200,240p tools/notebook-append.py'}), result('f', 'x')]
         self.assertEqual(self.run_hook(self.transcript(named), '/tmp/x/cs.html')[0], 0)
 
+    def test_a_pipe_inside_a_quoted_grep_pattern_still_counts_as_a_read(self):
+        # 18 October 2026: grep -n "route_judge\|reads this entry" tools/notebook-append.py went uncounted, the
+        # pattern's pipe ending the match before the tools/ path.
+        line = 'the route judge reads this entry as a detour (The entry bounds'
+        for command, counted in (
+                ('cd /r && grep -n "route_judge\\|reads this entry as a detour" tools/notebook-append.py | head -6', True),
+                ("grep -n 'a\\|b' tools/notebook-append.py", True),
+                ('grep -n "route_judge" tools/notebook-append.py', True),
+                # A pipe outside quotes still ends the command: a tools/ path only in a later command is no read.
+                ('echo x | grep -c y notes.txt', False)):
+            with self.subTest(command=command):
+                call = {'name': 'Bash', 'input': {'command': command}}
+                self.assertEqual(gate.reads_code(call, line, 'notebook-append.py'), counted)
+
     def test_a_file_the_refused_command_does_not_name_is_not_gated(self):
         refused = [use('a', 'Bash', {'command': 'python3 tools/notebook-append.py /tmp/x/cs.html'}),
                    result('a', 'Exit code 1\nnotebook-append.py: refused', True)]

@@ -26,6 +26,8 @@ MAX_BYTES = 60 << 20
 BLOCK = 1 << 22
 REFUSAL = re.compile(r'^(?:[\w.-]+\.py|commit-msg): (?P<rule>.+)$|^FAILS (?P<fails>.+)$', re.M)
 READ_CODE = re.compile(r'\b(?:grep|sed\s+-n|rg|cat|head|awk)\b[^|;&]*\btools/')
+# A shell word in single quotes, or in double quotes with backslash escapes.
+QUOTED = re.compile(r"'[^']*'" + r'|"(?:[^"\\]|\\.)*"')
 
 
 def tool_calls(transcript, max_uses=MAX_USES, max_bytes=MAX_BYTES):
@@ -117,7 +119,9 @@ def reads_code(call, line='', tool=None):
         text = json.dumps(call['input'])
         return 'tools' in text and (not line or quotes(text, line) or bool(tool and tool in text))
     command = str(call['input'].get('command') or '') if call['name'] == 'Bash' else ''
-    if not READ_CODE.search(command):
+    # Quoted text is blanked before the match: a pipe inside a grep pattern ("a\|b") ended the match before the
+    # tools/ path behind it (18 October 2026: four reads of the emitting code went uncounted).
+    if not READ_CODE.search(QUOTED.sub('""', command)):
         return False
     return not line or quotes(command, line) or bool(tool and tool in command)
 
