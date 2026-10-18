@@ -62,7 +62,12 @@ other's error on the killer's own edge was nonzero at a solution). Where a scrip
 cases of the question it answers (sizes filtered by a computed criterion, orbits skipped), name the
 cases it leaves out and the argument that they cannot change the outcome, or report the conclusion
 as limited to the cases run (17 October 2026: pairs were computed only for sizes with positive
-single excess, and the summary covered every pair). Run no computations unless the brief asks for a
+single excess, and the summary covered every pair). Before you report that a class or a member
+escapes the statements you were given ("the recorded tools do not recover ..."), apply each given
+statement whose class could contain it to one member, its parameters computed (multiplicities,
+heights, slopes), and report what each gives there (18 October 2026: a blind stage said the record
+missed 1-Lipschitz functions, while the multiplicity bound in its own excerpt, applied after a
+one-height rounding, decided them). Run no computations unless the brief asks for a
 specific check, and edit no files.
 
 Where the brief sends a check, a rule or a statement that its author corrected after an earlier
