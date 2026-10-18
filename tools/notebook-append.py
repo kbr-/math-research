@@ -754,6 +754,7 @@ def skeleton_check(source, entry, next_html=None, committed=None, reason=None, p
     run('publication citation', lambda: refuse_uncited_publication(entry))
     run('record lines', lambda: refuse_record_findings(entry))
     run('plainest uniform bound', lambda: refuse_one_function_plainest(entry))
+    run('meta home', lambda: refuse_unhomed_meta(entry, root))
     ident = re.match(r'\s*<article\b[^>]*?\sid="([^"]+)"', entry)
     if not ident:
         return failures
@@ -1036,6 +1037,37 @@ ONE_FUNCTION = re.compile(r'one function|fixed witness|one fixed', re.I)
 UNIFORM_TRIED = re.compile(r'plainest uniform bound', re.I)
 
 
+def refuse_unhomed_meta(entry, root=ROOT):
+    """Refuse an entry whose Prevention (after its label in the Process assessment) or Meta paragraph names no
+    file that git shows changed since the entry's timing session began, records left out: the reply-side check
+    of tools/hooks/stop_checks.py (meta_home_block), applied to the entry. On 18 October 2026 an entry's Meta
+    named tools/notebook-append.py as written into while no line of it had changed. A placeholder ([after
+    review]) and a Prevention saying there was no mistake of the agent's are not judged."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent / 'hooks'))
+    import stop_checks
+    import draft_claim_sentences
+    since = draft_claim_sentences.session_start(root, entry)
+    if since is None:
+        return
+    from datetime import datetime, timezone
+    iso = datetime.fromtimestamp(since, timezone.utc).isoformat()
+    homes = [h for h in stop_checks.changed_files(root, iso) if not stop_checks.RECORD.search(' ' + h)]
+    parts = [('Meta', m.group(1)) for m in re.finditer(r'<strong>Meta\.</strong>(.*?)</p>', entry, re.S)]
+    parts += [('Prevention', m.group(1)) for m in re.finditer(r'<strong>Prevention\.</strong>(.*?)</p>', entry, re.S)]
+    for kind, text in parts:
+        plain = html.unescape(strip_tags(text)).strip()
+        # Only a paragraph that is nothing but a short placeholder is skipped: "[note] The change is in ..." was
+        # passed whole by a leading bracket when this check was first tried for bypasses.
+        if not plain or re.fullmatch(r'\[[^\]]{0,40}\]\.?', plain) or (
+                kind == 'Prevention' and stop_checks.NO_MISTAKE.search(plain)):
+            continue
+        if not stop_checks.homed(plain, homes):
+            raise ValueError(f'the entry\'s {kind} paragraph names no file changed since its timing session began '
+                             f'("{plain[:160]}"): make the change it states and name that file, or say what was '
+                             'queued (tools/lead_queue.py add) and name the notebook (AGENTS.md, a fix of the '
+                             'agent\'s own mistake)')
+
+
 def refuse_one_function_plainest(entry):
     """Refuse a Plainest bound paragraph that settles a fixed witness by a bound for one function without naming
     the plainest uniform bound tried on the witness's family (a union over its members, or over the subsets of
@@ -1123,6 +1155,7 @@ def main():
         refuse_unanswered(args.entry.read_text(), args.answers.read_text() if args.answers else None)
         refuse_uncited_publication(args.entry.read_text())
         refuse_one_function_plainest(args.entry.read_text())
+        refuse_unhomed_meta(args.entry.read_text())
         refuse_unapplied_matches(path.read_text(), args.entry.read_text(), home=home_of(path))
         closures = refuse_unquoted_closures(path.read_text(), args.entry.read_text())
         refuse_off_route(path.read_text(), args.entry.read_text())

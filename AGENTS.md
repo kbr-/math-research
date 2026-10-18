@@ -349,12 +349,16 @@ AGENTS.md"):
   draft's own bound: a factor a step bounds at its least value (a level index at least one) is kept
   as displayed, and what the bound gives at the factor's whole range is written before the
   statement's hypotheses are (18 October 2026: a theorem was stated above a constant that its own
-  displayed bound, read at large levels, did not need). A statement about to be posed as a
-  conjecture, and each new result of a draft, is first composed with the record's bounds on its own
-  objects (each bound on each part, split where the bounds' ranges meet), and the entry says what
-  that gave, before a new method is named (18 October 2026: a conjecture was posed with a chaining
-  rerun named while two recorded lemmas proved it, and a draft's proposition and a recorded bound,
-  split at one threshold, gave the whole class's new bound uncomposed).
+  displayed bound, read at large levels, did not need). So is a Not covered list or a next attempt:
+  each free parameter of the proof is driven to the largest value its conditions allow before the
+  list names what lies beyond it (18 October 2026: a frontier was put at \(m\) cells, a value the
+  corollary did not need, and its next attempt was decided by the entry's own statement). A
+  statement about to be posed as a conjecture, and each new result of a draft, is first composed
+  with the record's bounds on its own objects (each bound on each part, split where the bounds'
+  ranges meet), and the entry says what that gave, before a new method is named (18 October 2026: a
+  conjecture was posed with a chaining rerun named while two recorded lemmas proved it, and a
+  draft's proposition and a recorded bound, split at one threshold, gave the whole class's new bound
+  uncomposed).
 - Before a step is called the open one (an Attempt's stop, a test's outcome left to the next cycle),
   the plainest tools of its kind are run on it and their outcome written: a concentration bound on
   the sum the step concerns, a gluing or composition of the parts it joins, the converse of each

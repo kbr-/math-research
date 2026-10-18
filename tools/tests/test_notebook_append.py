@@ -733,6 +733,41 @@ class NotebookAppendTests(unittest.TestCase):
 
 
 
+class UnhomedMetaTest(unittest.TestCase):
+    def test_a_meta_naming_no_file_changed_in_the_session_is_refused(self):
+        # 18 October 2026: an entry's Meta named tools/notebook-append.py as written into while no line of it had
+        # changed.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            git = lambda *a: subprocess.run(['git', '-C', tmp, *a], capture_output=True, check=True)
+            git('init', '-q')
+            git('config', 'user.email', 't@t')
+            git('config', 'user.name', 't')
+            (root / 'tools').mkdir()
+            for name in ('changed.py', 'unchanged.py'):
+                (root / 'tools' / name).write_text('x = 1\n')
+            git('add', '.')
+            git('commit', '-q', '-m', 'base')
+            (root / 'research/logs').mkdir(parents=True)
+            # The session begins after the base commit, which git log --since must leave out.
+            import time
+            (root / 'research/logs/T.jsonl').write_text('{"unix_s": %d}\n' % (int(time.time()) + 2))
+            (root / 'tools/changed.py').write_text('x = 2\n')
+            entry = lambda meta, prevention='[after review]': (
+                f'<p><strong>Process assessment.</strong> A slip. <strong>Prevention.</strong> {prevention}</p>'
+                f'<p><strong>Meta.</strong> {meta}</p><!-- TIMING T -->')
+            tool.refuse_unhomed_meta(entry('The change is in tools/changed.py, read before each edit.'), root)
+            tool.refuse_unhomed_meta(entry('[after review]'), root)
+            tool.refuse_unhomed_meta(entry('In tools/changed.py.', 'No mistake of mine was found.'), root)
+            for meta, prevention in (('The change is written into tools/unchanged.py.', '[after review]'),
+                                     ('In tools/changed.py.', 'A check in tools/unchanged.py now refuses it.'),
+                                     # The bypass found before the commit: a leading bracket exempted the whole text.
+                                     ('[note] The change is in tools/unchanged.py.', '[after review]')):
+                with self.subTest(meta=meta, prevention=prevention):
+                    with self.assertRaisesRegex(ValueError, 'names no file changed since its timing session'):
+                        tool.refuse_unhomed_meta(entry(meta, prevention), root)
+
+
 class UnmeasuredDeclineTest(unittest.TestCase):
     """17 October 2026: a build declined as uninformative ("a measurement cannot tell") showed, once run at the
     user's choice, an instability no entry had predicted."""
