@@ -1114,8 +1114,8 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   test_agents_scope, whose passing run the runner records. A change to shared code, fixtures, hooks,
   CI or names other files use needs the whole suite, through the protected launcher: `./compute.sh
   --threads 1 --timeout 60 python3 tools/tests/run.py`, which runs the tests in parallel worker
-  processes. The whole suite stays under 10 seconds (user, 26 September 2026: "The suite should run
-  in 10s tops"); the runner fails a slower run and lists its slowest tests. That is a defect to find
+  processes. The whole suite stays under 15 seconds (user, 18 October 2026: "just increase the gate
+  to 15s"); the runner fails a slower run and lists its slowest tests. That is a defect to find
   and fix, such as repeated work in the code under test, not a wait to accept. The runner prints the
   CPU time the run used itself and what was other work on the machine, and names an overrun under
   load "TOO SLOW (machine busy)"; it still fails. A change that would let a limit quoted here from

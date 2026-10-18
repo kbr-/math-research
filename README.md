@@ -74,7 +74,7 @@ failures were observed, and each is a check that runs, not a guideline.
 | A computation proves less than it seems | Runs go through [compute.sh](compute.sh): enforced CPU and memory limits, a 30-minute cap, full output saved to disk with its command line, and an estimate required before a long run. The [computation policy](COMPUTATION_RULES.md) requires exact arithmetic for finite-field work and a statement of what a check could have falsified. |
 | Context is lost at compaction | After a compaction every tool call is refused until the agent has read the whole [resume bundle](tools/resume.py), delivered in bounded parts. Nothing is kept in machine-local agent memory; a hook refuses such writes. |
 | The agent promises to do better | A reply that admits a mistake is sent back until it says what prevents the class of mistake. A promise about future behaviour is sent back too: nothing said in a turn survives compaction, only the framework does. |
-| The rules rot | [AGENTS.md](AGENTS.md) holds only rules that apply to every notebook, and a test fails when goal-specific vocabulary enters it. The framework's own suite, 86 test files, has to finish in 10 seconds or it fails. |
+| The rules rot | [AGENTS.md](AGENTS.md) holds only rules that apply to every notebook, and a test fails when goal-specific vocabulary enters it. The framework's own suite, 86 test files, has to finish in 15 seconds or it fails. |
 
 These checks have known gaps, listed under [Limits](#limits).
 

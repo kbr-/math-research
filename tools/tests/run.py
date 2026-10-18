@@ -8,7 +8,7 @@ first by the durations of the previous run, kept in the git-ignored DURATIONS be
 it has no time for first of all: in discovery order the browser tests, which sort last and take 6 s,
 started 4.5 s into the run and set its end (3 October 2026: 10.9 s, and 7.5 s longest first). Workers default to the CPUs
 this process may use. Each failure's traceback is printed; the exit status is nonzero if any test
-fails or errors, or if the run takes longer than the limit (10 s, AGENTS.md), in which case the
+fails or errors, or if the run takes longer than the limit (15 s, AGENTS.md), in which case the
 slowest tests are listed, with the CPU time the run used itself and what was certainly other work on the
 machine meanwhile. An overrun on a busy machine by a run whose own CPU time is as when it runs alone is called
 that, "TOO SLOW (machine busy)", and still fails unless --excuse-busy is given. Skipped tests are listed with
@@ -30,7 +30,7 @@ import time
 import unittest
 
 HERE = Path(__file__).resolve().parent
-LIMIT_S = 10.0
+LIMIT_S = 15.0
 DURATIONS = HERE / '.durations.json'
 # Written by a passing run of the whole suite: the commit check refuses a change to shared code made after it
 # (17 October 2026: a hook change was committed after its own module's tests only; AGENTS.md asks the suite).
