@@ -524,7 +524,10 @@ AGENTS.md"):
 - Before writing any durable text (docstring, commit message, entry, reply), list each figure and
   finding it will carry beside its source (a saved output, a named agent's report, a proof in the
   entry); one whose only source is another agent's report is written as that agent's, or recomputed
-  and saved first.
+  and saved first. A passage built on an agent's suggestion says which parts are the agent's and
+  which the author added, and the author's parts go back to that agent before they are credited to
+  it (18 October 2026: a review turned its reviewer's suggestion into a bound and credited the bound
+  to the reviewer).
 - A conjecture drawn from a check states the quantity the check computed (its maxima, its field, its
   representatives) and the range of sizes it computed; a stronger form, a wider range included, is
   tried first against the system's trivial transformations and its smallest instances (16 October
