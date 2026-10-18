@@ -1,0 +1,134 @@
+{
+ "source": {
+  "record": "[Anchored increments](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-18-anchored-increments)",
+  "label": "Anchored increments",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-18-anchored-increments"
+  ]
+ },
+ "date": "2026-10-18",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "claims": [
+  {
+   "id": "lem:anchored-level-sum",
+   "summary": "At (4,4), W = 2^(-l_1), for N large, deterministically: for every grid function g >= 0 on the mesh W of discrete cost sum_e W^2 psi_4^*(|Delta_e g|/(2W)) at most 2 and every lambda >= 1, with l_s the length of the inner edges e of the boundary of {g > s} whose larger value is at most lambda |Delta_e g| and phi(l) = l (2 log_2(1 + 1/(W l)) + 5)^(3/4), the integral of phi(l_s) over s >= 0 is at most 16 lambda (3.5 + log_2(lambda)/8)^(3/4) sqrt(log N) + C lambda (log log N)^(3/4), C universal.",
+   "assessment": "Working proof, passed with corrections by one medium reviewer (research/results/ultimate_matching_anchored_increments_20261018/review.txt): dyadic levels a_j = 2^j a_0, a_0 = 2 lambda e^16 W; for s in [a_j, a_(j+1)) the counted edges have larger value above a_j; the first sum, swapped to the edges, charges each edge 2W w_e (2 log_2(1 + w_e/W) + 5)^(3/4) <= 8 lambda cost_e (3.5 + log_2(lambda)/8)^(3/4) (log(v_e/2))^(1/2) through w_e <= lambda W v_e and the psi_4^* lower bound at v_e > 2e^16; the second over at most log_2 N levels of total mass at most 2 lambda T(2).",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "The level sum of lem:dyadic-level-sum for every edge whose increment is a fixed fraction of its larger value, not only edges next to the zero set; the full reach of the per-layer route.",
+   "next_action": "A joint bound for increments that are a small fraction of their larger value (non-anchored), which the per-set charge sqrt(log N) per length cannot give for continuous lower layers (Leighton-Shor, citing Shor's lower bound, unread), up to the transfer to cells.",
+   "novelty": "not_claimed"
+  },
+  {
+   "id": "thm:anchored-increment-functions",
+   "summary": "At (4,4), W = 2^(-l_1), on the events of lem:fine-grid-leighton-shor at the mesh W and of lem:cut-cell-variance-bound at kappa = 1, for N large: for every lambda >= 1, every grid function g on the mesh W of discrete cost at most 2 such that each inner edge whose two cells carry values of one strict sign has max(|g(c)|, |g(c')|) <= lambda |Delta_e g| (edges with Delta_e g = 0 excepted) has |D(g)| <= C lambda (1 + log lambda)^(3/4) sqrt(N log N), C universal.",
+   "assessment": "Working proof, passed with corrections by one medium reviewer (research/results/ultimate_matching_anchored_increments_20261018/review.txt): g = g^+ - g^-, each nonnegative, of cost at most that of g, and lambda-anchored (an edge where one side is not positive is anchored at lambda = 1); the layer cake over {g > s}; each layer charged by lem:fine-grid-leighton-shor (a) when its perimeter is below 1 and lem:cut-cell-variance-bound (b) otherwise, both at most C sqrt N (phi(P) + P sqrt(log N)); TV(g) <= T(2); lem:anchored-level-sum.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Every function whose nonzero increments are a fixed fraction of the larger adjacent value meets the one-height target's bound, any number of distinct values.",
+   "next_action": "Non-anchored increments of large multiplicity, first the bunched staircase stack, by a ramp plus step-texture split with Bernstein's inequality and a union over coarse monotone paths; the per-set charge sqrt(log N) per length fails for continuous lower layers by the Leighton-Shor lower bound (cited, unread), up to a transfer to cells.",
+   "novelty": "not_claimed"
+  }
+ ],
+ "relationships": [
+  [
+   "lem:anchored-level-sum",
+   "refines",
+   "lem:dyadic-level-sum",
+   "At lambda = 1 with g = h 1_B every counted edge of the earlier lemma is counted here, so this lemma implies it (constant 16 * 3.5^(3/4) <= 42)."
+  ],
+  [
+   "lem:anchored-level-sum",
+   "depends_on",
+   "lem:leighton-shor-mesh-averaging",
+   "Its (a), TV(g) <= T(2), for the total mass of the levels."
+  ],
+  [
+   "lem:anchored-level-sum",
+   "cites",
+   "lem:multilevel-chain-bound",
+   "The lower bound psi_4^*(t) >= (t/2)(log t)^(1/4) for t >= e^16, recorded with that lemma's proof."
+  ],
+  [
+   "thm:anchored-increment-functions",
+   "depends_on",
+   "lem:anchored-level-sum",
+   "The integral of the perimeter factor over the layers."
+  ],
+  [
+   "thm:anchored-increment-functions",
+   "depends_on",
+   "lem:fine-grid-leighton-shor",
+   "Its (a) for each layer of perimeter below 1."
+  ],
+  [
+   "thm:anchored-increment-functions",
+   "depends_on",
+   "lem:cut-cell-variance-bound",
+   "Its (b) at kappa = 1 for each layer of perimeter at least 1."
+  ],
+  [
+   "thm:anchored-increment-functions",
+   "depends_on",
+   "lem:leighton-shor-mesh-averaging",
+   "Its (a), TV(g) <= T(2), for the sqrt(log N) part of the layers."
+  ],
+  [
+   "thm:anchored-increment-functions",
+   "cites",
+   "thm:monotone-product-chains",
+   "Its Steps 1-2 with no cuts; product chains have walls that are not anchored and anchored functions need no column form; neither implies the other."
+  ],
+  [
+   "thm:anchored-increment-functions",
+   "cites",
+   "prop:fixed-line-product-chains",
+   "Product chains with h constant on columns, whose walls are not anchored; neither implies the other."
+  ],
+  [
+   "thm:anchored-increment-functions",
+   "cites",
+   "cor:monotone-product-chain-bound",
+   "Product chains split at a threshold; neither implies the other."
+  ],
+  [
+   "thm:anchored-increment-functions",
+   "cites",
+   "lem:fixed-line-boundary-bound",
+   "One set inside a half-plane, used by neither proof; neither implies the other."
+  ],
+  [
+   "thm:anchored-increment-functions",
+   "cites",
+   "lem:multilevel-chain-bound",
+   "Functions whose distinct values are 2e^16 delta_0 apart with log K small, charged by one Jensen inequality over the layers; anchored functions may have any number of values at any gaps; neither implies the other."
+  ],
+  [
+   "lem:anchored-level-sum",
+   "cites",
+   "thm:monotone-product-chains",
+   "That theorem's Step 3 uses the earlier level sum; neither implies the other."
+  ],
+  [
+   "lem:anchored-level-sum",
+   "cites",
+   "prop:fixed-line-product-chains",
+   "That proposition charges each layer at (log N)^(3/4); neither implies the other."
+  ],
+  [
+   "lem:anchored-level-sum",
+   "cites",
+   "lem:one-height-rounding",
+   "Rounding to one height at an error C_0 Y sqrt(N log N), used by neither proof; neither implies the other."
+  ],
+  [
+   "thm:anchored-increment-functions",
+   "depends_on",
+   "lem:dyadic-level-sum",
+   "At lambda = 1 the theorem is lem:dyadic-level-sum composed with the per-set bounds; for lambda > 1 it uses lem:anchored-level-sum, which refines it."
+  ]
+ ]
+}
