@@ -588,7 +588,10 @@ AGENTS.md"):
   without proof or test an untested hypothesis; settle a question by searching and testing its
   readings rather than handing it back; and run work through the launcher as in an entry (17 October
   2026: a reply offered substitutions and extension variables as unexplored, both recorded, and the
-  stand-in review found four more replies that broke entry rules).
+  stand-in review found four more replies that broke entry rules). A summary in context (a living
+  section, a status line) is not the record: a reply sentence on what exists or is missing is
+  written after a search in the words of its objects (18 October 2026: a reply called a built flow
+  unbuilt from the living section).
 - A gap found in the record, or a promising idea met in conversation, is the next attempt: try it or
   queue it in that turn, and report it so; describing it as missing, or offering it to the user, is
   not an answer (user, 17 October 2026: "We are the ones developing the record").
