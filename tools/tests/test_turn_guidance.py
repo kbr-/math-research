@@ -309,12 +309,15 @@ class JudgeNoteTest(unittest.TestCase):
         guide = load('turn_guidance', 'tools/turn_guidance.py')
         with tempfile.TemporaryDirectory() as tmp:
             store = Path(tmp) / 'last.json'
-            self.assertEqual(guide.judge_notes(store), [])
-            store.write_text(json.dumps({'anchor': 'entry-x', 'verdict': 'detour', 'shortest': 'build the flow',
-                                         'reason': 'r', 'at': '2026-10-18 10:00'}))
-            self.assertIn('build the flow', ' '.join(guide.judge_notes(store)))
-            store.write_text(json.dumps({'anchor': 'entry-x', 'verdict': 'on route', 'shortest': 's'}))
-            self.assertEqual(guide.judge_notes(store), [])
+            self.assertEqual(guide.judge_notes(store, 'a.html'), [])
+            self.assertEqual(guide.judge_notes(), [])   # no store passed: nothing is read
+            store.write_text(json.dumps({'a.html': {'anchor': 'entry-x', 'verdict': 'detour',
+                                                    'shortest': 'build the flow', 'reason': 'r',
+                                                    'at': '2026-10-18 10:00'}}))
+            self.assertIn('build the flow', ' '.join(guide.judge_notes(store, 'a.html')))
+            self.assertEqual(guide.judge_notes(store, 'b.html'), [])
+            store.write_text(json.dumps({'a.html': {'anchor': 'entry-x', 'verdict': 'on route', 'shortest': 's'}}))
+            self.assertEqual(guide.judge_notes(store, 'a.html'), [])
 
 
 if __name__ == '__main__':

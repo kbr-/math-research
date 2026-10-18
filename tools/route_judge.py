@@ -38,39 +38,72 @@ VERDICT_STORE = Path(__file__).resolve().parents[1] / 'research/logs/route-judge
 ANCHOR = re.compile(r'<article\b[^>]*\bid="([^"]+)"')
 
 
-def save_verdict(draft, verdict, store=None):
-    """Keep the judge's last verdict, with the anchor of the draft it read."""
-    import datetime
-    store = Path(store or VERDICT_STORE)
-    anchor = ANCHOR.search(draft or '')
+def _verdicts(store):
     try:
-        store.parent.mkdir(parents=True, exist_ok=True)
-        store.write_text(json.dumps({'anchor': anchor.group(1) if anchor else '', 'verdict': verdict.get('verdict'),
-                                     'shortest': verdict.get('shortest', ''), 'reason': verdict.get('reason', ''),
-                                     'at': datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}))
-    except OSError:
-        pass
-
-
-def last_verdict(store=None):
-    """The stored last verdict as a dict, or None."""
-    try:
-        return json.loads(Path(store or VERDICT_STORE).read_text())
+        found = json.loads(Path(store).read_text())
     except (OSError, ValueError):
-        return None
+        return {}
+    return found if isinstance(found, dict) else {}
 
 
-def carried_refusal(draft, store=None):
-    """The reason to refuse a research draft that meets a stored "detour" verdict on an earlier entry without
-    answering it: its Shortest route paragraph must say "Taken" or "Not taken" with a reason of eight words."""
-    last = last_verdict(store)
+def _write(store, verdicts, notice=sys.stderr):
+    try:
+        Path(store).parent.mkdir(parents=True, exist_ok=True)
+        part = Path(store).with_suffix('.part')
+        part.write_text(json.dumps(verdicts))
+        part.replace(store)   # atomic: a concurrent reader sees the old store or the new one
+    except OSError as error:
+        print(f'route judge: verdict not stored ({error}); the next entry will not meet it', file=notice)
+
+
+def save_verdict(draft, verdict, store, key='', notice=sys.stderr):
+    """Keep the judge's last verdict for one notebook (key, its path), with the anchor of the draft it read: one
+    store serves every notebook, each verdict under its own key."""
+    import datetime
+    anchor = ANCHOR.search(draft or '')
+    verdicts = _verdicts(store)
+    verdicts[key] = {'anchor': anchor.group(1) if anchor else '', 'verdict': verdict.get('verdict'),
+                     'shortest': verdict.get('shortest', ''), 'reason': verdict.get('reason', ''),
+                     'at': datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}
+    _write(store, verdicts, notice)
+
+
+def last_verdict(store, key=''):
+    """The stored last verdict of one notebook as a dict, or None."""
+    return _verdicts(store).get(key) if store else None
+
+
+def answers(draft):
+    """Whether a draft's Shortest route paragraph says "Taken" or "Not taken" with eight words of how or why."""
+    said = shortest_paragraph(draft)
+    return bool(NOT_TAKEN.search(said) or re.match(r'\s*Taken\b[:,.;]?\s+(?:\S+\s+){7,}\S+', said))
+
+
+def clear_answered(draft, store, key='', notice=sys.stderr):
+    """After an entry is appended: clear its notebook's stored detour when the entry answers it, so the entries
+    after it are not held to it again (cleared only here: a draft refused after being read must still answer)."""
+    last = last_verdict(store, key)
+    anchor = ANCHOR.search(draft or '')
+    research = 'data-kind="research"' in (draft or '')[:600]   # a review's paragraph answers nothing for it
+    if not last or not research or (anchor and anchor.group(1) == last.get('anchor')) or not answers(draft):
+        return False
+    verdicts = _verdicts(store)
+    verdicts.pop(key, None)
+    _write(store, verdicts, notice)
+    return True
+
+
+def carried_refusal(draft, store, key='', notice=sys.stderr):
+    """The reason to refuse a research draft that meets a stored "detour" verdict on an earlier entry of its notebook
+    without answering it: its Shortest route paragraph must say "Taken" or "Not taken" with eight words of reason.
+    Checking clears nothing: clear_answered does, once the answering entry is appended."""
+    last = last_verdict(store, key)
     if not last or last.get('verdict') != 'detour':
         return None
     anchor = ANCHOR.search(draft or '')
     if anchor and anchor.group(1) == last.get('anchor'):
         return None   # the same entry rewritten: the judge reads it again on its own turn
-    said = shortest_paragraph(draft)
-    if NOT_TAKEN.search(said) or re.match(r'\s*Taken\b[:,.;]?\s+(?:\S+\s+){7,}\S+', said):
+    if answers(draft):
         return None
     return (f'the route judge read the last judged entry ({last.get("anchor")}, {last.get("at")}) as a detour, '
             f'its shortest step: {last.get("shortest")}. This entry\'s Shortest route paragraph says "Taken" and '
@@ -187,7 +220,7 @@ def due(notebook, every=EVERY):
     return (len(RESEARCH.findall(notebook)) + 1) % every == 0
 
 
-def refusal(draft, notebook, ask=sonnet, notice=sys.stderr, every=EVERY, store=None):
+def refusal(draft, notebook, ask=sonnet, notice=sys.stderr, every=EVERY, store=None, key=''):
     """The reason to refuse a research draft on route grounds, or None. A draft without a Shortest route paragraph
     is refused without asking; on every EVERY-th research entry the judge is asked, and a detour is refused unless
     that paragraph says "Not taken" with a reason."""
@@ -200,7 +233,7 @@ def refusal(draft, notebook, ask=sonnet, notice=sys.stderr, every=EVERY, store=N
                 'first)')
     # The store is the caller's: tools/notebook-append.py passes VERDICT_STORE, tests a scratch file, so that a
     # machine's stored verdict never reaches a test.
-    carried = carried_refusal(draft, store) if store else None
+    carried = carried_refusal(draft, store, key, notice) if store else None
     if carried:
         return carried
     if not due(notebook, every):
@@ -216,7 +249,7 @@ def refusal(draft, notebook, ask=sonnet, notice=sys.stderr, every=EVERY, store=N
     print(f'route judge: {verdict["verdict"]}; shortest named: {verdict["shortest"]}; {verdict["reason"]}',
           file=notice)
     if store:
-        save_verdict(draft, verdict, store)
+        save_verdict(draft, verdict, store, key, notice)
     if verdict['verdict'] == 'detour' and not NOT_TAKEN.search(said):
         return (f'the route judge reads this entry as a detour ({verdict["reason"]}); its shortest step: '
                 f'{verdict["shortest"]}. Take that step, or say in the Shortest route paragraph "Not taken" and the '

@@ -133,7 +133,7 @@ def refuse_unwitnessed_nonlinearity(entry):
                              '" (AGENTS.md: a property defined over all inputs is shown by exhibiting it fail)')
 
 
-def refuse_off_route(source, entry, ask=None):
+def refuse_off_route(source, entry, ask=None, key=''):
     """A research entry of a notebook whose goal is open states its Shortest route and, read by the route judge
     (tools/route_judge.py, Haiku), takes it or says why not (user, 17 October 2026: "When you identify a direct
     shortest route above all else, you prioritize it above all else"). The judge's outage never blocks."""
@@ -141,7 +141,7 @@ def refuse_off_route(source, entry, ask=None):
         return
     import route_judge
     reason = route_judge.refusal(entry, source, **({'ask': ask} if ask else {}),
-                                 store=route_judge.VERDICT_STORE if not ask else None)
+                                 store=route_judge.VERDICT_STORE if not ask else None, key=key)
     if reason:
         raise ValueError(reason)
 
@@ -1204,7 +1204,7 @@ def main():
         refuse_unhomed_meta(args.entry.read_text())
         refuse_unapplied_matches(path.read_text(), args.entry.read_text(), home=home_of(path))
         closures = refuse_unquoted_closures(path.read_text(), args.entry.read_text())
-        refuse_off_route(path.read_text(), args.entry.read_text())
+        refuse_off_route(path.read_text(), args.entry.read_text(), key=selected(args.notebook)['source'])
         result = append(path.read_text(), args.entry.read_text(), nxt, committed_version(path),
                         args.stand_unchanged)
         refuse_item_history(result)
@@ -1214,6 +1214,9 @@ def main():
         sys.exit(f'notebook-append.py: {err}')
     path.write_text(result)
     print(f'Appended to {path.relative_to(ROOT)} ({path.stat().st_size:,} bytes)')
+    import route_judge
+    if route_judge.clear_answered(args.entry.read_text(), route_judge.VERDICT_STORE, selected(args.notebook)['source']):
+        print('The route judge\'s stored detour is answered by this entry and cleared.')
     for line in closures:
         print(line)
     if nxt and cadence_line(result):

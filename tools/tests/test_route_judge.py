@@ -99,24 +99,51 @@ class CarriedVerdictTest(unittest.TestCase):
         import tempfile
         with tempfile.TemporaryDirectory() as tmp:
             store = Path(tmp) / 'last.json'
+            quiet = io.StringIO()
             judged = DRAFT.replace('id="e"', 'id="earlier"').replace('SAID', 'Taken: one more class excluded.')
-            route_judge.save_verdict(judged, {'verdict': 'detour', 'shortest': 'build the drift flow',
-                                              'reason': 'it excludes'}, store)
-            self.assertEqual(route_judge.last_verdict(store)['anchor'], 'earlier')
+            detour = {'verdict': 'detour', 'shortest': 'build the drift flow', 'reason': 'it excludes'}
+            route_judge.save_verdict(judged, detour, store, 'a.html')
+            self.assertEqual(route_judge.last_verdict(store, 'a.html')['anchor'], 'earlier')
             bare = DRAFT.replace('SAID', 'The entry builds another exclusion of the same class.')
-            self.assertIn('read the last judged entry (earlier', route_judge.carried_refusal(bare, store))
+            self.assertIn('read the last judged entry (earlier',
+                          route_judge.carried_refusal(bare, store, 'a.html', quiet))
+            # Another notebook's entries are not held to this notebook's verdict.
+            self.assertIsNone(route_judge.carried_refusal(bare, store, 'b.html', quiet))
+            # "Taken" with too short a reason does not answer it; the same entry rewritten is the judge's own.
+            self.assertIsNotNone(route_judge.carried_refusal(DRAFT.replace('SAID', 'Taken: yes.'), store, 'a.html', quiet))
+            self.assertIsNone(route_judge.carried_refusal(bare.replace('id="e"', 'id="earlier"'), store, 'a.html', quiet))
             for said in ('Not taken: the drift flow waits for its smallest case, which this entry computes.',
                          'Taken: the drift flow is built here and its tails are tested on two sizes.'):
                 with self.subTest(said=said):
-                    self.assertIsNone(route_judge.carried_refusal(DRAFT.replace('SAID', said), store))
-            # The same entry rewritten is the judge's own to read again; no store, no carried verdict.
-            self.assertIsNone(route_judge.carried_refusal(bare.replace('id="e"', 'id="earlier"'), store))
-            self.assertIsNone(route_judge.carried_refusal(bare, Path(tmp) / 'none.json'))
-            # "Taken" with too short a reason does not answer it.
-            self.assertIsNotNone(route_judge.carried_refusal(DRAFT.replace('SAID', 'Taken: yes.'), store))
+                    route_judge.save_verdict(judged, detour, store, 'a.html')
+                    answering = DRAFT.replace('SAID', said)
+                    self.assertIsNone(route_judge.carried_refusal(answering, store, 'a.html', quiet))
+                    # Checking clears nothing: a draft refused later by another check must still answer.
+                    self.assertIsNotNone(route_judge.last_verdict(store, 'a.html'))
+                    # A review answering in its own paragraph clears nothing either.
+                    review = answering.replace('data-kind="research"', 'data-kind="review"')
+                    self.assertFalse(route_judge.clear_answered(review, store, 'a.html', quiet))
+                    # The appended answering entry clears it: the entry after it is not held to it again.
+                    self.assertTrue(route_judge.clear_answered(answering, store, 'a.html', quiet))
+                    self.assertIsNone(route_judge.last_verdict(store, 'a.html'))
+                    self.assertIsNone(route_judge.carried_refusal(bare, store, 'a.html', quiet))
+            # An unanswering entry, once appended, leaves the verdict stored.
+            route_judge.save_verdict(judged, detour, store, 'a.html')
+            self.assertFalse(route_judge.clear_answered(bare, store, 'a.html', quiet))
+            self.assertIsNotNone(route_judge.last_verdict(store, 'a.html'))
+            self.assertIsNone(route_judge.carried_refusal(bare, Path(tmp) / 'none.json', 'a.html', quiet))
             # A stored verdict other than a detour carries nothing.
-            route_judge.save_verdict(judged, {'verdict': 'on route', 'shortest': 'x', 'reason': 'y'}, store)
-            self.assertIsNone(route_judge.carried_refusal(bare, store))
+            route_judge.save_verdict(judged, {'verdict': 'on route', 'shortest': 'x', 'reason': 'y'}, store, 'a.html')
+            self.assertIsNone(route_judge.carried_refusal(bare, store, 'a.html', quiet))
+
+    def test_a_store_that_cannot_be_written_is_reported(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            blocker = Path(tmp) / 'file'
+            blocker.write_text('x')
+            notice = io.StringIO()
+            route_judge.save_verdict(DRAFT, {'verdict': 'detour'}, blocker / 'last.json', 'a.html', notice)
+            self.assertIn('verdict not stored', notice.getvalue())
 
     def test_refusal_reads_no_store_unless_one_is_passed(self):
         # The store is the caller's, so a machine's stored verdict never reaches a test.
