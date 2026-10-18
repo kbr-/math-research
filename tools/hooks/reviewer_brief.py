@@ -93,7 +93,6 @@ def stale_files(text, log, now=None, window=600):
     return stale
 
 
-ARTICLE_ID = re.compile(r'<article\b[^>]*\bid="([^"]+)"')
 
 
 def unread_sentences(text, tools=TOOLS):
