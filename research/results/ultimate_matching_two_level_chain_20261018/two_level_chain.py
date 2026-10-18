@@ -1,5 +1,18 @@
 """The two-level chain on the box-level samples: does some maximum matching of G_2 contain a maximum matching of G_1?
 
+Outcome (18 October 2026): the controls pass (the gadget gives e = 2 > d = 1, equal levels e = 0), and no sample
+finished: scipy's min_weight_full_bipartite_matching did not solve the first 4096-point sample in 110 s, twice,
+nor with tie-breaking jitter in 100 s (run1-unfinished.txt, run2-unfinished.txt, profile-jittered-unfinished.txt;
+profile.py times the steps before the solver at under 0.1 s). The run was not continued: an exact answer needs a
+compiled min-cost-flow kernel, and it would bear on L = 1/2 only, below the admissible constants.
+
+With --terms (written before that run, 18 October 2026): lem:two-level-chain-criterion's necessary terms F = E'
+and F = empty, r*_X(T_X) >= d and r*_Y(T_Y) >= d, and its Konig relaxation nuD >= d, on the nine saved samples
+(N in {4096, 16384, 65536}); each failing term refutes the chain. Expected: refuted at N = 16384, seed 1 (nuD <
+d there); at the other eight, no expectation either way. Control: the entry's instance (b), where rX = 1 < d = 2
+while nuD = 2 (Forced by counts: its three vertices a side force both values). Refuted by: a sample with
+refuted False at N = 16384, seed 1. Possible because: an error in the dual rank or the free sets would show so.
+
 Statement tested (finite check): at (4,4), X uniform and Y evenly spread (box_completion.py's sample), box graphs
 G_k of the pairs within L k^(1/4) sqrt(log N/N) in both coordinates, at L = 1/2, N in {4096, 16384}, seeds 0, 1, 2:
 the chain at levels 1, 2 holds exactly when the least number of edges outside G_1 in a maximum matching of G_2
@@ -59,7 +72,7 @@ def least_outside(A1, A2):
     mx, my = n1 - nu2, n2 - nu2          # unmatched rows and columns of a maximum matching of G_2
     # A column matched to a dummy row is left free by the real part, a maximum matching of G_2, so it is missable
     # in G_2 (bc.missable_columns); joining the dummies only to missable vertices keeps every solution. Every full
-    # matching uses exactly my + mx dummy edges, so their cost is a constant: B = 1 (a first version joined them to
+    # matching uses exactly my + mx dummy edges, so their cost is a constant, B = 3 (a first version joined them to
     # every vertex at 10^6 and did not finish one sample of 4096 points in 110 s).
     DY = np.nonzero(bc.missable_columns(A2, rmate, cmate))[0]
     DX = np.nonzero(bc.missable_columns(A2.T.tocsr(), cmate, rmate))[0]
@@ -77,6 +90,24 @@ def least_outside(A1, A2):
     return nu2, int((w[real] == 2.0).sum())
 
 
+def necessary_terms(A1, A2):
+    """lem:two-level-chain-criterion's terms F = E' and F = empty, each a necessary condition for the chain:
+    rX = r*_X(T_X) and rY = r*_Y(T_Y), T_X, T_Y the ends of the G_2 edges between the free sets D_X, D_Y of G_1,
+    r*_X(S) = |S| - nu(G_1) + nu(G_1 - S); also nuD = nu(G_2[D_X, D_Y]), the Konig relaxation."""
+    A1 = csr_matrix(A1)
+    rmate, cmate = bc.match(A1)
+    nu1 = int((rmate >= 0).sum())
+    DY = bc.missable_columns(A1, rmate, cmate)
+    DX = bc.missable_columns(A1.T.tocsr(), cmate, rmate)
+    E = csr_matrix(A2)[DX][:, DY]
+    TX = np.zeros(A1.shape[0], bool); TX[np.nonzero(DX)[0][np.unique(E.nonzero()[0])]] = True
+    TY = np.zeros(A1.shape[1], bool); TY[np.nonzero(DY)[0][np.unique(E.nonzero()[1])]] = True
+    nu = lambda A: int((bc.maximum_bipartite_matching(A) >= 0).sum()) if A.nnz else 0
+    rX = int(TX.sum()) - nu1 + nu(A1[~TX])
+    rY = int(TY.sum()) - nu1 + nu(A1[:, ~TY])
+    return dict(DX=int(DX.sum()), DY=int(DY.sum()), TX=int(TX.sum()), TY=int(TY.sum()), rX=rX, rY=rY, nuD=nu(E))
+
+
 def controls():
     out = {}
     A1 = csr_matrix(np.array([[1, 0], [0, 0]]))
@@ -88,7 +119,30 @@ def controls():
     nu2, e = least_outside(A2, A2)
     out['equal_levels'] = dict(nu=nu2, e=e)
     assert e == 0
+    # Instance (b) of the entry: the F = E' term is 1 < d = 2 while nuD = 2 >= d.
+    B1 = csr_matrix(np.array([[1, 0, 0], [1, 0, 0], [0, 0, 0]]))
+    B2 = csr_matrix(np.array([[1, 1, 0], [1, 0, 1], [1, 0, 0]]))
+    t = necessary_terms(B1, B2)
+    out['instance_b'] = t
+    assert (t['rX'], t['nuD']) == (1, 2), t
     return out
+
+
+def run_terms(N, L, seed):
+    """The necessary terms at levels 1 and 2 of a saved sample."""
+    rng = np.random.default_rng(seed)
+    X = rng.uniform(0, 1, (N, 2))
+    g = int(round(math.sqrt(N)))
+    cells = np.stack(np.meshgrid(np.arange(g), np.arange(g), indexing='ij'), -1).reshape(-1, 2)
+    Y = (cells + rng.uniform(0, 1, (N, 2))) / g
+    s1 = math.sqrt(math.log(N) / N)
+    A1, A2 = bc.graph(X, Y, L * s1), bc.graph(X, Y, L * 2 ** 0.25 * s1)
+    m1 = N - int((bc.maximum_bipartite_matching(A1) >= 0).sum())
+    m2 = N - int((bc.maximum_bipartite_matching(A2) >= 0).sum())
+    t = necessary_terms(A1, A2)
+    d = m1 - m2
+    return dict(N=N, L=L, seed=seed, m1=m1, m2=m2, d=d, **t,
+                refuted=bool(t['rX'] < d or t['rY'] < d or t['nuD'] < d))
 
 
 def run(N, L, seed):
@@ -108,9 +162,20 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', required=True)
     ap.add_argument('--sizes', type=int, nargs='+', default=[4096, 16384])
+    ap.add_argument('--terms', action='store_true', help='only the necessary terms, at every saved size')
     args = ap.parse_args()
     result = dict(controls=controls(), samples=[])
     print(json.dumps(result['controls']), flush=True)
+    if args.terms:
+        for N in args.sizes:
+            for seed in (0, 1, 2):
+                row = run_terms(N, 0.5, seed)
+                result['samples'].append(row)
+                print(json.dumps(row), flush=True)
+                Path(args.out).write_text(json.dumps(result, indent=1))
+        hit = [r for r in result['samples'] if r['N'] == 16384 and r['seed'] == 1]
+        assert not hit or hit[0]['refuted'], 'the second test refutes the chain at N = 16384, seed 1'
+        return
     saved = {}
     for f in ('box_completion_4096.json', 'box_completion.json'):
         for s in json.loads((BOX.parent / f).read_text())['samples']:
