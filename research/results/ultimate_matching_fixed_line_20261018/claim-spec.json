@@ -1,0 +1,126 @@
+{
+ "source": {
+  "record": "[Fixed line](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-18-fixed-line-reduction)",
+  "label": "Fixed line",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-18-fixed-line-reduction"
+  ]
+ },
+ "date": "2026-10-18",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "relationships": [
+  [
+   "lem:fixed-line-boundary-bound",
+   "depends_on",
+   "lem:guided-chain-bound",
+   "Its (b) for the strips [0,c) x I, at most N^(3/2) of them, fixed in advance."
+  ],
+  [
+   "lem:fixed-line-boundary-bound",
+   "depends_on",
+   "lem:fine-grid-leighton-shor",
+   "Its (a) for each band's remainder, which has no full row of the other type."
+  ],
+  [
+   "prop:fixed-line-product-chains",
+   "depends_on",
+   "lem:fixed-line-boundary-bound",
+   "Applied to each layer of the layer cake."
+  ],
+  [
+   "prop:fixed-line-product-chains",
+   "depends_on",
+   "lem:leighton-shor-mesh-averaging",
+   "Its (a), TV(g) <= T(2), bounds the walls' variation."
+  ],
+  [
+   "prop:fixed-line-product-chains",
+   "cites",
+   "lem:anchored-run-bound",
+   "Removes that lemma's anchored term for the high part."
+  ],
+  [
+   "prop:fixed-line-product-chains",
+   "cites",
+   "cor:coarse-discrete-sufficiency",
+   "Gives the high part of monotone product chains in that corollary's class at the target."
+  ],
+  [
+   "cor:monotone-product-chain-bound",
+   "depends_on",
+   "prop:fixed-line-product-chains",
+   "The high part above the threshold."
+  ],
+  [
+   "cor:monotone-product-chain-bound",
+   "depends_on",
+   "lem:cost-weighted-slope-bound",
+   "Its (a) for the low part in (a)."
+  ],
+  [
+   "cor:monotone-product-chain-bound",
+   "depends_on",
+   "lem:cut-cell-variance-bound",
+   "Its (d) for the low part in (b), a nested chain at one height with at most K layers."
+  ],
+  [
+   "lem:fixed-line-boundary-bound",
+   "cites",
+   "lem:anchored-run-bound",
+   "Removes that lemma's anchored term: its full rows are the anchored runs layer by layer; neither implies the other (functions against sets)."
+  ],
+  [
+   "lem:fixed-line-boundary-bound",
+   "cites",
+   "cor:fine-mesh-function-tube",
+   "That corollary charges total variation at Phi_k with local maxima; on indicators it charges the whole perimeter at (log N)^(3/4) near k = 0; neither implies the other."
+  ],
+  [
+   "prop:fixed-line-product-chains",
+   "cites",
+   "lem:one-height-rounding",
+   "Rounding carries a monotone product chain of cost M to a monotone one-height product chain of cost at most 7M + (psi_4^*(Y/2)/Y) T(M); the proposition needs no rounding, holding for every value of h."
+  ],
+  [
+   "cor:monotone-product-chain-bound",
+   "cites",
+   "lem:one-height-rounding",
+   "Through rounding, (b) at bounded cost instead of 2 would give (a) at (log N)^(1/12); not covered, since (b) and lem:cut-cell-variance-bound (d) are stated at cost at most 2."
+  ]
+ ],
+ "claims": [
+  {
+   "id": "lem:fixed-line-boundary-bound",
+   "summary": "On the events of lem:fine-grid-leighton-shor at the mesh W = 2^(-l_1) and of lem:guided-chain-bound (b) for the strips [0,c) x I and [c,1) x I (at most 2W^(-3) sets): for N large, every c in (0,1] on the grid, H = {x < c}, and every union A of cells of mesh W inside H, |D(1_A)| <= C_0 sqrt N ((log N)^(3/4) l_out + sqrt(log N) l_line), l_line the length of the inner edges of the boundary of A on the line x = c, l_out that of its other inner edges, C_0 = 4L + 15; the same for right half-planes on the same event.",
+   "assessment": "Working proof, passed with corrections by one medium reviewer in six passes (research/results/ultimate_matching_fixed_line_20261018/review.txt; the second pass checked the proof, the fourth the two-sided strip event and its constant), the proof being the reviewer's first-pass suggestion, checked step by step by the agent: rows of H full in A, empty or mixed; W|mixed| <= l_out; k alternations between full and empty rows force k c <= l_out; bands between alternations; on a band with full rows the strip by lem:guided-chain-bound (b) minus a remainder with no empty row by lem:fine-grid-leighton-shor (a); on the other bands the part of A by lem:fine-grid-leighton-shor (a); additive terms absorbed since a strip of positive perimeter has perimeter at least W.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "A set's boundary on a fixed line costs sqrt(log N); through the layer cake the walls of a monotone product chain cost sqrt(log N), which removes lem:anchored-run-bound's anchored term.",
+   "next_action": "Use it on the low part of monotone product chains, where the boundary's edges of middle multiplicity are what is left.",
+   "novelty": "not_claimed"
+  },
+  {
+   "id": "prop:fixed-line-product-chains",
+   "summary": "At (4,4), on the event of lem:fixed-line-boundary-bound, W = 2^(-l_1): every grid function g = h 1_B on the mesh W with h >= 0 constant on columns and nonincreasing in x, B a union of cells, and discrete cost sum_e W^2 psi_4^*(|Delta_e g|/(2W)) <= 2, has, for every epsilon with epsilon log N >= 18 and h_hi = (h - W N^epsilon)^+, |D(h_hi 1_B)| <= C_0 sqrt(N log N)(8 (epsilon/2)^(-1/4) + T(2)), T(2) = 4 + 4/psi_4^*(1); the same for h nondecreasing.",
+   "assessment": "Working proof, passed with corrections by one medium reviewer (research/results/ultimate_matching_fixed_line_20261018/review.txt; the first pass checked the layer cake, cuts and boundary bound, the third the condition epsilon log N >= 18): the layer cake over the half-planes {h_hi > s}; lem:fixed-line-boundary-bound on each layer; the boundary of B integrates to V <= 8(epsilon log N/2)^(-1/4) by the cost of edges of increment at least N^epsilon, the cuts to the walls' variation, at most TV(g) <= T(2) by lem:leighton-shor-mesh-averaging (a).",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Puts the part above W N^epsilon of every monotone product chain of cost at most 2 at the target, the walls charged at sqrt(log N).",
+   "next_action": "Bound the low part's boundary edges of middle multiplicity, the curve's Leighton-Shor gain weighted by a height varying along it.",
+   "novelty": "not_claimed"
+  },
+  {
+   "id": "cor:monotone-product-chain-bound",
+   "summary": "At (4,4), on the events of lem:fixed-line-boundary-bound, lem:cost-weighted-slope-bound (a) at delta_0 = W and lem:cut-cell-variance-bound, for N large: every grid function g = h 1_B on the mesh W of cost sum_e W^2 psi_4^*(|Delta_e g|/(2W)) <= 2, h >= 0 constant on columns and monotone in x, B a union of cells, has (a) |D(g)| <= C_1 (log N)^(1/8) sqrt(N log N); (b) if h's values are multiples of W y^*, |D(g)| <= C_2 (log N)^(1/12) sqrt(N log N); C_1, C_2 universal.",
+   "assessment": "Working proof, passed with corrections by one medium reviewer (research/results/ultimate_matching_fixed_line_20261018/review.txt; the third pass checked (a) and (b), and (b)'s hypotheses against lem:cut-cell-variance-bound (d)): (a) split h at W e^(sqrt(log N)), the low part by lem:cost-weighted-slope-bound (a), the high part by prop:fixed-line-product-chains at epsilon = (log N)^(-1/2) (the reviewer's suggestion, checked); (b) split at K W y^*, K the largest layer count lem:cut-cell-variance-bound (d) allows, the low part a nested chain at one height decided by (d), the high part by the proposition at epsilon log N of order (log N)^(2/3).",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Monotone product chains, in the form of cor:coarse-discrete-sufficiency (b)'s class, within (log N)^(1/12) of the target, from the (log N)^(1/4) of lem:cost-weighted-slope-bound (a).",
+   "next_action": "Close the residual: boundary edges of B with log v_e between about (log N)^(2/3) and epsilon log N, by a per-layer perimeter charge summed over the many layers.",
+   "novelty": "not_claimed"
+  }
+ ]
+}

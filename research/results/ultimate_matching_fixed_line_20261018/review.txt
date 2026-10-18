@@ -1,0 +1,88 @@
+Review of entry-2026-10-18-fixed-line-reduction, one medium reviewer (medium-reviewer agent).
+
+=== First pass, on the conditional draft: pass with corrections ===
+The proposition's proof correct (layer cake, cuts integrating to the walls' variation, the bound on
+boundary edges from psi_4^*, the walls by 1-Lipschitz truncation, epsilon^(-1/4) once eps log N >= 2).
+Required: the constant uniform only for eps log N >= 2; C' depends on C alone; name the cost; the
+boundary split is an inequality (edges of the boundary of B on the cut line counted in the first
+term); the statement narrower than its proof: no one-height hypothesis is needed, the walls bounded by
+TV(g) <= T(2) (lem:leighton-shor-mesh-averaging (a)); the reflection remark for nondecreasing h
+unproved; the conjecture's mesh unstated and a letter c used twice; Evidence (3) only for pairwise
+non-adjacent rectangles; Evidence (4) cites a function-class lower bound for a set-level claim; the
+conjecture's content is lem:anchored-run-bound's anchored term restated (lem:fine-grid-leighton-shor
+(a) decides every A without full rows); the witness covered by the baseline; the reflection follow-up
+circular and needing c <= 1/2; Meta repeats objection (4); objection (5) without a prevention.
+Suggestions (unverified): (1) a proof of the conjecture from recorded lemmas: rows full in A, full
+in E or mixed; mixed rows bounded by vertical boundary; k alternations between full types force k c
+of horizontal boundary; bands between alternations; on an A-band the strip [0,c) x I by
+lem:guided-chain-bound (b) minus E_I by lem:fine-grid-leighton-shor (a); on an E-band the part of A
+by lem:fine-grid-leighton-shor (a); additive terms absorbed. (2) Drop the reflection follow-up.
+Process audit: title drops the high part and monotone h; "new as a statement" without the anchored
+term; one search in the draft's words; the plainest tools untried on general A; orbiting (a heavier
+chaining named instead of the plain decomposition); a witness covered by the baseline; a free
+parameter's range; unused generality; Evidence (4); Meta. Strength count 5.
+Done: suggestion (1) checked step by step by hand and registered as a lemma; the proposition made
+unconditional and stated without the one-height hypothesis.
+
+=== Second pass, on the rewritten entry: pass with corrections ===
+lem:fixed-line-boundary-bound's proof correct (additive terms, family size, totals, alternations,
+C_0 = 4L + 15, the right-half-plane form). Required: P(S_I) with c times the number of cut sides, not
+2c per band; l_out(S_I) defined strictly inside the band; "for N large" in the statement; a lemma
+witness with a nonempty remainder. prop:fixed-line-product-chains: walls and arithmetic correct;
+v_e/2 >= e^16 needs epsilon log N >= 18, not 2. The proposition's witness decided by
+lem:cost-weighted-slope-bound (a), which the Plainest bound omitted; the 0.52 without its
+computation. Record comparison to name lem:cost-weighted-slope-bound (a); scope qualifiers in New
+mathematics and Bearing. Suggestion (unverified): split at W e^(sqrt(log N)), the low part by
+lem:cost-weighted-slope-bound (a), the high by the proposition, giving (log N)^(1/8) for every
+monotone product chain. Meta names a mechanism and a goal notebook; the partial count cannot fail on
+its case; the replay's refusals not judged; the witness class recurred in the rewrite.
+Done: all corrections; the split checked and registered as cor:monotone-product-chain-bound (a), with
+(b), (log N)^(1/12) for one-height chains through lem:cut-cell-variance-bound (d), added by the agent;
+a new witness with slits; the Meta's change written into AGENTS.md's Order of work.
+
+=== Third pass: pass with corrections ===
+Lemma accounting correct; per-band bounds still ended in +2c; the lemma witness's l_line is 1/2 (Q
+interior, not next to the line). Proposition at epsilon log N >= 18 correct; nondecreasing h needs the
+strips [c,1) x I in the event. Witness: psi_4 definition to quote; 0.52 used a lower bound on y* in
+the wrong direction (c >= 7 gives at most 0.53); slit tops missing from the cost; no slit in column 0;
+h(0) a multiple of W y^*. cor:monotone-product-chain-bound (a) and (b) correct, hypotheses of
+lem:cut-cell-variance-bound (d) checked; the corollary missing from data-claims and the General
+statement. Not covered's residual range inverted; the Follow-up used lem:cut-cell-variance-bound (b)
+outside P >= 1, called a combined charge a composition, and misdescribed (c). Prevention: the witness
+mistake recurred, a check is required in the turn.
+Done: all corrections; both strip families in the lemma's event (family 2W^(-3), constant 5); the
+Follow-up rewritten as a new joint lemma with Sum_k P_k computed; the witness check built
+(tools/resemblance_coverage.py, commit "resemblance_coverage: a proved claim's resembling claims are
+named in its witness passages").
+
+=== Fourth pass: pass with corrections ===
+Lemma (both strip families, constant 5, log N >= 11) and the proposition's witness (psi_4 quoted,
+0.53, slit sides and top, the split) correct. cor:fine-mesh-function-tube's sentence uncheckable
+without its statement; lem:one-height-rounding's sentence inexact (rounding at Y = e^22 moves the
+witness to another one-height chain, deciding nothing). Sum_k P_k: name its edges; the average 8/(WKy^*)
+only over more than K layers. Own statements wrong: at P about 8/(WKy^*) the factor of
+lem:cut-cell-variance-bound (b) is of order (log K)^(3/4), and with Jensen over n layers the per-layer
+route gives (c)'s (log n)^(3/4); the joint lemma must beat it through the cut charge. The witness
+check's report: the threshold fitted to the exposing case, the false-refusal rate unknown (ten of 29
+judged, from summaries), the cheapest bypass (naming without evaluating) untried.
+Done: the claim's statement quoted; the rounding sentence rewritten from the reviewer's wording; the
+edges and the layer-count qualifier stated; Own statements and the Nontrivial computation rewritten
+from the reviewer's Jensen computation; the check's report corrected in its docstring, its
+judgement file and the entry; the bypass queued as witness-claim-evaluated with a saved partial run.
+
+=== Fifth pass: pass with corrections ===
+Sum_k P_k over the boundary edges with h_hi > 0 correct; the Jensen step correct (f concave for P <=
+1/W). Required: the per-layer route uses S' with the cuts, Sum cut_k <= T(2)/(W y^*); layers with
+P_k < 1 are outside (b) and carry (c)'s extra term; the residual is log n above about (log N)^(8/9),
+with (log N)^(1/12) at log n about (1/2) log N. The Prevention sentence on the witness check correct
+against its two provenance files. Optional: mention the unclear pair.
+Done: all three in the reviewer's wording.
+
+=== Sixth pass, on the Own statements sentences: pass with corrections ===
+The sentence applying lem:separated-bundle-chains and lem:staircase-bundle-chains wrong as written:
+(B1) holds for a run of equal multiplicity (boundary edges are on no cut; say which chain); (B2) needs
+the strip of m + 1 cells inside one level strip of h, not only B deep; neither orientation has its
+strip "in one column"; residual multiplicities near e^((log N)^(2/3)) need runs that long in one level
+strip, failing where h is steep (the proposition's witness included), and eta_W gives (log N)^(1/4)
+there. lem:guided-chain-bound (a) at delta_0 = W gives difference 0 and rests on (b).
+Done: both sentences redrafted from (B1)-(B4) and the reviewer's findings, in its wording.

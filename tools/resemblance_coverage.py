@@ -25,9 +25,11 @@ For a declared claim registered with a proof, the same listing at WITNESS_AT, ov
 must also be named in a Nonvacuity, Plainest bound or Baseline passage (witness_missing; 18 October 2026, a
 witness twice offered that a resembling registered bound decided): replayed on the ultimate-matching notebook's 68
 research entries with claims, it would refuse 29 with 76 unnamed claims at 0.35, and 0.4 would miss the exposing
-case at 0.37 (research/provenance/framework/witness-coverage-replay-20261018.txt; of the first ten refusals, nine
-were judged real and one false, witness-coverage-judgement-20261018.txt there, a judgement).  Naming is checked,
-not what the passage says of the claim.
+case at 0.37, so the threshold is fitted to that case (research/provenance/framework/witness-coverage-replay-
+20261018.txt).  Only the first ten refusals were judged, from the claims' summaries, nine related and one not
+(witness-coverage-judgement-20261018.txt there, a judgement): the false-refusal rate is unknown.  Naming is
+checked, not what the passage says of the claim, so a sentence that names it without evaluating it on the witness
+passes (queued as witness-claim-evaluated).
 
 Usage: resemblance_coverage.py --replay NOTEBOOK [--limit N]
        resemblance_coverage.py --draft DRAFT --spec SPEC   (the witness check before the spec is registered)   (counts what the check would refuse in the last

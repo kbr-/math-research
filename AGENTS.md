@@ -338,7 +338,12 @@ AGENTS.md"):
   certificates was applied to an intermediate sum and not to the transformed image itself, where it
   showed the conclusion empty). A recorded bound used as the baseline is run with each free
   parameter of its proof at its whole range, not at the values its statement fixed (17 October 2026:
-  a corollary's argument at a free level already gave the new bound but for one length).
+  a corollary's argument at a free level already gave the new bound but for one length). A statement
+  about to be posed as a conjecture, and each new result of a draft, is first composed with the
+  record's bounds on its own objects (each bound on each part, split where the bounds' ranges meet),
+  and the entry says what that gave, before a new method is named (18 October 2026: a conjecture was
+  posed with a chaining rerun named while two recorded lemmas proved it, and a draft's proposition
+  and a recorded bound, split at one threshold, gave the whole class's new bound uncomposed).
 - Before a step is called the open one (an Attempt's stop, a test's outcome left to the next cycle),
   the plainest tools of its kind are run on it and their outcome written: a concentration bound on
   the sum the step concerns, a gluing or composition of the parts it joins, the converse of each
