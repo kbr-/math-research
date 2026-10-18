@@ -1,0 +1,68 @@
+{
+ "source": {
+  "record": "[Anchored runs](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-18-column-strip-localization)",
+  "label": "Anchored runs",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-18-column-strip-localization"
+  ]
+ },
+ "date": "2026-10-18",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "relationships": [
+  [
+   "cor:column-strip-localization",
+   "depends_on",
+   "lem:tube-localized-discrepancy",
+   "Its (b) at the coarse mesh of each rectangle's short side, the covering sum over the coarse cells meeting the rectangle."
+  ],
+  [
+   "cor:column-strip-localization",
+   "cites",
+   "lem:local-factor-discrepancy",
+   "Neither implies the other: that lemma charges each edge at its dyadic square's level with no covering term; the corollary charges a rectangle's variation at its short side and pays its maximum."
+  ],
+  [
+   "cor:column-strip-localization",
+   "cites",
+   "cor:fine-mesh-function-tube",
+   "The same tube lemma at one coarse mesh for cells finer than 2^(-l_1); the corollary localizes it to rectangles of cells."
+  ],
+  [
+   "lem:anchored-run-bound",
+   "depends_on",
+   "lem:fine-grid-leighton-shor",
+   "Its (b) after the deterministic inequality TV(h 1_B) <= 2 V_B + A_B."
+  ],
+  [
+   "lem:anchored-run-bound",
+   "cites",
+   "cor:coarse-discrete-sufficiency",
+   "Applied to one-height product chains at (4,4), the part with h >= W N^epsilon is at the target up to the anchored variation, part of that corollary's (b) hypothesis."
+  ]
+ ],
+ "claims": [
+  {
+   "id": "lem:anchored-run-bound",
+   "summary": "For h >= 0 constant on the columns of a mesh delta_0 and nonincreasing in x, B a union of cells, V_B = sum over the inner edges e of the boundary of B of delta_0 h(x_e) (x_e the column of e's B-cell) and A_B = sum over the rows of delta_0 (h(0) - h(rho_r)) (rho_r the right end of the row's run of B-cells starting at x = 0, 0 if none; h(1) = 0): (a) deterministically TV(h 1_B) <= 2 V_B + A_B; (b) on the event of lem:fine-grid-leighton-shor at delta_0, |D(h 1_B)| <= L sqrt N (log N)^(3/4) (2 V_B + A_B); (c) |D(h 1_B)| <= |D(h)| + L sqrt N (log N)^(3/4)(2 V'_(B^c) + A_(B^c)), V' read at the cells outside B.",
+   "assessment": "Working proof, passed with corrections in three passes of one medium reviewer (research/results/ultimate_matching_column_strips_20261018/review.txt), who checked (a)'s proof and the convention h(rho_r), (b), (c) and the High part's bound V_B <= 8(eps log N - 1)^(-1/4): along each run of B in a row the walls add up to at most the run's first value, which is the jump on the run's left edge of the boundary of B unless the run starts at x = 0; (b) is lem:fine-grid-leighton-shor (b) after (a), no gain in order over it; (c) applies (b) to the complement.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "At (4,4) the walls of a one-height product chain are paid by the runs' left-end edges, whose increments are high where h is, so the part h >= W N^epsilon is at the target up to the variation along runs anchored at the side where h is largest.",
+   "next_action": "Bound the anchored part: split B into its left-justified part L_B and the rest, and charge the layers of h 1_(L_B), bounded by vertical lines and the staircase of the run ends, with the staircase's horizontal edges bounded by the variation across the boundary of B.",
+   "novelty": "not_claimed"
+  },
+  {
+   "id": "cor:column-strip-localization",
+   "summary": "On the event of lem:mesh-function-discrepancy, for every j with 1 <= j <= l_1, every cell function g on the mesh 2^(-j) and every partition of [0,1]^2 into rectangles R of cells with sides s_R <= l_R, M_R = max over R of g^+ plus max of g^-, Phi(R) = (2 log_2(2^j s_R) + 7)^(3/4) + sqrt(log N): |D(g)| <= L sqrt N sum_R Phi(R)(V^0_j(g 1_R) + 8(l_R + 4 s_R) M_R), V^0_j the cell variation of lem:tube-localized-discrepancy and L its constant; on the event of lem:loglog-mesh-deviation the same with sqrt(j + log log N) in place of sqrt(log N).",
+   "assessment": "Working proof, passed with corrections in three passes of one medium reviewer (research/results/ultimate_matching_column_strips_20261018/review.txt), whose first pass gave the one-step form adopted here and whose second checked the count of at most 2(l_R 2^k + 2) coarse cells and Phi: lem:tube-localized-discrepancy (b) on each rectangle at the coarse mesh 2^(-k), the largest dyadic at least the short side; the loglog form from that lemma's statement.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Charges a cell function rectangle by rectangle at its short side's level; on product chains at (4,4) it gives the target for the part below W N^epsilon where the level strips are narrow.",
+   "next_action": "Use it on the low part of product chains with wide level strips only together with a bound on the middle-multiplicity pile; no direct next step.",
+   "novelty": "not_claimed"
+  }
+ ]
+}
