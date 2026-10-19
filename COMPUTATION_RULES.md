@@ -131,8 +131,8 @@ in another; wait on a job's own completion notice.
   Skip only those: a case left out because the expected outcome makes it look uninteresting is named
   in the script's docstring and in every conclusion drawn from the run, which covers only the cases
   computed (17 October 2026: pairs were computed only for sizes with positive excess, and the
-  summary covered every pair). Follow the test-design and sizing rules below and AGENTS.md's rule
-  for stopping answered series.
+  summary covered every pair). Follow the test-design and sizing rules below and [Before
+  computing](#before-computing) for stopping answered series.
 - A slow implementation of a computation needed for the goal is a reason to use an appropriate
   algebra system or write its kernel in the same cycle, not abandon or defer the line. Need is
   determined by AGENTS.md's missing-implication test; another case of a fitted formula is not
@@ -214,6 +214,11 @@ merely to resume work; verify active controls with `./compute.sh --status`.
 
 ## Unified execution and timing
 
+Measure every research turn from as early as practical with `./compute.sh start TURN`, including
+reading, failed attempts and retries. Disclose work done before instrumentation. Omit `--model` for
+Codex when active metadata is available; use the fallback below only when it is not. Preserve full
+output on disk and use bounded excerpts for inspection.
+
 `compute.sh` is one executable Python program with a shebang, containing both resource enforcement
 and timing. Run it directly, not with `bash`.
 
@@ -286,8 +291,8 @@ or checkpoint. Keep proof finalization in mathematics; switch back if checkpoint
 substantive proof question. Use `reading` for source review and `network_tool` before browsing,
 restoring the work phase afterward. The table keeps these categories separate and omits empty ones.
 The older mixed `reasoning_writing` phase remains readable for past sessions. Command runs record
-their own category, status, and elapsed interval, including failures and retries. AGENTS.md defines
-which turns require instrumentation.
+their own category, status, and elapsed interval, including failures and retries. This section
+defines instrumentation; AGENTS.md owns research checkpoint sequencing.
 
 Reports use exclusive wall-clock intervals; do not add overlapping worker times. Reading includes
 interpretation and tool windows include service/orchestration latency. Pure internal reasoning and
@@ -296,6 +301,32 @@ phase; disclose material mixing rather than retrospectively inventing a split or
 estimate. Disclose mixed time, work before instrumentation, and final generation after the snapshot.
 Start a fresh timing session after reboot. A session cannot be stopped while command records remain
 unfinished.
+
+## Before computing
+
+- Run an attempt by hand on its smallest nontrivial instance and record the outcome before writing
+  its script. Use applicable equivalent presentations and the plainest recorded bounds first. Code
+  only what that leaves open. Try each proposed control on an input where it must fail before
+  implementing it; a control fixed by construction tests nothing about the proposed mechanism.
+- Forecasts of a test's value or outcome remain untested hypotheses. Where finding out takes
+  minutes, run it and compare forecast with outcome; decline only on measured cost. Before declining
+  an exact computation, calculate the necessary conditions, single terms or relaxations already
+  available.
+- Stop a series once its prediction has passed or failed at the informative sizes and develop the
+  general proposition. A larger size, degree or sample needs a question the finished runs cannot
+  answer and an outcome that changes the goal's missing implication; sharper constants off that path
+  do not suffice. Before fitting a formula, combine witnesses by all recorded applicable products,
+  restrictions and transports. Do not rerun old suites merely to simulate progress.
+- Before comparing extrema over choices, derive in the docstring which maximum/minimum the actual
+  containment or inequality requires. Enumerate a construction's free choices when cheap before
+  claiming it fails from one choice. Compute a claimed property on the actual object in the stated
+  variables; results on a model or unreachable inputs remain results about that model. Normalize a
+  prediction in the same quantity used to judge it.
+- A forecast based on one worked construction is first tried on the most unlike construction. After
+  a result agrees with expectation, state what it does not show and inspect every figure for
+  evidence against the conclusion. Preserve the checked field, representatives, extrema and size
+  range in conjectures drawn from computations; try any stronger form on trivial transformations and
+  smallest instances first.
 
 ## Numerical verification
 
@@ -430,6 +461,41 @@ unfinished.
   `--expect`: a run allowed more than a minute either says it is expected to be shorter or goes to
   the background.
 
+## Framework tests and measurements
+
+- The framework suite is every `tools/tests/test_*.py`; `test_site.py` runs the tests in `tests/`,
+  including real browsers. Put new tests there, not beside production code. Before committing, run
+  affected tests through `compute.sh`: a standalone new tool needs its module; an AGENTS.md-only
+  change needs `test_agents_scope`; shared code, fixtures, hooks, CI or names other files use need
+  the whole suite. Use the parallel runner even for a process-heavy single module:
+
+  ```bash
+  ./compute.sh --threads 14 --timeout 60 python3 tools/tests/run.py test_NAME
+  ./compute.sh --threads 1 --timeout 60 python3 tools/tests/run.py
+  ```
+
+- Each site test, including real-browser cases, must finish within **5 seconds** and the whole suite
+  within **15 seconds**. An overrun is a performance defect to diagnose and fix, not a reason to
+  rerun unchanged code until it passes. A timing failure alone does not require another suite run.
+  The runner reports its own CPU use and outside work; `TOO SLOW (machine busy)` still fails by
+  default. A change relaxing a user-set limit must be an off-by-default option filed for the user's
+  decision, never silently enabled. Startup guidance warns above **1 second**, finisher checks above
+  **5 seconds**, and resume preparation above **2 seconds**.
+- A changed tool that reads records or scales with its directory input gets a timed run on the real
+  repository and the largest repository it will serve. Print input scale (files/bytes/rows) and the
+  code path exercised. An early return does not measure the changed path. Use a real changed diff
+  for revision comparisons; profile disproportionate work. Inspect every reported finding against
+  its source, not only the time. Identify actual source paths explicitly: tracked data and archived
+  output are not source code. Replay/refusal and bypass requirements are in AGENTS.md.
+- Claim performance or enforcement only after measuring the actual mechanism through its real path.
+  In commit messages, docstrings/help and queue closures, put figures beside saved evidence and
+  report all measured values bearing on a comparison, including adverse ones. Caches, options and
+  helpers need measured use. A scope/cost-saving choice must state its effect on the measured
+  quantity or covered class before use.
+- Run `formalization/tests/` only when formalization tooling changes, with the Lean toolchain. Run
+  `resource-controls/test_watchdog.py` and `test_11gb.py` only when memory controls change. Dated
+  research scripts/tests are computation/provenance records, not suites to rerun routinely.
+
 ## Persist computation outputs
 
 New result/provenance data is stored with **zstd level 3** (`.zst`). Source code, documentation,
@@ -449,6 +515,13 @@ refuses replacement of evidence already committed at HEAD, and preserves readabl
 refuses new raw payloads and invalid staged zstd streams. Existing archives are not rewritten by
 ordinary archival; historical conversion and any Git history rewrite are a separate queued build.
 The `zstd` CLI is required; a missing executable is an installation request, never a raw fallback.
+
+Use `python3 tools/codex_state.py scratch` for the Codex session's owned temporary directory; do not
+put symlinks inside managed scratch. Clear your own scratch by the end of its cycle after promoting
+valuable evidence to `research/results/` or `research/provenance/`. The finisher refuses more than
+**500 MB** in the session's scratchpad and never deletes it for you. Follow AGENTS.md's
+artifact-name collision check before choosing output paths.
+
 
 Important computation output is research, not disposable logging. Scripts that produce tables,
 group-element enumerations, proof certificates, matrices, search results, or similar data should
