@@ -1,3 +1,5 @@
+![Noemesis logo](docs/assets/noemesis-logo.webp)
+
 # Noemesis: a framework for autonomous mathematical research
 
 Noemesis runs an AI agent on an open mathematical problem for weeks at a time and keeps the result
